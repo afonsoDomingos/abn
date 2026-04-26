@@ -22,23 +22,34 @@
 
 .logo {
   display: flex;
-  flex-direction: column;
-  line-height: 1;
-  gap: 4px;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: translateY(-2px);
 }
 
 .logoImg {
-  height: 45px;
+  height: 50px;
   width: auto;
   object-fit: contain;
+  /* Remove o fundo branco se o fundo for escuro */
+  mix-blend-mode: screen; 
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
 }
 
 .network {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
   color: var(--secondary);
-  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: 'Outfit', sans-serif;
+  border-left: 2px solid var(--primary);
+  padding-left: 10px;
 }
 
 .links {
