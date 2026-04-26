@@ -1,24 +1,48 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import styles from './Admin.module.css';
 
 export default function AdminPage() {
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalStartups: 0,
+    activeServices: 0,
+    revenue: '0.00'
+  });
+  const [distribution, setDistribution] = useState({
+    empreendedores: 0,
+    startups: 0,
+    investidores: 0
+  });
+
+  useEffect(() => {
+    fetch('/api/admin/stats')
+      .then(res => res.json())
+      .then(data => {
+        if (data.stats) setStats(data.stats);
+        if (data.distribution) setDistribution(data.distribution);
+      });
+  }, []);
+
   return (
     <div className={styles.dashboard}>
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
           <h4>Total Usuários</h4>
-          <div className={styles.statValue}>1,284</div>
+          <div className={styles.statValue}>{stats.totalUsers}</div>
         </div>
         <div className={styles.statCard}>
           <h4>Startups Incubadas</h4>
-          <div className={styles.statValue}>42</div>
+          <div className={styles.statValue}>{stats.totalStartups}</div>
         </div>
         <div className={styles.statCard}>
           <h4>Serviços Ativos</h4>
-          <div className={styles.statValue}>156</div>
+          <div className={styles.statValue}>{stats.activeServices}</div>
         </div>
         <div className={styles.statCard}>
-          <h4>Receita (KZ)</h4>
-          <div className={styles.statValue}>2.4M</div>
+          <h4>Receita (MT)</h4>
+          <div className={styles.statValue}>{stats.revenue}</div>
         </div>
       </div>
 
@@ -39,9 +63,9 @@ export default function AdminPage() {
           <div className={styles.donutChartBox}>
             <div className={styles.donutChart}></div>
             <div className={styles.donutLegend}>
-              <div className={styles.legendItem}><span style={{background: 'var(--primary)'}}></span> Empreendedores (60%)</div>
-              <div className={styles.legendItem}><span style={{background: 'var(--secondary)'}}></span> Startups (25%)</div>
-              <div className={styles.legendItem}><span style={{background: 'var(--accent)'}}></span> Investidores (15%)</div>
+              <div className={styles.legendItem}><span style={{background: 'var(--primary)'}}></span> Empreendedores ({distribution.empreendedores})</div>
+              <div className={styles.legendItem}><span style={{background: 'var(--secondary)'}}></span> Startups ({distribution.startups})</div>
+              <div className={styles.legendItem}><span style={{background: 'var(--accent)'}}></span> Investidores ({distribution.investidores})</div>
             </div>
           </div>
         </div>
