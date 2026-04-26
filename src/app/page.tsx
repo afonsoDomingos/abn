@@ -1,6 +1,9 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
+import Stats from "@/components/Stats";
+import HowItWorks from "@/components/HowItWorks";
+import Testimonials from "@/components/Testimonials";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -8,7 +11,10 @@ export default function Home() {
     <main className={styles.main}>
       <Navbar />
       <Hero />
+      <Stats />
       <Features />
+      <HowItWorks />
+      <Testimonials />
       
       {/* CTA Section */}
       <section className={styles.ctaSection}>
