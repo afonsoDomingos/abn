@@ -1,7 +1,45 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import styles from './Auth.module.css';
 
 export default function RegisterPage() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('empreendedor');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, role }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        router.push('/dashboard');
+      } else {
+        setError(data.error || 'Erro ao registar');
+      }
+    } catch (err) {
+      setError('Erro de conexão');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.authPage}>
       <div className={`${styles.authCard} glass`}>
@@ -9,16 +47,24 @@ export default function RegisterPage() {
           <h1 className="text-gradient-gold">Junte-se à Rede</h1>
           <p>Comece a sua jornada empresarial hoje.</p>
         </div>
+
+        {error && <div style={{ color: 'var(--accent)', marginBottom: '1rem', fontSize: '0.9rem' }}>{error}</div>}
         
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
             <label>Nome Completo</label>
-            <input type="text" placeholder="Seu nome" required />
+            <input 
+              type="text" 
+              placeholder="Seu nome" 
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required 
+            />
           </div>
 
           <div className={styles.inputGroup}>
             <label>Tipo de Perfil</label>
-            <select required>
+            <select value={role} onChange={(e) => setRole(e.target.value)} required>
               <option value="empreendedor">Empreendedor</option>
               <option value="startup">Startup</option>
               <option value="investidor">Investidor</option>
@@ -28,15 +74,29 @@ export default function RegisterPage() {
           
           <div className={styles.inputGroup}>
             <label>Email</label>
-            <input type="email" placeholder="seu@email.com" required />
+            <input 
+              type="email" 
+              placeholder="seu@email.com" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required 
+            />
           </div>
           
           <div className={styles.inputGroup}>
             <label>Palavra-passe</label>
-            <input type="password" placeholder="••••••••" required />
+            <input 
+              type="password" 
+              placeholder="••••••••" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required 
+            />
           </div>
           
-          <button type="submit" className="btn-primary">Criar Conta</button>
+          <button type="submit" className="btn-primary" disabled={loading}>
+            {loading ? 'A registar...' : 'Criar Conta'}
+          </button>
         </form>
         
         <p className={styles.footerText}>
