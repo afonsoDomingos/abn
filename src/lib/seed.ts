@@ -14,12 +14,15 @@ export async function seedAdmin() {
       { name: 'Maria Santos', email: 'maria@email.com', password: 'password123', role: 'startup' },
     ];
 
+    const usersMap: Record<string, any> = {};
+
     for (const u of usersData) {
-      const exists = await User.findOne({ email: u.email });
-      if (!exists) {
-        await User.create(u);
+      let user = await User.findOne({ email: u.email });
+      if (!user) {
+        user = await User.create(u);
         console.log(`Usuário ${u.email} criado.`);
       }
+      usersMap[u.email] = user._id;
     }
 
     // 2. Seed Businesses (Startups)
@@ -29,21 +32,24 @@ export async function seedAdmin() {
         category: 'Tecnologia', 
         description: 'Desenvolvimento de software para o mercado africano.', 
         location: 'Luanda', 
-        owner: 'admin@abn.com' 
+        owner: usersMap['admin@abn.com'],
+        isIncubated: true
       },
       { 
         name: 'AgroEco Moçambique', 
         category: 'Agricultura', 
         description: 'Soluções sustentáveis para pequenos produtores.', 
         location: 'Maputo', 
-        owner: 'joao@email.com' 
+        owner: usersMap['joao@email.com'],
+        isIncubated: true
       },
       { 
         name: 'AfroStyle Fashion', 
         category: 'Moda', 
         description: 'Design de moda inspirado em tecidos tradicionais.', 
         location: 'Maputo', 
-        owner: 'maria@email.com' 
+        owner: usersMap['maria@email.com'],
+        isIncubated: true
       },
     ];
 
@@ -57,9 +63,9 @@ export async function seedAdmin() {
 
     // 3. Seed Services
     const servicesData = [
-      { name: 'Criação de Website + Portfólio', description: 'Presença digital profissional com 4 meses grátis.', price: 'Grátis', category: 'Marketing' },
-      { name: 'Mentoria Estratégica', description: 'Acompanhamento personalizado para crescimento.', price: 'Sob Consulta', category: 'Incubação' },
-      { name: 'Gestão de Redes Sociais', description: 'Aumente a sua visibilidade online.', price: '15.000 MT/mês', category: 'Marketing' },
+      { name: 'Criação de Website + Portfólio', description: 'Presença digital profissional com 4 meses grátis.', price: 'Grátis', category: 'Marketing', status: 'ativo' },
+      { name: 'Mentoria Estratégica', description: 'Acompanhamento personalizado para crescimento.', price: 'Sob Consulta', category: 'Incubação', status: 'ativo' },
+      { name: 'Gestão de Redes Sociais', description: 'Aumente a sua visibilidade online.', price: '15.000 MT/mês', category: 'Marketing', status: 'ativo' },
     ];
 
     for (const s of servicesData) {
