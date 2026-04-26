@@ -38,6 +38,26 @@
 .sidebarNav a:hover, .sidebarNav a.active {
   background: rgba(212, 175, 55, 0.1);
   color: var(--primary);
+  border-right: 3px solid var(--primary);
+}
+
+.sidebarFooter {
+  padding: 2rem;
+  border-top: 1px solid var(--glass-border);
+  margin-top: auto;
+}
+
+.logout {
+  color: var(--accent) !important;
+  font-weight: 600;
+  display: block;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.logout:hover {
+  background: rgba(231, 76, 60, 0.1) !important;
 }
 
 .adminMain {

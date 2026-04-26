@@ -20,6 +20,9 @@ export default function AdminLayout({
           <Link href="/admin/pagamentos">Pagamentos</Link>
           <Link href="/admin/configuracoes">Configurações</Link>
         </nav>
+        <div className={styles.sidebarFooter}>
+          <Link href="/login" className={styles.logout}>Sair</Link>
+        </div>
       </aside>
       <main className={styles.adminMain}>
         <header className={styles.adminHeader}>
