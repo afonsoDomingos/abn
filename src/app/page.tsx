@@ -4,6 +4,7 @@ import Features from "@/components/Features";
 import Stats from "@/components/Stats";
 import HowItWorks from "@/components/HowItWorks";
 import Testimonials from "@/components/Testimonials";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -46,6 +47,8 @@ export default function Home() {
           <p className={styles.copy}>© 2026 AfroBiz Network. Todos os direitos reservados.</p>
         </div>
       </footer>
+
+      <FloatingWhatsApp />
     </main>
   );
 }

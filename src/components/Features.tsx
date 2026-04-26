@@ -1,44 +1,61 @@
+'use client';
+
+import { motion } from 'framer-motion';
 import styles from './Features.module.css';
 
 const features = [
   {
-    title: 'Incubadora Digital',
-    description: 'Programas de aceleração personalizados para transformar a sua ideia num negócio rentável.',
+    title: 'Incubação Digital',
+    desc: 'Programas intensivos de 3 a 6 meses para validar e escalar o seu modelo de negócio.',
     icon: '🚀'
   },
   {
-    title: 'Marketing & Portfólio',
-    description: 'Criamos a sua presença online com sites profissionais e portfólios que atraem clientes.',
-    icon: '🎨'
+    title: 'Marketing & Tech',
+    desc: 'Criamos a sua presença digital profissional, desde websites a apps de alta performance.',
+    icon: '💻'
   },
   {
-    title: 'Networking Global',
-    description: 'Conecte-se com uma rede vasta de investidores, mentores e parceiros estratégicos.',
+    title: 'Rede de Mentores',
+    desc: 'Conecte-se com líderes de indústria e especialistas prontos para guiar a sua jornada.',
     icon: '🤝'
   },
   {
-    title: 'Formação Contínua',
-    description: 'Acesso exclusivo a cursos, workshops e recursos educativos de alta qualidade.',
-    icon: '📚'
+    title: 'Acesso a Capital',
+    desc: 'Preparamos o seu pitch e conectamos a sua startup a investidores anjo e VC.',
+    icon: '💰'
   }
 ];
 
 export default function Features() {
   return (
-    <section className={styles.features} id="incubadora">
+    <section className={styles.section} id="incubadora">
       <div className={styles.container}>
-        <div className={styles.header}>
-          <h2 className={styles.subtitle}>O que oferecemos</h2>
-          <h3 className={styles.title}>Soluções Integradas para o seu <br /><span className="text-gradient-gold">Crescimento</span></h3>
-        </div>
-
+        <motion.div 
+          className={styles.header}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className={styles.title}>Nossas Soluções</h2>
+          <p className={styles.subtitle}>Tudo o que precisa para crescer num mercado dinâmico.</p>
+        </motion.div>
+        
         <div className={styles.grid}>
-          {features.map((feature, index) => (
-            <div key={index} className={`${styles.card} glass`}>
-              <div className={styles.icon}>{feature.icon}</div>
-              <h4 className={styles.featureTitle}>{feature.title}</h4>
-              <p className={styles.featureDescription}>{feature.description}</p>
-            </div>
+          {features.map((f, i) => (
+            <motion.div 
+              key={i} 
+              className={`${styles.card} glass`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              whileHover={{ y: -10, transition: { duration: 0.2 } }}
+            >
+              <div className={styles.icon}>{f.icon}</div>
+              <h3>{f.title}</h3>
+              <p>{f.desc}</p>
+            </motion.div>
           ))}
         </div>
       </div>

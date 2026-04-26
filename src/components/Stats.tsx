@@ -1,3 +1,6 @@
+'use client';
+
+import { motion } from 'framer-motion';
 import styles from './Stats.module.css';
 
 const stats = [
@@ -13,10 +16,17 @@ export default function Stats() {
       <div className={styles.container}>
         <div className={styles.grid}>
           {stats.map((stat, i) => (
-            <div key={i} className={styles.statItem}>
+            <motion.div 
+              key={i} 
+              className={styles.statItem}
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+            >
               <div className={styles.value}>{stat.value}</div>
               <div className={styles.label}>{stat.label}</div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
