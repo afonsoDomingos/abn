@@ -24,7 +24,10 @@ export default function AdminLayout({
           <h2>Painel de Gestão</h2>
           <div className={styles.adminUser}>
             <span>Administrador</span>
-            <div className={styles.avatar}></div>
+            <div 
+              className={styles.avatar}
+              style={{ backgroundImage: `url('/perfil09.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+            ></div>
           </div>
         </header>
         <div className={styles.adminContent}>

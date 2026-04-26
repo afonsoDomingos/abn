@@ -3,7 +3,10 @@ import styles from './Hero.module.css';
 export default function Hero() {
   return (
     <section className={styles.hero}>
-      <div className={styles.background}>
+      <div 
+        className={styles.background}
+        style={{ backgroundImage: `linear-gradient(rgba(10,10,10,0.8), rgba(10,10,10,0.8)), url('/img01.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
         <div className={styles.circle1}></div>
         <div className={styles.circle2}></div>
       </div>

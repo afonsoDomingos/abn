@@ -13,6 +13,10 @@ export default function Home() {
       {/* CTA Section */}
       <section className={styles.ctaSection}>
         <div className={`${styles.ctaBox} glass`}>
+          <div 
+            className={styles.promoImage} 
+            style={{ backgroundImage: `url('/ADS01.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+          ></div>
           <h2>Pronto para transformar o seu negócio?</h2>
           <p>Junte-se à maior rede de empreendedores afro-descendentes e tenha acesso a recursos exclusivos.</p>
           <button className="btn-primary">Criar Conta Gratuita</button>

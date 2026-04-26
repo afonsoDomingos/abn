@@ -16,6 +16,12 @@ const programs = [
   }
 ];
 
+const mentors = [
+  { name: 'Dr. Amadou Diallo', role: 'Especialista em Finanças', img: '/Perfil01.jpg' },
+  { name: 'Sarah Mensah', role: 'Estratégia de Marketing', img: '/Perfil02.jpg' },
+  { name: 'Kofi Annan Jr.', role: 'Desenvolvimento de Negócios', img: '/Perfil04.jpg' }
+];
+
 export default function Incubacao() {
   return (
     <main className={styles.incubacaoPage}>
@@ -53,11 +59,14 @@ export default function Incubacao() {
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>Mentores em Destaque</h2>
           <div className={styles.mentorGrid}>
-            {[1, 2, 3].map(m => (
-              <div key={m} className={`${styles.mentorCard} glass`}>
-                <div className={styles.mentorAvatar}></div>
-                <h4>Mentor ABN #{m}</h4>
-                <p>Especialista em Finanças & Estratégia</p>
+            {mentors.map((m, i) => (
+              <div key={i} className={`${styles.mentorCard} glass`}>
+                <div 
+                  className={styles.mentorAvatar} 
+                  style={{ backgroundImage: `url(${m.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                ></div>
+                <h4>{m.name}</h4>
+                <p>{m.role}</p>
                 <button className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.8rem' }}>Ver Perfil</button>
               </div>
             ))}

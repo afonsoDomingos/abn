@@ -36,7 +36,10 @@ export default function DashboardLayout({
             <div className={styles.notifications}>🔔</div>
             <div className={styles.userProfile}>
               <span>Empreendedor</span>
-              <div className={styles.avatar}></div>
+              <div 
+                className={styles.avatar}
+                style={{ backgroundImage: `url('/Perfil05.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+              ></div>
             </div>
           </div>
         </header>

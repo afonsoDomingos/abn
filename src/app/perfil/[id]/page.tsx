@@ -10,7 +10,8 @@ export default function BusinessProfile({ params }: { params: { id: string } }) 
     services: ['Criação de Web Apps', 'Consultoria Cloud', 'UI/UX Design'],
     stats: { projects: 12, rating: 4.9, clients: 8 },
     location: 'Luanda, Angola',
-    website: 'www.techafrica.co.ao'
+    website: 'www.techafrica.co.ao',
+    logo: '/perfil09.jpg'
   };
 
   return (
@@ -20,7 +21,12 @@ export default function BusinessProfile({ params }: { params: { id: string } }) 
       <div className={styles.hero}>
         <div className={styles.container}>
           <div className={styles.profileHeader}>
-            <div className={styles.logoBox}>TA</div>
+            <div 
+              className={styles.logoBox}
+              style={{ backgroundImage: `url(${business.logo})`, backgroundSize: 'cover', backgroundPosition: 'center', color: 'transparent' }}
+            >
+              TA
+            </div>
             <div className={styles.headerInfo}>
               <h1>{business.name}</h1>
               <p className={styles.category}>{business.category}</p>
