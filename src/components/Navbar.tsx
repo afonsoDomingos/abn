@@ -18,6 +18,7 @@ export default function Navbar() {
         </div>
 
         <div className={styles.actions}>
+          <a href="https://wa.me/258845773974" target="_blank" className={styles.whatsapp}>📞 Suporte</a>
           <Link href="/login" className={styles.login}>Entrar</Link>
           <Link href="/registro" className="btn-primary">Junte-se à ABN</Link>
         </div>
