@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './Admin.module.css';
 
 export default function AdminLayout({
@@ -13,11 +14,11 @@ export default function AdminLayout({
           <div style={{ fontSize: '0.8rem', opacity: 0.6 }}>Admin Panel</div>
         </div>
         <nav className={styles.sidebarNav}>
-          <a href="/admin" className={styles.active}>Dashboard</a>
-          <a href="/admin/users">Usuários</a>
-          <a href="/admin/services">Serviços</a>
-          <a href="/admin/payments">Pagamentos</a>
-          <a href="/admin/settings">Configurações</a>
+          <Link href="/admin" className={styles.active}>Dashboard</Link>
+          <Link href="/admin/usuarios">Usuários</Link>
+          <Link href="/admin/servicos">Serviços</Link>
+          <Link href="/admin/pagamentos">Pagamentos</Link>
+          <Link href="/admin/configuracoes">Configurações</Link>
         </nav>
       </aside>
       <main className={styles.adminMain}>

@@ -15,12 +15,12 @@ export default function DashboardLayout({
           </Link>
         </div>
         <nav className={styles.sidebarNav}>
-          <Link href="/dashboard" className={styles.active}>Início</Link>
-          <Link href="/dashboard/perfil">Meu Perfil</Link>
-          <Link href="/dashboard/projetos">Meus Projetos</Link>
-          <Link href="/dashboard/servicos">Serviços</Link>
+          <Link href="/dashboard" className={styles.active}>🏠 Dashboard</Link>
+          <Link href="/dashboard/perfil">👤 Perfil</Link>
+          <Link href="/dashboard/projetos">🚀 Projetos</Link>
+          <Link href="/dashboard/servicos">🛠️ Serviços</Link>
           <Link href="/dashboard/formacao">Formação</Link>
-          <Link href="/dashboard/mensagens">Mensagens</Link>
+          <Link href="/dashboard/mensagens">💬 Mensagens</Link>
         </nav>
         <div className={styles.sidebarFooter}>
           <Link href="/login" className={styles.logout}>Sair</Link>
