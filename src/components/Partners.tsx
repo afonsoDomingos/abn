@@ -1,18 +1,29 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import styles from './Partners.module.css';
 
-const partners = [
-  { name: 'African Union', logo: '🌍' },
-  { name: 'AfDB', logo: '🏦' },
-  { name: 'UNDP', logo: '🇺🇳' },
-  { name: 'TechHub Luanda', logo: '💻' },
-  { name: 'Startup Moçambique', logo: '🚀' },
-  { name: 'Global Invest', logo: '📈' },
-];
-
 export default function Partners() {
+  const [partners, setPartners] = useState([
+    { name: 'African Union', logo: '🌍' },
+    { name: 'AfDB', logo: '🏦' },
+    { name: 'UNDP', logo: '🇺🇳' },
+    { name: 'TechHub Luanda', logo: '💻' },
+    { name: 'Startup Moçambique', logo: '🚀' },
+    { name: 'Global Invest', logo: '📈' },
+  ]);
+
+  useEffect(() => {
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs && data.configs.partners_content) {
+          setPartners(data.configs.partners_content);
+        }
+      });
+  }, []);
+
   return (
     <section className={styles.partners}>
       <div className={styles.container}>

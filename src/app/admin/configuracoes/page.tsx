@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import styles from './Config.module.css';
 
 export default function AdminConfigPage() {
-  const [hero, setHero] = useState({ title: '', description: '' });
+  const [hero, setHero] = useState({ title: '', description: '', banners: [] as string[] });
   const [stats, setStats] = useState([{ label: '', value: '' }]);
   const [logo, setLogo] = useState('/abn-logo.png');
+  const [partners, setPartners] = useState([{ name: '', logo: '' }]);
   const [features, setFeatures] = useState([{ title: '', desc: '', icon: '' }]);
   const [howItWorks, setHowItWorks] = useState([{ number: '', title: '', description: '' }]);
   const [testimonials, setTestimonials] = useState([{ name: '', role: '', text: '', img: '' }]);
@@ -24,6 +25,7 @@ export default function AdminConfigPage() {
           if (data.configs.hero_content) setHero(data.configs.hero_content);
           if (data.configs.stats_content) setStats(data.configs.stats_content);
           if (data.configs.platform_logo) setLogo(data.configs.platform_logo);
+          if (data.configs.partners_content) setPartners(data.configs.partners_content);
           if (data.configs.features_content) setFeatures(data.configs.features_content);
           if (data.configs.how_it_works_content) setHowItWorks(data.configs.how_it_works_content);
           if (data.configs.testimonials_content) setTestimonials(data.configs.testimonials_content);
@@ -115,6 +117,30 @@ export default function AdminConfigPage() {
                 placeholder="Descreva a missão da ABN..."
               />
             </div>
+            <div className={styles.field}>
+              <label>Banners do Fundo (URLs)</label>
+              <div className={styles.listGrid}>
+                {hero.banners?.map((banner, idx) => (
+                  <div key={idx} className={styles.itemEdit}>
+                    <input 
+                      value={banner} 
+                      onChange={e => {
+                        const newBanners = [...hero.banners];
+                        newBanners[idx] = e.target.value;
+                        setHero({ ...hero, banners: newBanners });
+                      }} 
+                    />
+                    <button className={styles.removeBtn} onClick={() => {
+                      const newBanners = hero.banners.filter((_, i) => i !== idx);
+                      setHero({ ...hero, banners: newBanners });
+                    }}>×</button>
+                  </div>
+                ))}
+                <button className="btn-outline" onClick={() => setHero({ ...hero, banners: [...(hero.banners || []), ''] })}>
+                  + Adicionar Imagem ao Banner
+                </button>
+              </div>
+            </div>
             <button className="btn-primary" onClick={() => saveConfig('hero_content', hero)} disabled={saving}>
               {saving ? 'A guardar...' : 'Atualizar Hero'}
             </button>
@@ -136,6 +162,24 @@ export default function AdminConfigPage() {
           </div>
           <button className="btn-primary" onClick={() => saveConfig('stats_content', stats)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Estatísticas'}
+          </button>
+        </section>
+
+        {/* Partners Section Config */}
+        <section className={`glass ${styles.section}`}>
+          <h3>Parceiros Estratégicos</h3>
+          <div className={styles.listGrid}>
+            {partners.map((p, index) => (
+              <div key={index} className={styles.itemEdit}>
+                <input value={p.logo} onChange={e => updateArrayField(setPartners, partners, index, 'logo', e.target.value)} placeholder="Logo (Emoji ou URL)" style={{ width: '60px' }} />
+                <input value={p.name} onChange={e => updateArrayField(setPartners, partners, index, 'name', e.target.value)} placeholder="Nome do Parceiro" />
+                <button className={styles.removeBtn} onClick={() => removeItem(setPartners, partners, index)}>×</button>
+              </div>
+            ))}
+            <button className="btn-outline" onClick={() => addItem(setPartners, partners, { name: '', logo: '🤝' })}>+ Adicionar Parceiro</button>
+          </div>
+          <button className="btn-primary" onClick={() => saveConfig('partners_content', partners)} disabled={saving} style={{ marginTop: '1.5rem' }}>
+            {saving ? 'A guardar...' : 'Atualizar Parceiros'}
           </button>
         </section>
 

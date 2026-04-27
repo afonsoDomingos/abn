@@ -1,14 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Hero.module.css';
 
 export default function Hero() {
   const [content, setContent] = useState({
     title: 'Impulsionando Startups e PMEs em África',
-    description: 'A ABN – AfroBiz Network é a sua ponte para o sucesso digital. Conectamos empreendedores a mentores, investidores e recursos estratégicos para transformar ideias em impacto global.'
+    description: 'A ABN – AfroBiz Network é a sua ponte para o sucesso digital. Conectamos empreendedores a mentores, investidores e recursos estratégicos para transformar ideias em impacto global.',
+    banners: ['/img01.jpg']
   });
+
+  const [currentBanner, setCurrentBanner] = useState(0);
 
   useEffect(() => {
     fetch('/api/config')
@@ -20,12 +23,34 @@ export default function Hero() {
       });
   }, []);
 
+  useEffect(() => {
+    if (content.banners && content.banners.length > 1) {
+      const timer = setInterval(() => {
+        setCurrentBanner(prev => (prev + 1) % content.banners.length);
+      }, 5000);
+      return () => clearInterval(timer);
+    }
+  }, [content.banners]);
+
   return (
     <section className={styles.hero}>
-      <div 
-        className={styles.background}
-        style={{ backgroundImage: `linear-gradient(rgba(10,10,10,0.8), rgba(10,10,10,0.8)), url('/img01.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-      >
+      <div className={styles.backgroundWrapper}>
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={currentBanner}
+            className={styles.background}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5 }}
+            style={{ 
+              backgroundImage: `linear-gradient(rgba(10,10,10,0.85), rgba(10,10,10,0.85)), url('${content.banners[currentBanner] || '/img01.jpg'}')`, 
+              backgroundSize: 'cover', 
+              backgroundPosition: 'center' 
+            }}
+          />
+        </AnimatePresence>
+        
         <motion.div 
           className={styles.circle1}
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -55,6 +80,7 @@ export default function Hero() {
           </motion.div>
           
           <motion.h1
+            className={styles.title}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -63,6 +89,7 @@ export default function Hero() {
           </motion.h1>
           
           <motion.p
+            className={styles.description}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
@@ -79,7 +106,7 @@ export default function Hero() {
             <button className="btn-primary">Começar Agora</button>
             <button className="btn-outline">Ver Impacto</button>
           </motion.div>
-
+ 
           <motion.div 
             className={styles.promo}
             initial={{ opacity: 0 }}

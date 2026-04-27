@@ -15,7 +15,8 @@ export async function seedAdmin() {
         key: 'hero_content',
         value: {
           title: 'Impulsionando Startups e PMEs em África',
-          description: 'A ABN – AfroBiz Network é a sua ponte para o sucesso digital. Conectamos empreendedores a mentores, investidores e recursos estratégicos para transformar ideias em impacto global.'
+          description: 'A ABN – AfroBiz Network é a sua ponte para o sucesso digital. Conectamos empreendedores a mentores, investidores e recursos estratégicos para transformar ideias em impacto global.',
+          banners: ['/Perfil01.jpg', '/Perfil04.jpg', '/Perfil05.jpg', '/Perfil02.jpg']
         }
       },
       {
@@ -30,6 +31,17 @@ export async function seedAdmin() {
       {
         key: 'platform_logo',
         value: '/abn-logo.png'
+      },
+      {
+        key: 'partners_content',
+        value: [
+          { name: 'African Union', logo: '🌍' },
+          { name: 'AfDB', logo: '🏦' },
+          { name: 'UNDP', logo: '🇺🇳' },
+          { name: 'TechHub Luanda', logo: '💻' },
+          { name: 'Startup Moçambique', logo: '🚀' },
+          { name: 'Global Invest', logo: '📈' }
+        ]
       },
       {
         key: 'features_content',
