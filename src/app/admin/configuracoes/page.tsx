@@ -178,14 +178,39 @@ export default function AdminConfigPage() {
         <section className={`glass ${styles.section}`}>
           <h3>Parceiros Estratégicos</h3>
           <div className={styles.listGrid}>
-            {partners.map((p, index) => (
-              <div key={index} className={styles.itemEdit}>
-                <input value={p.logo} onChange={e => updateArrayField(setPartners, partners, index, 'logo', e.target.value)} placeholder="Logo (Emoji ou URL)" style={{ width: '60px' }} />
-                <input value={p.name} onChange={e => updateArrayField(setPartners, partners, index, 'name', e.target.value)} placeholder="Nome do Parceiro" />
-                <button className={styles.removeBtn} onClick={() => removeItem(setPartners, partners, index)}>×</button>
+            {(partners || []).map((p, index) => (
+              <div key={index} className={styles.itemEditFull}>
+                <div className={styles.row}>
+                  <div className={styles.partnerLogoPreview}>
+                    {(p.logo && (p.logo.startsWith('http') || p.logo.startsWith('/'))) ? (
+                      <img src={p.logo} alt="Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+                    ) : (
+                      <span style={{ fontSize: '1.5rem' }}>{p.logo || '🤝'}</span>
+                    )}
+                  </div>
+                  <input 
+                    value={p.logo} 
+                    onChange={e => updateArrayField(setPartners, partners, index, 'logo', e.target.value)} 
+                    placeholder="Logo (Emoji ou URL)" 
+                    style={{ width: '120px' }} 
+                  />
+                  <input 
+                    value={p.name} 
+                    onChange={e => updateArrayField(setPartners, partners, index, 'name', e.target.value)} 
+                    placeholder="Nome do Parceiro" 
+                    style={{ flex: 1 }}
+                  />
+                  <button className={styles.removeBtn} onClick={() => removeItem(setPartners, partners, index)}>×</button>
+                </div>
+                <input 
+                  value={(p as any).url || ''} 
+                  onChange={e => updateArrayField(setPartners, partners, index, 'url', e.target.value)} 
+                  placeholder="Link do Parceiro (opcional - ex: https://exemplo.com)" 
+                  style={{ marginTop: '0.5rem' }}
+                />
               </div>
             ))}
-            <button className="btn-outline" onClick={() => addItem(setPartners, partners, { name: '', logo: '🤝' })}>+ Adicionar Parceiro</button>
+            <button className="btn-outline" onClick={() => addItem(setPartners, partners, { name: '', logo: '🤝', url: '' })}>+ Adicionar Parceiro</button>
           </div>
           <button className="btn-primary" onClick={() => saveConfig('partners_content', partners)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Parceiros'}

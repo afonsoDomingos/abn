@@ -29,12 +29,31 @@ export default function Partners() {
       <div className={styles.container}>
         <p className={styles.title}>Parceiros Estratégicos & Apoio</p>
         <div className={styles.grid}>
-          {partners.concat(partners).map((partner, i) => (
-            <div key={i} className={styles.logoItem}>
-              <span className={styles.icon}>{partner.logo}</span>
-              <span className={styles.name}>{partner.name}</span>
-            </div>
-          ))}
+          {partners.concat(partners).map((partner: any, i) => {
+            const isImage = partner.logo && (partner.logo.startsWith('http') || partner.logo.startsWith('/'));
+            const content = (
+              <div key={i} className={styles.logoItem}>
+                <div className={styles.iconWrapper}>
+                  {isImage ? (
+                    <img src={partner.logo} alt={partner.name} className={styles.logoImg} />
+                  ) : (
+                    <span className={styles.icon}>{partner.logo}</span>
+                  )}
+                </div>
+                <span className={styles.name}>{partner.name}</span>
+              </div>
+            );
+
+            if (partner.url) {
+              return (
+                <a key={i} href={partner.url} target="_blank" rel="noopener noreferrer" className={styles.partnerLink}>
+                  {content}
+                </a>
+              );
+            }
+
+            return content;
+          })}
         </div>
       </div>
     </section>
