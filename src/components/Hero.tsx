@@ -44,7 +44,7 @@ export default function Hero() {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5 }}
             style={{ 
-              backgroundImage: `linear-gradient(rgba(10,10,10,0.85), rgba(10,10,10,0.85)), url('${content.banners[currentBanner] || '/img01.jpg'}')`, 
+              backgroundImage: `linear-gradient(rgba(10,10,10,0.85), rgba(10,10,10,0.85)), url('${(content.banners && content.banners[currentBanner]) || '/img01.jpg'}')`, 
               backgroundSize: 'cover', 
               backgroundPosition: 'center' 
             }}
