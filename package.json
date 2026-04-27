@@ -9,11 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "latest",
+    "framer-motion": "^12.38.0",
+    "mongoose": "latest",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest",
-    "mongoose": "latest",
-    "cloudinary": "latest"
+    "react-dom": "latest"
   },
   "devDependencies": {
     "@types/node": "latest",

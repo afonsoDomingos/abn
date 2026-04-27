@@ -1,73 +1,121 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
+import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import styles from './Marketplace.module.css';
 
-const services = [
-  {
-    id: 1,
-    title: 'Criação de Website Profissional',
-    price: 'A partir de 150.000 KZ',
-    description: 'Site responsivo, otimizado para SEO e com 4 meses de manutenção grátis.',
-    category: 'Digital'
-  },
-  {
-    id: 2,
-    title: 'Design de Logotipo & Identidade',
-    price: '75.000 KZ',
-    description: 'Criação de marca única que reflete os valores do seu negócio.',
-    category: 'Design'
-  },
-  {
-    id: 3,
-    title: 'Gestão de Redes Sociais',
-    price: '50.000 KZ/mês',
-    description: 'Planeamento e publicação de conteúdos estratégicos.',
-    category: 'Marketing'
-  },
-  {
-    id: 4,
-    title: 'Consultoria de Negócios',
-    price: '25.000 KZ/h',
-    description: 'Apoio estratégico para expansão e estruturação.',
-    category: 'Consultoria'
-  }
-];
+interface Service {
+  _id: string;
+  name: string;
+  description: string;
+  price: string;
+  category: string;
+  status: string;
+}
+
+const categoryIcons: Record<string, string> = {
+  'Marketing Digital': '📣',
+  'Incubação': '🚀',
+  'Design': '🎨',
+  'Consultoria': '💼',
+  'Tecnologia': '💻',
+};
 
 export default function Marketplace() {
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('Todos');
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch('/api/services')
+      .then(res => res.json())
+      .then(data => {
+        if (data.services) {
+          setServices(data.services);
+          const cats = ['Todos', ...Array.from(new Set<string>(data.services.map((s: Service) => s.category)))];
+          setCategories(cats);
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const filtered = filter === 'Todos' ? services : services.filter(s => s.category === filter);
+
   return (
     <main className={styles.marketplace}>
       <Navbar />
-      
+
       <header className={styles.header}>
         <div className={styles.container}>
-          <h1 className="text-gradient-gold">Marketplace de Serviços</h1>
-          <p>Encontre os melhores serviços para impulsionar o seu negócio.</p>
+          <span className={styles.tag}>🛍️ Marketplace</span>
+          <h1 className="text-gradient-gold">Serviços para o Seu Negócio</h1>
+          <p>Encontre as melhores soluções para impulsionar a sua empresa em África.</p>
         </div>
       </header>
 
       <section className={styles.content}>
         <div className={styles.container}>
           <div className={styles.filters}>
-            <button className={styles.active}>Todos</button>
-            <button>Digital</button>
-            <button>Design</button>
-            <button>Marketing</button>
+            {loading
+              ? ['Todos', 'Marketing Digital', 'Incubação'].map(c => (
+                  <button key={c} className={`${styles.filterBtn} ${c === 'Todos' ? styles.active : ''}`}>{c}</button>
+                ))
+              : categories.map(cat => (
+                  <button
+                    key={cat}
+                    className={`${styles.filterBtn} ${filter === cat ? styles.active : ''}`}
+                    onClick={() => setFilter(cat)}
+                  >
+                    {categoryIcons[cat] || '📌'} {cat}
+                  </button>
+                ))
+            }
           </div>
 
-          <div className={styles.grid}>
-            {services.map(service => (
-              <div key={service.id} className={`${styles.card} glass`}>
-                <span className={styles.category}>{service.category}</span>
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
-                <div className={styles.footer}>
-                  <span className={styles.price}>{service.price}</span>
-                  <button className="btn-primary">Contratar</button>
+          {loading ? (
+            <div className={styles.loadingGrid}>
+              {[1, 2, 3].map(i => <div key={i} className={styles.skeletonCard}></div>)}
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className={styles.empty}>
+              <span>🔍</span>
+              <p>Nenhum serviço encontrado nesta categoria.</p>
+            </div>
+          ) : (
+            <div className={styles.grid}>
+              {filtered.map((service, i) => (
+                <div key={service._id} className={`${styles.card} glass`} style={{ animationDelay: `${i * 0.08}s` }}>
+                  <div className={styles.cardIcon}>
+                    {categoryIcons[service.category] || '📌'}
+                  </div>
+                  <span className={styles.category}>{service.category}</span>
+                  <h3 className={styles.cardTitle}>{service.name}</h3>
+                  <p className={styles.cardDesc}>{service.description}</p>
+                  <div className={styles.cardFooter}>
+                    <div className={styles.priceBox}>
+                      <span className={styles.priceLabel}>A partir de</span>
+                      <span className={styles.price}>{service.price}</span>
+                    </div>
+                    <a
+                      href={`https://wa.me/258845773974?text=Olá! Tenho interesse no serviço: ${encodeURIComponent(service.name)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`btn-primary ${styles.ctaBtn}`}
+                    >
+                      Contratar
+                    </a>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
+
+      <FloatingWhatsApp />
     </main>
   );
 }
