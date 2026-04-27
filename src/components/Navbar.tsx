@@ -6,7 +6,7 @@ export default function Navbar() {
     <nav className={`${styles.navbar} glass`}>
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
-          <img src="/abn logo.png" alt="ABN Logo" className={styles.logoImg} />
+          <img src="/abn-logo.png" alt="ABN Logo" className={styles.logoImg} />
           <span className={styles.network}>AfroBiz Network</span>
         </Link>
         

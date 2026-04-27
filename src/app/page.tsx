@@ -52,7 +52,7 @@ export default function Home() {
           <div className={styles.footerContainer}>
             <div className={styles.footerGrid}>
               <div className={styles.footerBrand}>
-                <img src="/abn logo.png" alt="ABN Logo" style={{ height: '60px', marginBottom: '1.25rem' }} />
+                <img src="/abn-logo.png" alt="ABN Logo" style={{ height: '60px', marginBottom: '1.25rem' }} />
                 <p>Impulsionando o ecossistema de empreendedorismo em África através de tecnologia e conexões estratégicas.</p>
               </div>
               

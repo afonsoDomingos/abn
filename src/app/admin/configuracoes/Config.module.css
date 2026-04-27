@@ -79,20 +79,57 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
-.statsGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+.listGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.statEdit {
+.itemEdit {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1fr 1fr auto;
   gap: 1rem;
   padding: 1rem;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  align-items: center;
+}
+
+.itemEditFull {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.removeBtn {
+  background: rgba(255, 50, 50, 0.1);
+  color: #ff4d4d;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  transition: all 0.2s;
+}
+
+.removeBtn:hover {
+  background: #ff4d4d;
+  color: #fff;
 }
 
 .toast {

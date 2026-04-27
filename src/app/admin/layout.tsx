@@ -10,7 +10,7 @@ export default function AdminLayout({
     <div className={styles.adminLayout}>
       <aside className={styles.sidebar}>
         <div className={styles.sidebarBrand}>
-          <img src="/abn logo.png" alt="ABN Logo" style={{ height: '40px', marginBottom: '0.5rem', display: 'block' }} />
+          <img src="/abn-logo.png" alt="ABN Logo" style={{ height: '40px', marginBottom: '0.5rem', display: 'block' }} />
           <div style={{ fontSize: '0.8rem', opacity: 0.6 }}>Admin Panel</div>
         </div>
         <nav className={styles.sidebarNav}>

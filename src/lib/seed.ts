@@ -26,6 +26,104 @@ export async function seedAdmin() {
           { label: 'Mentores Especialistas', value: '45' },
           { label: 'Países em África', value: '12' }
         ]
+      },
+      {
+        key: 'platform_logo',
+        value: '/abn-logo.png'
+      },
+      {
+        key: 'features_content',
+        value: [
+          {
+            title: 'Incubação Digital',
+            desc: 'Programas intensivos de 3 a 6 meses para validar e escalar o seu modelo de negócio.',
+            icon: '🚀'
+          },
+          {
+            title: 'Marketing & Tech',
+            desc: 'Criamos a sua presença digital profissional, desde websites a apps de alta performance.',
+            icon: '💻'
+          },
+          {
+            title: 'Rede de Mentores',
+            desc: 'Conecte-se com líderes de indústria e especialistas prontos para guiar a sua jornada.',
+            icon: '🤝'
+          },
+          {
+            title: 'Acesso a Capital',
+            desc: 'Preparamos o seu pitch e conectamos a sua startup a investidores anjo e VC.',
+            icon: '💰'
+          }
+        ]
+      },
+      {
+        key: 'how_it_works_content',
+        value: [
+          {
+            number: '01',
+            title: 'Registo & Perfil',
+            description: 'Crie a sua conta e defina o perfil do seu negócio em minutos.'
+          },
+          {
+            number: '02',
+            title: 'Diagnóstico',
+            description: 'Avaliamos as necessidades da sua startup e sugerimos o melhor caminho.'
+          },
+          {
+            number: '03',
+            title: 'Crescimento',
+            description: 'Aceda a mentorias, marketplace de serviços e rede de investidores.'
+          },
+          {
+            number: '04',
+            title: 'Escala Global',
+            description: 'Expanda o seu negócio para novos mercados com suporte contínuo.'
+          }
+        ]
+      },
+      {
+        key: 'testimonials_content',
+        value: [
+          {
+            name: 'João Silva',
+            role: 'CEO, TechAfrica',
+            text: 'A ABN mudou completamente a forma como abordamos o mercado global. O suporte em marketing foi fundamental.',
+            img: '/Perfil04.jpg'
+          },
+          {
+            name: 'Maria Santos',
+            role: 'Fundadora, AgroEco',
+            text: 'O programa de incubação ABN Spark ajudou-me a validar a minha ideia e a conseguir o primeiro investimento.',
+            img: '/Perfil02.jpg'
+          },
+          {
+            name: 'Carlos Oliveira',
+            role: 'Investidor Anjo',
+            text: 'Encontrei startups de alta qualidade através da plataforma. A curadoria da ABN é excelente.',
+            img: '/Perfil05.jpg'
+          }
+        ]
+      },
+      {
+        key: 'faq_content',
+        value: [
+          {
+            question: 'O que é a ABN – AfroBiz Network?',
+            answer: 'A ABN é uma rede digital focada na incubação de startups e no desenvolvimento de PMEs em África, oferecendo ferramentas, mentoria e conexões estratégicas.'
+          },
+          {
+            question: 'Como funciona o programa de incubação?',
+            answer: 'O nosso programa divide-se em fases: Ideação, Validação, Crescimento e Escala. Cada fase tem marcos específicos e suporte personalizado de mentores especialistas.'
+          },
+          {
+            question: 'Qualquer pessoa pode se juntar à rede?',
+            answer: 'Sim, aceitamos empreendedores, startups, investidores e mentores que queiram contribuir para o ecossistema de negócios em África.'
+          },
+          {
+            question: 'Como posso obter o website e portfólio grátis?',
+            answer: 'Ao registar-se como PME na nossa plataforma, terá acesso automático à nossa oferta de lançamento que inclui 4 meses de presença digital profissional gratuita.'
+          }
+        ]
       }
     ];
 

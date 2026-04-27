@@ -1,32 +1,43 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import styles from './Features.module.css';
 
-const features = [
-  {
-    title: 'Incubação Digital',
-    desc: 'Programas intensivos de 3 a 6 meses para validar e escalar o seu modelo de negócio.',
-    icon: '🚀'
-  },
-  {
-    title: 'Marketing & Tech',
-    desc: 'Criamos a sua presença digital profissional, desde websites a apps de alta performance.',
-    icon: '💻'
-  },
-  {
-    title: 'Rede de Mentores',
-    desc: 'Conecte-se com líderes de indústria e especialistas prontos para guiar a sua jornada.',
-    icon: '🤝'
-  },
-  {
-    title: 'Acesso a Capital',
-    desc: 'Preparamos o seu pitch e conectamos a sua startup a investidores anjo e VC.',
-    icon: '💰'
-  }
-];
-
 export default function Features() {
+  const [features, setFeatures] = useState([
+    {
+      title: 'Incubação Digital',
+      desc: 'Programas intensivos de 3 a 6 meses para validar e escalar o seu modelo de negócio.',
+      icon: '🚀'
+    },
+    {
+      title: 'Marketing & Tech',
+      desc: 'Criamos a sua presença digital profissional, desde websites a apps de alta performance.',
+      icon: '💻'
+    },
+    {
+      title: 'Rede de Mentores',
+      desc: 'Conecte-se com líderes de indústria e especialistas prontos para guiar a sua jornada.',
+      icon: '🤝'
+    },
+    {
+      title: 'Acesso a Capital',
+      desc: 'Preparamos o seu pitch e conectamos a sua startup a investidores anjo e VC.',
+      icon: '💰'
+    }
+  ]);
+
+  useEffect(() => {
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs && data.configs.features_content) {
+          setFeatures(data.configs.features_content);
+        }
+      });
+  }, []);
+
   return (
     <section className={styles.section} id="incubadora">
       <div className={styles.container}>

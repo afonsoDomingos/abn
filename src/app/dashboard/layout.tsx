@@ -11,7 +11,7 @@ export default function DashboardLayout({
       <aside className={styles.sidebar}>
         <div className={styles.sidebarBrand}>
           <Link href="/">
-            <img src="/abn logo.png" alt="ABN Logo" style={{ height: '50px' }} />
+            <img src="/abn-logo.png" alt="ABN Logo" style={{ height: '50px' }} />
           </Link>
         </div>
         <nav className={styles.sidebarNav}>

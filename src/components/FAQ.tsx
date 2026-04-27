@@ -1,30 +1,40 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './FAQ.module.css';
 
-const faqs = [
-  {
-    question: 'O que é a ABN – AfroBiz Network?',
-    answer: 'A ABN é uma rede digital focada na incubação de startups e no desenvolvimento de PMEs em África, oferecendo ferramentas, mentoria e conexões estratégicas.'
-  },
-  {
-    question: 'Como funciona o programa de incubação?',
-    answer: 'O nosso programa divide-se em fases: Ideação, Validação, Crescimento e Escala. Cada fase tem marcos específicos e suporte personalizado de mentores especialistas.'
-  },
-  {
-    question: 'Qualquer pessoa pode se juntar à rede?',
-    answer: 'Sim, aceitamos empreendedores, startups, investidores e mentores que queiram contribuir para o ecossistema de negócios em África.'
-  },
-  {
-    question: 'Como posso obter o website e portfólio grátis?',
-    answer: 'Ao registar-se como PME na nossa plataforma, terá acesso automático à nossa oferta de lançamento que inclui 4 meses de presença digital profissional gratuita.'
-  }
-];
-
 export default function FAQ() {
+  const [faqs, setFaqs] = useState([
+    {
+      question: 'O que é a ABN – AfroBiz Network?',
+      answer: 'A ABN é uma rede digital focada na incubação de startups e no desenvolvimento de PMEs em África, oferecendo ferramentas, mentoria e conexões estratégicas.'
+    },
+    {
+      question: 'Como funciona o programa de incubação?',
+      answer: 'O nosso programa divide-se em fases: Ideação, Validação, Crescimento e Escala. Cada fase tem marcos específicos e suporte personalizado de mentores especialistas.'
+    },
+    {
+      question: 'Qualquer pessoa pode se juntar à rede?',
+      answer: 'Sim, aceitamos empreendedores, startups, investidores e mentores que queiram contribuir para o ecossistema de negócios em África.'
+    },
+    {
+      question: 'Como posso obter o website e portfólio grátis?',
+      answer: 'Ao registar-se como PME na nossa plataforma, terá acesso automático à nossa oferta de lançamento que inclui 4 meses de presença digital profissional gratuita.'
+    }
+  ]);
+
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs && data.configs.faq_content) {
+          setFaqs(data.configs.faq_content);
+        }
+      });
+  }, []);
 
   return (
     <section className={styles.faq}>

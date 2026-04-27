@@ -27,6 +27,9 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (res.ok) {
+        // Guardar usuário localmente para persistência simples
+        localStorage.setItem('user', JSON.stringify(data.user));
+
         // Redirect based on role
         if (data.user.role === 'admin') {
           router.push('/admin');
