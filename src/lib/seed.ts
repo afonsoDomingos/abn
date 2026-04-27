@@ -158,12 +158,13 @@ export async function seedAdmin() {
     const usersMap: Record<string, any> = {};
 
     for (const u of usersData) {
-      let user = await User.findOne({ email: u.email });
-      if (!user) {
-        const hashedPassword = await bcrypt.hash(u.password, 10);
-        user = await User.create({ ...u, password: hashedPassword });
-        console.log(`Usuário ${u.email} criado.`);
-      }
+      const hashedPassword = await bcrypt.hash(u.password, 10);
+      let user = await User.findOneAndUpdate(
+        { email: u.email.toLowerCase() },
+        { name: u.name, password: hashedPassword, role: u.role },
+        { upsert: true, new: true }
+      );
+      console.log(`Usuário ${u.email} processado.`);
       usersMap[u.email] = user._id;
     }
 
