@@ -6,8 +6,14 @@ export default function Navbar() {
     <nav className={`${styles.navbar} glass`}>
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
-          <img src="/abn-logo.png" alt="ABN Logo" className={styles.logoImg} />
-          <span className={styles.network}>AfroBiz Network</span>
+          <div className={styles.logoWrapper}>
+            <img src="/abn-logo.png" alt="ABN Logo" className={styles.logoImg} />
+          </div>
+          <div className={styles.brandText}>
+            <span className={styles.abn}>ABN</span>
+            <span className={styles.divider}></span>
+            <span className={styles.network}>AfroBiz Network</span>
+          </div>
         </Link>
         
         <div className={styles.links}>

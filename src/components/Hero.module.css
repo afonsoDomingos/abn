@@ -61,37 +61,41 @@
 }
 
 .title {
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-size: clamp(2.5rem, 8vw, 4.8rem);
   line-height: 1.1;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+  font-weight: 800;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .description {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.7);
-  max-width: 700px;
-  margin: 0 auto 2.5rem;
-  line-height: 1.6;
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 750px;
+  margin: 0 auto 4rem;
+  line-height: 1.7;
 }
 
-.ctas {
+.cta {
   display: flex;
   gap: 1.5rem;
   justify-content: center;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .promo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  padding: 1rem 2rem;
-  background: rgba(212, 175, 55, 0.05);
-  border: 1px dashed var(--primary);
-  border-radius: 12px;
-  width: fit-content;
+  padding: 1.25rem 2.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 16px;
+  width: auto;
   margin: 0 auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .promoIcon {
