@@ -62,21 +62,22 @@
   opacity: 0.5;
 }
 
-.field input, .field textarea {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.85rem 1.25rem;
-  border-radius: 12px;
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
-  outline: none;
-  transition: all 0.2s;
+.page input, .page textarea {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 0.85rem 1.25rem !important;
+  border-radius: 12px !important;
+  color: #fff !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.95rem !important;
+  outline: none !important;
+  transition: all 0.2s !important;
 }
 
-.field input:focus, .field textarea:focus {
-  border-color: var(--primary);
-  background: rgba(255, 255, 255, 0.08);
+.page input:focus, .page textarea:focus {
+  border-color: var(--primary) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1) !important;
 }
 
 .listGrid {
