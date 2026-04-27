@@ -1,0 +1,58 @@
+.partners {
+  padding: 40px 0;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 30px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+}
+
+.grid {
+  display: flex;
+  gap: 60px;
+  width: max-content;
+  animation: scroll 30s linear infinite;
+}
+
+.logoItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.logoItem:hover {
+  opacity: 1;
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+.name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
