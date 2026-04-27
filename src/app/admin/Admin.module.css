@@ -220,8 +220,59 @@
   border-radius: 2px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
+  .adminLayout {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+  
+  .sidebarNav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  
+  .sidebarNav a {
+    white-space: nowrap;
+    padding: 8px 12px;
+  }
+  
+  .sidebarFooter {
+    display: none;
+  }
+
+  .adminHeader {
+    padding: 0 1rem;
+  }
+
+  .adminHeader h2 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
   .chartsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .adminContent {
+    padding: 1rem;
+  }
+  
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .statsGrid {
     grid-template-columns: 1fr;
   }
 }
