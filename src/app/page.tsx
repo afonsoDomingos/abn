@@ -7,6 +7,7 @@ import HowItWorks from "@/components/HowItWorks";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import ScrollToTop from "@/components/ScrollToTop";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -93,6 +94,7 @@ export default function Home() {
         </footer>
 
         <FloatingWhatsApp />
+        <ScrollToTop />
       </main>
     </>
   );
