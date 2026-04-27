@@ -140,11 +140,12 @@ export async function seedAdmin() {
     ];
 
     for (const c of defaultConfigs) {
-      const exists = await Config.findOne({ key: c.key });
-      if (!exists) {
-        await Config.create(c);
-        console.log(`Configuração ${c.key} criada.`);
-      }
+      await Config.findOneAndUpdate(
+        { key: c.key },
+        { value: c.value },
+        { upsert: true, new: true }
+      );
+      console.log(`Configuração ${c.key} processada.`);
     }
 
     // 1. Seed Users with hashed passwords
