@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Partners from "@/components/Partners";
+import Services from "@/components/Services";
 import Features from "@/components/Features";
 import Stats from "@/components/Stats";
 import HowItWorks from "@/components/HowItWorks";
@@ -22,6 +23,7 @@ export default function Home() {
         <Navbar />
         <Hero />
         <Partners />
+        <Services />
         
         <section className={styles.innerWrapper}>
           <Stats />

@@ -263,15 +263,45 @@ export default function AdminConfigPage() {
         <section className={`glass ${styles.section}`}>
           <h3>Testemunhos</h3>
           <div className={styles.listGrid}>
-            {testimonials.map((t, index) => (
+            {(testimonials || []).map((t, index) => (
               <div key={index} className={styles.itemEditFull}>
                 <div className={styles.row}>
-                  <input value={t.name} onChange={e => updateArrayField(setTestimonials, testimonials, index, 'name', e.target.value)} placeholder="Nome" />
-                  <input value={t.role} onChange={e => updateArrayField(setTestimonials, testimonials, index, 'role', e.target.value)} placeholder="Cargo/Empresa" />
-                  <button className={styles.removeBtn} onClick={() => removeItem(setTestimonials, testimonials, index)}>×</button>
+                  <div className={styles.avatarPreview}>
+                    {t.img ? (
+                      <img src={t.img} alt="Avatar" />
+                    ) : (
+                      <span>👤</span>
+                    )}
+                  </div>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div className={styles.row}>
+                      <input 
+                        value={t.name} 
+                        onChange={e => updateArrayField(setTestimonials, testimonials, index, 'name', e.target.value)} 
+                        placeholder="Nome Completo" 
+                        style={{ flex: 1 }}
+                      />
+                      <input 
+                        value={t.role} 
+                        onChange={e => updateArrayField(setTestimonials, testimonials, index, 'role', e.target.value)} 
+                        placeholder="Cargo ou Empresa" 
+                        style={{ flex: 1 }}
+                      />
+                      <button className={styles.removeBtn} onClick={() => removeItem(setTestimonials, testimonials, index)}>×</button>
+                    </div>
+                    <input 
+                      value={t.img} 
+                      onChange={e => updateArrayField(setTestimonials, testimonials, index, 'img', e.target.value)} 
+                      placeholder="URL da Imagem de Perfil (ex: /Perfil04.jpg)" 
+                    />
+                  </div>
                 </div>
-                <input value={t.img} onChange={e => updateArrayField(setTestimonials, testimonials, index, 'img', e.target.value)} placeholder="URL da Imagem de Perfil" />
-                <textarea value={t.text} onChange={e => updateArrayField(setTestimonials, testimonials, index, 'text', e.target.value)} placeholder="Depoimento" rows={3} />
+                <textarea 
+                  value={t.text} 
+                  onChange={e => updateArrayField(setTestimonials, testimonials, index, 'text', e.target.value)} 
+                  placeholder="O que esta pessoa diz sobre a ABN?" 
+                  rows={3} 
+                />
               </div>
             ))}
             <button className="btn-outline" onClick={() => addItem(setTestimonials, testimonials, { name: '', role: '', text: '', img: '' })}>+ Adicionar Testemunho</button>
