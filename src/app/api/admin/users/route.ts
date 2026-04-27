@@ -22,3 +22,20 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: 'Erro ao remover usuário.' }, { status: 500 });
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    await dbConnect();
+    const { id, name, email, role } = await request.json();
+    
+    const user = await User.findByIdAndUpdate(
+      id,
+      { name, email, role },
+      { new: true }
+    ).select('-password');
+
+    return NextResponse.json({ success: true, user });
+  } catch (error: any) {
+    return NextResponse.json({ error: 'Erro ao atualizar usuário.' }, { status: 500 });
+  }
+}

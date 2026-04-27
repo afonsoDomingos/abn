@@ -24,6 +24,8 @@ export default function AdminUsuariosPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('todos');
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     fetch('/api/admin/users')
@@ -43,6 +45,30 @@ export default function AdminUsuariosPage() {
       body: JSON.stringify({ id }),
     });
     if (res.ok) setUsers(prev => prev.filter(u => u._id !== id));
+  };
+
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingUser) return;
+    
+    setSaving(true);
+    const res = await fetch('/api/admin/users', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: editingUser._id,
+        name: editingUser.name,
+        email: editingUser.email,
+        role: editingUser.role
+      }),
+    });
+    
+    if (res.ok) {
+      const data = await res.json();
+      setUsers(prev => prev.map(u => u._id === editingUser._id ? data.user : u));
+      setEditingUser(null);
+    }
+    setSaving(false);
   };
 
   const filtered = users.filter(u => {
@@ -127,19 +153,81 @@ export default function AdminUsuariosPage() {
                       {new Date(user.createdAt).toLocaleDateString('pt-PT')}
                     </td>
                     <td>
-                      <button
-                        className={styles.deleteBtn}
-                        onClick={() => handleDelete(user._id)}
-                        title="Remover utilizador"
-                      >
-                        🗑️
-                      </button>
+                      <div className={styles.actions}>
+                        <button
+                          className={styles.editBtn}
+                          onClick={() => setEditingUser(user)}
+                          title="Editar utilizador"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          className={styles.deleteBtn}
+                          onClick={() => handleDelete(user._id)}
+                          title="Remover utilizador"
+                        >
+                          🗑️
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {editingUser && (
+        <div className={styles.modalOverlay}>
+          <div className={`glass ${styles.modal}`}>
+            <header className={styles.modalHeader}>
+              <h2 className="text-gradient-gold">Editar Utilizador</h2>
+              <button className={styles.closeBtn} onClick={() => setEditingUser(null)}>×</button>
+            </header>
+            
+            <form onSubmit={handleUpdate} className={styles.form}>
+              <div className={styles.field}>
+                <label>Nome Completo</label>
+                <input 
+                  value={editingUser.name} 
+                  onChange={e => setEditingUser({...editingUser, name: e.target.value})}
+                  required
+                />
+              </div>
+              <div className={styles.field}>
+                <label>Email</label>
+                <input 
+                  type="email"
+                  value={editingUser.email} 
+                  onChange={e => setEditingUser({...editingUser, email: e.target.value})}
+                  required
+                />
+              </div>
+              <div className={styles.field}>
+                <label>Perfil / Role</label>
+                <select 
+                  value={editingUser.role} 
+                  onChange={e => setEditingUser({...editingUser, role: e.target.value})}
+                  className={styles.select}
+                >
+                  <option value="empreendedor">Empreendedor</option>
+                  <option value="startup">Startup</option>
+                  <option value="investidor">Investidor</option>
+                  <option value="mentor">Mentor</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              
+              <div className={styles.modalActions}>
+                <button type="button" className="btn-outline" onClick={() => setEditingUser(null)}>Cancelar</button>
+                <button type="submit" className="btn-primary" disabled={saving}>
+                  {saving ? 'A guardar...' : 'Guardar Alterações'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
