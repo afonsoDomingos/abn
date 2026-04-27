@@ -1,12 +1,41 @@
-import bcrypt from 'bcryptjs';
 import dbConnect from './mongodb';
 import User from '../models/User';
 import Business from '../models/Business';
 import Service from '../models/Service';
+import Config from '../models/Config';
+import bcrypt from 'bcryptjs';
 
 export async function seedAdmin() {
   try {
     await dbConnect();
+    
+    // 0. Seed Platform Configurations
+    const defaultConfigs = [
+      {
+        key: 'hero_content',
+        value: {
+          title: 'Impulsionando Startups e PMEs em África',
+          description: 'A ABN – AfroBiz Network é a sua ponte para o sucesso digital. Conectamos empreendedores a mentores, investidores e recursos estratégicos para transformar ideias em impacto global.'
+        }
+      },
+      {
+        key: 'stats_content',
+        value: [
+          { label: 'Startups Incubadas', value: '150+' },
+          { label: 'Capital Captado', value: '$2.5M' },
+          { label: 'Mentores Especialistas', value: '45' },
+          { label: 'Países em África', value: '12' }
+        ]
+      }
+    ];
+
+    for (const c of defaultConfigs) {
+      const exists = await Config.findOne({ key: c.key });
+      if (!exists) {
+        await Config.create(c);
+        console.log(`Configuração ${c.key} criada.`);
+      }
+    }
 
     // 1. Seed Users with hashed passwords
     const usersData = [

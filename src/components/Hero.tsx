@@ -1,9 +1,25 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import styles from './Hero.module.css';
 
 export default function Hero() {
+  const [content, setContent] = useState({
+    title: 'Impulsionando Startups e PMEs em África',
+    description: 'A ABN – AfroBiz Network é a sua ponte para o sucesso digital. Conectamos empreendedores a mentores, investidores e recursos estratégicos para transformar ideias em impacto global.'
+  });
+
+  useEffect(() => {
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs && data.configs.hero_content) {
+          setContent(data.configs.hero_content);
+        }
+      });
+  }, []);
+
   return (
     <section className={styles.hero}>
       <div 
@@ -43,8 +59,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            A Próxima Geração de <br />
-            <span className="text-gradient-gold">Empreendedores Afro</span>
+            {content.title}
           </motion.h1>
           
           <motion.p
@@ -52,7 +67,7 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
-            Impulsionamos startups e PMEs em África através de tecnologia, mentoria estratégica e acesso a capital.
+            {content.description}
           </motion.p>
           
           <motion.div 
