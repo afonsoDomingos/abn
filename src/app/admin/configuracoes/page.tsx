@@ -120,20 +120,29 @@ export default function AdminConfigPage() {
             <div className={styles.field}>
               <label>Banners do Fundo (URLs)</label>
               <div className={styles.listGrid}>
-                {hero.banners?.map((banner, idx) => (
-                  <div key={idx} className={styles.itemEdit}>
-                    <input 
-                      value={banner} 
-                      onChange={e => {
-                        const newBanners = [...hero.banners];
-                        newBanners[idx] = e.target.value;
+                {(hero.banners || []).map((banner, idx) => (
+                  <div key={idx} className={styles.itemEditFull}>
+                    <div className={styles.row}>
+                      <input 
+                        value={banner} 
+                        onChange={e => {
+                          const newBanners = [...(hero.banners || [])];
+                          newBanners[idx] = e.target.value;
+                          setHero({ ...hero, banners: newBanners });
+                        }} 
+                        placeholder="URL da imagem (ex: /Perfil01.jpg)"
+                        style={{ flex: 1 }}
+                      />
+                      <button className={styles.removeBtn} onClick={() => {
+                        const newBanners = (hero.banners || []).filter((_, i) => i !== idx);
                         setHero({ ...hero, banners: newBanners });
-                      }} 
-                    />
-                    <button className={styles.removeBtn} onClick={() => {
-                      const newBanners = hero.banners.filter((_, i) => i !== idx);
-                      setHero({ ...hero, banners: newBanners });
-                    }}>×</button>
+                      }}>×</button>
+                    </div>
+                    {banner && (
+                      <div className={styles.bannerPreview}>
+                        <img src={banner} alt={`Banner ${idx + 1}`} style={{ width: '100px', height: '60px', objectFit: 'cover', borderRadius: '4px', marginTop: '5px' }} />
+                      </div>
+                    )}
                   </div>
                 ))}
                 <button className="btn-outline" onClick={() => setHero({ ...hero, banners: [...(hero.banners || []), ''] })}>

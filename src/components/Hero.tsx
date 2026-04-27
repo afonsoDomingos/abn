@@ -46,7 +46,7 @@ export default function Hero() {
             style={{ 
               backgroundImage: `linear-gradient(rgba(10,10,10,0.5), rgba(10,10,10,0.5)), url('${(content.banners && content.banners[currentBanner]) || '/img01.jpg'}')`, 
               backgroundSize: 'cover', 
-              backgroundPosition: 'center' 
+              backgroundPosition: 'center 20%' 
             }}
           />
         </AnimatePresence>
