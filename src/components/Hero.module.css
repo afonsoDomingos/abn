@@ -15,7 +15,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: 0;
   overflow: hidden;
 }
 
@@ -25,6 +25,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: #0a0a0a; /* Fallback */
 }
 
 .circle1 {
@@ -49,9 +50,18 @@
   filter: blur(80px);
 }
 
+.container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .content {
   max-width: 900px;
-  z-index: 1;
+  position: relative;
+  z-index: 3;
 }
 
 .badge {
