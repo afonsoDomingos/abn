@@ -75,21 +75,24 @@ export default function Features() {
         </motion.div>
         
         <div className={styles.grid}>
-          {features.map((f, i) => (
-            <motion.div 
-              key={i} 
-              className={`${styles.card} glass`}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ y: -10, transition: { duration: 0.2 } }}
-            >
-              <div className={styles.icon}>{getIcon(f.icon)}</div>
-              <h3 className={styles.featureTitle}>{f.title}</h3>
-              <p className={styles.featureDescription}>{f.desc}</p>
-            </motion.div>
-          ))}
+          {features.map((f, i) => {
+            const translated = language !== 'pt' && t.features.items[i] ? t.features.items[i] : null;
+            return (
+              <motion.div 
+                key={i} 
+                className={`${styles.card} glass`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                whileHover={{ y: -10, transition: { duration: 0.2 } }}
+              >
+                <div className={styles.icon}>{getIcon(f.icon)}</div>
+                <h3 className={styles.featureTitle}>{translated ? translated.title : f.title}</h3>
+                <p className={styles.featureDescription}>{translated ? translated.desc : f.desc}</p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -47,21 +47,24 @@ export default function Testimonials() {
         </div>
         
         <div className={styles.grid}>
-          {testimonials.map((t, i) => (
-            <div key={i} className={`${styles.card} glass`}>
-              <p className={styles.text}>"{t.text}"</p>
-              <div className={styles.user}>
-                <div 
-                  className={styles.avatar}
-                  style={{ backgroundImage: `url(${t.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-                ></div>
-                <div className={styles.info}>
-                  <h4>{t.name}</h4>
-                  <span>{t.role}</span>
+          {testimonials.map((test, i) => {
+            const translated = language !== 'pt' && t.testimonials.items[i] ? t.testimonials.items[i] : null;
+            return (
+              <div key={i} className={`${styles.card} glass`}>
+                <p className={styles.text}>"{translated ? translated.text : test.text}"</p>
+                <div className={styles.user}>
+                  <div 
+                    className={styles.avatar}
+                    style={{ backgroundImage: `url(${test.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                  ></div>
+                  <div className={styles.info}>
+                    <h4>{translated ? translated.name : test.name}</h4>
+                    <span>{translated ? translated.role : test.role}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

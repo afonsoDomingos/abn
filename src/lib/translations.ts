@@ -46,35 +46,47 @@ export const translations = {
       title: "Nossos Serviços de Aceleração",
       subtitle: "Recursos estratégicos prontos para elevar o seu negócio ao próximo nível.",
       request: "Solicitar",
-      viewAll: "Ver Catálogo Completo"
-    },
-    features: {
+      viewAll: "    features: {
       badge: "Ecossistema ABN",
       title: "Tudo o que você precisa para crescer",
       subtitle: "Uma plataforma integrada desenhada para as necessidades específicas do mercado africano.",
-      f1: { title: "Mentoria", desc: "Acesso direto a especialistas do setor." },
-      f2: { title: "Networking", desc: "Conexões com investidores globais." },
-      f3: { title: "Visibilidade", desc: "Destaque o seu negócio na rede." }
+      items: [
+        { title: "Incubação Digital", desc: "Programas intensivos de 3 a 6 meses para validar e escalar o seu modelo de negócio." },
+        { title: "Marketing & Tech", desc: "Criamos a sua presença digital profissional, desde websites a apps de alta performance." },
+        { title: "Rede de Mentores", desc: "Conecte-se com líderes de indústria e especialistas prontos para guiar a sua jornada." },
+        { title: "Acesso a Capital", desc: "Preparamos o seu pitch e conectamos a sua startup a investidores anjo e VC." }
+      ]
     },
     howItWorks: {
       badge: "Processo",
       title: "Como funciona a sua jornada",
       steps: [
-        { title: "Registo", desc: "Crie o seu perfil de negócio em minutos." },
-        { title: "Diagnóstico", desc: "Identificamos as suas necessidades de crescimento." },
-        { title: "Aceleração", desc: "Acesso a ferramentas e mentoria dedicada." },
-        { title: "Sucesso", desc: "Escalabilidade e acesso a novos mercados." }
+        { title: "Registo & Perfil", desc: "Crie a sua conta e defina o perfil do seu negócio em minutos." },
+        { title: "Diagnóstico", desc: "Avaliamos as necessidades da sua startup e sugerimos o melhor caminho." },
+        { title: "Crescimento", desc: "Aceda a mentorias, marketplace de serviços e rede de investidores." },
+        { title: "Escala Global", desc: "Expanda o seu negócio para novos mercados com suporte contínuo." }
       ]
     },
     testimonials: {
       badge: "Testemunhos",
       title: "Vozes de Impacto",
-      subtitle: "Histórias reais de empreendedores que transformaram seus negócios com a ABN."
+      subtitle: "Histórias reais de empreendedores que transformaram seus negócios com a ABN.",
+      items: [
+        { name: "João Silva", role: "CEO, TechAfrica", text: "A ABN mudou completamente a forma como abordamos o mercado global. O suporte em marketing foi fundamental." },
+        { name: "Maria Santos", role: "Fundadora, AgroEco", text: "O programa de incubação ABN Spark ajudou-me a validar a minha ideia e a conseguir o primeiro investimento." },
+        { name: "Carlos Oliveira", role: "Investidor Anjo", text: "Encontrei startups de alta qualidade através da plataforma. A curadoria da ABN é excelente." }
+      ]
     },
     faq: {
       badge: "Dúvidas",
       title: "Perguntas Frequentes",
-      subtitle: "Encontre respostas para as perguntas mais comuns sobre a nossa rede."
+      subtitle: "Encontre respostas para as perguntas mais comuns sobre a nossa rede.",
+      items: [
+        { q: "O que é a ABN – AfroBiz Network?", a: "A ABN é uma rede digital focada na incubação de startups e no desenvolvimento de PMEs em África, oferecendo ferramentas, mentoria e conexões estratégicas." },
+        { q: "Como funciona o programa de incubação?", a: "O nosso programa divide-se em fases: Ideação, Validação, Crescimento e Escala. Cada fase tem marcos específicos e suporte personalizado de mentores especialistas." },
+        { q: "Qualquer pessoa pode se juntar à rede?", a: "Sim, aceitamos empreendedores, startups, investidores e mentores que queiram contribuir para o ecossistema de negócios em África." },
+        { q: "Como posso obter o website e portfólio grátis?", a: "Ao registar-se como PME na nossa plataforma, terá acesso automático à nossa oferta de lançamento que inclui 4 meses de presença digital profissional gratuita." }
+      ]
     }
   },
   en: {
@@ -92,6 +104,7 @@ export const translations = {
       explore: "Explore",
       institutional: "Institutional",
       support: "Support",
+      dashboard: "My Dashboard",
       rights: "All rights reserved.",
       terms: "Terms",
       privacy: "Privacy"
@@ -130,29 +143,43 @@ export const translations = {
       badge: "ABN Ecosystem",
       title: "Everything you need to grow",
       subtitle: "An integrated platform designed for the specific needs of the African market.",
-      f1: { title: "Mentorship", desc: "Direct access to industry experts." },
-      f2: { title: "Networking", desc: "Connections with global investors." },
-      f3: { title: "Visibility", desc: "Highlight your business in the network." }
+      items: [
+        { title: "Digital Incubation", desc: "Intensive 3 to 6 month programs to validate and scale your business model." },
+        { title: "Marketing & Tech", desc: "We create your professional digital presence, from websites to high-performance apps." },
+        { title: "Mentor Network", desc: "Connect with industry leaders and experts ready to guide your journey." },
+        { title: "Access to Capital", desc: "We prepare your pitch and connect your startup to angel investors and VC." }
+      ]
     },
     howItWorks: {
       badge: "Process",
       title: "How your journey works",
       steps: [
-        { title: "Registration", desc: "Create your business profile in minutes." },
-        { title: "Diagnosis", desc: "We identify your growth needs." },
-        { title: "Acceleration", desc: "Access to tools and dedicated mentoring." },
-        { title: "Success", desc: "Scalability and access to new markets." }
+        { title: "Registration & Profile", desc: "Create your account and define your business profile in minutes." },
+        { title: "Diagnosis", desc: "We evaluate your startup's needs and suggest the best path." },
+        { title: "Growth", desc: "Access mentorship, service marketplace and investor network." },
+        { title: "Global Scale", desc: "Expand your business to new markets with continuous support." }
       ]
     },
     testimonials: {
       badge: "Testimonials",
       title: "Voices of Impact",
-      subtitle: "Real stories from entrepreneurs who transformed their businesses with ABN."
+      subtitle: "Real stories from entrepreneurs who transformed their businesses with ABN.",
+      items: [
+        { name: "John Silva", role: "CEO, TechAfrica", text: "ABN has completely changed the way we approach the global market. The marketing support was key." },
+        { name: "Mary Santos", role: "Founder, AgroEco", text: "The ABN Spark incubation program helped me validate my idea and get the first investment." },
+        { name: "Charles Oliveira", role: "Angel Investor", text: "I found high quality startups through the platform. ABN's curation is excellent." }
+      ]
     },
     faq: {
       badge: "FAQ",
       title: "Frequently Asked Questions",
-      subtitle: "Find answers to the most common questions about our network."
+      subtitle: "Find answers to the most common questions about our network.",
+      items: [
+        { q: "What is ABN – AfroBiz Network?", a: "ABN is a digital network focused on incubating startups and developing SMEs in Africa, offering tools, mentoring and strategic connections." },
+        { q: "How does the incubation program work?", a: "Our program is divided into phases: Ideation, Validation, Growth and Scale. Each phase has specific milestones and personalized support from expert mentors." },
+        { q: "Can anyone join the network?", a: "Yes, we accept entrepreneurs, startups, investors and mentors who want to contribute to the business ecosystem in Africa." },
+        { q: "How can I get the free website and portfolio?", a: "By registering as an SME on our platform, you will have automatic access to our launch offer which includes 4 months of free professional digital presence." }
+      ]
     }
   },
   fr: {
@@ -170,6 +197,7 @@ export const translations = {
       explore: "Explorer",
       institutional: "Institutionnel",
       support: "Support",
+      dashboard: "Mon Tableau de bord",
       rights: "Tous droits réservés.",
       terms: "Termes",
       privacy: "Confidentialité"
@@ -208,29 +236,43 @@ export const translations = {
       badge: "Écosystème ABN",
       title: "Tout ce dont vous avez besoin pour grandir",
       subtitle: "Une plateforme intégrée conçue pour les besoins spécifiques du marché africain.",
-      f1: { title: "Mentorat", desc: "Accès direct aux experts du secteur." },
-      f2: { title: "Réseautage", desc: "Connexions avec des investisseurs mondiaux." },
-      f3: { title: "Visibilité", desc: "Mettez en valeur votre entreprise dans le réseau." }
+      items: [
+        { title: "Incubation Numérique", desc: "Programmes intensifs de 3 à 6 mois pour valider et faire évoluer votre modelo d'entreprise." },
+        { title: "Marketing & Tech", desc: "Nous créons votre présence numérique professionnelle, des sites Web aux applications performantes." },
+        { title: "Réseau de Mentors", desc: "Connectez-vous avec des leaders de l'industrie et des experts prêts à guider votre parcours." },
+        { title: "Accès au Capital", desc: "Nous préparons votre pitch et connectons votre startup à des investisseurs providentiels et VC." }
+      ]
     },
     howItWorks: {
       badge: "Processus",
       title: "Comment fonctionne votre parcours",
       steps: [
-        { title: "Inscription", desc: "Créez votre profil d'entreprise en quelques minutes." },
-        { title: "Diagnostic", desc: "Nous identifions vos besoins de croissance." },
-        { title: "Accélération", desc: "Accès à des outils et un mentorat dédié." },
-        { title: "Succès", desc: "Évolutivité et accès à de nouveaux marchés." }
+        { title: "Inscription & Profil", desc: "Créez votre compte et définissez votre profil d'entreprise en quelques minutes." },
+        { title: "Diagnostic", desc: "Nous évaluons les besoins de votre startup et suggérons la meilleure voie." },
+        { title: "Croissance", desc: "Accédez au mentorat, au marché des services et au réseau d'investisseurs." },
+        { title: "Échelle Mondiale", desc: "Développez votre entreprise sur de nouveaux marchés avec um soutien continu." }
       ]
     },
     testimonials: {
       badge: "Témoignages",
       title: "Voix d'impact",
-      subtitle: "Histoires réelles d'entrepreneurs qui ont transformé leur entreprise avec ABN."
+      subtitle: "Histoires réelles d'entrepreneurs qui ont transformé leur entreprise avec ABN.",
+      items: [
+        { name: "Jean Silva", role: "PDG, TechAfrica", text: "ABN a complètement changé notre façon d'aborder le marché mondial. Le support marketing a été clé." },
+        { name: "Marie Santos", role: "Fondatrice, AgroEco", text: "Le programme d'incubation ABN Spark m'a aidée à valider mon idée et à obtenir le premier investissement." },
+        { name: "Charles Oliveira", role: "Investisseur Providentiel", text: "J'ai trouvé des startups de haute qualité grâce à la plateforme. La curation d'ABN est excellente." }
+      ]
     },
     faq: {
       badge: "FAQ",
       title: "Questions fréquemment posées",
-      subtitle: "Trouvez des réponses aux questions les plus courantes sur notre réseau."
+      subtitle: "Trouvez des réponses aux questions les plus courantes sur notre réseau.",
+      items: [
+        { q: "Qu'est-ce que ABN – AfroBiz Network ?", a: "ABN est um réseau numérique axé sur l'incubation de startups et le développement des PME en Afrique, offrant des outils, du mentorat et des connexions stratégiques." },
+        { q: "Comment fonctionne le programme d'incubation ?", a: "Notre programme est divisé en phases : Idéation, Validation, Croissance et Échelle. Chaque phase a des jalons spécifiques et um soutien personnalisé de mentors experts." },
+        { q: "N'importe qui peut rejoindre le réseau ?", a: "Oui, nous acceptons les entrepreneurs, les startups, les investisseurs et les mentors qui souhaitent contribuer à l'écosystème des affaires en Afrique." },
+        { q: "Comment puis-je obtenir le site Web et le portfolio gratuits ?", a: "En vous inscrivant comme PME sur notre plateforme, vous aurez um accès automatique à notre offre de lancement qui comprend 4 mois de présence numérique professionnelle gratuite." }
+      ]
     }
   }
 };

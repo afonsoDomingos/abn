@@ -47,30 +47,33 @@ export default function FAQ() {
           <p>{t.faq.subtitle}</p>
         </div>
         <div className={styles.list}>
-          {faqs.map((faq, i) => (
-            <div key={i} className={`${styles.item} glass`}>
-              <button 
-                className={styles.question}
-                onClick={() => setActiveIndex(activeIndex === i ? null : i)}
-              >
-                <span>{faq.question}</span>
-                <span className={styles.plus}>{activeIndex === i ? '−' : '+'}</span>
-              </button>
-              <AnimatePresence>
-                {activeIndex === i && (
-                  <motion.div 
-                    className={styles.answer}
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <p>{faq.answer}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))}
+          {faqs.map((faq, i) => {
+            const translated = language !== 'pt' && t.faq.items[i] ? t.faq.items[i] : null;
+            return (
+              <div key={i} className={`${styles.item} glass`}>
+                <button 
+                  className={styles.question}
+                  onClick={() => setActiveIndex(activeIndex === i ? null : i)}
+                >
+                  <span>{translated ? translated.q : faq.question}</span>
+                  <span className={styles.plus}>{activeIndex === i ? '−' : '+'}</span>
+                </button>
+                <AnimatePresence>
+                  {activeIndex === i && (
+                    <motion.div 
+                      className={styles.answer}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p>{translated ? translated.a : faq.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -87,14 +87,14 @@ export default function Home() {
               <div className={styles.footerLinks}>
                 <div className={styles.linkColumn}>
                   <h4>{t.footer.explore}</h4>
-                  <a href="/marketplace">Marketplace</a>
-                  <a href="/incubacao">Incubação</a>
-                  <a href="/dashboard">Meu Painel</a>
+                  <a href="/marketplace">{t.nav.marketplace}</a>
+                  <a href="/incubacao">{t.nav.incubator}</a>
+                  <a href="/admin">{t.footer.dashboard || (language === 'pt' ? 'Meu Painel' : 'My Dashboard')}</a>
                 </div>
                 <div className={styles.linkColumn}>
                   <h4>{t.footer.institutional}</h4>
                   <a href="#impacto">{t.nav.impact}</a>
-                  <a href="#como-funciona">{t.nav.incubator}</a>
+                  <a href="#como-funciona">{t.howItWorks.title}</a>
                   <a href="/registro">{t.nav.join}</a>
                 </div>
                 <div className={styles.linkColumn}>
