@@ -6,7 +6,7 @@ import User from '@/models/User';
 export async function PUT(request: Request) {
   try {
     await dbConnect();
-    const { id, name, email, password } = await request.json();
+    const { id, name, email, password, profileImage } = await request.json();
     
     if (!id) {
       return NextResponse.json({ error: 'ID do usuário é obrigatório.' }, { status: 400 });

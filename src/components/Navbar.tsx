@@ -1,7 +1,13 @@
+'use client';
+
 import Link from 'next/link';
 import styles from './Navbar.module.css';
+import { useLanguage } from '@/lib/LanguageContext';
+import LanguageSelector from './LanguageSelector';
 
 export default function Navbar() {
+  const { t } = useLanguage();
+
   return (
     <nav className={`${styles.navbar} glass`}>
       <div className={styles.container}>
@@ -17,16 +23,17 @@ export default function Navbar() {
         </Link>
         
         <div className={styles.links}>
-          <Link href="#impacto">Impacto</Link>
-          <Link href="#incubadora">Incubadora</Link>
-          <Link href="#marketplace">Marketplace</Link>
-          <Link href="#conexões">Conexões</Link>
+          <Link href="#impacto">{t.nav.impact}</Link>
+          <Link href="#incubadora">{t.nav.incubator}</Link>
+          <Link href="#marketplace">{t.nav.marketplace}</Link>
+          <Link href="#conexões">{t.nav.connections}</Link>
         </div>
 
         <div className={styles.actions}>
-          <a href="https://wa.me/258845773974" target="_blank" className={styles.whatsapp}>Suporte</a>
-          <Link href="/login" className={styles.login}>Entrar</Link>
-          <Link href="/registro" className="btn-primary">Junte-se à ABN</Link>
+          <LanguageSelector />
+          <a href="https://wa.me/258845773974" target="_blank" className={styles.whatsapp}>{t.nav.support}</a>
+          <Link href="/login" className={styles.login}>{t.nav.login}</Link>
+          <Link href="/registro" className="btn-primary">{t.nav.join}</Link>
         </div>
       </div>
     </nav>

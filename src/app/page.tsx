@@ -1,3 +1,5 @@
+'use client';
+
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Partners from "@/components/Partners";
@@ -10,8 +12,13 @@ import FAQ from "@/components/FAQ";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import ScrollToTop from "@/components/ScrollToTop";
 import styles from "./page.module.css";
+import { useLanguage } from "@/lib/LanguageContext";
+
+import { Reveal } from "@/components/Reveal";
 
 export default function Home() {
+  const { t, language } = useLanguage();
+
   return (
     <>
       <div className="bg-glow">
@@ -22,15 +29,33 @@ export default function Home() {
       <main className={styles.main}>
         <Navbar />
         <Hero />
-        <Partners />
-        <Services />
+        
+        <Reveal>
+          <Partners />
+        </Reveal>
+
+        <Reveal>
+          <Services />
+        </Reveal>
         
         <section className={styles.innerWrapper}>
           <Stats />
-          <Features />
-          <HowItWorks />
-          <Testimonials />
-          <FAQ />
+          
+          <Reveal>
+            <Features />
+          </Reveal>
+
+          <Reveal>
+            <HowItWorks />
+          </Reveal>
+
+          <Reveal>
+            <Testimonials />
+          </Reveal>
+
+          <Reveal>
+            <FAQ />
+          </Reveal>
           
           {/* Final CTA Section */}
           <section className={styles.ctaSection}>
@@ -40,11 +65,11 @@ export default function Home() {
                 style={{ backgroundImage: `url('/ADS01.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
               ></div>
               <div className={styles.ctaContent}>
-                <h2 className="text-gradient-gold">Pronto para dar o salto?</h2>
-                <p>Junte-se à maior rede de empreendedores afro e transforme o seu negócio hoje mesmo.</p>
+                <h2 className="text-gradient-gold">{t.cta.title}</h2>
+                <p>{t.cta.desc}</p>
                 <div className={styles.ctaActions}>
-                  <button className="btn-primary">Criar Conta Gratuita</button>
-                  <button className="btn-secondary">Falar com Consultor</button>
+                  <button className="btn-primary">{t.cta.create}</button>
+                  <button className="btn-secondary">{t.cta.consult}</button>
                 </div>
               </div>
             </div>
@@ -56,24 +81,24 @@ export default function Home() {
             <div className={styles.footerGrid}>
               <div className={styles.footerBrand}>
                 <img src="/abn-logo.png" alt="ABN Logo" style={{ height: '60px', marginBottom: '1.25rem' }} />
-                <p>Impulsionando o ecossistema de empreendedorismo em África através de tecnologia e conexões estratégicas.</p>
+                <p>{t.footer.brandDesc}</p>
               </div>
               
               <div className={styles.footerLinks}>
                 <div className={styles.linkColumn}>
-                  <h4>Explorar</h4>
+                  <h4>{t.footer.explore}</h4>
                   <a href="/marketplace">Marketplace</a>
                   <a href="/incubacao">Incubação</a>
                   <a href="/dashboard">Meu Painel</a>
                 </div>
                 <div className={styles.linkColumn}>
-                  <h4>Institucional</h4>
-                  <a href="#impacto">Impacto</a>
-                  <a href="#como-funciona">Como Funciona</a>
-                  <a href="/registro">Juntar-se à Rede</a>
+                  <h4>{t.footer.institutional}</h4>
+                  <a href="#impacto">{t.nav.impact}</a>
+                  <a href="#como-funciona">{t.nav.incubator}</a>
+                  <a href="/registro">{t.nav.join}</a>
                 </div>
                 <div className={styles.linkColumn}>
-                  <h4>Suporte</h4>
+                  <h4>{t.footer.support}</h4>
                   <a href="https://wa.me/258845773974" target="_blank">WhatsApp</a>
                   <p>admin@abn.com</p>
                   <div className={styles.socialIcons}>
@@ -92,10 +117,10 @@ export default function Home() {
             </div>
             
             <div className={styles.footerBottom}>
-              <p>© {new Date().getFullYear()} ABN – AfroBiz Network. Todos os direitos reservados.</p>
+              <p>© {new Date().getFullYear()} ABN – AfroBiz Network. {t.footer.rights}</p>
               <div className={styles.legalLinks}>
-                <span>Termos</span>
-                <span>Privacidade</span>
+                <span>{t.footer.terms}</span>
+                <span>{t.footer.privacy}</span>
               </div>
             </div>
           </div>
