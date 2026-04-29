@@ -12,7 +12,11 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'ID do usuário é obrigatório.' }, { status: 400 });
     }
 
-    const updateData: any = { name, email: email.toLowerCase() };
+    const updateData: any = { 
+      name, 
+      email: email.toLowerCase(),
+      profileImage: profileImage || undefined
+    };
     
     if (password && password.length >= 6) {
       updateData.password = await bcrypt.hash(password, 10);

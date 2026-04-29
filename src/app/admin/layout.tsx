@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import styles from './Admin.module.css';
+import UserMenu from '@/components/UserMenu';
 
 export default function AdminLayout({
   children,
@@ -14,7 +15,7 @@ export default function AdminLayout({
           <div style={{ fontSize: '0.8rem', opacity: 0.6 }}>Admin Panel</div>
         </div>
         <nav className={styles.sidebarNav}>
-          <Link href="/admin" className={styles.active}>Dashboard</Link>
+          <Link href="/admin">Dashboard</Link>
           <Link href="/admin/usuarios">Usuários</Link>
           <Link href="/admin/servicos">Serviços</Link>
           <Link href="/admin/pagamentos">Pagamentos</Link>
@@ -27,13 +28,7 @@ export default function AdminLayout({
       <main className={styles.adminMain}>
         <header className={styles.adminHeader}>
           <h2>Painel de Gestão</h2>
-          <div className={styles.adminUser}>
-            <span>Administrador</span>
-            <div 
-              className={styles.avatar}
-              style={{ backgroundImage: `url('/perfil09.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-            ></div>
-          </div>
+          <UserMenu />
         </header>
         <div className={styles.adminContent}>
           {children}
