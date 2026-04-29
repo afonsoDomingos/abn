@@ -1,14 +1,11 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import styles from './Hero.module.css';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Hero() {
+  const { t, language } = useLanguage();
   const [content, setContent] = useState({
-    title: 'Impulsionando Startups e PMEs em África',
-    description: 'A ABN – AfroBiz Network é a sua ponte para o sucesso digital. Conectamos empreendedores a mentores, investidores e recursos estratégicos para transformar ideias em impacto global.',
-    banners: ['/img01.jpg']
+    title: '',
+    description: '',
+    banners: []
   });
 
   const [currentBanner, setCurrentBanner] = useState(0);
@@ -22,6 +19,11 @@ export default function Hero() {
         }
       });
   }, []);
+
+  // Use translations if content from API is empty or we are not in PT
+  // Note: For a real production app, the API should return translated content.
+  const displayTitle = (language === 'pt' && content.title) ? content.title : t.hero.title;
+  const displayDesc = (language === 'pt' && content.description) ? content.description : t.hero.desc;
 
   useEffect(() => {
     if (content.banners && content.banners.length > 1) {
@@ -76,7 +78,7 @@ export default function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5 }}
           >
-            Acelere o seu negócio africano 🌍
+            {t.hero.badge}
           </motion.div>
           
           <motion.h1
@@ -85,7 +87,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            {content.title}
+            {displayTitle}
           </motion.h1>
           
           <motion.p
@@ -94,7 +96,7 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
-            {content.description}
+            {displayDesc}
           </motion.p>
           
           <motion.div 
@@ -103,8 +105,8 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            <button className="btn-primary">Começar Agora</button>
-            <button className="btn-outline">Ver Impacto</button>
+            <button className="btn-primary">{t.hero.start}</button>
+            <button className="btn-outline">{t.hero.impact}</button>
           </motion.div>
  
           <motion.div 
@@ -113,7 +115,7 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 1 }}
           >
-            <span>🔥 OFERTA:</span> Website + Portfólio com 4 meses grátis
+            {t.hero.offer}
           </motion.div>
         </motion.div>
       </div>

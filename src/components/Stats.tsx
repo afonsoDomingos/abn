@@ -1,17 +1,13 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import styles from './Stats.module.css';
-
+import { useLanguage } from '@/lib/LanguageContext';
 import Counter from './Counter';
 
 export default function Stats() {
+  const { t, language } = useLanguage();
   const [stats, setStats] = useState([
-    { label: 'Startups Incubadas', value: '150+' },
-    { label: 'Capital Captado', value: '$2.5M' },
-    { label: 'Mentores Especialistas', value: '45' },
-    { label: 'Países em África', value: '12' }
+    { label: '', value: '150+' },
+    { label: '', value: '$2.5M' },
+    { label: '', value: '45' },
+    { label: '', value: '12' }
   ]);
 
   useEffect(() => {
@@ -23,6 +19,14 @@ export default function Stats() {
         }
       });
   }, []);
+
+  const getLabel = (index: number, defaultLabel: string) => {
+    if (language !== 'pt') {
+      const keys = ['s1', 's2', 's3', 's4'];
+      return (t.stats as any)[keys[index]] || defaultLabel;
+    }
+    return defaultLabel || (t.stats as any)[['s1', 's2', 's3', 's4'][index]];
+  };
 
   return (
     <section className={styles.statsSection} id="impacto">
@@ -41,7 +45,7 @@ export default function Stats() {
                 {stat.value.startsWith('$') ? '$' : ''}
                 <Counter value={stat.value.replace('$', '')} />
               </div>
-              <div className={styles.label}>{stat.label}</div>
+              <div className={styles.label}>{getLabel(i, stat.label)}</div>
             </motion.div>
           ))}
         </div>
