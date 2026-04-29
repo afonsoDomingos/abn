@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import styles from './HowItWorks.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function HowItWorks() {

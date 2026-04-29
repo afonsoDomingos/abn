@@ -1,3 +1,8 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import styles from './Services.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
 interface Service {

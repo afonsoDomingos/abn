@@ -1,3 +1,8 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import styles from './Features.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Features() {

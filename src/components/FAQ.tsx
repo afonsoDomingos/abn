@@ -1,3 +1,8 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import styles from './FAQ.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function FAQ() {

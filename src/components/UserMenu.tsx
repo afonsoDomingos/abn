@@ -49,15 +49,8 @@ export default function UserMenu() {
       {isOpen && (
         <div className={styles.dropdown}>
           <Link href="/admin/perfil" onClick={() => setIsOpen(false)} className={styles.menuItem}>
-            <span>👤</span> Editar Perfil
+            Editar Perfil
           </Link>
-          <Link href="/" className={styles.menuItem}>
-            <span>🏠</span> Ir para Home
-          </Link>
-          <hr className={styles.divider} />
-          <button onClick={handleLogout} className={`${styles.menuItem} ${styles.logout}`}>
-            <span>🚪</span> Sair
-          </button>
         </div>
       )}
     </div>

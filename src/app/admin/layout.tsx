@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import styles from './Admin.module.css';
+import SidebarFooter from './SidebarFooter';
 import UserMenu from '@/components/UserMenu';
 
 export default function AdminLayout({
@@ -21,9 +21,7 @@ export default function AdminLayout({
           <Link href="/admin/pagamentos">Pagamentos</Link>
           <Link href="/admin/configuracoes">Configurações</Link>
         </nav>
-        <div className={styles.sidebarFooter}>
-          <Link href="/login" className={styles.logout}>Sair</Link>
-        </div>
+        <SidebarFooter />
       </aside>
       <main className={styles.adminMain}>
         <header className={styles.adminHeader}>
