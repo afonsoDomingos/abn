@@ -9,7 +9,7 @@
   width: 260px;
   background: #0a0a0a;
   border-right: 1px solid var(--glass-border);
-  padding: 2rem;
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 3rem;

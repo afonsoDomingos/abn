@@ -192,7 +192,7 @@ export default function AdminConfigPage() {
                     value={p.logo} 
                     onChange={e => updateArrayField(setPartners, partners, index, 'logo', e.target.value)} 
                     placeholder="Logo (Emoji ou URL)" 
-                    style={{ width: '120px' }} 
+                    className={styles.inputSmall} 
                   />
                   <input 
                     value={p.name} 
@@ -279,13 +279,13 @@ export default function AdminConfigPage() {
                         value={t.name} 
                         onChange={e => updateArrayField(setTestimonials, testimonials, index, 'name', e.target.value)} 
                         placeholder="Nome Completo" 
-                        style={{ flex: 1 }}
+                        className={styles.inputFlex}
                       />
                       <input 
                         value={t.role} 
                         onChange={e => updateArrayField(setTestimonials, testimonials, index, 'role', e.target.value)} 
                         placeholder="Cargo ou Empresa" 
-                        style={{ flex: 1 }}
+                        className={styles.inputFlex}
                       />
                       <button className={styles.removeBtn} onClick={() => removeItem(setTestimonials, testimonials, index)}>×</button>
                     </div>
