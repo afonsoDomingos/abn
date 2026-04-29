@@ -4,8 +4,10 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from './UserMenu.module.css';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function UserMenu() {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState({ name: 'Administrador', profileImage: '/perfil09.jpg' });
   const menuRef = useRef<HTMLDivElement>(null);
@@ -49,7 +51,7 @@ export default function UserMenu() {
       {isOpen && (
         <div className={styles.dropdown}>
           <Link href="/admin/perfil" onClick={() => setIsOpen(false)} className={styles.menuItem}>
-            Editar Perfil
+            {t.admin.editProfile}
           </Link>
         </div>
       )}

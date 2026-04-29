@@ -46,7 +46,9 @@ export const translations = {
       title: "Nossos Serviços de Aceleração",
       subtitle: "Recursos estratégicos prontos para elevar o seu negócio ao próximo nível.",
       request: "Solicitar",
-      viewAll: "    features: {
+      viewAll: "Ver Catálogo Completo"
+    },
+    features: {
       badge: "Ecossistema ABN",
       title: "Tudo o que você precisa para crescer",
       subtitle: "Uma plataforma integrada desenhada para as necessidades específicas do mercado africano.",
@@ -87,6 +89,17 @@ export const translations = {
         { q: "Qualquer pessoa pode se juntar à rede?", a: "Sim, aceitamos empreendedores, startups, investidores e mentores que queiram contribuir para o ecossistema de negócios em África." },
         { q: "Como posso obter o website e portfólio grátis?", a: "Ao registar-se como PME na nossa plataforma, terá acesso automático à nossa oferta de lançamento que inclui 4 meses de presença digital profissional gratuita." }
       ]
+    },
+    admin: {
+      editProfile: "Editar Perfil",
+      goHome: "Ir para Home",
+      logout: "Sair",
+      panel: "Painel de Gestão",
+      dashboard: "Dashboard",
+      users: "Usuários",
+      services: "Serviços",
+      payments: "Pagamentos",
+      settings: "Configurações"
     }
   },
   en: {
@@ -180,6 +193,17 @@ export const translations = {
         { q: "Can anyone join the network?", a: "Yes, we accept entrepreneurs, startups, investors and mentors who want to contribute to the business ecosystem in Africa." },
         { q: "How can I get the free website and portfolio?", a: "By registering as an SME on our platform, you will have automatic access to our launch offer which includes 4 months of free professional digital presence." }
       ]
+    },
+    admin: {
+      editProfile: "Edit Profile",
+      goHome: "Go to Home",
+      logout: "Logout",
+      panel: "Management Panel",
+      dashboard: "Dashboard",
+      users: "Users",
+      services: "Services",
+      payments: "Payments",
+      settings: "Settings"
     }
   },
   fr: {
@@ -273,6 +297,17 @@ export const translations = {
         { q: "N'importe qui peut rejoindre le réseau ?", a: "Oui, nous acceptons les entrepreneurs, les startups, les investisseurs et les mentors qui souhaitent contribuer à l'écosystème des affaires en Afrique." },
         { q: "Comment puis-je obtenir le site Web et le portfolio gratuits ?", a: "En vous inscrivant comme PME sur notre plateforme, vous aurez um accès automatique à notre offre de lancement qui comprend 4 mois de présence numérique professionnelle gratuite." }
       ]
+    },
+    admin: {
+      editProfile: "Modifier le profil",
+      goHome: "Aller à l'accueil",
+      logout: "Déconnexion",
+      panel: "Tableau de bord de gestion",
+      dashboard: "Tableau de bord",
+      users: "Utilisateurs",
+      services: "Services",
+      payments: "Paiements",
+      settings: "Paramètres"
     }
   }
 };

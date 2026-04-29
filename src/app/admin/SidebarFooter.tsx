@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Home, LogOut } from 'lucide-react';
 import styles from './Admin.module.css';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function SidebarFooter() {
+  const { t } = useLanguage();
   const router = useRouter();
 
   const handleLogout = (e: React.MouseEvent) => {
@@ -18,11 +20,11 @@ export default function SidebarFooter() {
     <div className={styles.sidebarFooter}>
       <Link href="/" className={styles.footerLink}>
         <Home size={18} />
-        <span>Ir para Home</span>
+        <span>{t.admin.goHome}</span>
       </Link>
       <button onClick={handleLogout} className={`${styles.footerLink} ${styles.logout}`}>
         <LogOut size={18} />
-        <span>Sair</span>
+        <span>{t.admin.logout}</span>
       </button>
     </div>
   );
