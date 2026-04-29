@@ -5,7 +5,7 @@ import styles from './Testimonials.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Testimonials() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [testimonials, setTestimonials] = useState([
     {
       name: 'João Silva',

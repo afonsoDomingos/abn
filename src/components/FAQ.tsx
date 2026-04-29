@@ -6,7 +6,7 @@ import styles from './FAQ.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function FAQ() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [faqs, setFaqs] = useState([
     {
       question: 'O que é a ABN – AfroBiz Network?',
