@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import SidebarFooter from './SidebarFooter';
 import UserMenu from '@/components/UserMenu';
+import styles from './Admin.module.css';
 
 export default function AdminLayout({
   children,
