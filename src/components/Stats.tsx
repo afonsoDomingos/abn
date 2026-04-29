@@ -1,3 +1,8 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import styles from './Stats.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 import Counter from './Counter';
 

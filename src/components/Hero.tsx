@@ -1,3 +1,8 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import styles from './Hero.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Hero() {
