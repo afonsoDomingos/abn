@@ -1,9 +1,7 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import styles from './HowItWorks.module.css';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function HowItWorks() {
+  const { t, language } = useLanguage();
   const [steps, setSteps] = useState([
     {
       number: '01',
@@ -37,22 +35,35 @@ export default function HowItWorks() {
       });
   }, []);
 
+  const getStepData = (index: number, defaultTitle: string, defaultDesc: string) => {
+    if (language !== 'pt' && t.howItWorks.steps[index]) {
+      return {
+        title: t.howItWorks.steps[index].title,
+        desc: t.howItWorks.steps[index].desc
+      };
+    }
+    return { title: defaultTitle, desc: defaultDesc };
+  };
+
   return (
     <section className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h2>Como Funciona a ABN</h2>
-          <p>Um ecossistema desenhado para o sucesso do empreendedor africano.</p>
+          <h2>{t.howItWorks.title}</h2>
+          <p>{t.howItWorks.badge}</p>
         </div>
         
         <div className={styles.grid}>
-          {steps.map((step, i) => (
-            <div key={i} className={styles.stepCard}>
-              <div className={styles.number}>{step.number}</div>
-              <h3>{step.title}</h3>
-              <p>{step.description}</p>
-            </div>
-          ))}
+          {steps.map((step, i) => {
+            const data = getStepData(i, step.title, step.description);
+            return (
+              <div key={i} className={styles.stepCard}>
+                <div className={styles.number}>{step.number}</div>
+                <h3>{data.title}</h3>
+                <p>{data.desc}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

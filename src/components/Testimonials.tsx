@@ -1,9 +1,7 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import styles from './Testimonials.module.css';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Testimonials() {
+  const { t } = useLanguage();
   const [testimonials, setTestimonials] = useState([
     {
       name: 'João Silva',
@@ -39,7 +37,9 @@ export default function Testimonials() {
     <section className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h2>O que dizem sobre nós</h2>
+          <span className={styles.badge}>{t.testimonials.badge}</span>
+          <h2>{t.testimonials.title}</h2>
+          <p>{t.testimonials.subtitle}</p>
         </div>
         
         <div className={styles.grid}>

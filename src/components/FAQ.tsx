@@ -1,10 +1,7 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import styles from './FAQ.module.css';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function FAQ() {
+  const { t } = useLanguage();
   const [faqs, setFaqs] = useState([
     {
       question: 'O que é a ABN – AfroBiz Network?',
@@ -40,8 +37,9 @@ export default function FAQ() {
     <section className={styles.faq}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h2 className="text-gradient-gold">Perguntas Frequentes</h2>
-          <p>Tudo o que precisa de saber sobre a nossa rede e serviços.</p>
+          <span className={styles.badge}>{t.faq.badge}</span>
+          <h2 className="text-gradient-gold">{t.faq.title}</h2>
+          <p>{t.faq.subtitle}</p>
         </div>
         <div className={styles.list}>
           {faqs.map((faq, i) => (

@@ -1,10 +1,7 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import styles from './Features.module.css';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Features() {
+  const { t, language } = useLanguage();
   const [features, setFeatures] = useState([
     {
       title: 'Incubação Digital',
@@ -67,8 +64,9 @@ export default function Features() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className={styles.title}>Nossas Soluções</h2>
-          <p className={styles.subtitle}>Tudo o que precisa para crescer num mercado dinâmico.</p>
+          <span className={styles.badge}>{t.features.badge}</span>
+          <h2 className={styles.title}>{t.features.title}</h2>
+          <p className={styles.subtitle}>{t.features.subtitle}</p>
         </motion.div>
         
         <div className={styles.grid}>

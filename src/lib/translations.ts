@@ -37,6 +37,44 @@ export const translations = {
       s2: "Capital Captado",
       s3: "Mentores Especialistas",
       s4: "Países em África"
+    },
+    partners: {
+      title: "Parceiros Estratégicos & Apoio"
+    },
+    services: {
+      badge: "Marketplace ABN",
+      title: "Nossos Serviços de Aceleração",
+      subtitle: "Recursos estratégicos prontos para elevar o seu negócio ao próximo nível.",
+      request: "Solicitar",
+      viewAll: "Ver Catálogo Completo"
+    },
+    features: {
+      badge: "Ecossistema ABN",
+      title: "Tudo o que você precisa para crescer",
+      subtitle: "Uma plataforma integrada desenhada para as necessidades específicas do mercado africano.",
+      f1: { title: "Mentoria", desc: "Acesso direto a especialistas do setor." },
+      f2: { title: "Networking", desc: "Conexões com investidores globais." },
+      f3: { title: "Visibilidade", desc: "Destaque o seu negócio na rede." }
+    },
+    howItWorks: {
+      badge: "Processo",
+      title: "Como funciona a sua jornada",
+      steps: [
+        { title: "Registo", desc: "Crie o seu perfil de negócio em minutos." },
+        { title: "Diagnóstico", desc: "Identificamos as suas necessidades de crescimento." },
+        { title: "Aceleração", desc: "Acesso a ferramentas e mentoria dedicada." },
+        { title: "Sucesso", desc: "Escalabilidade e acesso a novos mercados." }
+      ]
+    },
+    testimonials: {
+      badge: "Testemunhos",
+      title: "Vozes de Impacto",
+      subtitle: "Histórias reais de empreendedores que transformaram seus negócios com a ABN."
+    },
+    faq: {
+      badge: "Dúvidas",
+      title: "Perguntas Frequentes",
+      subtitle: "Encontre respostas para as perguntas mais comuns sobre a nossa rede."
     }
   },
   en: {
@@ -77,6 +115,44 @@ export const translations = {
       s2: "Capital Raised",
       s3: "Expert Mentors",
       s4: "Countries in Africa"
+    },
+    partners: {
+      title: "Strategic Partners & Support"
+    },
+    services: {
+      badge: "ABN Marketplace",
+      title: "Our Acceleration Services",
+      subtitle: "Strategic resources ready to take your business to the next level.",
+      request: "Request",
+      viewAll: "View Full Catalog"
+    },
+    features: {
+      badge: "ABN Ecosystem",
+      title: "Everything you need to grow",
+      subtitle: "An integrated platform designed for the specific needs of the African market.",
+      f1: { title: "Mentorship", desc: "Direct access to industry experts." },
+      f2: { title: "Networking", desc: "Connections with global investors." },
+      f3: { title: "Visibility", desc: "Highlight your business in the network." }
+    },
+    howItWorks: {
+      badge: "Process",
+      title: "How your journey works",
+      steps: [
+        { title: "Registration", desc: "Create your business profile in minutes." },
+        { title: "Diagnosis", desc: "We identify your growth needs." },
+        { title: "Acceleration", desc: "Access to tools and dedicated mentoring." },
+        { title: "Success", desc: "Scalability and access to new markets." }
+      ]
+    },
+    testimonials: {
+      badge: "Testimonials",
+      title: "Voices of Impact",
+      subtitle: "Real stories from entrepreneurs who transformed their businesses with ABN."
+    },
+    faq: {
+      badge: "FAQ",
+      title: "Frequently Asked Questions",
+      subtitle: "Find answers to the most common questions about our network."
     }
   },
   fr: {
@@ -117,6 +193,44 @@ export const translations = {
       s2: "Capital Mobilisé",
       s3: "Mentors Experts",
       s4: "Pays en Afrique"
+    },
+    partners: {
+      title: "Partenaires Stratégiques & Soutien"
+    },
+    services: {
+      badge: "Marché ABN",
+      title: "Nos services d'accélération",
+      subtitle: "Des ressources stratégiques prêtes à faire passer votre entreprise au niveau supérieur.",
+      request: "Demander",
+      viewAll: "Voir le catalogue complet"
+    },
+    features: {
+      badge: "Écosystème ABN",
+      title: "Tout ce dont vous avez besoin pour grandir",
+      subtitle: "Une plateforme intégrée conçue pour les besoins spécifiques du marché africain.",
+      f1: { title: "Mentorat", desc: "Accès direct aux experts du secteur." },
+      f2: { title: "Réseautage", desc: "Connexions avec des investisseurs mondiaux." },
+      f3: { title: "Visibilité", desc: "Mettez en valeur votre entreprise dans le réseau." }
+    },
+    howItWorks: {
+      badge: "Processus",
+      title: "Comment fonctionne votre parcours",
+      steps: [
+        { title: "Inscription", desc: "Créez votre profil d'entreprise en quelques minutes." },
+        { title: "Diagnostic", desc: "Nous identifions vos besoins de croissance." },
+        { title: "Accélération", desc: "Accès à des outils et un mentorat dédié." },
+        { title: "Succès", desc: "Évolutivité et accès à de nouveaux marchés." }
+      ]
+    },
+    testimonials: {
+      badge: "Témoignages",
+      title: "Voix d'impact",
+      subtitle: "Histoires réelles d'entrepreneurs qui ont transformé leur entreprise avec ABN."
+    },
+    faq: {
+      badge: "FAQ",
+      title: "Questions fréquemment posées",
+      subtitle: "Trouvez des réponses aux questions les plus courantes sur notre réseau."
     }
   }
 };

@@ -1,8 +1,4 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import styles from './Services.module.css';
+import { useLanguage } from '@/lib/LanguageContext';
 
 interface Service {
   _id: string;
@@ -14,6 +10,7 @@ interface Service {
 }
 
 export default function Services() {
+  const { t, language } = useLanguage();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -40,9 +37,9 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <span className={styles.badge}>Marketplace ABN</span>
-          <h2 className={styles.title}>Nossos Serviços de Aceleração</h2>
-          <p className={styles.subtitle}>Recursos estratégicos prontos para elevar o seu negócio ao próximo nível.</p>
+          <span className={styles.badge}>{t.services.badge}</span>
+          <h2 className={styles.title}>{t.services.title}</h2>
+          <p className={styles.subtitle}>{t.services.subtitle}</p>
         </motion.div>
 
         <div className={styles.grid}>
@@ -64,14 +61,14 @@ export default function Services() {
               <p className={styles.description}>{service.description}</p>
               <div className={styles.footer}>
                 <span className={styles.price}>{service.price}</span>
-                <button className={styles.btn}>Solicitar</button>
+                <button className={styles.btn}>{t.services.request}</button>
               </div>
             </motion.div>
           ))}
         </div>
         
         <div className={styles.more}>
-          <button className="btn-outline">Ver Catálogo Completo</button>
+          <button className="btn-outline">{t.services.viewAll}</button>
         </div>
       </div>
     </section>

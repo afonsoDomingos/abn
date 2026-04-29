@@ -1,10 +1,7 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import styles from './Partners.module.css';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Partners() {
+  const { t } = useLanguage();
   const [partners, setPartners] = useState([
     { name: 'African Union', logo: '🌍' },
     { name: 'AfDB', logo: '🏦' },
@@ -27,7 +24,7 @@ export default function Partners() {
   return (
     <section className={styles.partners}>
       <div className={styles.container}>
-        <p className={styles.title}>Parceiros Estratégicos & Apoio</p>
+        <p className={styles.title}>{t.partners.title}</p>
         <div className={styles.grid}>
           {partners.concat(partners).map((partner: any, i) => {
             const isImage = partner.logo && (partner.logo.startsWith('http') || partner.logo.startsWith('/'));
