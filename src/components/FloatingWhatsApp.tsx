@@ -1,3 +1,6 @@
+'use client';
+
+import styles from './FloatingWhatsApp.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function FloatingWhatsApp() {
