@@ -10,8 +10,9 @@ export default function SidebarFooter() {
   const { t } = useLanguage();
   const router = useRouter();
 
-  const handleLogout = (e: React.MouseEvent) => {
+  const handleLogout = async (e: React.MouseEvent) => {
     e.preventDefault();
+    await fetch('/api/auth/logout', { method: 'POST' });
     localStorage.removeItem('user');
     router.push('/login');
   };

@@ -33,7 +33,8 @@ export default function UserMenu() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
     localStorage.removeItem('user');
     router.push('/login');
   };

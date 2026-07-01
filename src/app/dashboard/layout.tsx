@@ -1,5 +1,22 @@
+'use client';
+
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import styles from './Dashboard.module.css';
+
+function LogoutButton() {
+  const router = useRouter();
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    localStorage.removeItem('user');
+    router.push('/login');
+  };
+  return (
+    <button onClick={handleLogout} className={styles.logout}>
+      🚪 Sair
+    </button>
+  );
+}
 
 export default function DashboardLayout({
   children,
@@ -23,7 +40,7 @@ export default function DashboardLayout({
           <Link href="/dashboard/mensagens">💬 Mensagens</Link>
         </nav>
         <div className={styles.sidebarFooter}>
-          <Link href="/login" className={styles.logout}>Sair</Link>
+          <LogoutButton />
         </div>
       </aside>
       

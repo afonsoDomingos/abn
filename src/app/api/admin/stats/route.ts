@@ -4,6 +4,8 @@ import User from '@/models/User';
 import Business from '@/models/Business';
 import Service from '@/models/Service';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     await dbConnect();

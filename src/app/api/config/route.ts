@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Config from '@/models/Config';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     await dbConnect();

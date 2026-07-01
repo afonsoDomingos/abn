@@ -24,10 +24,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Senha incorreta.' }, { status: 401 });
     }
 
-    return NextResponse.json({
-      success: true,
-      user: { id: user._id, name: user.name, email: user.email, role: user.role }
+    const userData = { id: String(user._id), name: user.name, email: user.email, role: user.role };
+
+    const response = NextResponse.json({ success: true, user: userData });
+
+    // Definir cookie de sessão seguro (httpOnly = false para que o JS do cliente também possa ler)
+    response.cookies.set('abn_session', encodeURIComponent(JSON.stringify(userData)), {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
+      path: '/',
     });
+
+    return response;
   } catch (error: any) {
     console.error('Login error:', error);
     return NextResponse.json({ error: 'Erro no servidor.', details: error.message }, { status: 500 });

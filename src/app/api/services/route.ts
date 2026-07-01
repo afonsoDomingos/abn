@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Service from '@/models/Service';
 
+export const dynamic = 'force-dynamic';
+
 // Public endpoint for marketplace
 export async function GET() {
   try {
