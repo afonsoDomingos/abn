@@ -4,7 +4,7 @@
 }
 
 .container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -20,6 +20,20 @@
 
 .header p {
   opacity: 0.6;
+}
+
+.contentLayout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (max-width: 968px) {
+  .contentLayout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
 }
 
 .list {
@@ -67,4 +81,107 @@
 .answer p {
   padding-top: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Contact Form Card */
+.formContainer {
+  padding: 2.5rem;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formHeader h3 {
+  font-size: 1.5rem;
+  font-family: 'Outfit', sans-serif;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.formHeader p {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formField label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  opacity: 0.6;
+}
+
+.form input, .form textarea {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 0.85rem 1.25rem !important;
+  border-radius: 12px !important;
+  color: #fff !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.95rem !important;
+  outline: none !important;
+  transition: all 0.2s !important;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.form input:focus, .form textarea:focus {
+  border-color: var(--primary) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1) !important;
+}
+
+.submitBtn {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.successState {
+  text-align: center;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.successIcon {
+  font-size: 2rem;
+  background: rgba(46, 139, 87, 0.1);
+  color: #2e8b57;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(46, 139, 87, 0.2);
+}
+
+.successState h4 {
+  font-size: 1.35rem;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  margin: 0;
+}
+
+.successState p {
+  font-size: 0.95rem;
+  opacity: 0.7;
+  line-height: 1.6;
+  margin: 0;
 }
