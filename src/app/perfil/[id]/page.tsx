@@ -1,5 +1,18 @@
+import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import styles from './Profile.module.css';
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const id = params?.id || 'empresa';
+  const name = id
+    .replace(/-/g, ' ')
+    .replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+
+  return {
+    title: `Perfil de ${name}`,
+    description: `Consulte os serviços, portfólio, avaliações e informações de contacto de ${name} na plataforma ABN – AfroBiz Network.`,
+  };
+}
 
 export default function BusinessProfile({ params }: { params: { id: string } }) {
   // Mock data

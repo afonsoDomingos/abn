@@ -1,5 +1,11 @@
+import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import styles from './Incubacao.module.css';
+
+export const metadata: Metadata = {
+  title: 'Programas de Incubação Digital (Spark & Scale)',
+  description: 'Valide, acelere e scale o seu modelo de negócio ou startup em África com mentorias estratégicas, suporte de marketing e conexão a investidores.',
+};
 
 const programs = [
   {
