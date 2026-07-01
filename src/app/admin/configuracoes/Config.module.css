@@ -146,13 +146,41 @@
 .partnerLogoPreview {
   width: 50px;
   height: 50px;
-  background: #fff;
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   flex-shrink: 0;
+}
+
+.logoInputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.uploadLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.1rem;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.uploadLabel:hover {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .logoPreview {

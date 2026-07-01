@@ -183,17 +183,53 @@ export default function AdminConfigPage() {
                 <div className={styles.row}>
                   <div className={styles.partnerLogoPreview}>
                     {(p.logo && (p.logo.startsWith('http') || p.logo.startsWith('/'))) ? (
-                      <img src={p.logo} alt="Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+                      <img src={p.logo} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
                       <span style={{ fontSize: '1.5rem' }}>{p.logo || '🤝'}</span>
                     )}
                   </div>
-                  <input 
-                    value={p.logo} 
-                    onChange={e => updateArrayField(setPartners, partners, index, 'logo', e.target.value)} 
-                    placeholder="Logo (Emoji ou URL)" 
-                    className={styles.inputSmall} 
-                  />
+                  <div className={styles.logoInputWrapper}>
+                    <input 
+                      value={p.logo} 
+                      onChange={e => updateArrayField(setPartners, partners, index, 'logo', e.target.value)} 
+                      placeholder="Logo (Emoji, URL ou Upload)" 
+                      className={styles.inputSmall} 
+                    />
+                    <label className={styles.uploadLabel} title="Carregar Logotipo">
+                      📁
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          
+                          const formData = new FormData();
+                          formData.append('file', file);
+                          
+                          updateArrayField(setPartners, partners, index, 'logo', '⏳ Carregando...');
+                          
+                          try {
+                            const res = await fetch('/api/upload', {
+                              method: 'POST',
+                              body: formData,
+                            });
+                            const data = await res.json();
+                            if (data.success && data.url) {
+                              updateArrayField(setPartners, partners, index, 'logo', data.url);
+                            } else {
+                              updateArrayField(setPartners, partners, index, 'logo', '🤝');
+                              alert('Erro ao fazer upload: ' + (data.error || 'Erro desconhecido'));
+                            }
+                          } catch (err) {
+                            updateArrayField(setPartners, partners, index, 'logo', '🤝');
+                            alert('Erro na conexão para upload.');
+                          }
+                        }}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                  </div>
                   <input 
                     value={p.name} 
                     onChange={e => updateArrayField(setPartners, partners, index, 'name', e.target.value)} 
