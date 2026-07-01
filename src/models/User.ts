@@ -10,6 +10,8 @@ const UserSchema = new mongoose.Schema({
     default: 'empreendedor' 
   },
   profileImage: { type: String },
+  resetToken: { type: String },
+  resetTokenExpiry: { type: Date },
   createdAt: { type: Date, default: Date.now },
 });
 

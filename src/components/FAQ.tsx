@@ -106,10 +106,21 @@ export default function FAQ() {
     setStatus('submitting');
 
     try {
-      // Simulate API submission
-      await new Promise(resolve => setTimeout(resolve, 1200));
-      setStatus('success');
-      setFormData({ name: '', email: '', message: '' });
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setErrorMsg(data.error || labels.error);
+        setStatus('idle');
+      }
     } catch (err) {
       setErrorMsg('Erro na ligação. Tente novamente.');
       setStatus('idle');

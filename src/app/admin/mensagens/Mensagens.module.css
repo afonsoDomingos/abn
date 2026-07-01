@@ -1,0 +1,302 @@
+.page {
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+
+.header p {
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+/* Filter Bar */
+.filterBar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.filterBtn.active {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.filterBtn:hover {
+  color: white;
+  border-color: rgba(255,255,255,0.3);
+}
+
+.badge {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.badge.novo { background: rgba(255, 100, 100, 0.25); color: #ff6464; }
+.badge.lido { background: rgba(100, 180, 255, 0.25); color: #64b4ff; }
+.badge.respondido { background: rgba(100, 220, 100, 0.25); color: #64dc64; }
+.badge.todos { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
+
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Message List */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 75vh;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.list::-webkit-scrollbar { width: 4px; }
+.list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+.empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  opacity: 0.5;
+  font-size: 0.9rem;
+}
+
+.messageCard {
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.messageCard:hover {
+  border-color: rgba(212,175,55,0.3);
+  transform: translateY(-1px);
+}
+
+.selectedCard {
+  border-color: var(--primary) !important;
+  background: rgba(212,175,55,0.06) !important;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.6rem;
+}
+
+.senderInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.senderInfo strong {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.1rem;
+}
+
+.senderInfo span {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--bg-dark);
+  flex-shrink: 0;
+}
+
+.preview {
+  font-size: 0.82rem;
+  opacity: 0.55;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.date {
+  font-size: 0.75rem;
+  opacity: 0.4;
+}
+
+.statusBadge {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-transform: capitalize;
+  flex-shrink: 0;
+}
+
+.statusBadge.novo { background: rgba(255,100,100,0.2); color: #ff6464; }
+.statusBadge.lido { background: rgba(100,180,255,0.2); color: #64b4ff; }
+.statusBadge.respondido { background: rgba(100,220,100,0.2); color: #64dc64; }
+
+/* Detail Panel */
+.detail {
+  border-radius: 16px;
+  padding: 2rem;
+  min-height: 400px;
+  border: 1px solid rgba(255,255,255,0.08);
+  position: sticky;
+  top: 1rem;
+}
+
+.detailHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.senderBig {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatarBig {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--bg-dark);
+}
+
+.senderBig h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem;
+}
+
+.emailLink {
+  font-size: 0.85rem;
+  color: var(--primary);
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.emailLink:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.messageBody {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.messageBody p {
+  line-height: 1.7;
+  font-size: 0.95rem;
+  opacity: 0.85;
+  white-space: pre-wrap;
+}
+
+.detailDate {
+  font-size: 0.8rem;
+  opacity: 0.4;
+  margin-bottom: 1.5rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.actions a,
+.actions button {
+  font-size: 0.85rem;
+  padding: 0.6rem 1.1rem;
+}
+
+.deleteBtn {
+  background: rgba(255, 80, 80, 0.1);
+  border: 1px solid rgba(255, 80, 80, 0.3);
+  color: #ff5050;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.85rem;
+}
+
+.deleteBtn:hover {
+  background: rgba(255, 80, 80, 0.2);
+}
+
+/* No Selection State */
+.noSelection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 300px;
+  gap: 1rem;
+  opacity: 0.4;
+}
+
+.noSelectionIcon {
+  font-size: 3rem;
+}
+
+.noSelection p {
+  font-size: 0.95rem;
+}
