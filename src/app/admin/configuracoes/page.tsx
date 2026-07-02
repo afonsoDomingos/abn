@@ -389,7 +389,6 @@ export default function AdminConfigPage() {
                         value={art.type} 
                         onChange={e => updateArrayField(setArticles, articles, index, 'type', e.target.value)} 
                         className={styles.inputFlex}
-                        style={{ background: 'var(--alpha-bg-5)', color: 'var(--foreground)', border: '1px solid var(--alpha-border-10)', padding: '8px', borderRadius: '8px', flex: 1 }}
                       >
                         <option value="news">Notícias</option>
                         <option value="photos">Fotos</option>
