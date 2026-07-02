@@ -24,6 +24,7 @@ export default function AdminLayout({
           <Link href="/admin">{t.admin.dashboard}</Link>
           <Link href="/admin/usuarios">{t.admin.users}</Link>
           <Link href="/admin/servicos">{t.admin.services}</Link>
+          <Link href="/admin/solicitacoes">📋 Solicitações</Link>
           <Link href="/admin/mensagens">💬 Mensagens</Link>
           <Link href="/admin/pagamentos">{t.admin.payments}</Link>
           <Link href="/admin/configuracoes">{t.admin.settings}</Link>

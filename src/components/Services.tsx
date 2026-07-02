@@ -40,18 +40,18 @@ export default function Services() {
     e.preventDefault();
     setFormStatus('loading');
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('/api/requests', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          message: `Solicitação do Serviço: ${selectedService?.name}\nPreço/Info: ${selectedService?.price}\n\n` +
-                   `--- Detalhes da Solicitação ---\n` +
-                   `WhatsApp/Telefone: ${formData.phone}\n` +
-                   `Empresa/Startup: ${formData.company || 'Não informada'}\n` +
-                   `Expectativa de Início: ${formData.timeline}\n\n` +
-                   `Mensagem/Necessidade:\n${formData.description}`
+          phone: formData.phone,
+          service: selectedService?.name || '',
+          servicePrice: selectedService?.price || '',
+          company: formData.company,
+          timeline: formData.timeline,
+          description: formData.description
         })
       });
       if (res.ok) {
