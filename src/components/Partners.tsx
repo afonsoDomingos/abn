@@ -26,7 +26,7 @@ export default function Partners() {
   }, []);
 
   return (
-    <section className={styles.partners}>
+    <section className={styles.partners} id="conexões">
       <div className={styles.container}>
         <p className={styles.title}>{t.partners.title}</p>
         <div className={styles.grid}>

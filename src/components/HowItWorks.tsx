@@ -50,7 +50,7 @@ export default function HowItWorks() {
   };
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="como-funciona">
       <div className={styles.container}>
         <div className={styles.header}>
           <h2>{t.howItWorks.title}</h2>
