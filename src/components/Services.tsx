@@ -19,8 +19,22 @@ export default function Services() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
-  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    description: '',
+    timeline: 'Imediato'
+  });
+  const [step, setStep] = useState(1);
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const closeModal = () => {
+    setSelectedService(null);
+    setStep(1);
+    setFormStatus('idle');
+  };
 
   const handleRequest = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,12 +46,18 @@ export default function Services() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          message: `Solicitação do Serviço: ${selectedService?.name}\n\nPreço/Info: ${selectedService?.price}`
+          message: `Solicitação do Serviço: ${selectedService?.name}\nPreço/Info: ${selectedService?.price}\n\n` +
+                   `--- Detalhes da Solicitação ---\n` +
+                   `WhatsApp/Telefone: ${formData.phone}\n` +
+                   `Empresa/Startup: ${formData.company || 'Não informada'}\n` +
+                   `Expectativa de Início: ${formData.timeline}\n\n` +
+                   `Mensagem/Necessidade:\n${formData.description}`
         })
       });
       if (res.ok) {
         setFormStatus('success');
-        setFormData({ name: '', email: '' });
+        setFormData({ name: '', email: '', phone: '', company: '', description: '', timeline: 'Imediato' });
+        setStep(1);
       } else {
         setFormStatus('error');
       }
@@ -105,9 +125,9 @@ export default function Services() {
       </div>
 
       {selectedService && (
-        <div className={styles.modalOverlay} onClick={() => setSelectedService(null)}>
+        <div className={styles.modalOverlay} onClick={closeModal}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.closeBtn} onClick={() => setSelectedService(null)}>&times;</button>
+            <button className={styles.closeBtn} onClick={closeModal}>&times;</button>
             <h3 className={styles.modalTitle}>Solicitar Serviço</h3>
             <p className={styles.modalSubtitle}>Serviço escolhido: <strong>{selectedService.name}</strong></p>
             
@@ -116,39 +136,118 @@ export default function Services() {
                 <span className={styles.successIcon}>✅</span>
                 <h4>Solicitação enviada!</h4>
                 <p>A nossa equipa entrará em contacto brevemente.</p>
-                <button className="btn-primary" onClick={() => setSelectedService(null)} style={{marginTop: '1rem', width: '100%'}}>Fechar</button>
+                <button className="btn-primary" onClick={closeModal} style={{marginTop: '1rem', width: '100%'}}>Fechar</button>
               </div>
             ) : (
-              <form onSubmit={handleRequest} className={styles.modalForm}>
-                <div className={styles.formGroup}>
-                  <label>Nome Completo</label>
-                  <input 
-                    type="text" 
-                    required 
-                    value={formData.name}
-                    onChange={e => setFormData({...formData, name: e.target.value})}
-                    placeholder="O seu nome completo"
-                  />
+              <div>
+                {/* Step indicator */}
+                <div className={styles.stepIndicator}>
+                  <span className={step === 1 ? styles.activeStep : ''}>1. Contacto</span>
+                  <span className={styles.stepLine}></span>
+                  <span className={step === 2 ? styles.activeStep : ''}>2. Projeto</span>
                 </div>
-                <div className={styles.formGroup}>
-                  <label>Email</label>
-                  <input 
-                    type="email" 
-                    required 
-                    value={formData.email}
-                    onChange={e => setFormData({...formData, email: e.target.value})}
-                    placeholder="O seu email principal"
-                  />
-                </div>
-                
-                {formStatus === 'error' && (
-                  <div className={styles.errorMessage}>Ocorreu um erro ao enviar. Tente novamente.</div>
+
+                {step === 1 ? (
+                  <div className={styles.modalForm}>
+                    <div className={styles.formGroup}>
+                      <label>Nome Completo *</label>
+                      <input 
+                        type="text" 
+                        required 
+                        value={formData.name}
+                        onChange={e => setFormData({...formData, name: e.target.value})}
+                        placeholder="O seu nome completo"
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label>Email Principal *</label>
+                      <input 
+                        type="email" 
+                        required 
+                        value={formData.email}
+                        onChange={e => setFormData({...formData, email: e.target.value})}
+                        placeholder="O seu email principal"
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label>WhatsApp / Telefone *</label>
+                      <input 
+                        type="tel" 
+                        required 
+                        value={formData.phone}
+                        onChange={e => setFormData({...formData, phone: e.target.value})}
+                        placeholder="Ex: +258 84 123 4567"
+                      />
+                    </div>
+                    <button 
+                      type="button" 
+                      className="btn-primary" 
+                      onClick={() => {
+                        if (!formData.name || !formData.email || !formData.phone) {
+                          alert('Por favor, preencha todos os campos obrigatórios.');
+                          return;
+                        }
+                        if (!formData.email.includes('@')) {
+                          alert('Por favor, insira um email válido.');
+                          return;
+                        }
+                        setStep(2);
+                      }} 
+                      style={{width: '100%', marginTop: '1rem'}}
+                    >
+                      Seguinte &rarr;
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleRequest} className={styles.modalForm}>
+                    <div className={styles.formGroup}>
+                      <label>Nome da Empresa / Ideia (Opcional)</label>
+                      <input 
+                        type="text" 
+                        value={formData.company}
+                        onChange={e => setFormData({...formData, company: e.target.value})}
+                        placeholder="Nome da sua startup ou ideia"
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label>Expectativa de Início *</label>
+                      <select 
+                        value={formData.timeline}
+                        onChange={e => setFormData({...formData, timeline: e.target.value})}
+                        className={styles.selectInput}
+                      >
+                        <option value="Imediato">Imediato</option>
+                        <option value="Em 15 dias">Em 15 dias</option>
+                        <option value="Em 30 dias">Em 30 dias</option>
+                        <option value="Apenas a sondar">Apenas a sondar</option>
+                      </select>
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label>Fale-nos mais sobre a sua necessidade *</label>
+                      <textarea 
+                        required 
+                        rows={4}
+                        value={formData.description}
+                        onChange={e => setFormData({...formData, description: e.target.value})}
+                        placeholder="Descreva o que espera deste serviço..."
+                      />
+                    </div>
+                    
+                    {formStatus === 'error' && (
+                      <div className={styles.errorMessage}>Ocorreu um erro ao enviar. Tente novamente.</div>
+                    )}
+                    
+                    <div style={{display: 'flex', gap: '1rem', marginTop: '1rem'}}>
+                      <button type="button" className="btn-secondary" onClick={() => setStep(1)} style={{flex: 1}}>
+                        Voltar
+                      </button>
+                      <button type="submit" className="btn-primary" disabled={formStatus === 'loading'} style={{flex: 2}}>
+                        {formStatus === 'loading' ? 'A Enviar...' : 'Enviar Solicitação'}
+                      </button>
+                    </div>
+                  </form>
                 )}
-                
-                <button type="submit" className="btn-primary" disabled={formStatus === 'loading'} style={{width: '100%', marginTop: '1rem'}}>
-                  {formStatus === 'loading' ? 'A Enviar...' : 'Enviar Solicitação'}
-                </button>
-              </form>
+              </div>
             )}
           </div>
         </div>
