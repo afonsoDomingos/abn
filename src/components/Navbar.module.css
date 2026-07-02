@@ -168,18 +168,21 @@
 
 /* ===================== Mobile Overlay ===================== */
 .overlay {
-  display: none;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
   z-index: 1100;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   backdrop-filter: blur(2px);
 }
 
 .overlayVisible {
   opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
 }
 
 /* ===================== Mobile Drawer ===================== */
