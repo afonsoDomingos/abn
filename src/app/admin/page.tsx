@@ -47,7 +47,7 @@ export default function AdminPage() {
       </div>
 
       <div className={styles.chartsGrid}>
-        <div className={`${styles.chartCard} glass`}>
+        <div className={styles.chartCard}>
           <h3>Crescimento de Usuários</h3>
           <div className={styles.barChart}>
             <div className={styles.bar} style={{ height: '40%' }}><span>Jan</span></div>
@@ -58,7 +58,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        <div className={`${styles.chartCard} glass`}>
+        <div className={styles.chartCard}>
           <h3>Distribuição por Perfil</h3>
           <div className={styles.donutChartBox}>
             <div className={styles.donutChart}></div>
@@ -73,7 +73,7 @@ export default function AdminPage() {
 
       <div className={styles.recentActivity}>
         <h3 style={{ marginBottom: '1.5rem', fontFamily: 'Outfit' }}>Atividade Recente</h3>
-        <div className="glass" style={{ padding: '1.5rem', borderRadius: '16px' }}>
+        <div style={{ padding: '1.5rem', borderRadius: '16px', background: '#161616', border: '1px solid rgba(255,255,255,0.08)' }}>
           <p style={{ color: 'rgba(255,255,255,0.6)' }}>Nenhuma atividade suspeita detectada.</p>
         </div>
       </div>

@@ -84,7 +84,7 @@ export default function AdminServicosPage() {
       {msg && <div className={styles.successMsg}>{msg}</div>}
 
       {showForm && (
-        <form onSubmit={handleSubmit} className={`glass ${styles.form}`}>
+        <form onSubmit={handleSubmit} className={styles.form}>
           <h3>Adicionar Novo Serviço</h3>
           <div className={styles.formGrid}>
             <div className={styles.field}>
@@ -138,7 +138,7 @@ export default function AdminServicosPage() {
       ) : (
         <div className={styles.grid}>
           {services.map(service => (
-            <div key={service._id} className={`glass ${styles.card}`}>
+            <div key={service._id} className={styles.card}>
               <div className={styles.cardHeader}>
                 <span className={styles.category}>{service.category}</span>
                 <span className={styles.statusBadge} style={{ background: statusColor[service.status] + '22', color: statusColor[service.status], border: `1px solid ${statusColor[service.status]}44` }}>
