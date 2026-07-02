@@ -123,6 +123,9 @@ export default function Home() {
             
             <div className={styles.footerBottom}>
               <p>© {new Date().getFullYear()} ABN – AfroBiz Network. {t.footer.rights}</p>
+              <p className={styles.poweredBy}>
+                Powered by <a href="https://www.linkedin.com/in/afonso-domingos-6b59361a5/" target="_blank" rel="noopener noreferrer">Vibe</a>
+              </p>
               <div className={styles.legalLinks}>
                 <span>{t.footer.terms}</span>
                 <span>{t.footer.privacy}</span>

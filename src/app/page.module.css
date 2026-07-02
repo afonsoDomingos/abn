@@ -171,3 +171,13 @@
   display: flex;
   gap: 2rem;
 }
+
+.poweredBy a {
+  color: var(--primary);
+  font-weight: 700;
+  transition: color 0.2s;
+}
+
+.poweredBy a:hover {
+  color: var(--accent);
+}
