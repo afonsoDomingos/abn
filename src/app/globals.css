@@ -15,6 +15,7 @@
   --gradient-gold: linear-gradient(135deg, #b8860b 0%, #d4af37 100%);
   --gradient-dark: linear-gradient(180deg, #faf8f6 0%, #eae5df 100%);
   --glow-gold: 0 10px 30px rgba(184, 134, 11, 0.08);
+  --hero-overlay: rgba(250, 248, 246, 0.82);
 
   /* Semantic opacity helpers for light mode */
   --alpha-bg-3: rgba(0, 0, 0, 0.02);
