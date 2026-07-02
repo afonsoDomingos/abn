@@ -55,3 +55,33 @@
   color: var(--text-muted);
   line-height: 1.6;
 }
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 1.25rem;
+  }
+
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .header h2 {
+    font-size: 2rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 50px 1rem;
+  }
+
+  .grid {
+    gap: 2rem;
+  }
+}
+

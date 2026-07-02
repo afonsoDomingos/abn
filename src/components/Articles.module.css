@@ -152,3 +152,32 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 1.25rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    margin-bottom: 2.5rem;
+  }
+
+  .imageWrapper {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 50px 1rem;
+  }
+
+  .content {
+    padding: 1.5rem;
+  }
+}
+

@@ -54,6 +54,7 @@
 .ctaActions {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 900px) {
@@ -66,7 +67,7 @@
 .footer {
   background: var(--alpha-bg-3);
   border-top: 1px solid var(--alpha-border-5);
-  padding: 80px 2rem 40px;
+  padding: 80px 1.5rem 40px;
   margin-top: 100px;
 }
 
@@ -180,4 +181,67 @@
 
 .poweredBy a:hover {
   color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .ctaSection {
+    padding: 60px 1.25rem;
+  }
+
+  .ctaBox {
+    padding: 2rem 1.5rem;
+    border-radius: 24px;
+  }
+
+  .ctaContent h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .ctaActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ctaActions a, .ctaActions button {
+    text-align: center;
+  }
+
+  .footer {
+    padding: 60px 1.25rem 30px;
+    margin-top: 60px;
+  }
+
+  .footerBottom {
+    font-size: 0.8rem;
+  }
+
+  .legalLinks {
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .ctaSection {
+    padding: 50px 1rem;
+  }
+
+  .ctaBox {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .ctaContent h2 {
+    font-size: 1.5rem;
+  }
+
+  .footer {
+    padding: 50px 1rem 25px;
+    margin-top: 40px;
+  }
+
+  .promoImage {
+    height: 250px;
+  }
 }

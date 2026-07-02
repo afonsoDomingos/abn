@@ -31,3 +31,38 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
+
+@media (max-width: 768px) {
+  .statsSection {
+    padding: 50px 1.25rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .value {
+    font-size: 2.2rem;
+  }
+
+  .label {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .statsSection {
+    padding: 40px 1rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .value {
+    font-size: 2rem;
+  }
+}
+

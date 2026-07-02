@@ -122,11 +122,202 @@
   color: #fff;
 }
 
+/* ===================== Hamburger Button ===================== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.hamburger:hover {
+  background: var(--alpha-bg-8);
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--foreground);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.hamburgerOpen span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburgerOpen span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburgerOpen span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ===================== Mobile Overlay ===================== */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1100;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+
+.overlayVisible {
+  opacity: 1;
+}
+
+/* ===================== Mobile Drawer ===================== */
+.drawer {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: var(--card-bg);
+  border-right: 1px solid var(--card-border);
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.12);
+  z-index: 1200;
+  flex-direction: column;
+  padding: 1.5rem;
+  gap: 2rem;
+  transform: translateX(-100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawerOpen {
+  transform: translateX(0) !important;
+}
+
+.drawerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.closeBtn {
+  background: var(--alpha-bg-5);
+  border: 1px solid var(--card-border);
+  color: var(--foreground);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.closeBtn:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.drawerNav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.drawerNav a {
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--foreground);
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.drawerNav a:hover {
+  background: var(--alpha-bg-5);
+  color: var(--primary);
+  border-left-color: var(--primary);
+}
+
+.drawerActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--card-border);
+}
+
+.drawerLogin {
+  padding: 0.75rem 1rem;
+  text-align: center;
+  border-radius: 10px;
+  background: var(--alpha-bg-5);
+  border: 1px solid var(--card-border);
+}
+
+/* ===================== Mobile Breakpoints ===================== */
 @media (max-width: 768px) {
   .links {
     display: none;
   }
+
   .whatsapp {
     display: none;
+  }
+
+  .login {
+    display: none;
+  }
+
+  .actions > a:last-child {
+    display: none; /* Hide btn-primary from desktop actions */
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .overlay {
+    display: block;
+  }
+
+  .drawer {
+    display: flex;
+  }
+
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .network {
+    display: none;
+  }
+
+  .divider {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
   }
 }

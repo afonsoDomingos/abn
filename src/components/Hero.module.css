@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 120px 2rem 60px;
+  padding: 120px 1.5rem 60px;
   overflow: hidden;
   text-align: center;
 }
@@ -130,10 +130,53 @@
 }
 
 @media (max-width: 768px) {
-  .ctas {
+  .hero {
+    padding: 100px 1.25rem 50px;
+    min-height: 90vh;
+  }
+
+  .title {
+    font-size: clamp(2rem, 10vw, 3rem);
+    margin-bottom: 1.5rem;
+  }
+
+  .description {
+    font-size: 1rem;
+    margin: 0 auto 2.5rem;
+  }
+
+  .cta {
     flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .cta a, .cta button {
     width: 100%;
-    max-width: 300px;
-    margin: 0 auto 3rem;
+    max-width: 280px;
+  }
+
+  .promo {
+    padding: 1rem 1.25rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .badge {
+    margin-bottom: 1.25rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 90px 1rem 40px;
+  }
+
+  .promo {
+    width: 100%;
+    border-radius: 12px;
   }
 }

@@ -1,5 +1,5 @@
 .faq {
-  padding: 100px 2rem;
+  padding: 100px 1.5rem;
   background: var(--background);
 }
 
@@ -184,4 +184,37 @@
   color: var(--text-muted);
   line-height: 1.6;
   margin: 0;
+}
+
+@media (max-width: 768px) {
+  .faq {
+    padding: 60px 1.25rem;
+  }
+
+  .header {
+    margin-bottom: 2.5rem;
+  }
+
+  .header h2 {
+    font-size: 2rem;
+  }
+
+  .question {
+    font-size: 1rem;
+    padding: 1.25rem;
+  }
+
+  .formContainer {
+    padding: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .faq {
+    padding: 50px 1rem;
+  }
+
+  .formContainer {
+    padding: 1.25rem;
+  }
 }
