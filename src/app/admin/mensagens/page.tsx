@@ -153,6 +153,21 @@ export default function AdminMensagensPage() {
               </div>
 
               <div className={styles.actions}>
+                {(() => {
+                  const phoneMatch = selected.message.match(/WhatsApp\/Telefone:\s*([^\n\r]+)/i);
+                  const phone = phoneMatch ? phoneMatch[1].trim().replace(/[^0-9]/g, '') : null;
+                  return phone ? (
+                    <a
+                      href={`https://wa.me/${phone}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-primary"
+                      style={{ background: '#25D366', borderColor: '#25D366', color: '#fff' }}
+                    >
+                      💬 Contactar via WhatsApp
+                    </a>
+                  ) : null;
+                })()}
                 <a
                   href={`mailto:${selected.email}?subject=Re: Mensagem ABN`}
                   className="btn-primary"
