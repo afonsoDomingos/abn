@@ -13,17 +13,30 @@
   margin-bottom: 4rem;
 }
 
-.subtitle {
-  font-size: 0.9rem;
+.badge {
+  font-size: 0.85rem;
   color: var(--secondary);
   text-transform: uppercase;
   letter-spacing: 0.2em;
   margin-bottom: 1rem;
+  display: inline-block;
+  font-weight: 700;
 }
 
 .title {
   font-size: clamp(2rem, 5vw, 3rem);
   line-height: 1.2;
+  margin-bottom: 1.2rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .grid {

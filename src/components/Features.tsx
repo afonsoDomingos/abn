@@ -60,7 +60,7 @@ export default function Features() {
   };
 
   return (
-    <section className={styles.section} id="incubadora">
+    <section className={styles.features} id="incubadora">
       <div className={styles.container}>
         <motion.div 
           className={styles.header}
