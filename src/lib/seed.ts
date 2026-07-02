@@ -150,7 +150,7 @@ export async function seedAdmin() {
 
     // 1. Seed Users with hashed passwords
     const usersData = [
-      { name: 'Super Admin ABN', email: 'admin@abn.com', password: '@Admin123@', role: 'admin' },
+      { name: 'Super Admin ABN', email: 'info@afrobiznetwork.com', password: '@Admin123@', role: 'admin' },
       { name: 'João Silva', email: 'joao@email.com', password: 'password123', role: 'empreendedor' },
       { name: 'Maria Santos', email: 'maria@email.com', password: 'password123', role: 'startup' },
     ];
@@ -175,7 +175,7 @@ export async function seedAdmin() {
         category: 'Tecnologia',
         description: 'Especialistas em transformar processos analógicos em experiências digitais de alta performance para o mercado africano.',
         location: 'Luanda, Angola',
-        owner: usersMap['admin@abn.com'],
+        owner: usersMap['info@afrobiznetwork.com'],
         isIncubated: true,
         incubationPhase: 'Crescimento',
         stats: { projects: 12, rating: 4.8, clients: 34 },

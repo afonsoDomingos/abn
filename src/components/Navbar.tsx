@@ -42,6 +42,7 @@ export default function Navbar() {
             <Link href="#incubadora">{t.nav.incubator}</Link>
             <Link href="#marketplace">{t.nav.marketplace}</Link>
             <Link href="#conexões">{t.nav.connections}</Link>
+            <Link href="/contacto">Contacto</Link>
           </div>
 
           <div className={styles.actions}>
@@ -87,6 +88,7 @@ export default function Navbar() {
           <Link href="#incubadora" onClick={closeMenu}>{t.nav.incubator}</Link>
           <Link href="#marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
           <Link href="#conexões" onClick={closeMenu}>{t.nav.connections}</Link>
+          <Link href="/contacto" onClick={closeMenu}>Contacto</Link>
         </nav>
 
         <div className={styles.drawerActions}>
