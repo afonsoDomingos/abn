@@ -40,6 +40,9 @@ export default function Partners() {
                   ) : (
                     <span className={styles.icon}>{partner.logo}</span>
                   )}
+                  {partner.url && (
+                    <div className={styles.hoverOverlay}>Visitar</div>
+                  )}
                 </div>
                 <span className={styles.name}>{partner.name}</span>
               </div>

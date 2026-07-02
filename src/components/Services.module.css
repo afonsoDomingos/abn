@@ -148,8 +148,104 @@
   }
 
   .card {
-    padding: 2rem;
+    padding: 1.5rem;
   }
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  backdrop-filter: blur(5px);
+}
+
+.modalContent {
+  background: var(--card-bg, #fff);
+  width: 100%; max-width: 500px;
+  border-radius: 20px;
+  padding: 2.5rem;
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+  animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.closeBtn {
+  position: absolute; top: 1.5rem; right: 1.5rem;
+  background: rgba(0,0,0,0.1); color: var(--foreground, #111);
+  border: none; width: 36px; height: 36px; border-radius: 50%;
+  font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background 0.2s;
+}
+
+.closeBtn:hover {
+  background: rgba(0,0,0,0.2);
+}
+
+.modalTitle {
+  font-size: 1.8rem; font-family: 'Outfit', sans-serif;
+  color: var(--foreground, #111); margin-bottom: 0.5rem;
+}
+
+.modalSubtitle {
+  color: var(--text-muted, #666); font-size: 0.95rem; margin-bottom: 2rem;
+}
+
+.modalSubtitle strong {
+  color: var(--primary, #d4af37);
+}
+
+.modalForm {
+  display: flex; flex-direction: column; gap: 1.25rem;
+}
+
+.formGroup {
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+
+.formGroup label {
+  font-size: 0.85rem; font-weight: 600; color: var(--foreground, #111);
+}
+
+.formGroup input {
+  padding: 0.85rem 1rem; border-radius: 10px;
+  border: 1px solid var(--alpha-border-10, #ccc);
+  background: var(--alpha-bg-3, #f9f9f9);
+  color: var(--foreground, #111); font-family: inherit; font-size: 0.95rem;
+}
+
+.formGroup input:focus {
+  outline: none; border-color: var(--primary, #d4af37);
+}
+
+.successMessage {
+  text-align: center; padding: 2rem 0;
+}
+
+.successIcon {
+  font-size: 4rem; display: block; margin-bottom: 1rem;
+}
+
+.successMessage h4 {
+  font-size: 1.5rem; color: var(--foreground, #111); margin-bottom: 0.5rem;
+}
+
+.successMessage p {
+  color: var(--text-muted, #666); font-size: 0.95rem;
+}
+
+.errorMessage {
+  background: rgba(231,76,60,0.1); color: #e74c3c;
+  padding: 0.8rem; border-radius: 8px; font-size: 0.9rem;
+  text-align: center; border: 1px solid rgba(231,76,60,0.2);
 }
 
 @media (max-width: 480px) {

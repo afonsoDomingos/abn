@@ -18,6 +18,33 @@ export default function Services() {
   const { t, language } = useLanguage();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleRequest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormStatus('loading');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: `Solicitação do Serviço: ${selectedService?.name}\n\nPreço/Info: ${selectedService?.price}`
+        })
+      });
+      if (res.ok) {
+        setFormStatus('success');
+        setFormData({ name: '', email: '' });
+      } else {
+        setFormStatus('error');
+      }
+    } catch (error) {
+      setFormStatus('error');
+    }
+  };
 
   useEffect(() => {
     fetch('/api/services')
@@ -66,7 +93,7 @@ export default function Services() {
               <p className={styles.description}>{service.description}</p>
               <div className={styles.footer}>
                 <span className={styles.price}>{service.price}</span>
-                <button className={styles.btn}>{t.services.request}</button>
+                <button className={styles.btn} onClick={() => setSelectedService(service)}>{t.services.request}</button>
               </div>
             </motion.div>
           ))}
@@ -76,6 +103,56 @@ export default function Services() {
           <button className="btn-outline">{t.services.viewAll}</button>
         </div>
       </div>
+
+      {selectedService && (
+        <div className={styles.modalOverlay} onClick={() => setSelectedService(null)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.closeBtn} onClick={() => setSelectedService(null)}>&times;</button>
+            <h3 className={styles.modalTitle}>Solicitar Serviço</h3>
+            <p className={styles.modalSubtitle}>Serviço escolhido: <strong>{selectedService.name}</strong></p>
+            
+            {formStatus === 'success' ? (
+              <div className={styles.successMessage}>
+                <span className={styles.successIcon}>✅</span>
+                <h4>Solicitação enviada!</h4>
+                <p>A nossa equipa entrará em contacto brevemente.</p>
+                <button className="btn-primary" onClick={() => setSelectedService(null)} style={{marginTop: '1rem', width: '100%'}}>Fechar</button>
+              </div>
+            ) : (
+              <form onSubmit={handleRequest} className={styles.modalForm}>
+                <div className={styles.formGroup}>
+                  <label>Nome Completo</label>
+                  <input 
+                    type="text" 
+                    required 
+                    value={formData.name}
+                    onChange={e => setFormData({...formData, name: e.target.value})}
+                    placeholder="O seu nome completo"
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Email</label>
+                  <input 
+                    type="email" 
+                    required 
+                    value={formData.email}
+                    onChange={e => setFormData({...formData, email: e.target.value})}
+                    placeholder="O seu email principal"
+                  />
+                </div>
+                
+                {formStatus === 'error' && (
+                  <div className={styles.errorMessage}>Ocorreu um erro ao enviar. Tente novamente.</div>
+                )}
+                
+                <button type="submit" className="btn-primary" disabled={formStatus === 'loading'} style={{width: '100%', marginTop: '1rem'}}>
+                  {formStatus === 'loading' ? 'A Enviar...' : 'Enviar Solicitação'}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
