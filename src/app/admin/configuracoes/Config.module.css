@@ -14,7 +14,7 @@
 }
 
 .header p {
-  opacity: 0.6;
+  color: rgba(255, 255, 255, 0.65);
   font-size: 0.95rem;
 }
 
@@ -33,6 +33,8 @@
 .section {
   padding: 2rem;
   border-radius: 24px;
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .section h3 {
@@ -59,12 +61,12 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 700;
-  opacity: 0.5;
+  color: rgba(255, 255, 255, 0.75);
 }
 
-.page input, .page textarea {
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+.page input, .page textarea, .page select {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
   padding: 0.85rem 1.25rem !important;
   border-radius: 12px !important;
   color: #fff !important;
@@ -76,10 +78,19 @@
   box-sizing: border-box;
 }
 
-.page input:focus, .page textarea:focus {
+.page input::placeholder, .page textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.page select option {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.page input:focus, .page textarea:focus, .page select:focus {
   border-color: var(--primary) !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.12) !important;
 }
 
 .listGrid {
@@ -93,9 +104,9 @@
   flex-wrap: wrap;
   gap: 1rem;
   padding: 1.25rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   align-items: center;
 }
 
@@ -109,14 +120,14 @@
   flex-direction: column;
   gap: 1.25rem;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: border-color 0.3s;
 }
 
 .itemEditFull:hover {
-  border-color: rgba(212, 175, 55, 0.3);
+  border-color: rgba(212, 175, 55, 0.4);
 }
 
 .avatarPreview {
@@ -166,19 +177,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0.85rem 1rem;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s;
   font-size: 1.1rem;
   height: 48px;
+  color: rgba(255,255,255,0.8);
   box-sizing: border-box;
 }
 
 .uploadLabel:hover {
-  background: rgba(212, 175, 55, 0.1);
+  background: rgba(212, 175, 55, 0.15);
   border-color: var(--primary);
   color: var(--primary);
 }
