@@ -397,7 +397,7 @@ export default function AdminConfigPage() {
         {/* Articles Section Config */}
         <section className={`glass ${styles.section}`}>
           <h3>Notícias & Artigos (Inspiração Orange Corners)</h3>
-          <div className={styles.listGrid}>
+          <div className={styles.articlesGrid}>
             {(articles || []).map((art, index) => (
               <div key={index} className={styles.itemEditFull}>
                 {/* Clean Header with visible Delete Button */}
@@ -542,8 +542,9 @@ export default function AdminConfigPage() {
                 </div>
               </div>
             ))}
-            <button className="btn-outline" onClick={() => addItem(setArticles, articles, { type: 'news', location: '', title: '', date: '', desc: '', img: '' })}>+ Adicionar Artigo</button>
           </div>
+          <button className="btn-outline" onClick={() => addItem(setArticles, articles, { type: 'news', location: '', title: '', date: '', desc: '', img: '' })} style={{ marginTop: '1.5rem', width: '100%' }}>+ Adicionar Artigo</button>
+          
           <button className="btn-primary" onClick={() => saveConfig('articles_content', articles)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Artigos'}
           </button>

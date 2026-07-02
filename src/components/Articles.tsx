@@ -6,6 +6,7 @@ import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Articles() {
   const { t, language } = useLanguage();
+  const [selectedArticle, setSelectedArticle] = useState<any>(null);
   const [articles, setArticles] = useState([
     {
       type: 'news',
@@ -59,7 +60,7 @@ export default function Articles() {
           <p className={styles.subtitle}>{t.articles?.subtitle}</p>
         </div>
 
-        <div className={styles.grid}>
+        <div className={`${styles.grid} ${articles.length >= 6 ? styles.scrollableGrid : ''}`}>
           {articles.map((item: any, index: number) => {
             const translated = language !== 'pt' && t.articles?.items?.[index] ? t.articles.items[index] : null;
             const title = translated ? translated.title : item.title;
@@ -88,12 +89,37 @@ export default function Articles() {
                   <h3 className={styles.articleTitle}>{title}</h3>
                   <span className={styles.date}>{item.date}</span>
                   <p className={styles.desc}>{desc}</p>
+                  <button 
+                    className={styles.readMoreBtn} 
+                    onClick={() => setSelectedArticle({ ...item, translatedTitle: title, translatedDesc: desc, translatedLocation: location })}
+                  >
+                    Ver mais
+                  </button>
                 </div>
               </article>
             );
           })}
         </div>
       </div>
+
+      {selectedArticle && (
+        <div className={styles.modalOverlay} onClick={() => setSelectedArticle(null)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.closeBtn} onClick={() => setSelectedArticle(null)}>&times;</button>
+            <img 
+              src={selectedArticle.img || '/articles/ambassador-day.png'} 
+              alt={selectedArticle.translatedTitle || selectedArticle.title} 
+              className={styles.modalImg} 
+            />
+            <div className={styles.modalBody}>
+              <span className={styles.location}>{selectedArticle.translatedLocation || selectedArticle.location}</span>
+              <h3 className={styles.modalTitle}>{selectedArticle.translatedTitle || selectedArticle.title}</h3>
+              <span className={styles.date}>{selectedArticle.date}</span>
+              <div className={styles.modalText}>{selectedArticle.translatedDesc || selectedArticle.desc}</div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
