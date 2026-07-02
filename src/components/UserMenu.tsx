@@ -54,6 +54,13 @@ export default function UserMenu() {
           <Link href="/admin/perfil" onClick={() => setIsOpen(false)} className={styles.menuItem}>
             {t.admin.editProfile}
           </Link>
+          <Link href="/" onClick={() => setIsOpen(false)} className={styles.menuItem}>
+            🏠 {t.admin.goHome}
+          </Link>
+          <div className={styles.separator}></div>
+          <button onClick={handleLogout} className={`${styles.menuItem} ${styles.logout}`}>
+            🚪 {t.admin.logout}
+          </button>
         </div>
       )}
     </div>

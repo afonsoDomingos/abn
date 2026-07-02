@@ -80,6 +80,12 @@
   margin: 0.4rem 0;
 }
 
+.separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.4rem 0.5rem;
+}
+
 .logout {
   color: #ff4d4d;
 }
