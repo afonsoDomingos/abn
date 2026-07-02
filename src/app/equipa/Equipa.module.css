@@ -1,0 +1,156 @@
+.main {
+  min-height: 100vh;
+  background: var(--background, #0f0f0f);
+  color: var(--foreground, #fff);
+  padding-bottom: 4rem;
+}
+
+.hero {
+  position: relative;
+  height: 35vh;
+  min-height: 250px;
+  background: url('/abn-cover.jpg') center/cover no-repeat; /* Fallback se não houver foto da equipa */
+  background-color: var(--card-bg, #1a1a1a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 2rem;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.heroContent h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-family: 'Outfit', sans-serif;
+  color: var(--primary, #d4af37);
+  margin-bottom: 1rem;
+}
+
+.heroContent p {
+  font-size: 1.2rem;
+  color: #ddd;
+}
+
+.container {
+  max-width: 1200px;
+  margin: -40px auto 0;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem;
+  color: var(--text-muted, #999);
+  font-size: 1.2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background: var(--card-bg, #1a1a1a);
+  border: 1px solid var(--card-border, #333);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  border-color: var(--primary, #d4af37);
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--alpha-bg-3, #222);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.05);
+}
+
+.placeholderImage {
+  font-size: 4rem;
+  color: var(--text-muted, #666);
+}
+
+.cardContent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+}
+
+.name {
+  font-size: 1.2rem;
+  font-family: 'Outfit', sans-serif;
+  color: var(--foreground, #fff);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.role {
+  font-size: 0.95rem;
+  color: var(--text-muted, #999);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.linkedinBtn {
+  position: absolute;
+  bottom: 1.2rem;
+  right: 1.2rem;
+  background: #0077B5;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.linkedinBtn:hover {
+  background: #005582;
+  transform: scale(1.1);
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}

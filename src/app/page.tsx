@@ -98,6 +98,7 @@ export default function Home() {
                 </div>
                 <div className={styles.linkColumn}>
                   <h4>{t.footer.institutional}</h4>
+                  <a href="/equipa">Equipa (Sobre Nós)</a>
                   <a href="#impacto">{t.nav.impact}</a>
                   <a href="#como-funciona">{t.howItWorks.title}</a>
                   <a href="/registro">{t.nav.join}</a>

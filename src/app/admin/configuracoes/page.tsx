@@ -38,6 +38,9 @@ export default function AdminConfigPage() {
       img: '/articles/nilza.png'
     }
   ]);
+  const [team, setTeam] = useState([
+    { name: '', role: '', linkedin: '', image: '' }
+  ]);
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -57,6 +60,7 @@ export default function AdminConfigPage() {
           if (data.configs.testimonials_content) setTestimonials(data.configs.testimonials_content);
           if (data.configs.faq_content) setFaq(data.configs.faq_content);
           if (data.configs.articles_content) setArticles(data.configs.articles_content);
+          if (data.configs.team_content) setTeam(data.configs.team_content);
         }
         setLoading(false);
       });
@@ -277,6 +281,93 @@ export default function AdminConfigPage() {
           </div>
           <button className="btn-primary" onClick={() => saveConfig('partners_content', partners)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Parceiros'}
+          </button>
+        </section>
+
+        {/* Team Section Config */}
+        <section className={`glass ${styles.section}`}>
+          <h3>Equipa (Team)</h3>
+          <div className={styles.listGrid}>
+            {(team || []).map((member, index) => (
+              <div key={index} className={styles.itemEditFull}>
+                <div className={styles.row}>
+                  <div className={styles.partnerLogoPreview} style={{borderRadius: '50%', overflow: 'hidden'}}>
+                    {(member.image && (member.image.startsWith('http') || member.image.startsWith('/'))) ? (
+                      <img src={member.image} alt="Membro" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      <span style={{ fontSize: '1.5rem' }}>👤</span>
+                    )}
+                  </div>
+                  <div className={styles.logoInputWrapper}>
+                    <input 
+                      value={member.image} 
+                      onChange={e => updateArrayField(setTeam, team, index, 'image', e.target.value)} 
+                      placeholder="Foto (URL ou Upload)" 
+                      className={styles.inputSmall} 
+                    />
+                    <label className={styles.uploadLabel} title="Carregar Foto">
+                      📁
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          
+                          const formData = new FormData();
+                          formData.append('file', file);
+                          
+                          updateArrayField(setTeam, team, index, 'image', '⏳ Carregando...');
+                          
+                          try {
+                            const res = await fetch('/api/upload', {
+                              method: 'POST',
+                              body: formData,
+                            });
+                            const data = await res.json();
+                            if (data.success && data.url) {
+                              updateArrayField(setTeam, team, index, 'image', data.url);
+                            } else {
+                              updateArrayField(setTeam, team, index, 'image', '');
+                              alert('Erro ao fazer upload: ' + (data.error || 'Erro desconhecido'));
+                            }
+                          } catch (err) {
+                            updateArrayField(setTeam, team, index, 'image', '');
+                            alert('Erro na conexão para upload.');
+                          }
+                        }}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                  </div>
+                  <input 
+                    value={member.name} 
+                    onChange={e => updateArrayField(setTeam, team, index, 'name', e.target.value)} 
+                    placeholder="Nome" 
+                    style={{ flex: 1 }}
+                  />
+                  <button className={styles.removeBtn} onClick={() => removeItem(setTeam, team, index)}>×</button>
+                </div>
+                <div className={styles.row} style={{ marginTop: '0.5rem' }}>
+                  <input 
+                    value={member.role} 
+                    onChange={e => updateArrayField(setTeam, team, index, 'role', e.target.value)} 
+                    placeholder="Cargo / Descrição" 
+                    style={{ flex: 1 }}
+                  />
+                  <input 
+                    value={member.linkedin} 
+                    onChange={e => updateArrayField(setTeam, team, index, 'linkedin', e.target.value)} 
+                    placeholder="Link do LinkedIn" 
+                    style={{ flex: 1 }}
+                  />
+                </div>
+              </div>
+            ))}
+            <button className="btn-outline" onClick={() => addItem(setTeam, team, { name: '', role: '', linkedin: '', image: '' })}>+ Adicionar Membro</button>
+          </div>
+          <button className="btn-primary" onClick={() => saveConfig('team_content', team)} disabled={saving} style={{ marginTop: '1.5rem' }}>
+            {saving ? 'A guardar...' : 'Atualizar Equipa'}
           </button>
         </section>
 
