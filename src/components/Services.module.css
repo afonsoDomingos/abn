@@ -55,10 +55,18 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  border: 1px solid var(--card-border);
-  background: var(--card-bg);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(184, 134, 11, 0.08);
+  background: var(--card-bg, #ffffff);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.03);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(184, 134, 11, 0.3);
+  box-shadow: 0 20px 45px rgba(184, 134, 11, 0.08);
 }
 
 .cardHeader {
@@ -68,25 +76,32 @@
 }
 
 .category {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--secondary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  background: rgba(27, 94, 32, 0.06);
+  padding: 6px 14px;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .dot {
   width: 8px;
   height: 8px;
-  background: var(--secondary);
+  background: #2e7d32;
   border-radius: 50%;
-  box-shadow: 0 0 10px var(--secondary);
+  box-shadow: 0 0 10px rgba(46, 125, 50, 0.6);
 }
 
 .serviceName {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
+  font-weight: 700;
   color: var(--foreground);
   font-family: 'Outfit', sans-serif;
+  line-height: 1.3;
 }
 
 .description {
@@ -102,31 +117,35 @@
   align-items: center;
   margin-top: 1rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--card-border);
+  border-top: 1px solid rgba(184, 134, 11, 0.06);
 }
 
 .price {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 800;
   color: var(--primary);
+  font-family: 'Outfit', sans-serif;
 }
 
 .btn {
-  background: var(--alpha-bg-5);
-  border: 1px solid var(--alpha-border-10);
-  color: var(--foreground);
-  padding: 0.6rem 1.2rem;
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 8px 18px;
   border-radius: 12px;
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
 }
 
 .btn:hover {
-  background: var(--primary);
-  color: #fff;
-  border-color: var(--primary);
+  background: var(--gradient-gold);
+  color: #000;
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(184, 134, 11, 0.25);
 }
 
 .more {
