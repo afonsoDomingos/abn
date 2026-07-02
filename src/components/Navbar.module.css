@@ -17,7 +17,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 4rem;
+  padding: 0 2rem;
 }
 
 .logo {
@@ -79,13 +79,21 @@
 
 .links {
   display: flex;
-  gap: 3.5rem;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  white-space: nowrap;
+}
+
+.links::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
 }
 
 .links a {
   font-size: 0.95rem;
   font-weight: 500;
   opacity: 0.8;
+  white-space: nowrap;
 }
 
 .links a:hover {
@@ -102,6 +110,7 @@
 .login {
   font-weight: 600;
   font-size: 0.95rem;
+  white-space: nowrap;
 }
 
 .login:hover {
@@ -115,11 +124,23 @@
   background: rgba(46, 139, 87, 0.1);
   padding: 6px 12px;
   border-radius: 50px;
+  white-space: nowrap;
 }
 
 .whatsapp:hover {
   background: var(--secondary);
   color: #fff;
+}
+
+.navbarBtn {
+  white-space: nowrap !important;
+  padding: 8px 18px !important;
+  font-size: 0.85rem !important;
+  border-radius: 8px !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ===================== Hamburger Button ===================== */

@@ -50,7 +50,7 @@ export default function Navbar() {
             <LanguageSelector />
             <a href="https://wa.me/258845773974" target="_blank" className={styles.whatsapp}>{t.nav.support}</a>
             <Link href="/login" className={styles.login}>{t.nav.login}</Link>
-            <Link href="/registro" className="btn-primary">{t.nav.join}</Link>
+            <Link href="/registro" className={`btn-primary ${styles.navbarBtn}`}>{t.nav.join}</Link>
           </div>
 
           {/* Hamburger button — mobile only */}
