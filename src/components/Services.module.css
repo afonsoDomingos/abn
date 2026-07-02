@@ -227,19 +227,74 @@
 }
 
 .successMessage {
-  text-align: center; padding: 2rem 0;
+  text-align: center;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.successIcon {
-  font-size: 4rem; display: block; margin-bottom: 1rem;
+.successIconWrapper {
+  margin-bottom: 0.5rem;
+}
+
+.checkmark {
+  width: 72px;
+  height: 72px;
+  stroke-width: 3;
+}
+
+.checkmarkCircle {
+  stroke: var(--primary, #d4af37);
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-linecap: round;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmarkCheck {
+  stroke: var(--primary, #d4af37);
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  stroke-linecap: round;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.5s forwards;
+}
+
+@keyframes stroke {
+  100% { stroke-dashoffset: 0; }
 }
 
 .successMessage h4 {
-  font-size: 1.5rem; color: var(--foreground, #111); margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-family: 'Outfit', sans-serif;
+  color: var(--foreground, #111);
+  font-weight: 700;
 }
 
 .successMessage p {
-  color: var(--text-muted, #666); font-size: 0.95rem;
+  color: var(--text-muted, #666);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 340px;
+}
+
+.successCloseBtn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.9rem;
+  background: var(--gradient-gold, linear-gradient(135deg, #d4af37, #b8860b));
+  color: #000;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.successCloseBtn:hover {
+  opacity: 0.9;
 }
 
 .errorMessage {

@@ -133,10 +133,15 @@ export default function Services() {
             
             {formStatus === 'success' ? (
               <div className={styles.successMessage}>
-                <span className={styles.successIcon}>✅</span>
+                <div className={styles.successIconWrapper}>
+                  <svg viewBox="0 0 52 52" className={styles.checkmark}>
+                    <circle className={styles.checkmarkCircle} cx="26" cy="26" r="25" fill="none"/>
+                    <path className={styles.checkmarkCheck} fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                  </svg>
+                </div>
                 <h4>Solicitação enviada!</h4>
-                <p>A nossa equipa entrará em contacto brevemente.</p>
-                <button className="btn-primary" onClick={closeModal} style={{marginTop: '1rem', width: '100%'}}>Fechar</button>
+                <p>Recebemos o seu pedido. A nossa equipa entrará em contacto em breve via email ou WhatsApp.</p>
+                <button className={styles.successCloseBtn} onClick={closeModal}>Fechar</button>
               </div>
             ) : (
               <div>

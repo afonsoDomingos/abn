@@ -42,13 +42,16 @@ export default function RegisterPage() {
 
   return (
     <div className={styles.authPage}>
-      <div className={`${styles.authCard} glass`}>
+      <div className={styles.authCard}>
+        <Link href="/" className={styles.backHome}>
+          ← Voltar ao Site
+        </Link>
         <div className={styles.header}>
           <h1 className="text-gradient-gold">Junte-se à Rede</h1>
           <p>Comece a sua jornada empresarial hoje.</p>
         </div>
 
-        {error && <div style={{ color: 'var(--accent)', marginBottom: '1rem', fontSize: '0.9rem' }}>{error}</div>}
+        {error && <div style={{ color: '#ff4d4d', marginBottom: '1rem', fontSize: '0.9rem', background: 'rgba(255,77,77,0.1)', padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(255,77,77,0.2)' }}>{error}</div>}
         
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
