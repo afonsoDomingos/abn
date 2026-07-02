@@ -12,7 +12,32 @@ export default function AdminConfigPage() {
   const [howItWorks, setHowItWorks] = useState([{ number: '', title: '', description: '' }]);
   const [testimonials, setTestimonials] = useState([{ name: '', role: '', text: '', img: '' }]);
   const [faq, setFaq] = useState([{ question: '', answer: '' }]);
-  const [articles, setArticles] = useState([{ type: 'news', location: '', title: '', date: '', desc: '', img: '' }]);
+  const [articles, setArticles] = useState([
+    {
+      type: 'news',
+      location: 'Moçambique',
+      title: 'Orange Corners Moçambique: Dia do Embaixador',
+      date: '02/06/2026',
+      desc: 'Nossos embaixadores estudantis desempenham um papel fundamental na conexão do Orange Corners com estudantes universitários, inspirando curiosidade...',
+      img: '/articles/ambassador-day.png'
+    },
+    {
+      type: 'photos',
+      location: 'Moçambique',
+      title: 'Fotos do Orange Corners Moçambique: Gala do Empreendedorismo',
+      date: '28/11/2025',
+      desc: 'No início deste mês, o Orange Corners Entrepreneurship Gala, em Moçambique, reuniu ex-alunos de todo o país...',
+      img: '/articles/gala.png'
+    },
+    {
+      type: 'article',
+      location: 'Moçambique',
+      title: 'Nilza Mazive e Xiphefu: energia inteligente para impulsionar o futuro de Moçambique',
+      date: '25/08/2025',
+      desc: 'Num país onde apenas cerca de 40% da população tem acesso à eletricidade, poupar energia...',
+      img: '/articles/nilza.png'
+    }
+  ]);
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -375,97 +400,146 @@ export default function AdminConfigPage() {
           <div className={styles.listGrid}>
             {(articles || []).map((art, index) => (
               <div key={index} className={styles.itemEditFull}>
+                {/* Clean Header with visible Delete Button */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.75rem', marginBottom: '0.75rem' }}>
+                  <span style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', letterSpacing: '0.05em' }}>ARTIGO #{index + 1}</span>
+                  <button 
+                    onClick={() => removeItem(setArticles, articles, index)}
+                    style={{ 
+                      background: 'rgba(231,76,60,0.15)', 
+                      color: '#ff4d4d', 
+                      border: '1px solid rgba(231,76,60,0.3)', 
+                      padding: '6px 12px', 
+                      borderRadius: '8px', 
+                      fontSize: '0.8rem', 
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#e74c3c';
+                      e.currentTarget.style.color = '#fff';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(231,76,60,0.15)';
+                      e.currentTarget.style.color = '#ff4d4d';
+                    }}
+                  >
+                    🗑️ Remover Artigo
+                  </button>
+                </div>
+
                 <div className={styles.row}>
-                  <div className={styles.partnerLogoPreview} style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div className={styles.avatarPreview} style={{ width: '90px', height: '90px', borderRadius: '12px' }}>
                     {art.img ? (
-                      <img src={art.img} alt="Artigo Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <img src={art.img} alt="Artigo Preview" />
                     ) : (
-                      <span style={{ fontSize: '1.5rem' }}>📰</span>
+                      <span style={{ fontSize: '2rem' }}>📰</span>
                     )}
                   </div>
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     <div className={styles.row}>
-                      <select 
-                        value={art.type} 
-                        onChange={e => updateArrayField(setArticles, articles, index, 'type', e.target.value)} 
-                        className={styles.inputFlex}
-                      >
-                        <option value="news">Notícias</option>
-                        <option value="photos">Fotos</option>
-                        <option value="article">Artigo</option>
-                      </select>
-                      <input 
-                        value={art.location} 
-                        onChange={e => updateArrayField(setArticles, articles, index, 'location', e.target.value)} 
-                        placeholder="País/Localização (ex: Moçambique)" 
-                        className={styles.inputFlex}
-                        style={{ flex: 1 }}
-                      />
-                      <input 
-                        value={art.date} 
-                        onChange={e => updateArrayField(setArticles, articles, index, 'date', e.target.value)} 
-                        placeholder="Data (ex: 02/06/2026)" 
-                        className={styles.inputFlex}
-                        style={{ flex: 1 }}
-                      />
-                      <button className={styles.removeBtn} onClick={() => removeItem(setArticles, articles, index)}>×</button>
-                    </div>
-                    <div className={styles.row}>
-                      <input 
-                        value={art.img} 
-                        onChange={e => updateArrayField(setArticles, articles, index, 'img', e.target.value)} 
-                        placeholder="URL da Imagem do Artigo" 
-                        style={{ flex: 1 }}
-                      />
-                      <label className={styles.uploadLabel} title="Carregar Imagem do Artigo">
-                        📁
+                      <div className={styles.field} style={{ flex: 1, minWidth: '120px' }}>
+                        <label style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)' }}>TIPO</label>
+                        <select 
+                          value={art.type} 
+                          onChange={e => updateArrayField(setArticles, articles, index, 'type', e.target.value)} 
+                          style={{ width: '100%' }}
+                        >
+                          <option value="news">Notícias</option>
+                          <option value="photos">Fotos</option>
+                          <option value="article">Artigo</option>
+                        </select>
+                      </div>
+                      <div className={styles.field} style={{ flex: 1, minWidth: '150px' }}>
+                        <label style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)' }}>LOCAL / PAÍS</label>
                         <input 
-                          type="file" 
-                          accept="image/*" 
-                          onChange={async (e) => {
-                            const file = e.target.files?.[0];
-                            if (!file) return;
-                            
-                            const formData = new FormData();
-                            formData.append('file', file);
-                            
-                            updateArrayField(setArticles, articles, index, 'img', '⏳ Carregando...');
-                            
-                            try {
-                              const res = await fetch('/api/upload', {
-                                method: 'POST',
-                                body: formData,
-                              });
-                              const data = await res.json();
-                              if (data.success && data.url) {
-                                updateArrayField(setArticles, articles, index, 'img', data.url);
-                              } else {
-                                updateArrayField(setArticles, articles, index, 'img', '');
-                                alert('Erro ao fazer upload: ' + (data.error || 'Erro desconhecido'));
-                              }
-                            } catch (err) {
-                              updateArrayField(setArticles, articles, index, 'img', '');
-                              alert('Erro na conexão para upload.');
-                            }
-                          }}
-                          style={{ display: 'none' }}
+                          value={art.location} 
+                          onChange={e => updateArrayField(setArticles, articles, index, 'location', e.target.value)} 
+                          placeholder="Ex: Moçambique" 
+                          style={{ width: '100%' }}
                         />
-                      </label>
+                      </div>
+                      <div className={styles.field} style={{ flex: 1, minWidth: '120px' }}>
+                        <label style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)' }}>DATA</label>
+                        <input 
+                          value={art.date} 
+                          onChange={e => updateArrayField(setArticles, articles, index, 'date', e.target.value)} 
+                          placeholder="Ex: 02/06/2026" 
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className={styles.field}>
+                      <label style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)' }}>IMAGEM (URL OU UPLOAD)</label>
+                      <div className={styles.logoInputWrapper}>
+                        <input 
+                          value={art.img} 
+                          onChange={e => updateArrayField(setArticles, articles, index, 'img', e.target.value)} 
+                          placeholder="URL da Imagem" 
+                          style={{ flex: 1 }}
+                        />
+                        <label className={styles.uploadLabel} title="Carregar imagem">
+                          📁
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+                              
+                              const formData = new FormData();
+                              formData.append('file', file);
+                              
+                              updateArrayField(setArticles, articles, index, 'img', '⏳ Carregando...');
+                              
+                              try {
+                                const res = await fetch('/api/upload', {
+                                  method: 'POST',
+                                  body: formData,
+                                });
+                                const data = await res.json();
+                                if (data.success && data.url) {
+                                  updateArrayField(setArticles, articles, index, 'img', data.url);
+                                } else {
+                                  updateArrayField(setArticles, articles, index, 'img', '');
+                                  alert('Erro ao fazer upload: ' + (data.error || 'Erro desconhecido'));
+                                }
+                              } catch (err) {
+                                updateArrayField(setArticles, articles, index, 'img', '');
+                                  alert('Erro na conexão para upload.');
+                              }
+                            }}
+                            style={{ display: 'none' }}
+                          />
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <input 
-                  value={art.title} 
-                  onChange={e => updateArrayField(setArticles, articles, index, 'title', e.target.value)} 
-                  placeholder="Título do Artigo" 
-                  style={{ marginTop: '0.5rem' }}
-                />
-                <textarea 
-                  value={art.desc} 
-                  onChange={e => updateArrayField(setArticles, articles, index, 'desc', e.target.value)} 
-                  placeholder="Resumo/Snippet do Artigo" 
-                  rows={3} 
-                />
+
+                <div className={styles.field} style={{ marginTop: '0.5rem' }}>
+                  <label style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)' }}>TÍTULO</label>
+                  <input 
+                    value={art.title} 
+                    onChange={e => updateArrayField(setArticles, articles, index, 'title', e.target.value)} 
+                    placeholder="Título do artigo" 
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)' }}>RESUMO / SNIPPET</label>
+                  <textarea 
+                    value={art.desc} 
+                    onChange={e => updateArrayField(setArticles, articles, index, 'desc', e.target.value)} 
+                    placeholder="Resumo do texto..." 
+                    rows={3} 
+                  />
+                </div>
               </div>
             ))}
             <button className="btn-outline" onClick={() => addItem(setArticles, articles, { type: 'news', location: '', title: '', date: '', desc: '', img: '' })}>+ Adicionar Artigo</button>
