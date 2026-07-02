@@ -1,53 +1,98 @@
 .statsSection {
-  padding: 80px 2rem;
-  background: var(--gradient-dark);
-  border-top: 1px solid var(--glass-border);
-  border-bottom: 1px solid var(--glass-border);
+  padding: 90px 2rem;
+  background: var(--gradient-dark, #f5f2ed);
+  border-top: 1px solid rgba(184, 134, 11, 0.1);
+  border-bottom: 1px solid rgba(184, 134, 11, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background gold glow effect */
+.statsSection::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(184, 134, 11, 0.06) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
+  position: relative;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 3rem;
+  grid-template-columns: repeat(4, 1fr);
   text-align: center;
+}
+
+/* Vertical dividers between stats */
+.statItem {
+  position: relative;
+  padding: 1rem 2rem;
+}
+
+.statItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(184, 134, 11, 0.2), transparent);
 }
 
 .value {
   font-size: 3rem;
-  font-weight: 800;
+  font-weight: 900;
   font-family: 'Outfit', sans-serif;
-  color: var(--primary);
+  background: var(--gradient-gold, linear-gradient(135deg, #b8860b, #d4af37));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: 0.5rem;
+  line-height: 1;
 }
 
 .label {
-  font-size: 1rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .statItem:nth-child(2)::after {
+    display: none;
+  }
+  .statItem:nth-child(4)::after {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
   .statsSection {
-    padding: 50px 1.25rem;
-  }
-
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    padding: 55px 1.25rem;
   }
 
   .value {
-    font-size: 2.2rem;
+    font-size: 2.3rem;
   }
 
   .label {
-    font-size: 0.85rem;
+    font-size: 0.72rem;
   }
 }
 
@@ -61,8 +106,11 @@
     gap: 1.5rem;
   }
 
+  .statItem::after {
+    display: none;
+  }
+
   .value {
     font-size: 2rem;
   }
 }
-
