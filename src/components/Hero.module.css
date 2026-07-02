@@ -25,14 +25,14 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #0a0a0a; /* Fallback */
+  background-color: var(--background); /* Fallback */
 }
 
 .circle1 {
   position: absolute;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(184, 134, 11, 0.08) 0%, transparent 70%);
   top: -100px;
   right: -100px;
   border-radius: 50%;
@@ -43,7 +43,7 @@
   position: absolute;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(46, 139, 87, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(27, 94, 32, 0.08) 0%, transparent 70%);
   bottom: -100px;
   left: -100px;
   border-radius: 50%;
@@ -67,7 +67,7 @@
 .badge {
   display: inline-block;
   padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--alpha-bg-5);
   border: 1px solid var(--glass-border);
   border-radius: 50px;
   font-size: 0.85rem;
@@ -83,12 +83,12 @@
   line-height: 1.1;
   margin-bottom: 2.5rem;
   font-weight: 800;
-  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 }
 
 .description {
   font-size: 1.25rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-muted);
   max-width: 750px;
   margin: 0 auto 4rem;
   line-height: 1.7;
@@ -107,13 +107,13 @@
   justify-content: center;
   gap: 1rem;
   padding: 1.25rem 2.5rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--glass-bg);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  border: 1px solid rgba(184, 134, 11, 0.2);
   border-radius: 16px;
   width: auto;
   margin: 0 auto;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .promoIcon {
@@ -122,7 +122,7 @@
 
 .promo p {
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--foreground);
 }
 
 .promo strong {

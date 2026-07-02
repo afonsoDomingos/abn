@@ -1,8 +1,8 @@
 .partners {
   padding: 40px 0;
-  background: rgba(255, 255, 255, 0.02);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--alpha-bg-3);
+  border-top: 1px solid var(--alpha-border-5);
+  border-bottom: 1px solid var(--alpha-border-5);
   overflow: hidden;
 }
 
@@ -16,7 +16,7 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-subtle);
   margin-bottom: 30px;
   font-weight: 600;
   font-family: 'Outfit', sans-serif;
@@ -53,9 +53,9 @@
   justify-content: center;
   border-radius: 50%;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background: var(--alpha-bg-5);
+  border: 1px solid var(--alpha-border-10);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .logoImg {
@@ -72,7 +72,7 @@
 .name {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--foreground);
   white-space: nowrap;
 }
 

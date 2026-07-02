@@ -6,11 +6,11 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--alpha-bg-5);
+  border: 1px solid var(--alpha-border-10);
   padding: 8px 14px;
   border-radius: 12px;
-  color: #fff;
+  color: var(--foreground);
   cursor: pointer;
   transition: all 0.2s;
   font-family: 'Outfit', sans-serif;
@@ -19,7 +19,7 @@
 }
 
 .trigger:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--alpha-bg-10);
   border-color: var(--primary);
 }
 
@@ -47,12 +47,12 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  background: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 14px;
   min-width: 160px;
   padding: 6px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -72,7 +72,7 @@
   border-radius: 10px;
   border: none;
   background: transparent;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--foreground);
   cursor: pointer;
   transition: all 0.2s;
   text-align: left;
@@ -81,7 +81,7 @@
 }
 
 .option:hover {
-  background: rgba(212, 175, 55, 0.1);
+  background: rgba(184, 134, 11, 0.1);
   color: var(--primary);
 }
 

@@ -1,20 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #f5f5f5;
-  --primary: #d4af37; /* Gold */
-  --primary-rgb: 212, 175, 55;
-  --secondary: #2e8b57; /* African Green */
-  --secondary-rgb: 46, 139, 87;
-  --accent: #ff4500; /* Terracotta/Orange accent */
-  --card-bg: rgba(20, 20, 20, 0.8);
-  --card-border: rgba(212, 175, 55, 0.2);
-  --glass-bg: rgba(10, 10, 10, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --gradient-gold: linear-gradient(135deg, #d4af37 0%, #ffcc33 100%);
-  --gradient-dark: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
-  --glow-gold: 0 0 25px rgba(212, 175, 55, 0.25);
+  --background: #faf8f6; /* Warm light off-white */
+  --foreground: #1c1917; /* Very dark charcoal/brown */
+  --primary: #b8860b; /* Golden bronze */
+  --primary-rgb: 184, 134, 11;
+  --secondary: #1b5e20; /* Deep African Green */
+  --secondary-rgb: 27, 94, 32;
+  --accent: #c83b00; /* Rich terracotta */
+  --card-bg: #ffffff;
+  --card-border: rgba(184, 134, 11, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --gradient-gold: linear-gradient(135deg, #b8860b 0%, #d4af37 100%);
+  --gradient-dark: linear-gradient(180deg, #faf8f6 0%, #eae5df 100%);
+  --glow-gold: 0 10px 30px rgba(184, 134, 11, 0.08);
+
+  /* Semantic opacity helpers for light mode */
+  --alpha-bg-3: rgba(0, 0, 0, 0.02);
+  --alpha-bg-5: rgba(0, 0, 0, 0.04);
+  --alpha-bg-8: rgba(0, 0, 0, 0.07);
+  --alpha-bg-10: rgba(0, 0, 0, 0.1);
+  --alpha-border-5: rgba(0, 0, 0, 0.05);
+  --alpha-border-10: rgba(0, 0, 0, 0.08);
+  --text-muted: rgba(28, 25, 23, 0.6);
+  --text-subtle: rgba(28, 25, 23, 0.4);
 }
 
 ::selection {

@@ -33,7 +33,7 @@
 
 .text {
   font-style: italic;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-muted);
   line-height: 1.6;
   font-size: 1.1rem;
 }

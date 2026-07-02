@@ -12,6 +12,7 @@ export default function AdminConfigPage() {
   const [howItWorks, setHowItWorks] = useState([{ number: '', title: '', description: '' }]);
   const [testimonials, setTestimonials] = useState([{ name: '', role: '', text: '', img: '' }]);
   const [faq, setFaq] = useState([{ question: '', answer: '' }]);
+  const [articles, setArticles] = useState([{ type: 'news', location: '', title: '', date: '', desc: '', img: '' }]);
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -30,6 +31,7 @@ export default function AdminConfigPage() {
           if (data.configs.how_it_works_content) setHowItWorks(data.configs.how_it_works_content);
           if (data.configs.testimonials_content) setTestimonials(data.configs.testimonials_content);
           if (data.configs.faq_content) setFaq(data.configs.faq_content);
+          if (data.configs.articles_content) setArticles(data.configs.articles_content);
         }
         setLoading(false);
       });
@@ -364,6 +366,113 @@ export default function AdminConfigPage() {
           </div>
           <button className="btn-primary" onClick={() => saveConfig('faq_content', faq)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar FAQ'}
+          </button>
+        </section>
+
+        {/* Articles Section Config */}
+        <section className={`glass ${styles.section}`}>
+          <h3>Notícias & Artigos (Inspiração Orange Corners)</h3>
+          <div className={styles.listGrid}>
+            {(articles || []).map((art, index) => (
+              <div key={index} className={styles.itemEditFull}>
+                <div className={styles.row}>
+                  <div className={styles.partnerLogoPreview} style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {art.img ? (
+                      <img src={art.img} alt="Artigo Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      <span style={{ fontSize: '1.5rem' }}>📰</span>
+                    )}
+                  </div>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div className={styles.row}>
+                      <select 
+                        value={art.type} 
+                        onChange={e => updateArrayField(setArticles, articles, index, 'type', e.target.value)} 
+                        className={styles.inputFlex}
+                        style={{ background: 'var(--alpha-bg-5)', color: 'var(--foreground)', border: '1px solid var(--alpha-border-10)', padding: '8px', borderRadius: '8px', flex: 1 }}
+                      >
+                        <option value="news">Notícias</option>
+                        <option value="photos">Fotos</option>
+                        <option value="article">Artigo</option>
+                      </select>
+                      <input 
+                        value={art.location} 
+                        onChange={e => updateArrayField(setArticles, articles, index, 'location', e.target.value)} 
+                        placeholder="País/Localização (ex: Moçambique)" 
+                        className={styles.inputFlex}
+                        style={{ flex: 1 }}
+                      />
+                      <input 
+                        value={art.date} 
+                        onChange={e => updateArrayField(setArticles, articles, index, 'date', e.target.value)} 
+                        placeholder="Data (ex: 02/06/2026)" 
+                        className={styles.inputFlex}
+                        style={{ flex: 1 }}
+                      />
+                      <button className={styles.removeBtn} onClick={() => removeItem(setArticles, articles, index)}>×</button>
+                    </div>
+                    <div className={styles.row}>
+                      <input 
+                        value={art.img} 
+                        onChange={e => updateArrayField(setArticles, articles, index, 'img', e.target.value)} 
+                        placeholder="URL da Imagem do Artigo" 
+                        style={{ flex: 1 }}
+                      />
+                      <label className={styles.uploadLabel} title="Carregar Imagem do Artigo">
+                        📁
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+                            
+                            const formData = new FormData();
+                            formData.append('file', file);
+                            
+                            updateArrayField(setArticles, articles, index, 'img', '⏳ Carregando...');
+                            
+                            try {
+                              const res = await fetch('/api/upload', {
+                                method: 'POST',
+                                body: formData,
+                              });
+                              const data = await res.json();
+                              if (data.success && data.url) {
+                                updateArrayField(setArticles, articles, index, 'img', data.url);
+                              } else {
+                                updateArrayField(setArticles, articles, index, 'img', '');
+                                alert('Erro ao fazer upload: ' + (data.error || 'Erro desconhecido'));
+                              }
+                            } catch (err) {
+                              updateArrayField(setArticles, articles, index, 'img', '');
+                              alert('Erro na conexão para upload.');
+                            }
+                          }}
+                          style={{ display: 'none' }}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <input 
+                  value={art.title} 
+                  onChange={e => updateArrayField(setArticles, articles, index, 'title', e.target.value)} 
+                  placeholder="Título do Artigo" 
+                  style={{ marginTop: '0.5rem' }}
+                />
+                <textarea 
+                  value={art.desc} 
+                  onChange={e => updateArrayField(setArticles, articles, index, 'desc', e.target.value)} 
+                  placeholder="Resumo/Snippet do Artigo" 
+                  rows={3} 
+                />
+              </div>
+            ))}
+            <button className="btn-outline" onClick={() => addItem(setArticles, articles, { type: 'news', location: '', title: '', date: '', desc: '', img: '' })}>+ Adicionar Artigo</button>
+          </div>
+          <button className="btn-primary" onClick={() => saveConfig('articles_content', articles)} disabled={saving} style={{ marginTop: '1.5rem' }}>
+            {saving ? 'A guardar...' : 'Atualizar Artigos'}
           </button>
         </section>
       </div>

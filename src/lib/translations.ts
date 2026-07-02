@@ -100,6 +100,39 @@ export const translations = {
       services: "Serviços",
       payments: "Pagamentos",
       settings: "Configurações"
+    },
+    articles: {
+      badge: "Artigos & Novidades",
+      title: "Fique por Dentro do Ecossistema",
+      subtitle: "Histórias de sucesso, notícias e insights sobre o empreendedorismo em África.",
+      types: {
+        news: "Notícias",
+        photos: "Fotos",
+        article: "Artigo"
+      },
+      items: [
+        {
+          type: "news",
+          location: "Moçambique",
+          title: "Orange Corners Moçambique: Dia do Embaixador",
+          date: "02/06/2026",
+          desc: "Nossos embaixadores estudantis desempenham um papel fundamental na conexão do Orange Corners com estudantes universitários, inspirando curiosidade..."
+        },
+        {
+          type: "photos",
+          location: "Moçambique",
+          title: "Fotos do Orange Corners Moçambique: Gala do Empreendedorismo",
+          date: "28/11/2025",
+          desc: "No início deste mês, o Orange Corners Entrepreneurship Gala, em Moçambique, reuniu ex-alunos de todo o país..."
+        },
+        {
+          type: "article",
+          location: "Moçambique",
+          title: "Nilza Mazive e Xiphefu: energia inteligente para impulsionar o futuro de Moçambique",
+          date: "25/08/2025",
+          desc: "Num país onde apenas cerca de 40% da população tem acesso à eletricidade, poupar energia..."
+        }
+      ]
     }
   },
   en: {
@@ -204,6 +237,39 @@ export const translations = {
       services: "Services",
       payments: "Payments",
       settings: "Settings"
+    },
+    articles: {
+      badge: "Articles & News",
+      title: "Stay Inside the Ecosystem",
+      subtitle: "Success stories, news and insights about entrepreneurship in Africa.",
+      types: {
+        news: "News",
+        photos: "Photos",
+        article: "Article"
+      },
+      items: [
+        {
+          type: "news",
+          location: "Mozambique",
+          title: "Orange Corners Mozambique: Ambassador's Day",
+          date: "02/06/2026",
+          desc: "Our student ambassadors play a fundamental role in connecting Orange Corners with university students, inspiring curiosity..."
+        },
+        {
+          type: "photos",
+          location: "Mozambique",
+          title: "Orange Corners Mozambique Photos: Entrepreneurship Gala",
+          date: "28/11/2025",
+          desc: "Earlier this month, the Orange Corners Entrepreneurship Gala in Mozambique gathered alumni from across the country..."
+        },
+        {
+          type: "article",
+          location: "Mozambique",
+          title: "Nilza Mazive and Xiphefu: smart energy to boost the future of Mozambique",
+          date: "25/08/2025",
+          desc: "In a country where only about 40% of the population has access to electricity, saving energy..."
+        }
+      ]
     }
   },
   fr: {
@@ -308,6 +374,39 @@ export const translations = {
       services: "Services",
       payments: "Paiements",
       settings: "Paramètres"
+    },
+    articles: {
+      badge: "Articles & Nouvelles",
+      title: "Restez au Cœur de l'Écosystème",
+      subtitle: "Histoires de réussite, actualités et perspectives sur l'entrepreneuriat en Afrique.",
+      types: {
+        news: "Actualités",
+        photos: "Photos",
+        article: "Article"
+      },
+      items: [
+        {
+          type: "news",
+          location: "Mozambique",
+          title: "Orange Corners Mozambique : Journée de l'Ambassadeur",
+          date: "02/06/2026",
+          desc: "Nos étudiants ambassadeurs jouent un rôle crucial en reliant Orange Corners aux étudiants universitaires, inspirant la curiosité..."
+        },
+        {
+          type: "photos",
+          location: "Mozambique",
+          title: "Photos d'Orange Corners Mozambique : Gala de l'Entrepreneuriat",
+          date: "28/11/2025",
+          desc: "Au début de ce mois, le Gala de l'Entrepreneuriat d'Orange Corners au Mozambique a réuni des diplômés de tout le pays..."
+        },
+        {
+          type: "article",
+          location: "Mozambique",
+          title: "Nilza Mazive et Xiphefu : de l'énergie intelligente pour propulser l'avenir du Mozambique",
+          date: "25/08/2025",
+          desc: "Dans un pays où seulement 40% environ de la population a accès à l'électricité, économiser l'énergie..."
+        }
+      ]
     }
   }
 };
