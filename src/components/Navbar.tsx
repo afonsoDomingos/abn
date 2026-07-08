@@ -36,9 +36,9 @@ export default function Navbar() {
 
           <div className={styles.links}>
             <Link href="/#impacto">{t.nav.impact}</Link>
-            <Link href="/#incubadora">{t.nav.incubator}</Link>
-            <Link href="/#marketplace">{t.nav.marketplace}</Link>
-            <Link href="/#conexões">{t.nav.connections}</Link>
+            <Link href="/incubacao">{t.nav.incubator}</Link>
+            <Link href="/marketplace">{t.nav.marketplace}</Link>
+            <Link href="/parceiros">{t.nav.connections}</Link>
             <Link href="/equipa">Equipa</Link>
             <Link href="/contacto">Contacto</Link>
           </div>
@@ -81,9 +81,9 @@ export default function Navbar() {
 
         <nav className={styles.drawerNav}>
           <Link href="/#impacto" onClick={closeMenu}>{t.nav.impact}</Link>
-          <Link href="/#incubadora" onClick={closeMenu}>{t.nav.incubator}</Link>
-          <Link href="/#marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
-          <Link href="/#conexões" onClick={closeMenu}>{t.nav.connections}</Link>
+          <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
+          <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
+          <Link href="/parceiros" onClick={closeMenu}>{t.nav.connections}</Link>
           <Link href="/equipa" onClick={closeMenu}>Equipa</Link>
           <Link href="/contacto" onClick={closeMenu}>Contacto</Link>
         </nav>

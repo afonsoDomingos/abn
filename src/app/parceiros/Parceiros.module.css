@@ -1,0 +1,583 @@
+.main {
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding-top: 80px; /* Offset for fixed header */
+}
+
+/* Hero Section */
+.hero {
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  position: relative;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.heroContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  color: #ffffff;
+  position: relative;
+  z-index: 2;
+}
+
+.heroBadge {
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 1rem;
+}
+
+.heroTitle {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 900;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+}
+
+/* Intro Section */
+.introSection {
+  padding: 100px 2rem;
+  background-color: #ffffff;
+}
+
+.introGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.introText h2 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: #1c1917;
+  margin-bottom: 1.5rem;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.introText p {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.introImages {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.introImg {
+  width: 50%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+/* Benefits Section */
+.benefitsSection {
+  padding: 100px 2rem;
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+.benefitsTitle {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 4rem;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.benefitsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem;
+}
+
+.benefitCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2.5rem 2rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.benefitCard:hover {
+  transform: translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.benefitIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.benefitCard h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+.benefitCard p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+/* Why Join Section */
+.whyJoinSection {
+  padding: 100px 2rem;
+  background-color: #ffffff;
+}
+
+.whyTitle {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 4rem;
+  font-family: 'Outfit', sans-serif;
+  color: #1c1917;
+  letter-spacing: -0.01em;
+}
+
+.whyGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.whyCard {
+  padding: 4rem 3rem;
+  border-radius: 4px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease;
+}
+
+.whyCard:hover {
+  transform: translateY(-4px);
+}
+
+.publicCard {
+  background-color: var(--accent); /* Green */
+}
+
+.privateCard {
+  background-color: var(--secondary); /* Blue */
+}
+
+.whyCard h3 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 1.25rem;
+  font-family: 'Outfit', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.whyCard p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  opacity: 0.95;
+}
+
+/* Form Section */
+.formSection {
+  padding: 100px 2rem;
+  background-color: #fcfaf7;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.formInfo h2 {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  font-family: 'Outfit', sans-serif;
+  color: #1c1917;
+  letter-spacing: -0.01em;
+}
+
+.formInfo p {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.form {
+  background: #ffffff;
+  padding: 3.5rem;
+  border-radius: 4px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border: 1px solid #eee;
+}
+
+.formField input, .formField textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #ddd;
+  border-radius: 0px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: #fafafa;
+}
+
+.formField input:focus, .formField textarea:focus {
+  border-color: var(--primary);
+  background-color: #ffffff;
+}
+
+.formField textarea {
+  height: 130px;
+  resize: none;
+}
+
+/* Partners Logos Grid */
+.partnersGridSection {
+  padding: 100px 2rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.partnersTitle {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 4rem;
+  font-family: 'Outfit', sans-serif;
+  color: #1c1917;
+}
+
+.logosContainer {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 2rem;
+}
+
+.logoCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  background: #ffffff;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.logoCard:hover {
+  border-color: var(--primary);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+  transform: translateY(-3px);
+}
+
+.logoIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.logoName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Footer Section Styling (3 levels matching Orange Corners) */
+.footer {
+  padding: 0;
+  width: 100%;
+  border: none;
+}
+
+.footerTop {
+  background-color: var(--secondary);
+  padding: 5rem 2rem;
+  color: #ffffff;
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+.footerLogo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.footerLogoImg {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+}
+
+.footerLogoText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.footerAbn {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.footerNetwork {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footerLinksGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem 3rem;
+}
+
+.footerLinkCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.footerLinkCol a {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: opacity 0.2s ease;
+}
+
+.footerLinkCol a:hover {
+  opacity: 0.7;
+}
+
+.footerMiddle {
+  background-color: #1a1a1a;
+  padding: 1.5rem 2rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+}
+
+.footerBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.copyright {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.socials {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.socials a {
+  color: #ffffff;
+  opacity: 0.8;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.socials a:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.legal {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  font-weight: 600;
+}
+
+.footerBottom {
+  background-color: #ffffff;
+  padding: 2.5rem 2rem;
+  border-top: 1px solid #eaeaea;
+}
+
+.supportPartner {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.coatOfArms {
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.05));
+}
+
+.partnerInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.partnerHeading {
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #1c1917;
+  margin-bottom: 2px;
+}
+
+.partnerSubtext {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ===================== Responsive styles ===================== */
+@media (max-width: 1024px) {
+  .benefitsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .introGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .logosContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footerGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .footerLinksGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 300px;
+    padding: 0 1.5rem;
+  }
+
+  .introSection, .benefitsSection, .whyJoinSection, .formSection, .partnersGridSection {
+    padding: 60px 1.5rem;
+  }
+
+  .whyGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .whyCard {
+    padding: 3rem 2rem;
+  }
+
+  .form {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .footerLogo {
+    justify-content: center;
+  }
+
+  .footerLinksGrid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .footerBar {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .supportPartner {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .introImages {
+    flex-direction: column;
+  }
+  .introImg {
+    width: 100%;
+  }
+
+  .benefitsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .logosContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}

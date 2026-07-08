@@ -58,6 +58,9 @@ export default function Home() {
                     <Link href="/marketplace">{language === 'pt' ? 'SERVIÇOS' : 'SERVICES'}</Link>
                   </div>
                   <div className={styles.footerLinkCol}>
+                    <Link href="/parceiros">{language === 'pt' ? 'PARCEIROS' : 'PARTNERS'}</Link>
+                  </div>
+                  <div className={styles.footerLinkCol}>
                     <Link href="/contacto">{language === 'pt' ? 'CONTACTO' : 'CONTACT'}</Link>
                   </div>
                 </div>
