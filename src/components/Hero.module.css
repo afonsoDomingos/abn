@@ -1,182 +1,151 @@
 .hero {
   position: relative;
-  min-height: 100vh;
+  background-color: #ffffff;
+  padding-top: 80px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.heroWrapper {
   display: flex;
-  align-items: center;
+  position: relative;
+  width: 100%;
+  min-height: 620px;
+}
+
+.blueCard {
+  background: var(--secondary);
+  color: #ffffff;
+  width: 45%;
+  min-width: 450px;
+  padding: 5rem 4rem 5rem 8rem;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  padding: 120px 1.5rem 60px;
-  overflow: hidden;
-  text-align: center;
+  position: relative;
+  z-index: 5;
 }
 
-.backgroundWrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--background); /* Fallback */
-}
-
-.circle1 {
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(184, 134, 11, 0.08) 0%, transparent 70%);
-  top: -100px;
-  right: -100px;
-  border-radius: 50%;
-  filter: blur(80px);
-}
-
-.circle2 {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(27, 94, 32, 0.08) 0%, transparent 70%);
-  bottom: -100px;
-  left: -100px;
-  border-radius: 50%;
-  filter: blur(80px);
-}
-
-.container {
+.blueCardContent {
   position: relative;
   z-index: 2;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.content {
-  max-width: 900px;
-  position: relative;
-  z-index: 3;
-}
-
-.badge {
-  display: inline-block;
-  padding: 8px 16px;
-  background: var(--alpha-bg-5);
-  border: 1px solid var(--glass-border);
-  border-radius: 50px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--primary);
-  margin-bottom: 2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .title {
-  font-size: clamp(2.5rem, 8vw, 4.8rem);
-  line-height: 1.1;
-  margin-bottom: 2.5rem;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
   font-weight: 800;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  line-height: 1.15;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
 }
 
 .description {
-  font-size: 1.25rem;
-  color: var(--text-muted);
-  max-width: 750px;
-  margin: 0 auto 4rem;
-  line-height: 1.7;
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  max-width: 500px;
 }
 
-.cta {
+.ctaWrapper {
   display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  margin-bottom: 4rem;
+  gap: 1rem;
 }
 
-.promo {
-  display: inline-flex;
+.bannerImage {
+  flex: 1;
+  background-size: cover;
+  background-position: center 20%;
+  position: relative;
+  margin-left: -50px; /* Overlap effect */
+  z-index: 1;
+}
+
+.partnerBadge {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: var(--primary);
+  color: #ffffff;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  padding: 1.25rem 2.5rem;
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(184, 134, 11, 0.2);
-  border-radius: 16px;
-  width: auto;
-  margin: 0 auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  border: 3px solid #ffffff;
 }
 
-.promoIcon {
-  font-size: 1.5rem;
+.overlappingPin {
+  position: absolute;
+  right: -40px;
+  bottom: 50px;
+  z-index: 12;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.15));
+  animation: floatPin 4s ease-in-out infinite;
 }
 
-.promo p {
-  font-size: 0.95rem;
-  color: var(--foreground);
+@keyframes floatPin {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
-.promo strong {
-  color: var(--primary);
+/* Responsive styles */
+@media (max-width: 1024px) {
+  .blueCard {
+    padding-left: 4rem;
+    min-width: 400px;
+  }
 }
 
 @media (max-width: 768px) {
-  .hero {
-    padding: 100px 1.25rem 50px;
-    min-height: 90vh;
-  }
-
-  .title {
-    font-size: clamp(2rem, 10vw, 3rem);
-    margin-bottom: 1.5rem;
-  }
-
-  .description {
-    font-size: 1rem;
-    margin: 0 auto 2.5rem;
-  }
-
-  .cta {
+  .heroWrapper {
     flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
+    min-height: auto;
   }
-
-  .cta a, .cta button {
+  
+  .bannerImage {
+    height: 380px;
+    margin-left: 0;
     width: 100%;
-    max-width: 280px;
+    order: 1;
   }
-
-  .promo {
-    padding: 1rem 1.25rem;
-    flex-direction: column;
-    gap: 0.5rem;
-    text-align: center;
+  
+  .blueCard {
+    width: 100%;
+    min-width: 100%;
+    padding: 3rem 2.5rem 5rem 2.5rem;
+    order: 2;
   }
-
-  .badge {
-    margin-bottom: 1.25rem;
-    font-size: 0.75rem;
+  
+  .title {
+    font-size: 2.2rem;
+  }
+  
+  .overlappingPin {
+    right: 20px;
+    bottom: -40px;
+    transform: scale(0.8);
+  }
+  
+  @keyframes floatPin {
+    0%, 100% { transform: translateY(0) scale(0.8); }
+    50% { transform: translateY(-8px) scale(0.8); }
   }
 }
 
 @media (max-width: 480px) {
-  .hero {
-    padding: 90px 1rem 40px;
+  .title {
+    font-size: 1.8rem;
   }
-
-  .promo {
-    width: 100%;
-    border-radius: 12px;
+  .bannerImage {
+    height: 300px;
   }
 }

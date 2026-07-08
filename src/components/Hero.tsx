@@ -41,88 +41,42 @@ export default function Hero() {
 
   return (
     <section className={styles.hero}>
-      <div className={styles.backgroundWrapper}>
-        <AnimatePresence mode="wait">
-          <motion.div 
-            key={currentBanner}
-            className={styles.background}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.5 }}
-            style={{ 
-              backgroundImage: `linear-gradient(var(--hero-overlay), var(--hero-overlay)), url('${(content.banners && content.banners[currentBanner]) || '/img01.jpg'}')`, 
-              backgroundSize: 'cover', 
-              backgroundPosition: 'center 20%' 
-            }}
-          />
-        </AnimatePresence>
-        
-        <motion.div 
-          className={styles.circle1}
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity }}
-        ></motion.div>
-        <motion.div 
-          className={styles.circle2}
-          animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 10, repeat: Infinity, delay: 2 }}
-        ></motion.div>
-      </div>
-
-      <div className={styles.container}>
-        <motion.div 
-          className={styles.content}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+      <div className={styles.heroWrapper}>
+        {/* Right side banner image */}
+        <div 
+          className={styles.bannerImage}
+          style={{ backgroundImage: `url('/hero_entrepreneurs.png')` }}
         >
-          <motion.div 
-            className={styles.badge}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            {t.hero.badge}
-          </motion.div>
-          
-          <motion.h1
-            className={styles.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
-            {displayTitle}
-          </motion.h1>
-          
-          <motion.p
-            className={styles.description}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-          >
-            {displayDesc}
-          </motion.p>
-          
-          <motion.div 
-            className={styles.cta}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            <button className="btn-primary">{t.hero.start}</button>
-            <button className="btn-outline">{t.hero.impact}</button>
-          </motion.div>
- 
-          <motion.div 
-            className={styles.promo}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1 }}
-          >
-            {t.hero.offer}
-          </motion.div>
-        </motion.div>
+          {/* Orange round partner badge in top-right */}
+          <div className={styles.partnerBadge}>
+            <span className={styles.partnerText}>ABN</span>
+          </div>
+        </div>
+
+        {/* Left side blue card */}
+        <div className={styles.blueCard}>
+          <div className={styles.blueCardContent}>
+            <h1 className={styles.title}>
+              {language === 'pt' ? 'Empreendedorismo para um mundo melhor' : 'Entrepreneurship for a better world'}
+            </h1>
+            <p className={styles.description}>
+              {displayDesc}
+            </p>
+            <div className={styles.ctaWrapper}>
+              <a href="/registro" className="btn-primary">
+                {language === 'pt' ? 'Junte-se a nós' : 'Join us'}
+              </a>
+            </div>
+          </div>
+
+          {/* Overlapping Orange Pin */}
+          <div className={styles.overlappingPin}>
+            <svg viewBox="0 0 24 30" width="80" height="100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 18 12 18s12-9 12-18c0-6.63-5.37-12-12-12z" fill="#ff6b00" />
+              <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" fill="#ffffff" />
+            </svg>
+          </div>
+        </div>
       </div>
     </section>
   );

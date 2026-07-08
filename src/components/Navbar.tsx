@@ -24,15 +24,15 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`${styles.navbar} glass`}>
+      <nav className={styles.navbar}>
         <div className={styles.container}>
           <Link href="/" className={styles.logo} onClick={closeMenu}>
-            <div className={styles.logoWrapper}>
-              <img src="/abn-logo.png" alt="ABN Logo" className={styles.logoImg} />
-            </div>
+            <svg className={styles.logoPin} viewBox="0 0 24 30" width="30" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 18 12 18s12-9 12-18c0-6.63-5.37-12-12-12z" fill="var(--primary)" />
+              <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" fill="#ffffff" />
+            </svg>
             <div className={styles.brandText}>
               <span className={styles.abn}>ABN</span>
-              <span className={styles.divider}></span>
               <span className={styles.network}>AfroBiz Network</span>
             </div>
           </Link>

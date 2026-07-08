@@ -47,17 +47,20 @@ export default function Articles() {
   // Map article type to badge style class
   const badgeStyleMap: Record<string, string> = {
     news: styles.badgeNews,
-    photos: styles.badgePhotos,
+    photos: styles.badgePhotos, // We will style this as red (research/event) in CSS
     article: styles.badgeArticle
   };
 
   return (
     <section className={styles.section} id="artigos">
       <div className={styles.container}>
-        <div className={styles.header}>
-          <span className={styles.badge}>{t.articles?.badge || 'Artigos'}</span>
-          <h2 className={styles.title}>{t.articles?.title}</h2>
-          <p className={styles.subtitle}>{t.articles?.subtitle}</p>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>
+            {language === 'pt' ? 'Mais recentes' : 'The latest'}
+          </h2>
+          <a href="/marketplace" className={`btn-outline ${styles.headerBtn}`}>
+            {language === 'pt' ? 'Ver todas as novidades' : 'View all of the latest'}
+          </a>
         </div>
 
         <div className={`${styles.grid} ${articles.length >= 6 ? styles.scrollableGrid : ''}`}>
@@ -69,7 +72,12 @@ export default function Articles() {
             
             const imgPath = item.img || '/articles/ambassador-day.png';
             const badgeClass = badgeStyleMap[item.type] || styles.badgeNews;
-            const typeLabel = t.articles?.types?.[item.type] || item.type;
+            
+            // Adjust label for research/photos to look professional
+            let typeLabel = t.articles?.types?.[item.type] || item.type;
+            if (item.type === 'photos') {
+              typeLabel = language === 'pt' ? 'Pesquisa' : 'Research';
+            }
 
             return (
               <article key={index} className={styles.card}>
@@ -85,7 +93,9 @@ export default function Articles() {
                   />
                 </div>
                 <div className={styles.content}>
-                  <span className={styles.location}>{location}</span>
+                  <div className={styles.locationWrapper}>
+                    <span className={styles.location}>{location}</span>
+                  </div>
                   <h3 className={styles.articleTitle}>{title}</h3>
                   <span className={styles.date}>{item.date}</span>
                   <p className={styles.desc}>{desc}</p>
@@ -93,7 +103,7 @@ export default function Articles() {
                     className={styles.readMoreBtn} 
                     onClick={() => setSelectedArticle({ ...item, translatedTitle: title, translatedDesc: desc, translatedLocation: location })}
                   >
-                    Ver mais
+                    {language === 'pt' ? 'Ler mais' : 'Read more'}
                   </button>
                 </div>
               </article>
