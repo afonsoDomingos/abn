@@ -29,11 +29,14 @@
   transition: transform 0.2s ease;
 }
 
-.logoPin {
+.logoImg {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
   transition: transform 0.2s ease;
 }
 
-.logo:hover .logoPin {
+.logo:hover .logoImg {
   transform: scale(1.05);
 }
 

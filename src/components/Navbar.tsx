@@ -27,10 +27,7 @@ export default function Navbar() {
       <nav className={styles.navbar}>
         <div className={styles.container}>
           <Link href="/" className={styles.logo} onClick={closeMenu}>
-            <svg className={styles.logoPin} viewBox="0 0 24 30" width="30" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 18 12 18s12-9 12-18c0-6.63-5.37-12-12-12z" fill="var(--primary)" />
-              <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" fill="#ffffff" />
-            </svg>
+            <img src="/icon.png" alt="ABN Logo" className={styles.logoImg} />
             <div className={styles.brandText}>
               <span className={styles.abn}>ABN</span>
               <span className={styles.network}>AfroBiz Network</span>
@@ -76,9 +73,7 @@ export default function Navbar() {
       <div className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ''}`}>
         <div className={styles.drawerHeader}>
           <Link href="/" className={styles.logo} onClick={closeMenu}>
-            <div className={styles.logoWrapper}>
-              <img src="/abn-logo.png" alt="ABN Logo" className={styles.logoImg} />
-            </div>
+            <img src="/icon.png" alt="ABN Logo" className={styles.logoImg} />
             <span className={styles.abn}>ABN</span>
           </Link>
           <button className={styles.closeBtn} onClick={closeMenu} aria-label="Fechar menu">✕</button>

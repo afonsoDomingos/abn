@@ -40,6 +40,12 @@
   color: #ffffff;
 }
 
+.footerLogoImg {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+}
+
 .footerLogoText {
   display: flex;
   flex-direction: column;

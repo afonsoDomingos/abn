@@ -32,10 +32,7 @@ export default function Home() {
                 {/* Logo and Brand */}
                 <div className={styles.footerBrand}>
                   <Link href="/" className={styles.footerLogo}>
-                    <svg className={styles.footerLogoPin} viewBox="0 0 24 30" width="30" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 18 12 18s12-9 12-18c0-6.63-5.37-12-12-12z" fill="#ff6b00" />
-                      <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" fill="#ffffff" />
-                    </svg>
+                    <img src="/icon.png" alt="ABN Logo" className={styles.footerLogoImg} />
                     <div className={styles.footerLogoText}>
                       <span className={styles.footerAbn}>ABN</span>
                       <span className={styles.footerNetwork}>AfroBiz Network</span>
