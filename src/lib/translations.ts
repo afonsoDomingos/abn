@@ -4,7 +4,7 @@ export const translations = {
       impact: "Impacto",
       incubator: "Incubadora",
       marketplace: "Marketplace",
-      connections: "Conexões",
+      connections: "Parceiros",
       support: "Suporte",
       login: "Entrar",
       join: "Junte-se à ABN"
@@ -140,7 +140,7 @@ export const translations = {
       impact: "Impact",
       incubator: "Incubator",
       marketplace: "Marketplace",
-      connections: "Connections",
+      connections: "Partners",
       support: "Support",
       login: "Login",
       join: "Join ABN"
@@ -277,7 +277,7 @@ export const translations = {
       impact: "Impact",
       incubator: "Incubateur",
       marketplace: "Marché",
-      connections: "Connexions",
+      connections: "Partenaires",
       support: "Support",
       login: "Connexion",
       join: "Rejoindre ABN"
