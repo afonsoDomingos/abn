@@ -114,8 +114,8 @@ export default function Home() {
                   </p>
                   <p className={styles.partnerSubtext}>
                     {language === 'pt' 
-                      ? 'Parceiro para o empoderamento econômico e aceleração empresarial digital' 
-                      : 'Partner for digital business acceleration and economic empowerment'}
+                      ? 'Parceiro para o empoderamento económico e aceleração empresarial' 
+                      : 'Partner for business acceleration and economic empowerment'}
                   </p>
                 </div>
               </div>

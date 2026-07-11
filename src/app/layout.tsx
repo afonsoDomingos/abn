@@ -17,14 +17,14 @@ export const metadata: Metadata = {
     default: "ABN – AfroBiz Network",
     template: "%s | ABN – AfroBiz Network"
   },
-  description: "A principal plataforma estratégica para o empreendedorismo africano e afrodescendente. Conectamos startups a mentores, investidores e recursos digitais.",
+  description: "O principal ecossistema de negócios e empreendedorismo para o mercado africano e afrodescendente. Conectamos startups, PMEs, mentores, investidores e parceiros estratégicos.",
   keywords: [
     "ABN",
     "AfroBiz Network",
     "Empreendedorismo Africano",
     "Startups em África",
     "PMEs Africanas",
-    "Incubadora Digital",
+    "Incubadora de Startups",
     "Aceleração de Startups",
     "Negócios em África",
     "Investimento em África",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     locale: "pt_PT",
     url: "https://abnafrobiznetwork.com",
     title: "ABN – AfroBiz Network | Incubadora & Aceleração de Startups",
-    description: "A principal plataforma estratégica para o empreendedorismo africano e afrodescendente. Conectamos startups a mentores, investidores e recursos de escala.",
+    description: "O principal ecossistema de negócios e empreendedorismo para o mercado africano e afrodescendente. Conectamos startups, PMEs, mentores, investidores e parceiros estratégicos.",
     siteName: "ABN – AfroBiz Network",
     images: [
       {
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "ABN – AfroBiz Network",
-    description: "A principal plataforma estratégica para o empreendedorismo africano e afrodescendente.",
+    description: "O principal ecossistema de negócios e empreendedorismo para o mercado africano e afrodescendente.",
     images: ["/abn-logo.png"],
     creator: "@afrobiznetwork"
   },

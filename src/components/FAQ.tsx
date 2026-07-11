@@ -10,7 +10,7 @@ export default function FAQ() {
   const [faqs, setFaqs] = useState([
     {
       question: 'O que é a ABN – AfroBiz Network?',
-      answer: 'A ABN é uma rede digital focada na incubação de startups e no desenvolvimento de PMEs em África, oferecendo ferramentas, mentoria e conexões estratégicas.'
+      answer: 'A ABN é um ecossistema de negócios e empreendedorismo focado na incubação de startups e no desenvolvimento de PMEs em África, oferecendo ferramentas, mentoria e conexões estratégicas.'
     },
     {
       question: 'Como funciona o programa de incubação?',

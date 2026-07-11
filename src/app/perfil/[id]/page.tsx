@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
   return {
     title: `Perfil de ${name}`,
-    description: `Consulte os serviços, portfólio, avaliações e informações de contacto de ${name} na plataforma ABN – AfroBiz Network.`,
+    description: `Consulte os serviços, portfólio, avaliações e informações de contacto de ${name} no ecossistema ABN – AfroBiz Network.`,
   };
 }
 

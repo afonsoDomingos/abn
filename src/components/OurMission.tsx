@@ -35,9 +35,9 @@ export default function OurMission() {
             </h2>
             <p className={styles.text}>
               {language === 'pt' ? (
-                'A ABN – AfroBiz Network é uma plataforma dedicada a impulsionar o ecossistema de inovação e empreendedorismo em África. Nós fornecemos aos jovens empreendedores ferramentas digitais, mentoria especializada, conexões com redes de investidores e oportunidades de financiamento para construir negócios de impacto, sustentáveis e lucrativos que contribuam para uma sociedade mais inclusiva.'
+                'A ABN – AfroBiz Network é um ecossistema dedicado a impulsionar a inovação e o empreendedorismo em África. Nós fornecemos aos jovens empreendedores ferramentas, mentoria especializada, conexões com redes de investidores e oportunidades de financiamento para construir negócios de impacto, sustentáveis e lucrativos que contribuam para uma sociedade mais inclusiva.'
               ) : (
-                'ABN – AfroBiz Network is a platform dedicated to boosting the innovation and entrepreneurship ecosystem in Africa. We provide young entrepreneurs with digital tools, expert mentorship, investor network connections, and funding opportunities to build impactful, sustainable, and profitable businesses that contribute to a more inclusive society.'
+                'ABN – AfroBiz Network is an ecosystem dedicated to boosting innovation and entrepreneurship in Africa. We provide young entrepreneurs with tools, expert mentorship, investor network connections, and funding opportunities to build impactful, sustainable, and profitable businesses that contribute to a more inclusive society.'
               )}
             </p>
             <div className={styles.btnWrapper}>

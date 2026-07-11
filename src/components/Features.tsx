@@ -9,7 +9,7 @@ export default function Features() {
   const { t, language } = useLanguage();
   const [features, setFeatures] = useState([
     {
-      title: 'Incubação Digital',
+      title: 'Incubação de Negócios',
       desc: 'Programas intensivos de 3 a 6 meses para validar e escalar o seu modelo de negócio.',
       icon: '🚀'
     },

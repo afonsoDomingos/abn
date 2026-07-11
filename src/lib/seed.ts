@@ -15,7 +15,7 @@ export async function seedAdmin() {
         key: 'hero_content',
         value: {
           title: 'Impulsionando Startups e PMEs em África',
-          description: 'A ABN – AfroBiz Network é a sua ponte para o sucesso digital. Conectamos empreendedores a mentores, investidores e recursos estratégicos para transformar ideias em impacto global.',
+          description: 'A ABN – AfroBiz Network é o principal ecossistema de negócios e empreendedorismo para o mercado africano e afrodescendente. Conectamos startups, PMEs, mentores, investidores e parceiros estratégicos para impulsionar o crescimento de impacto global.',
           banners: ['/Perfil01.jpg', '/Perfil04.jpg', '/Perfil05.jpg', '/Perfil02.jpg']
         }
       },
@@ -47,7 +47,7 @@ export async function seedAdmin() {
         key: 'features_content',
         value: [
           {
-            title: 'Incubação Digital',
+            title: 'Incubação de Negócios',
             desc: 'Programas intensivos de 3 a 6 meses para validar e escalar o seu modelo de negócio.',
             icon: '🚀'
           },
@@ -121,7 +121,7 @@ export async function seedAdmin() {
         value: [
           {
             question: 'O que é a ABN – AfroBiz Network?',
-            answer: 'A ABN é uma rede digital focada na incubação de startups e no desenvolvimento de PMEs em África, oferecendo ferramentas, mentoria e conexões estratégicas.'
+            answer: 'A ABN é um ecossistema de negócios e empreendedorismo focado na incubação de startups e no desenvolvimento de PMEs em África, oferecendo ferramentas, mentoria e conexões estratégicas.'
           },
           {
             question: 'Como funciona o programa de incubação?',
@@ -133,7 +133,7 @@ export async function seedAdmin() {
           },
           {
             question: 'Como posso obter o website e portfólio grátis?',
-            answer: 'Ao registar-se como PME na nossa plataforma, terá acesso automático à nossa oferta de lançamento que inclui 4 meses de presença digital profissional gratuita.'
+            answer: 'Ao registar-se como PME no nosso ecossistema, terá acesso automático à nossa oferta de lançamento que inclui 4 meses de presença digital profissional gratuita.'
           }
         ]
       }
