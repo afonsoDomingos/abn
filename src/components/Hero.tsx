@@ -43,14 +43,36 @@ export default function Hero() {
     <section className={styles.hero}>
       <div className={styles.heroWrapper}>
         {/* Right side banner image */}
-        <div 
-          className={styles.bannerImage}
-          style={{ backgroundImage: `url(${content.banners && content.banners.length > 0 ? content.banners[currentBanner] : '/hero_entrepreneurs.png'})` }}
-        >
-          {/* Orange round partner badge in top-right */}
-          <div className={styles.partnerBadge}>
-            <span className={styles.partnerText}>ABN</span>
-          </div>
+        <div className={styles.bannerImage} style={{ position: 'relative', overflow: 'hidden' }}>
+          {content.banners && content.banners.length > 0 ? (
+            content.banners.map((imgUrl: string, idx: number) => (
+              <div
+                key={idx}
+                style={{
+                  backgroundImage: `url(${imgUrl})`,
+                  opacity: idx === currentBanner ? 1 : 0,
+                  transition: 'opacity 1.5s ease-in-out',
+                  position: 'absolute',
+                  inset: 0,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center 20%',
+                  zIndex: idx === currentBanner ? 2 : 1
+                }}
+              />
+            ))
+          ) : (
+            <div
+              style={{
+                backgroundImage: `url('/hero_entrepreneurs.png')`,
+                opacity: 1,
+                position: 'absolute',
+                inset: 0,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center 20%',
+                zIndex: 2
+              }}
+            />
+          )}
         </div>
 
         {/* Left side blue card */}

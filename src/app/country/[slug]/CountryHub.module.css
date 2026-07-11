@@ -1,0 +1,557 @@
+.hubPage {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Loading & Error page */
+.loadingPage, .errorPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
+  padding: 2rem;
+}
+
+.spinnerWrapper, .errorWrapper {
+  text-align: center;
+  margin-top: 100px;
+}
+
+.spinner {
+  border: 4px solid rgba(212, 175, 55, 0.2);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1.5rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 1. Hero */
+.hero {
+  padding: 180px 2rem 100px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  text-align: center;
+}
+
+.heroContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.badge {
+  background: var(--primary);
+  color: #fff;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 50px;
+  width: fit-content;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-family: 'Outfit', sans-serif;
+  margin: 0;
+  line-height: 1.1;
+}
+
+/* 2. Description */
+.descSection {
+  padding: 80px 0 40px;
+}
+
+.descCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 3rem;
+  text-align: center;
+}
+
+.descriptionText {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+/* 3. Steps */
+.stepsSection {
+  padding: 60px 0;
+}
+
+.sectionTitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.2rem;
+  text-align: center;
+  margin-bottom: 3.5rem;
+  color: var(--foreground);
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+.stepCard {
+  padding: 3rem 2rem;
+  border-radius: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  position: relative;
+}
+
+.stepNumber {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #111;
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.stepCard h4 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  color: #fff;
+  margin: 0;
+}
+
+.stepCard p {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* 4. Events */
+.eventsSection {
+  padding: 80px 0;
+  background: rgba(212, 175, 55, 0.01);
+}
+
+.tabsHeader {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.tabBtn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.7);
+  padding: 10px 20px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tabBtn:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.activeTab {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border-color: var(--primary) !important;
+}
+
+.noEvents {
+  text-align: center;
+  padding: 4rem;
+  background: rgba(255,255,255,0.01);
+  border-radius: 20px;
+  border: 1px dashed rgba(255,255,255,0.1);
+}
+
+.eventsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 2rem;
+}
+
+.eventCard {
+  padding: 2.5rem;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.eventBadge {
+  background: rgba(212,175,55,0.15);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 40px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: fit-content;
+}
+
+.eventDate {
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.eventCard h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.35rem;
+  color: #fff;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.eventCard p {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.eventLink {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.eventLink:hover {
+  text-decoration: underline;
+}
+
+/* 5. FAQ & Contact Form */
+.faqSection {
+  padding: 80px 0;
+}
+
+.faqContainerGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 4rem;
+}
+
+.faqCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.faqTitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.2rem;
+  color: var(--foreground);
+  margin-bottom: 2rem;
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faqItem {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.faqQuestion {
+  width: 100%;
+  padding: 1.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+}
+
+.faqAnswer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 1.5rem;
+}
+
+.faqOpen {
+  max-height: 200px;
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.faqAnswer p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Contact Form Box (Orange/Green theme) */
+.contactFormCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.contactFormBox {
+  background: var(--secondary); /* Green/Blue background */
+  color: #fff;
+  padding: 3rem;
+  border-radius: 24px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.contactFormBox h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.contactFormBox p {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.9rem;
+  margin: 0 0 2rem 0;
+  line-height: 1.5;
+}
+
+.resultMsg {
+  background: rgba(255,255,255,0.15);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.contactForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formField label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.85);
+}
+
+.formField input, .formField textarea {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  padding: 10px 14px !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+  font-size: 0.9rem !important;
+  outline: none !important;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.formField input:focus, .formField textarea:focus {
+  border-color: #fff !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 6. Strategic Partners */
+.partnersSection {
+  padding: 80px 0;
+  background: rgba(255, 255, 255, 0.01);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.partnersGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+}
+
+.partnerCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 160px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.partnerLogo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
+.partnerEmoji {
+  font-size: 1.5rem;
+}
+
+.partnerName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111;
+}
+
+/* 7. Footer */
+.hubFooter {
+  background: #000;
+  padding: 80px 0 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.footerCol h3 {
+  font-family: 'Outfit', sans-serif;
+  color: var(--primary);
+  font-size: 1.15rem;
+  margin: 0 0 1.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footerCol p {
+  color: rgba(255,255,255,0.7);
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.footerPin {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: rgba(255,255,255,0.7);
+}
+
+.footerPin p {
+  margin: 0;
+}
+
+.footerSocials {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footerSocials a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.95rem;
+  width: fit-content;
+}
+
+.footerSocials a:hover {
+  color: var(--primary);
+}
+
+.bottomBar {
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .stepsGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .faqContainerGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .footerGrid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 150px;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .descCard {
+    padding: 1.5rem;
+  }
+  
+  .descriptionText {
+    font-size: 1.1rem;
+  }
+  
+  .contactFormBox {
+    padding: 2rem 1.5rem;
+  }
+}

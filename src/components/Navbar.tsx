@@ -45,7 +45,6 @@ export default function Navbar() {
 
           <div className={styles.actions}>
             <LanguageSelector />
-            <a href="https://wa.me/258845773974" target="_blank" className={styles.whatsapp}>{t.nav.support}</a>
             <Link href="/login" className={styles.login}>{t.nav.login}</Link>
             <Link href="/registro" className={`btn-primary ${styles.navbarBtn}`}>{t.nav.join}</Link>
           </div>
@@ -90,9 +89,6 @@ export default function Navbar() {
 
         <div className={styles.drawerActions}>
           <LanguageSelector />
-          <a href="https://wa.me/258845773974" target="_blank" className={styles.whatsapp} onClick={closeMenu}>
-            {t.nav.support}
-          </a>
           <Link href="/login" className={`${styles.login} ${styles.drawerLogin}`} onClick={closeMenu}>
             {t.nav.login}
           </Link>

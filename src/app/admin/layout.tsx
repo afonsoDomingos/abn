@@ -28,6 +28,7 @@ export default function AdminLayout({
           <Link href="/admin/mensagens">💬 Mensagens</Link>
           <Link href="/admin/pagamentos">{t.admin.payments}</Link>
           <Link href="/admin/configuracoes">{t.admin.settings}</Link>
+          <Link href="/admin/hubs">🏢 Delegações</Link>
         </nav>
         <SidebarFooter />
       </aside>
