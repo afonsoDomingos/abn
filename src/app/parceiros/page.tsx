@@ -409,7 +409,6 @@ ${formData.msg}`;
           <div className={styles.benefitsGrid}>
             {currentContent.benefits.map((b, i) => (
               <div key={i} className={styles.benefitCard}>
-                <span className={styles.benefitIcon}>{b.icon}</span>
                 <h3>{b.title}</h3>
                 <p>{b.desc}</p>
               </div>
@@ -463,7 +462,6 @@ ${formData.msg}`;
               <div className={styles.grid3}>
                 {currentContent.instCategories.map((cat, i) => (
                   <div key={i} className={styles.categoryCard}>
-                    <span className={styles.categoryIcon}>{cat.icon}</span>
                     <div className={styles.categoryCardContent}>
                       <h4>{cat.title}</h4>
                       <p>{cat.desc}</p>
@@ -478,7 +476,7 @@ ${formData.msg}`;
                   <div className={styles.bulletList}>
                     {currentContent.instReceive.map((item, i) => (
                       <div key={i} className={styles.bulletItem}>
-                        <span className={styles.bulletIcon}>✓</span>
+                        <span className={styles.bulletIcon}>•</span>
                         <span className={styles.bulletText}>{item}</span>
                       </div>
                     ))}
@@ -490,7 +488,7 @@ ${formData.msg}`;
                   <div className={styles.bulletList}>
                     {currentContent.instExpect.map((item, i) => (
                       <div key={i} className={styles.bulletItem}>
-                        <span className={styles.bulletIcon}>★</span>
+                        <span className={styles.bulletIcon}>•</span>
                         <span className={styles.bulletText}>{item}</span>
                       </div>
                     ))}
@@ -520,7 +518,7 @@ ${formData.msg}`;
                   <div className={styles.bulletList}>
                     {currentContent.indivReceive.map((item, i) => (
                       <div key={i} className={styles.bulletItem}>
-                        <span className={styles.bulletIcon}>✓</span>
+                        <span className={styles.bulletIcon}>•</span>
                         <span className={styles.bulletText}>{item}</span>
                       </div>
                     ))}
@@ -532,7 +530,7 @@ ${formData.msg}`;
                   <div className={styles.bulletList}>
                     {currentContent.indivExpect.map((item, i) => (
                       <div key={i} className={styles.bulletItem}>
-                        <span className={styles.bulletIcon}>★</span>
+                        <span className={styles.bulletIcon}>•</span>
                         <span className={styles.bulletText}>{item}</span>
                       </div>
                     ))}
