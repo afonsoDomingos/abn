@@ -9,6 +9,7 @@ interface HubEvent {
   description: string;
   type: 'past' | 'future';
   link?: string;
+  image?: string;
 }
 
 interface Hub {
@@ -54,6 +55,21 @@ export default function AdminHubsPage() {
   const [linkedinUrl, setLinkedinUrl] = useState('');
   const [youtubeUrl, setYoutubeUrl] = useState('');
   
+  // Representative states
+  const [repName, setRepName] = useState('');
+  const [repRole, setRepRole] = useState('');
+  const [repEmail, setRepEmail] = useState('');
+  const [repPhone, setRepPhone] = useState('');
+  const [repImage, setRepImage] = useState('');
+  const [uploadingRepImage, setUploadingRepImage] = useState(false);
+
+  // Local Team states
+  const [team, setTeam] = useState<Array<{ name: string; role: string; image?: string }>>([]);
+  const [newMemberName, setNewMemberName] = useState('');
+  const [newMemberRole, setNewMemberRole] = useState('');
+  const [newMemberImage, setNewMemberImage] = useState('');
+  const [uploadingMemberImage, setUploadingMemberImage] = useState(false);
+
   // Array structures
   const [steps, setSteps] = useState([
     { title: 'Fase de Candidatura', description: 'Preencha o formulário online detalhando o seu negócio.' },
@@ -69,6 +85,8 @@ export default function AdminHubsPage() {
   const [newEvtDesc, setNewEvtDesc] = useState('');
   const [newEvtType, setNewEvtType] = useState<'past' | 'future'>('future');
   const [newEvtLink, setNewEvtLink] = useState('');
+  const [newEvtImage, setNewEvtImage] = useState('');
+  const [uploadingEvtImage, setUploadingEvtImage] = useState(false);
 
   // Fetch all hubs
   const loadHubs = () => {
@@ -106,6 +124,15 @@ export default function AdminHubsPage() {
     setInstagramUrl('');
     setLinkedinUrl('');
     setYoutubeUrl('');
+    setRepName('');
+    setRepRole('');
+    setRepEmail('');
+    setRepPhone('');
+    setRepImage('');
+    setTeam([]);
+    setNewMemberName('');
+    setNewMemberRole('');
+    setNewMemberImage('');
     setSteps([
       { title: 'Fase de Candidatura', description: 'Preencha o formulário online detalhando o seu negócio.' },
       { title: 'Entrevista & Pitching', description: 'Apresente a sua equipa e proposta de valor a investidores.' },
@@ -138,6 +165,18 @@ export default function AdminHubsPage() {
           setSteps(h.steps || []);
           setFaqs(h.faqs || []);
           setEvents(h.events || []);
+
+          const r = h.representative || { name: '', role: '', email: '', phone: '', image: '/default-avatar.png' };
+          setRepName(r.name);
+          setRepRole(r.role);
+          setRepEmail(r.email);
+          setRepPhone(r.phone);
+          setRepImage(r.image || '');
+          setTeam(h.team || []);
+          setNewMemberName('');
+          setNewMemberRole('');
+          setNewMemberImage('');
+
           setEditingSlug(hubSlug);
           setIsCreating(false);
         }
@@ -192,7 +231,15 @@ export default function AdminHubsPage() {
           youtubeUrl,
           steps,
           faqs,
-          events
+          events,
+          representative: {
+            name: repName,
+            role: repRole,
+            email: repEmail,
+            phone: repPhone,
+            image: repImage || '/default-avatar.png'
+          },
+          team
         })
       });
 
@@ -223,13 +270,27 @@ export default function AdminHubsPage() {
       date: newEvtDate,
       description: newEvtDesc,
       type: newEvtType,
-      link: newEvtLink || undefined
+      link: newEvtLink || undefined,
+      image: newEvtImage || undefined
     };
     setEvents([...events, newEvt]);
     setNewEvtTitle('');
     setNewEvtDate('');
     setNewEvtDesc('');
     setNewEvtLink('');
+    setNewEvtImage('');
+  };
+
+  // Add Team Member
+  const addTeamMember = () => {
+    if (!newMemberName || !newMemberRole) {
+      alert('Preencha o nome e o cargo do membro da equipa.');
+      return;
+    }
+    setTeam([...team, { name: newMemberName, role: newMemberRole, image: newMemberImage || '/default-avatar.png' }]);
+    setNewMemberName('');
+    setNewMemberRole('');
+    setNewMemberImage('');
   };
 
   if (loading) {
@@ -380,7 +441,64 @@ export default function AdminHubsPage() {
                 <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="Ex: +245 955 000 000" required />
               </div>
 
-              <div className={styles.sectionHeader} style={{ marginTop: '1rem' }}>Redes Sociais</div>
+              <div className={styles.sectionHeader} style={{ marginTop: '1.5rem' }}>Representante Local</div>
+
+              <div className={styles.formGroup}>
+                <label>Nome do Representante</label>
+                <input value={repName} onChange={e => setRepName(e.target.value)} placeholder="Ex: Mamadu Baldé" />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Cargo / Função do Representante</label>
+                <input value={repRole} onChange={e => setRepRole(e.target.value)} placeholder="Ex: Diretor de Delegação" />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Email do Representante</label>
+                <input type="email" value={repEmail} onChange={e => setRepEmail(e.target.value)} placeholder="Ex: representante@email.com" />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Telefone do Representante</label>
+                <input value={repPhone} onChange={e => setRepPhone(e.target.value)} placeholder="Ex: +245 955 123 456" />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Foto do Representante (Upload ou URL)</label>
+                <div className={styles.uploadRow}>
+                  <input value={repImage} onChange={e => setRepImage(e.target.value)} placeholder="Ex: /default-avatar.png" style={{ flex: 1 }} />
+                  <label className={styles.uploadLabel} title="Carregar Foto" style={{ cursor: 'pointer' }}>
+                    {uploadingRepImage ? <div className={styles.spinnerSmall}></div> : '📁'}
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        setUploadingRepImage(true);
+                        try {
+                          const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                          const data = await res.json();
+                          if (data.success && data.url) {
+                            setRepImage(data.url);
+                          } else {
+                            alert('Erro: ' + (data.error || 'Falha no upload'));
+                          }
+                        } catch {
+                          alert('Erro de conexão ao carregar.');
+                        } finally {
+                          setUploadingRepImage(false);
+                        }
+                      }}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                </div>
+              </div>
+
+              <div className={styles.sectionHeader} style={{ marginTop: '1.5rem' }}>Redes Sociais</div>
 
               <div className={styles.formGroup}>
                 <label>Link do Facebook</label>
@@ -477,6 +595,40 @@ export default function AdminHubsPage() {
                 <label>Link Externo / Mais Informações (Opcional)</label>
                 <input value={newEvtLink} onChange={e => setNewEvtLink(e.target.value)} placeholder="Ex: https://wa.me/... ou formulário de inscrição" />
               </div>
+              <div className={styles.formGroup}>
+                <label>Imagem / Foto do Evento (Opcional)</label>
+                <div className={styles.uploadRow}>
+                  <input value={newEvtImage} onChange={e => setNewEvtImage(e.target.value)} placeholder="Ex: /event-photo.png" style={{ flex: 1 }} />
+                  <label className={styles.uploadLabel} title="Carregar Foto" style={{ cursor: 'pointer' }}>
+                    {uploadingEvtImage ? <div className={styles.spinnerSmall}></div> : '📁'}
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        setUploadingEvtImage(true);
+                        try {
+                          const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                          const data = await res.json();
+                          if (data.success && data.url) {
+                            setNewEvtImage(data.url);
+                          } else {
+                            alert('Erro: ' + (data.error || 'Falha no upload'));
+                          }
+                        } catch {
+                          alert('Erro de conexão ao carregar.');
+                        } finally {
+                          setUploadingEvtImage(false);
+                        }
+                      }}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                </div>
+              </div>
               <button type="button" className="btn-outline" onClick={addEvent} style={{ alignSelf: 'flex-start' }}>
                 Registar Evento na Delegação
               </button>
@@ -507,6 +659,94 @@ export default function AdminHubsPage() {
                       <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>{evt.title}</div>
                       <div style={{ fontSize: '0.85rem', opacity: 0.6 }}>📅 {evt.date}</div>
                       <p style={{ fontSize: '0.85rem', opacity: 0.8, margin: 0, lineHeight: 1.5 }}>{evt.description}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Equipa Local Section Config */}
+          <div>
+            <div className={styles.sectionHeader}>Gestão da Equipa Local</div>
+            
+            {/* Add Team Member Block */}
+            <div className={styles.subItemBox} style={{ background: 'rgba(212,175,55,0.02)', borderColor: 'rgba(212,175,55,0.15)' }}>
+              <div className={styles.subItemTitle} style={{ color: 'var(--primary)' }}>+ Adicionar Novo Membro da Equipa</div>
+              <div className={styles.formGrid}>
+                <div className={styles.formGroup}>
+                  <label>Nome do Membro *</label>
+                  <input value={newMemberName} onChange={e => setNewMemberName(e.target.value)} placeholder="Ex: Fatoumata Djaló" />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Cargo / Função *</label>
+                  <input value={newMemberRole} onChange={e => setNewMemberRole(e.target.value)} placeholder="Ex: Gestora de Programas" />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Foto do Membro (Upload ou URL)</label>
+                  <div className={styles.uploadRow}>
+                    <input value={newMemberImage} onChange={e => setNewMemberImage(e.target.value)} placeholder="Ex: /default-avatar.png" style={{ flex: 1 }} />
+                    <label className={styles.uploadLabel} title="Carregar Foto" style={{ cursor: 'pointer' }}>
+                      {uploadingMemberImage ? <div className={styles.spinnerSmall}></div> : '📁'}
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          const formData = new FormData();
+                          formData.append('file', file);
+                          setUploadingMemberImage(true);
+                          try {
+                            const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                            const data = await res.json();
+                            if (data.success && data.url) {
+                              setNewMemberImage(data.url);
+                            } else {
+                              alert('Erro: ' + (data.error || 'Falha no upload'));
+                            }
+                          } catch {
+                            alert('Erro de conexão ao carregar.');
+                          } finally {
+                            setUploadingMemberImage(false);
+                          }
+                        }}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <button type="button" className="btn-outline" onClick={addTeamMember} style={{ alignSelf: 'flex-start' }}>
+                Adicionar Membro à Equipa
+              </button>
+            </div>
+
+            {/* List Created Team Members */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div className={styles.subItemTitle}>Membros Registados ({team.length})</div>
+              {team.length === 0 ? (
+                <p style={{ opacity: 0.5, fontStyle: 'italic', fontSize: '0.9rem' }}>Nenhum membro na equipa deste Hub.</p>
+              ) : (
+                <div className={styles.formGrid}>
+                  {team.map((member: any, idx: number) => (
+                    <div key={idx} className={styles.subItemBox} style={{ marginBottom: 0, flexDirection: 'row', alignItems: 'center', gap: '1rem' }}>
+                      <img 
+                        src={member.image || '/default-avatar.png'} 
+                        alt={member.name} 
+                        style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover', border: '1px solid rgba(255,255,255,0.1)' }} 
+                      />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#fff' }}>{member.name}</div>
+                        <div style={{ fontSize: '0.85rem', opacity: 0.6 }}>{member.role}</div>
+                      </div>
+                      <button 
+                        type="button" 
+                        onClick={() => setTeam(team.filter((_, i) => i !== idx))}
+                        style={{ background: 'none', border: 'none', color: '#ff4d4d', cursor: 'pointer', fontSize: '1.5rem', padding: '0 0.5rem' }}
+                      >
+                        &times;
+                      </button>
                     </div>
                   ))}
                 </div>

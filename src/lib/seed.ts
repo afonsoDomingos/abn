@@ -339,8 +339,20 @@ export async function seedAdmin() {
             title: 'Workshop Mentoria Spark Guiné',
             date: '12 de Fevereiro de 2026',
             description: 'Sessão intensiva de ideação e validação de modelos de negócio para startups locais na fase inicial.',
-            type: 'past'
+            type: 'past',
+            image: '/guine_bissau_banner.png'
           }
+        ],
+        representative: {
+          name: 'Mamadu Baldé',
+          role: 'Diretor de Delegação - ABN Guiné-Bissau',
+          email: 'mamadu.balde@afrobiznetwork.com',
+          phone: '+245 955 123 456',
+          image: '/default-avatar.png'
+        },
+        team: [
+          { name: 'Fatoumata Djaló', role: 'Gestora de Programas e Incubação', image: '/default-avatar.png' },
+          { name: 'Umaro Sissoco', role: 'Coordenador de Parcerias e Impacto', image: '/default-avatar.png' }
         ]
       });
       console.log('Hub Guiné-Bissau seeded.');

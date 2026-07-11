@@ -38,8 +38,20 @@ const fallbackHubs: Record<string, any> = {
         title: 'Workshop Mentoria Spark Guiné',
         date: '12 de Fevereiro de 2026',
         description: 'Sessão intensiva de ideação e validação de modelos de negócio para startups locais na fase inicial.',
-        type: 'past'
+        type: 'past',
+        image: '/guine_bissau_banner.png'
       }
+    ],
+    representative: {
+      name: 'Mamadu Baldé',
+      role: 'Diretor de Delegação - ABN Guiné-Bissau',
+      email: 'mamadu.balde@afrobiznetwork.com',
+      phone: '+245 955 123 456',
+      image: ''
+    },
+    team: [
+      { name: 'Fatoumata Djaló', role: 'Gestora de Programas e Incubação', image: '' },
+      { name: 'Umaro Sissoco', role: 'Coordenador de Parcerias e Impacto', image: '' }
     ]
   }
 };
@@ -207,6 +219,54 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
         </div>
       </section>
 
+      {/* 3.5. Representative & Local Team Section */}
+      {(hub.representative?.name || (hub.team && hub.team.length > 0)) && (
+        <section className={styles.teamSection}>
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>Equipa Local</h2>
+            
+            {/* Representative Card */}
+            {hub.representative?.name && (
+              <div className={styles.representativeWrapper}>
+                <div className={`${styles.representativeCard} glass`}>
+                  <img 
+                    src={hub.representative.image || '/default-avatar.png'} 
+                    alt={hub.representative.name} 
+                    className={styles.repAvatar}
+                  />
+                  <div className={styles.repInfo}>
+                    <span className={styles.repBadge}>Representante Local</span>
+                    <h3>{hub.representative.name}</h3>
+                    <p className={styles.repRole}>{hub.representative.role}</p>
+                    <div className={styles.repContacts}>
+                      <span>✉️ {hub.representative.email}</span>
+                      <span>📞 {hub.representative.phone}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Team Members Grid */}
+            {hub.team && hub.team.length > 0 && (
+              <div className={styles.teamGrid}>
+                {hub.team.map((member: any, idx: number) => (
+                  <div key={idx} className={`${styles.teamCard} glass`}>
+                    <img 
+                      src={member.image || '/default-avatar.png'} 
+                      alt={member.name} 
+                      className={styles.teamAvatar}
+                    />
+                    <h4>{member.name}</h4>
+                    <p>{member.role}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* 4. Events Block */}
       <section className={styles.eventsSection}>
         <div className={styles.container}>
@@ -236,18 +296,23 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
           ) : (
             <div className={styles.eventsGrid}>
               {activeEvents.map((evt: any, idx: number) => (
-                <div key={idx} className={`${styles.eventCard} glass`}>
-                  <div className={styles.eventBadge}>
-                    {evt.type === 'future' ? 'Brevemente' : 'Concluído'}
-                  </div>
-                  <span className={styles.eventDate}>📅 {evt.date}</span>
-                  <h3>{evt.title}</h3>
-                  <p>{evt.description}</p>
-                  {evt.link && (
-                    <a href={evt.link} target="_blank" rel="noopener noreferrer" className={styles.eventLink}>
-                      Saber mais &rarr;
-                    </a>
+                <div key={idx} className={`${styles.eventCard} glass`} style={{ padding: evt.image ? '0 0 2rem 0' : '2.5rem', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                  {evt.image && (
+                    <img src={evt.image} alt={evt.title} style={{ width: '100%', height: '200px', objectFit: 'cover', display: 'block', marginBottom: '1.5rem' }} />
                   )}
+                  <div style={{ padding: evt.image ? '0 2rem' : '0', display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1 }}>
+                    <div className={styles.eventBadge}>
+                      {evt.type === 'future' ? 'Brevemente' : 'Concluído'}
+                    </div>
+                    <span className={styles.eventDate}>📅 {evt.date}</span>
+                    <h3>{evt.title}</h3>
+                    <p>{evt.description}</p>
+                    {evt.link && (
+                      <a href={evt.link} target="_blank" rel="noopener noreferrer" className={styles.eventLink} style={{ marginTop: 'auto' }}>
+                        Saber mais &rarr;
+                      </a>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

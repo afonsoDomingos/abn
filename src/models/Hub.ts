@@ -6,6 +6,21 @@ export interface IHubEvent {
   description: string;
   type: 'past' | 'future';
   link?: string;
+  image?: string;
+}
+
+export interface IHubRepresentative {
+  name: string;
+  role: string;
+  email: string;
+  phone: string;
+  image?: string;
+}
+
+export interface IHubTeamMember {
+  name: string;
+  role: string;
+  image?: string;
 }
 
 export interface IHub extends Document {
@@ -23,6 +38,8 @@ export interface IHub extends Document {
   linkedinUrl?: string;
   youtubeUrl?: string;
   events: IHubEvent[];
+  representative: IHubRepresentative;
+  team: IHubTeamMember[];
 }
 
 const HubEventSchema = new Schema<IHubEvent>({
@@ -30,7 +47,8 @@ const HubEventSchema = new Schema<IHubEvent>({
   date: { type: String, required: true },
   description: { type: String, required: true },
   type: { type: String, enum: ['past', 'future'], default: 'future' },
-  link: { type: String }
+  link: { type: String },
+  image: { type: String }
 });
 
 const HubSchema = new Schema<IHub>({
@@ -57,7 +75,21 @@ const HubSchema = new Schema<IHub>({
   instagramUrl: { type: String },
   linkedinUrl: { type: String },
   youtubeUrl: { type: String },
-  events: [HubEventSchema]
+  events: [HubEventSchema],
+  representative: {
+    name: { type: String, default: '' },
+    role: { type: String, default: '' },
+    email: { type: String, default: '' },
+    phone: { type: String, default: '' },
+    image: { type: String, default: '/default-avatar.png' }
+  },
+  team: [
+    {
+      name: { type: String, default: '' },
+      role: { type: String, default: '' },
+      image: { type: String, default: '/default-avatar.png' }
+    }
+  ]
 }, { timestamps: true });
 
 export default models.Hub || model<IHub>('Hub', HubSchema);

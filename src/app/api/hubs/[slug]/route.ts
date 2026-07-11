@@ -66,7 +66,9 @@ export async function PUT(
       instagramUrl,
       linkedinUrl,
       youtubeUrl,
-      events 
+      events,
+      representative,
+      team
     } = body;
 
     const updated = await Hub.findOneAndUpdate(
@@ -84,7 +86,9 @@ export async function PUT(
         instagramUrl,
         linkedinUrl,
         youtubeUrl,
-        events
+        events,
+        representative,
+        team
       },
       { new: true }
     );
