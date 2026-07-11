@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import styles from './Config.module.css';
 
 export default function AdminConfigPage() {
@@ -9,6 +10,7 @@ export default function AdminConfigPage() {
   const [logo, setLogo] = useState('/abn-logo.png');
   const [partners, setPartners] = useState([{ name: '', logo: '' }]);
   const [supportedCompanies, setSupportedCompanies] = useState([{ name: '', location: '', desc: '', icon: '', phase: '' }]);
+  const [missionImages, setMissionImages] = useState<string[]>(['/mission_team.png']);
   const [features, setFeatures] = useState([{ title: '', desc: '', icon: '' }]);
   const [howItWorks, setHowItWorks] = useState([{ number: '', title: '', description: '' }]);
   const [testimonials, setTestimonials] = useState([{ name: '', role: '', text: '', img: '' }]);
@@ -57,6 +59,7 @@ export default function AdminConfigPage() {
           if (data.configs.platform_logo) setLogo(data.configs.platform_logo);
           if (data.configs.partners_content) setPartners(data.configs.partners_content);
           if (data.configs.supported_companies) setSupportedCompanies(data.configs.supported_companies);
+          if (data.configs.mission_images) setMissionImages(data.configs.mission_images);
           if (data.configs.features_content) setFeatures(data.configs.features_content);
           if (data.configs.how_it_works_content) setHowItWorks(data.configs.how_it_works_content);
           if (data.configs.testimonials_content) setTestimonials(data.configs.testimonials_content);
@@ -100,9 +103,14 @@ export default function AdminConfigPage() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <h1 className="text-gradient-gold">Configurações da Plataforma</h1>
-        <p>Edite os textos principais, funcionalidades e testemunhos da Home.</p>
+      <header className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '2.5rem' }}>
+        <div>
+          <h1 className="text-gradient-gold" style={{ margin: 0 }}>Configurações da Plataforma</h1>
+          <p style={{ margin: '5px 0 0 0', opacity: 0.7 }}>Edite os textos principais, funcionalidades e testemunhos da Home.</p>
+        </div>
+        <Link href="/" className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', borderRadius: '12px', padding: '10px 20px', fontSize: '0.95rem' }}>
+          🏠 Voltar ao Início
+        </Link>
       </header>
 
       {msg && <div className={styles.toast}>{msg}</div>}
@@ -156,16 +164,64 @@ export default function AdminConfigPage() {
                 {(hero.banners || []).map((banner, idx) => (
                   <div key={idx} className={styles.itemEditFull}>
                     <div className={styles.row}>
-                      <input 
-                        value={banner} 
-                        onChange={e => {
-                          const newBanners = [...(hero.banners || [])];
-                          newBanners[idx] = e.target.value;
-                          setHero({ ...hero, banners: newBanners });
-                        }} 
-                        placeholder="URL da imagem (ex: /Perfil01.jpg)"
-                        style={{ flex: 1 }}
-                      />
+                      <div className={styles.logoInputWrapper} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+                        <input 
+                          value={banner} 
+                          onChange={e => {
+                            const newBanners = [...(hero.banners || [])];
+                            newBanners[idx] = e.target.value;
+                            setHero({ ...hero, banners: newBanners });
+                          }} 
+                          placeholder="URL da imagem (ex: /Perfil01.jpg)"
+                          style={{ flex: 1 }}
+                        />
+                        <label className={styles.uploadLabel} title="Carregar Imagem" style={{ cursor: 'pointer', fontSize: '1.2rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          {banner && banner.startsWith('⏳') ? (
+                            <div className={styles.spinnerSmall}></div>
+                          ) : (
+                            '📁'
+                          )}
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+                              
+                              const formData = new FormData();
+                              formData.append('file', file);
+                              
+                              const newBanners = [...(hero.banners || [])];
+                              newBanners[idx] = '⏳...';
+                              setHero({ ...hero, banners: newBanners });
+                              
+                              try {
+                                const res = await fetch('/api/upload', {
+                                  method: 'POST',
+                                  body: formData,
+                                });
+                                const data = await res.json();
+                                if (data.success && data.url) {
+                                  const updatedBanners = [...(hero.banners || [])];
+                                  updatedBanners[idx] = data.url;
+                                  setHero({ ...hero, banners: updatedBanners });
+                                } else {
+                                  const updatedBanners = [...(hero.banners || [])];
+                                  updatedBanners[idx] = '';
+                                  setHero({ ...hero, banners: updatedBanners });
+                                  alert('Erro ao fazer upload: ' + (data.error || 'Erro desconhecido'));
+                                }
+                              } catch (err) {
+                                const updatedBanners = [...(hero.banners || [])];
+                                updatedBanners[idx] = '';
+                                setHero({ ...hero, banners: updatedBanners });
+                                alert('Erro na conexão para upload.');
+                              }
+                            }}
+                            style={{ display: 'none' }}
+                          />
+                        </label>
+                      </div>
                       <button className={styles.removeBtn} onClick={() => {
                         const newBanners = (hero.banners || []).filter((_, i) => i !== idx);
                         setHero({ ...hero, banners: newBanners });
@@ -229,7 +285,11 @@ export default function AdminConfigPage() {
                       className={styles.inputSmall} 
                     />
                     <label className={styles.uploadLabel} title="Carregar Logotipo">
-                      📁
+                      {p.logo && p.logo.startsWith('⏳') ? (
+                        <div className={styles.spinnerSmall}></div>
+                      ) : (
+                        '📁'
+                      )}
                       <input 
                         type="file" 
                         accept="image/*" 
@@ -308,7 +368,11 @@ export default function AdminConfigPage() {
                       className={styles.inputSmall} 
                     />
                     <label className={styles.uploadLabel} title="Carregar Logotipo">
-                      📁
+                      {company.icon && company.icon.startsWith('⏳') ? (
+                        <div className={styles.spinnerSmall}></div>
+                      ) : (
+                        '📁'
+                      )}
                       <input 
                         type="file" 
                         accept="image/*" 
@@ -380,6 +444,95 @@ export default function AdminConfigPage() {
           </button>
         </section>
 
+        {/* Quem Somos Images Slider Config */}
+        <section className={`glass ${styles.section}`}>
+          <h3>Imagens da Seção "Quem Somos" (Slider)</h3>
+          <p style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '1.5rem' }}>
+            Adicione uma ou mais imagens para o banner do "Quem Somos". Se houver mais de uma, elas mudarão automaticamente (slideshow).
+          </p>
+          <div className={styles.listGrid}>
+            {(missionImages || []).map((imgUrl, idx) => (
+              <div key={idx} className={styles.itemEditFull}>
+                <div className={styles.row}>
+                  <div className={styles.logoInputWrapper} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+                    <input 
+                      value={imgUrl} 
+                      onChange={e => {
+                        const newImages = [...(missionImages || [])];
+                        newImages[idx] = e.target.value;
+                        setMissionImages(newImages);
+                      }} 
+                      placeholder="URL da imagem (ex: /mission_team.png)"
+                      style={{ flex: 1 }}
+                    />
+                    <label className={styles.uploadLabel} title="Carregar Imagem" style={{ cursor: 'pointer', fontSize: '1.2rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {imgUrl && imgUrl.startsWith('⏳') ? (
+                        <div className={styles.spinnerSmall}></div>
+                      ) : (
+                        '📁'
+                      )}
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          
+                          const formData = new FormData();
+                          formData.append('file', file);
+                          
+                          const newImages = [...(missionImages || [])];
+                          newImages[idx] = '⏳...';
+                          setMissionImages(newImages);
+                          
+                          try {
+                            const res = await fetch('/api/upload', {
+                              method: 'POST',
+                              body: formData,
+                            });
+                            const data = await res.json();
+                            if (data.success && data.url) {
+                              const updatedImages = [...(missionImages || [])];
+                              updatedImages[idx] = data.url;
+                              setMissionImages(updatedImages);
+                            } else {
+                              const updatedImages = [...(missionImages || [])];
+                              updatedImages[idx] = '/mission_team.png';
+                              setMissionImages(updatedImages);
+                              alert('Erro ao fazer upload: ' + (data.error || 'Erro desconhecido'));
+                            }
+                          } catch (err) {
+                            const updatedImages = [...(missionImages || [])];
+                            updatedImages[idx] = '/mission_team.png';
+                            setMissionImages(updatedImages);
+                            alert('Erro na conexão para upload.');
+                          }
+                        }}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                  </div>
+                  <button className={styles.removeBtn} onClick={() => {
+                    const newImages = (missionImages || []).filter((_, i) => i !== idx);
+                    setMissionImages(newImages);
+                  }}>×</button>
+                </div>
+                {imgUrl && !imgUrl.startsWith('⏳') && (
+                  <div className={styles.bannerPreview} style={{ marginTop: '5px' }}>
+                    <img src={imgUrl} alt={`Quem Somos Image ${idx + 1}`} style={{ width: '100px', height: '60px', objectFit: 'cover', borderRadius: '4px' }} />
+                  </div>
+                )}
+              </div>
+            ))}
+            <button className="btn-outline" onClick={() => setMissionImages([...(missionImages || []), ''])}>
+              + Adicionar Imagem ao Slider
+            </button>
+          </div>
+          <button className="btn-primary" onClick={() => saveConfig('mission_images', missionImages)} disabled={saving} style={{ marginTop: '1.5rem' }}>
+            {saving ? 'A guardar...' : 'Atualizar Imagens'}
+          </button>
+        </section>
+
         {/* Team Section Config */}
         <section className={`glass ${styles.section}`}>
           <h3>Equipa (Team)</h3>
@@ -402,7 +555,11 @@ export default function AdminConfigPage() {
                       className={styles.inputSmall} 
                     />
                     <label className={styles.uploadLabel} title="Carregar Foto">
-                      📁
+                      {member.image && member.image.startsWith('⏳') ? (
+                        <div className={styles.spinnerSmall}></div>
+                      ) : (
+                        '📁'
+                      )}
                       <input 
                         type="file" 
                         accept="image/*" 
@@ -671,7 +828,11 @@ export default function AdminConfigPage() {
                           style={{ flex: 1 }}
                         />
                         <label className={styles.uploadLabel} title="Carregar imagem">
-                          📁
+                          {art.img && art.img.startsWith('⏳') ? (
+                            <div className={styles.spinnerSmall}></div>
+                          ) : (
+                            '📁'
+                          )}
                           <input 
                             type="file" 
                             accept="image/*" 

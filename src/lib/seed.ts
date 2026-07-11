@@ -192,6 +192,10 @@ export async function seedAdmin() {
             phase: 'Ideação'
           }
         ]
+      },
+      {
+        key: 'mission_images',
+        value: ['/mission_team.png']
       }
     ];
 

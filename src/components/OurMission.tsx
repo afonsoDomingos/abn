@@ -2,16 +2,36 @@
 
 import { useLanguage } from '@/lib/LanguageContext';
 import styles from './OurMission.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { translations } from '@/lib/translations';
 
 export default function OurMission() {
   const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState<'about' | 'mission' | 'vision'>('about');
-  
+  const [missionImages, setMissionImages] = useState<string[]>(['/mission_team.png']);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   // Safely get translations for current language, fallback to 'pt' if needed
   const langKey = (language === 'pt' || language === 'en' || language === 'fr') ? language : 'pt';
   const tContent = translations[langKey].essence;
+
+  useEffect(() => {
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs && data.configs.mission_images) {
+          setMissionImages(data.configs.mission_images);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    if (missionImages.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % missionImages.length);
+    }, 4000); // changes every 4 seconds
+    return () => clearInterval(interval);
+  }, [missionImages]);
 
   return (
     <section className={styles.section} id="missao">
@@ -23,11 +43,25 @@ export default function OurMission() {
               <div className={styles.wavyPattern}></div>
             </div>
             <div className={styles.imageWrapper}>
-              <img 
-                src="/mission_team.png" 
-                alt={tContent.title} 
-                className={styles.image}
-              />
+              {missionImages.map((imgUrl, idx) => (
+                <img 
+                  key={idx}
+                  src={imgUrl} 
+                  alt={tContent.title} 
+                  className={styles.image}
+                  style={{
+                    position: idx === 0 ? 'relative' : 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: idx === currentImageIndex ? 1 : 0,
+                    transition: 'opacity 1s ease-in-out',
+                    zIndex: idx === currentImageIndex ? 2 : 1
+                  }}
+                />
+              ))}
             </div>
           </div>
 
