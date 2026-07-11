@@ -7,8 +7,21 @@ import { useLanguage } from '@/lib/LanguageContext';
 import LanguageSelector from './LanguageSelector';
 
 export default function Navbar() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hubs, setHubs] = useState<Array<{ name: string; slug: string }>>([]);
+
+  // Fetch Hubs on mount
+  useEffect(() => {
+    fetch('/api/hubs')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.hubs) {
+          setHubs(data.hubs);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Close menu on route changes / scroll
   useEffect(() => {
@@ -38,6 +51,27 @@ export default function Navbar() {
             <Link href="/#impacto">{t.nav.impact}</Link>
             <Link href="/incubacao">{t.nav.incubator}</Link>
             <Link href="/marketplace">{t.nav.marketplace}</Link>
+            
+            {/* Desktop Hubs Dropdown */}
+            <div className={styles.dropdown}>
+              <span className={styles.dropdownTrigger}>
+                {language === 'pt' ? 'Delegações' : language === 'fr' ? 'Délégations' : 'Hubs'} <span className={styles.arrow}>▼</span>
+              </span>
+              <div className={styles.dropdownMenu}>
+                {hubs.length === 0 ? (
+                  <Link href="/country/quinebissau" onClick={closeMenu}>
+                    Guiné-Bissau
+                  </Link>
+                ) : (
+                  hubs.map(hub => (
+                    <Link key={hub.slug} href={`/country/${hub.slug}`} onClick={closeMenu}>
+                      {hub.name}
+                    </Link>
+                  ))
+                )}
+              </div>
+            </div>
+
             <Link href="/parceiros">{t.nav.connections}</Link>
             <Link href="/equipa">Equipa</Link>
             <Link href="/contacto">Contacto</Link>
@@ -83,6 +117,25 @@ export default function Navbar() {
           <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
           <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
           <Link href="/parceiros" onClick={closeMenu}>{t.nav.connections}</Link>
+
+          {/* Mobile Hubs List */}
+          <div className={styles.drawerSectionTitle}>
+            {language === 'pt' ? 'Delegações' : language === 'fr' ? 'Délégations' : 'Hubs'}
+          </div>
+          <div className={styles.drawerHubsList}>
+            {hubs.length === 0 ? (
+              <Link href="/country/quinebissau" onClick={closeMenu} className={styles.drawerHubLink}>
+                📍 Guiné-Bissau
+              </Link>
+            ) : (
+              hubs.map(hub => (
+                <Link key={hub.slug} href={`/country/${hub.slug}`} onClick={closeMenu} className={styles.drawerHubLink}>
+                  📍 {hub.name}
+                </Link>
+              ))
+            )}
+          </div>
+
           <Link href="/equipa" onClick={closeMenu}>Equipa</Link>
           <Link href="/contacto" onClick={closeMenu}>Contacto</Link>
         </nav>

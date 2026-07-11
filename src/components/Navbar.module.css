@@ -363,3 +363,111 @@
     padding: 0 1rem;
   }
 }
+
+/* ===================== Dropdown Menu ===================== */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownTrigger {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1c1917;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  padding-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.arrow {
+  font-size: 0.6rem;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.dropdown:hover .arrow {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  min-width: 200px;
+  padding: 0.75rem 0;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+
+.dropdown:hover .dropdownMenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dropdownMenu a {
+  display: block !important;
+  padding: 0.75rem 1.5rem !important;
+  color: #1c1917 !important;
+  text-decoration: none !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  transition: all 0.2s ease !important;
+  border-bottom: none !important;
+}
+
+.dropdownMenu a::after {
+  display: none !important;
+}
+
+.dropdownMenu a:hover {
+  background: rgba(212, 175, 55, 0.08) !important;
+  color: var(--primary) !important;
+  padding-left: 1.75rem !important;
+}
+
+/* Mobile Drawer Hub Section */
+.drawerSectionTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 1rem 1rem 0.5rem 1rem;
+  border-top: 1px solid var(--card-border);
+  margin-top: 0.5rem;
+}
+
+.drawerHubsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-left: 0.5rem;
+}
+
+.drawerHubLink {
+  padding: 0.75rem 1rem !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: var(--foreground) !important;
+  transition: all 0.2s !important;
+}
+
+.drawerHubLink:hover {
+  color: var(--primary) !important;
+  background: var(--alpha-bg-5) !important;
+}
