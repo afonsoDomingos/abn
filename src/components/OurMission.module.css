@@ -140,3 +140,128 @@
     font-size: 1rem;
   }
 }
+
+.connectionsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
+  margin: 1.5rem 0 2rem;
+  width: 100%;
+}
+
+.connectionItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--foreground);
+}
+
+.bulletDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--primary);
+}
+
+.tagline {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  margin-top: 1.5rem;
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  border-left: 3px solid var(--secondary);
+  padding-left: 12px;
+}
+
+.tabsHeader {
+  display: flex;
+  gap: 1.5rem;
+  border-bottom: 2px solid #eaeaea;
+  width: 100%;
+  margin-bottom: 1.75rem;
+}
+
+.tabBtn {
+  background: none;
+  border: none;
+  padding: 10px 0;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.tabBtn:hover {
+  color: var(--foreground);
+}
+
+.tabBtn::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
+.activeTab {
+  color: var(--primary) !important;
+}
+
+.activeTab::after {
+  transform: scaleX(1);
+}
+
+.tabBody {
+  min-height: 240px;
+  width: 100%;
+}
+
+.tabTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  color: var(--foreground);
+  margin-bottom: 1.25rem;
+}
+
+.conectaLabel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.closingText {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .tabsHeader {
+    justify-content: center;
+    gap: 1rem;
+  }
+  .tabBtn {
+    font-size: 0.9rem;
+    padding: 8px 0;
+  }
+  .tabBody {
+    min-height: auto;
+  }
+}

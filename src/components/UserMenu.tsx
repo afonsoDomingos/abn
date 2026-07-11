@@ -36,7 +36,7 @@ export default function UserMenu() {
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
     localStorage.removeItem('user');
-    router.push('/login');
+    window.location.href = '/login';
   };
 
   return (

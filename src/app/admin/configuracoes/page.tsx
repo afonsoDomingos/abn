@@ -8,6 +8,7 @@ export default function AdminConfigPage() {
   const [stats, setStats] = useState([{ label: '', value: '' }]);
   const [logo, setLogo] = useState('/abn-logo.png');
   const [partners, setPartners] = useState([{ name: '', logo: '' }]);
+  const [supportedCompanies, setSupportedCompanies] = useState([{ name: '', location: '', desc: '', icon: '', phase: '' }]);
   const [features, setFeatures] = useState([{ title: '', desc: '', icon: '' }]);
   const [howItWorks, setHowItWorks] = useState([{ number: '', title: '', description: '' }]);
   const [testimonials, setTestimonials] = useState([{ name: '', role: '', text: '', img: '' }]);
@@ -55,6 +56,7 @@ export default function AdminConfigPage() {
           if (data.configs.stats_content) setStats(data.configs.stats_content);
           if (data.configs.platform_logo) setLogo(data.configs.platform_logo);
           if (data.configs.partners_content) setPartners(data.configs.partners_content);
+          if (data.configs.supported_companies) setSupportedCompanies(data.configs.supported_companies);
           if (data.configs.features_content) setFeatures(data.configs.features_content);
           if (data.configs.how_it_works_content) setHowItWorks(data.configs.how_it_works_content);
           if (data.configs.testimonials_content) setTestimonials(data.configs.testimonials_content);
@@ -281,6 +283,100 @@ export default function AdminConfigPage() {
           </div>
           <button className="btn-primary" onClick={() => saveConfig('partners_content', partners)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Parceiros'}
+          </button>
+        </section>
+
+        {/* Supported Companies Section Config */}
+        <section className={`glass ${styles.section}`}>
+          <h3>Empresas que Apoiamos</h3>
+          <div className={styles.listGrid}>
+            {(supportedCompanies || []).map((company, index) => (
+              <div key={index} className={styles.itemEditFull}>
+                <div className={styles.row}>
+                  <div className={styles.partnerLogoPreview}>
+                    {(company.icon && (company.icon.startsWith('http') || company.icon.startsWith('/'))) ? (
+                      <img src={company.icon} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      <span style={{ fontSize: '1.5rem' }}>{company.icon || '🏢'}</span>
+                    )}
+                  </div>
+                  <div className={styles.logoInputWrapper}>
+                    <input 
+                      value={company.icon} 
+                      onChange={e => updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', e.target.value)} 
+                      placeholder="Ícone (Emoji, URL ou Upload)" 
+                      className={styles.inputSmall} 
+                    />
+                    <label className={styles.uploadLabel} title="Carregar Logotipo">
+                      📁
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          
+                          const formData = new FormData();
+                          formData.append('file', file);
+                          
+                          updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', '⏳...');
+                          
+                          try {
+                            const res = await fetch('/api/upload', {
+                              method: 'POST',
+                              body: formData,
+                            });
+                            const data = await res.json();
+                            if (data.success && data.url) {
+                              updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', data.url);
+                            } else {
+                              updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', '🏢');
+                              alert('Erro ao fazer upload: ' + (data.error || 'Erro desconhecido'));
+                            }
+                          } catch (err) {
+                            updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', '🏢');
+                            alert('Erro na conexão para upload.');
+                          }
+                        }}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                  </div>
+                  <input 
+                    value={company.name} 
+                    onChange={e => updateArrayField(setSupportedCompanies, supportedCompanies, index, 'name', e.target.value)} 
+                    placeholder="Nome da Empresa" 
+                    style={{ flex: 1 }}
+                  />
+                  <button className={styles.removeBtn} onClick={() => removeItem(setSupportedCompanies, supportedCompanies, index)}>×</button>
+                </div>
+                <div className={styles.row} style={{ marginTop: '0.5rem', gap: '1rem' }}>
+                  <input 
+                    value={company.location} 
+                    onChange={e => updateArrayField(setSupportedCompanies, supportedCompanies, index, 'location', e.target.value)} 
+                    placeholder="📍 Localização (ex: Luanda, Angola)" 
+                    style={{ flex: 1 }}
+                  />
+                  <input 
+                    value={company.phase} 
+                    onChange={e => updateArrayField(setSupportedCompanies, supportedCompanies, index, 'phase', e.target.value)} 
+                    placeholder="Fase (Crescimento / Validação / Ideação)" 
+                    style={{ flex: 1 }}
+                  />
+                </div>
+                <textarea 
+                  value={company.desc} 
+                  onChange={e => updateArrayField(setSupportedCompanies, supportedCompanies, index, 'desc', e.target.value)} 
+                  placeholder="Descrição da empresa" 
+                  rows={2} 
+                  style={{ marginTop: '0.5rem', width: '100%', padding: '10px' }}
+                />
+              </div>
+            ))}
+            <button className="btn-outline" onClick={() => addItem(setSupportedCompanies, supportedCompanies, { name: '', location: '', desc: '', icon: '🏢', phase: '' })}>+ Adicionar Empresa</button>
+          </div>
+          <button className="btn-primary" onClick={() => saveConfig('supported_companies', supportedCompanies)} disabled={saving} style={{ marginTop: '1.5rem' }}>
+            {saving ? 'A guardar...' : 'Atualizar Empresas'}
           </button>
         </section>
 

@@ -14,7 +14,7 @@ export default function SidebarFooter() {
     e.preventDefault();
     await fetch('/api/auth/logout', { method: 'POST' });
     localStorage.removeItem('user');
-    router.push('/login');
+    window.location.href = '/login';
   };
 
   return (

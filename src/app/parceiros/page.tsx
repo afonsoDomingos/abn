@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import styles from "./Parceiros.module.css";
 import { useLanguage } from "@/lib/LanguageContext";
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Parceiros() {
   const { t, language } = useLanguage();
@@ -31,6 +31,48 @@ export default function Parceiros() {
     { name: 'Startup Moçambique', logo: '🚀' },
     { name: 'Global Invest', logo: '📈' },
   ];
+
+  const defaultSupportedCompanies = [
+    {
+      name: 'TechAfrica Solutions',
+      location: 'Luanda, Angola',
+      desc: 'Especialistas em transformar processos analógicos em experiências digitais de alta performance.',
+      icon: '💻',
+      phase: 'Crescimento'
+    },
+    {
+      name: 'AgroEco Moçambique',
+      location: 'Maputo, Moçambique',
+      desc: 'Soluções sustentáveis e inovadoras para pequenos e médios produtores agrícolas.',
+      icon: '🌱',
+      phase: 'Validação'
+    },
+    {
+      name: 'AfroStyle Fashion',
+      location: 'Maputo, Moçambique',
+      desc: 'Design de moda contemporânea inspirado em tecidos e padrões tradicionais africanos.',
+      icon: '👕',
+      phase: 'Ideação'
+    }
+  ];
+
+  const [partnersList, setPartnersList] = useState<any[]>(partnersLogos);
+  const [supportedCompaniesList, setSupportedCompaniesList] = useState<any[]>(defaultSupportedCompanies);
+
+  useEffect(() => {
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs) {
+          if (data.configs.partners_content) {
+            setPartnersList(data.configs.partners_content);
+          }
+          if (data.configs.supported_companies) {
+            setSupportedCompaniesList(data.configs.supported_companies);
+          }
+        }
+      });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -697,12 +739,83 @@ ${formData.msg}`;
             {language === 'pt' ? 'Nossos parceiros' : 'Our partners'}
           </h2>
           <div className={styles.logosContainer}>
-            {partnersLogos.map((p, i) => (
-              <div key={i} className={styles.logoCard}>
-                <span className={styles.logoIcon}>{p.logo}</span>
-                <span className={styles.logoName}>{p.name}</span>
-              </div>
-            ))}
+            {partnersList.map((p, i) => {
+              const isImage = p.logo && (p.logo.startsWith('http') || p.logo.startsWith('/'));
+              const content = (
+                <div key={i} className={styles.logoCard} style={{ height: '100%' }}>
+                  {isImage ? (
+                    <img 
+                      src={p.logo} 
+                      alt={p.name} 
+                      style={{ width: '100%', height: '50px', objectFit: 'contain', marginBottom: '1rem' }} 
+                    />
+                  ) : (
+                    <span className={styles.logoIcon} style={{ fontSize: '2.5rem', marginBottom: '1rem', display: 'block' }}>
+                      {p.logo || '🤝'}
+                    </span>
+                  )}
+                  <span className={styles.logoName}>{p.name}</span>
+                </div>
+              );
+
+              if (p.url) {
+                return (
+                  <a key={i} href={p.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', textDecoration: 'none' }}>
+                    {content}
+                  </a>
+                );
+              }
+
+              return content;
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Companies We Support Grid */}
+      <section className={styles.supportedCompaniesSection}>
+        <div className={styles.container}>
+          <h2 className={styles.partnersTitle}>
+            {language === 'pt' ? 'Empresas que Apoiamos' : 'Companies We Support'}
+          </h2>
+          <p className={styles.sectionSubtitle} style={{ textAlign: 'center', marginBottom: '3rem', color: 'var(--text-muted)', marginTop: '-3rem' }}>
+            {language === 'pt' 
+              ? 'Startups e PMEs locais aceleradas pelo ecossistema ABN.' 
+              : 'Local startups and SMEs accelerated by the ABN ecosystem.'}
+          </p>
+          <div className={styles.companiesGrid}>
+            {supportedCompaniesList.map((company, i) => {
+              const isImage = company.icon && (company.icon.startsWith('http') || company.icon.startsWith('/'));
+              return (
+                <div key={i} className={styles.companyCard}>
+                  <div>
+                    <div className={styles.companyHeader}>
+                      {isImage ? (
+                        <div style={{ width: '40px', height: '40px', background: 'var(--pink-bg)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <img 
+                            src={company.icon} 
+                            alt={company.name} 
+                            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
+                          />
+                        </div>
+                      ) : (
+                        <span className={styles.companyIcon}>{company.icon || '🏢'}</span>
+                      )}
+                      <div>
+                        <h4>{company.name}</h4>
+                        <span className={styles.companyLocation}>📍 {company.location}</span>
+                      </div>
+                    </div>
+                    <p className={styles.companyDesc}>{company.desc || company.description}</p>
+                  </div>
+                  {company.phase && (
+                    <span className={styles.companyPhase}>
+                      {language === 'pt' ? `Fase: ${company.phase}` : `Phase: ${company.phase}`}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

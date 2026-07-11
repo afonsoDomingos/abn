@@ -49,15 +49,77 @@ export const translations = {
       viewAll: "Ver Catálogo Completo"
     },
     features: {
-      badge: "Ecossistema ABN",
-      title: "Tudo o que você precisa para crescer",
-      subtitle: "Uma plataforma integrada desenhada para as necessidades específicas do mercado africano.",
+      badge: "Áreas de Atuação",
+      title: "Como a ABN Atua",
+      subtitle: "Cinco pilares estratégicos para impulsionar o desenvolvimento sustentável e empresarial.",
       items: [
-        { title: "Incubação de Negócios", desc: "Programas intensivos de 3 a 6 meses para validar e escalar o seu modelo de negócio ou startup." },
-        { title: "Marketing & Tech", desc: "Criamos a sua presença digital profissional, com websites modernos e identidade de marca robusta." },
-        { title: "Rede de Mentores", desc: "Conecte-se com líderes de indústria e especialistas prontos para guiar a sua jornada." },
-        { title: "Acesso a Capital", desc: "Preparamos o seu pitch e conectamos a sua startup a investidores anjo e VC." }
+        {
+          num: "01",
+          title: "INCUBAÇÃO E ACELERAÇÃO GLOBAL",
+          bullets: [
+            "Desenvolvimento de Startups e MPMEs",
+            "Programas de incubação e aceleração",
+            "Estruturação de modelos de negócio",
+            "Mentoria estratégica e Smart Money"
+          ]
+        },
+        {
+          num: "02",
+          title: "CAPACITAÇÃO E EDUCAÇÃO EXECUTIVA",
+          bullets: [
+            "Formação empreendedora certificada",
+            "Desenvolvimento de liderança",
+            "Consultoria estratégica",
+            "Capacitação técnica e empresarial"
+          ]
+        },
+        {
+          num: "03",
+          title: "INVESTIMENTO E PARTICIPAÇÃO",
+          bullets: [
+            "Venture Builder",
+            "Gestão de portfólio",
+            "Participação em negócios inovadores",
+            "Curadoria de projetos de alto potencial"
+          ]
+        },
+        {
+          num: "04",
+          title: "NETWORKING E FACILITAÇÃO DE MERCADOS",
+          bullets: [
+            "Conexão intercontinental",
+            "Corredores internacionais de negócios",
+            "Plataforma digital de integração",
+            "Parcerias e alianças estratégicas globais"
+          ]
+        },
+        {
+          num: "05",
+          title: "SUSTENTABILIDADE E POLÍTICAS PÚBLICAS",
+          bullets: [
+            "Soluções verdes e tecnológicas",
+            "Economia circular",
+            "Inclusão econômica",
+            "Advocacy e influência institucional"
+          ]
+        }
       ]
+    },
+    essence: {
+      badge: "Quem Somos",
+      title: "QUEM SOMOS",
+      text: "A ABN — Afrobiz Network LTDA é uma plataforma internacional de inovação, empreendedorismo e impacto global, consolidada como uma entidade independente e estratégica de alcance internacional.",
+      conectaText: "Criada para fortalecer o empreendedorismo africano e afrodescendente, a ABN conecta:",
+      connections: ["Empreendedores", "Empresas", "Investidores", "Instituições", "Líderes", "Mercados globais"],
+      closing: "Promovendo oportunidades, inovação, desenvolvimento sustentável e integração económica entre África e o mundo.",
+      tagline: "CONECTAMOS. IMPULSIONAMOS. TRANSFORMAMOS.",
+      tabs: {
+        about: "Quem Somos",
+        mission: "Missão",
+        vision: "Visão"
+      },
+      missionText: "Impulsionar o desenvolvimento económico, empresarial e social através da inovação, capacitação, investimento estratégico, networking global e criação de oportunidades para empreendedores africanos e afrodescendentes, promovendo impacto sustentável em escala internacional.",
+      visionText: "Tornar-se a principal plataforma africana e afrodescendente de incubação, aceleração, investimento e integração empresarial global, reconhecida pela capacidade de conectar talentos, mercados e oportunidades que transformam África e influenciam o mundo."
     },
     howItWorks: {
       badge: "Processo",
@@ -186,15 +248,77 @@ export const translations = {
       viewAll: "View Full Catalog"
     },
     features: {
-      badge: "ABN Ecosystem",
-      title: "Everything you need to grow",
-      subtitle: "An integrated platform designed for the specific needs of the African market.",
+      badge: "Areas of Action",
+      title: "How ABN Operates",
+      subtitle: "Five strategic pillars to drive sustainable and business development.",
       items: [
-        { title: "Business Incubation", desc: "Intensive 3 to 6 month programs to validate and scale your business model or startup." },
-        { title: "Marketing & Tech", desc: "We create your professional digital presence, with modern websites and a strong brand identity." },
-        { title: "Mentor Network", desc: "Connect with industry leaders and experts ready to guide your journey." },
-        { title: "Access to Capital", desc: "We prepare your pitch and connect your startup to angel investors and VC." }
+        {
+          num: "01",
+          title: "GLOBAL INCUBATION AND ACCELERATION",
+          bullets: [
+            "Startup and MSME Development",
+            "Incubation and acceleration programs",
+            "Business model structuring",
+            "Strategic mentoring and Smart Money"
+          ]
+        },
+        {
+          num: "02",
+          title: "CAPACITY BUILDING AND EXECUTIVE EDUCATION",
+          bullets: [
+            "Certified entrepreneurial training",
+            "Leadership development",
+            "Strategic consulting",
+            "Technical and business training"
+          ]
+        },
+        {
+          num: "03",
+          title: "INVESTMENT AND EQUITY",
+          bullets: [
+            "Venture Builder",
+            "Portfolio management",
+            "Equity in innovative businesses",
+            "Curation of high-potential projects"
+          ]
+        },
+        {
+          num: "04",
+          title: "NETWORKING AND MARKET FACILITATION",
+          bullets: [
+            "Intercontinental connection",
+            "International business corridors",
+            "Digital integration platform",
+            "Global strategic partnerships and alliances"
+          ]
+        },
+        {
+          num: "05",
+          title: "SUSTAINABILITY AND PUBLIC POLICIES",
+          bullets: [
+            "Green and technological solutions",
+            "Circular economy",
+            "Economic inclusion",
+            "Advocacy and institutional influence"
+          ]
+        }
       ]
+    },
+    essence: {
+      badge: "Who We Are",
+      title: "WHO WE ARE",
+      text: "ABN — Afrobiz Network LTDA is an international platform for innovation, entrepreneurship, and global impact, consolidated as an independent and strategic entity of international scope.",
+      conectaText: "Created to strengthen African and Afro-descendant entrepreneurship, ABN connects:",
+      connections: ["Entrepreneurs", "Companies", "Investors", "Institutions", "Leaders", "Global markets"],
+      closing: "Promoting opportunities, innovation, sustainable development, and economic integration between Africa and the world.",
+      tagline: "WE CONNECT. WE POWER. WE TRANSFORM.",
+      tabs: {
+        about: "Who We Are",
+        mission: "Mission",
+        vision: "Vision"
+      },
+      missionText: "Drive economic, business, and social development through innovation, training, strategic investment, global networking, and the creation of opportunities for African and Afro-descendant entrepreneurs, promoting sustainable impact on an international scale.",
+      visionText: "Become the leading African and Afro-descendant platform for incubation, acceleration, investment, and global business integration, recognized for its capacity to connect talents, markets, and opportunities that transform Africa and influence the world."
     },
     howItWorks: {
       badge: "Process",
@@ -323,15 +447,77 @@ export const translations = {
       viewAll: "Voir le catalogue complet"
     },
     features: {
-      badge: "Écosystème ABN",
-      title: "Tout ce dont vous avez besoin pour grandir",
-      subtitle: "Une plateforme intégrée conçue pour les besoins spécifiques du marché africain.",
+      badge: "Domaines d'Action",
+      title: "Comment l'ABN Agit",
+      subtitle: "Cinq piliers stratégiques pour stimuler le développement durable et commercial.",
       items: [
-        { title: "Incubation d'Entreprises", desc: "Programmes intensifs de 3 à 6 mois pour valider et faire évoluer votre modèle d'entreprise ou startup." },
-        { title: "Marketing & Tech", desc: "Nous créons votre présence numérique professionnelle, avec des sites Web modernes et une identité de marque forte." },
-        { title: "Réseau de Mentors", desc: "Connectez-vous avec des leaders de l'industrie et des experts prêts à guider votre parcours." },
-        { title: "Accès au Capital", desc: "Nous préparons votre pitch et connectons votre startup à des investisseurs providentiels et VC." }
+        {
+          num: "01",
+          title: "INCUBATION ET ACCÉLÉRATION GLOBALE",
+          bullets: [
+            "Développement de Startups et MPME",
+            "Programmes d'incubation et d'accélération",
+            "Structuration de modèles d'affaires",
+            "Mentorat stratégique et Smart Money"
+          ]
+        },
+        {
+          num: "02",
+          title: "RENFORCEMENT DES CAPACITÉS ET ÉDUCATION EXÉCUTIVE",
+          bullets: [
+            "Formation entrepreneuriale certifiée",
+            "Développement du leadership",
+            "Conseil stratégique",
+            "Formation technique et commerciale"
+          ]
+        },
+        {
+          num: "03",
+          title: "INVESTISSEMENT ET PARTICIPATION",
+          bullets: [
+            "Venture Builder",
+            "Gestion de portefeuille",
+            "Participation dans des entreprises innovantes",
+            "Curation de projets à haut potentiel"
+          ]
+        },
+        {
+          num: "04",
+          title: "NETWORKING ET FACILITATION DES MARCHÉS",
+          bullets: [
+            "Connexion intercontinentale",
+            "Corredors d'affaires internationaux",
+            "Plateforme numérique d'intégration",
+            "Partenariats et alliances stratégiques mondiaux"
+          ]
+        },
+        {
+          num: "05",
+          title: "DURABILITÉ ET POLITIQUES PUBLIQUES",
+          bullets: [
+            "Solutions vertes et technologiques",
+            "Économie circulaire",
+            "Inclusion économique",
+            "Plaidoyer et influence institutionnelle"
+          ]
+        }
       ]
+    },
+    essence: {
+      badge: "Qui Sommes-Nous",
+      title: "QUI SOMMES-NOUS",
+      text: "ABN — Afrobiz Network LTDA est une plateforme internationale d'innovation, d'entrepreneuriat et d'impact mondial, consolidée comme une entité indépendante et stratégique de portée internationale.",
+      conectaText: "Créée pour renforcer l'entrepreneuriat africain et afrodescendant, l'ABN connecte :",
+      connections: ["Entrepreneurs", "Entreprises", "Investisseurs", "Institutions", "Leaders", "Marchés mondiaux"],
+      closing: "Promouvant les opportunités, l'innovation, le développement durable et l'intégration économique entre l'Afrique et le monde.",
+      tagline: "CONNECTER. PROPULSER. TRANSFORMER.",
+      tabs: {
+        about: "Qui Sommes-Nous",
+        mission: "Mission",
+        vision: "Vision"
+      },
+      missionText: "Propulser le développement économique, entrepreneurial et social grâce à l'innovation, la formation, l'investissement stratégique, le réseautage mondial et la création d'opportunités pour les entrepreneurs africains et afrodescendants, favorisant un impact durable à l'échelle internationale.",
+      visionText: "Devenir la principale plateforme africaine et afrodescendante d'incubation, d'accélération, d'investissement et d'intégration commerciale mondiale, reconnue pour sa capacité à connecter les talents, les marchés et les opportunités qui transforment l'Afrique et influencent le monde."
     },
     howItWorks: {
       badge: "Processus",

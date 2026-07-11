@@ -47,24 +47,54 @@ export async function seedAdmin() {
         key: 'features_content',
         value: [
           {
-            title: 'Incubação de Negócios',
-            desc: 'Programas intensivos de 3 a 6 meses para validar e escalar o seu modelo de negócio.',
-            icon: '🚀'
+            num: '01',
+            title: 'INCUBAÇÃO E ACELERAÇÃO GLOBAL',
+            bullets: [
+              'Desenvolvimento de Startups e MPMEs',
+              'Programas de incubação e aceleração',
+              'Estruturação de modelos de negócio',
+              'Mentoria estratégica e Smart Money'
+            ]
           },
           {
-            title: 'Marketing & Tech',
-            desc: 'Criamos a sua presença digital profissional, desde websites a apps de alta performance.',
-            icon: '💻'
+            num: '02',
+            title: 'CAPACITAÇÃO E EDUCAÇÃO EXECUTIVA',
+            bullets: [
+              'Formação empreendedora certificada',
+              'Desenvolvimento de liderança',
+              'Consultoria estratégica',
+              'Capacitação técnica e empresarial'
+            ]
           },
           {
-            title: 'Rede de Mentores',
-            desc: 'Conecte-se com líderes de indústria e especialistas prontos para guiar a sua jornada.',
-            icon: '🤝'
+            num: '03',
+            title: 'INVESTIMENTO E PARTICIPAÇÃO',
+            bullets: [
+              'Venture Builder',
+              'Gestão de portfólio',
+              'Participação em negócios inovadores',
+              'Curadoria de projetos de alto potencial'
+            ]
           },
           {
-            title: 'Acesso a Capital',
-            desc: 'Preparamos o seu pitch e conectamos a sua startup a investidores anjo e VC.',
-            icon: '💰'
+            num: '04',
+            title: 'NETWORKING E FACILITAÇÃO DE MERCADOS',
+            bullets: [
+              'Conexão intercontinental',
+              'Corredores internacionais de negócios',
+              'Plataforma digital de integração',
+              'Parcerias e alianças estratégicas globais'
+            ]
+          },
+          {
+            num: '05',
+            title: 'SUSTENTABILIDADE E POLÍTICAS PÚBLICAS',
+            bullets: [
+              'Soluções verdes e tecnológicas',
+              'Economia circular',
+              'Inclusão econômica',
+              'Advocacy e influência institucional'
+            ]
           }
         ]
       },
@@ -134,6 +164,32 @@ export async function seedAdmin() {
           {
             question: 'Como posso obter o website e portfólio grátis?',
             answer: 'Ao registar-se como PME no nosso ecossistema, terá acesso automático à nossa oferta de lançamento que inclui 4 meses de presença digital profissional gratuita.'
+          }
+        ]
+      },
+      {
+        key: 'supported_companies',
+        value: [
+          {
+            name: 'TechAfrica Solutions',
+            location: 'Luanda, Angola',
+            desc: 'Especialistas em transformar processos analógicos em experiências digitais de alta performance.',
+            icon: '💻',
+            phase: 'Crescimento'
+          },
+          {
+            name: 'AgroEco Moçambique',
+            location: 'Maputo, Moçambique',
+            desc: 'Soluções sustentáveis e inovadoras para pequenos e médios produtores agrícolas.',
+            icon: '🌱',
+            phase: 'Validação'
+          },
+          {
+            name: 'AfroStyle Fashion',
+            location: 'Maputo, Moçambique',
+            desc: 'Design de moda contemporânea inspirado em tecidos e padrões tradicionais africanos.',
+            icon: '👕',
+            phase: 'Ideação'
           }
         ]
       }
