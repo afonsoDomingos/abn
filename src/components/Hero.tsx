@@ -45,7 +45,7 @@ export default function Hero() {
         {/* Right side banner image */}
         <div 
           className={styles.bannerImage}
-          style={{ backgroundImage: `url('/hero_entrepreneurs.png')` }}
+          style={{ backgroundImage: `url(${content.banners && content.banners.length > 0 ? content.banners[currentBanner] : '/hero_entrepreneurs.png'})` }}
         >
           {/* Orange round partner badge in top-right */}
           <div className={styles.partnerBadge}>

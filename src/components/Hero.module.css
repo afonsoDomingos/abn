@@ -61,6 +61,7 @@
   position: relative;
   margin-left: -50px; /* Overlap effect */
   z-index: 1;
+  transition: background-image 1s ease-in-out;
 }
 
 .partnerBadge {

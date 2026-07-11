@@ -34,20 +34,57 @@ export default function Articles() {
     }
   ]);
 
+  const [viewsMap, setViewsMap] = useState<Record<string, number>>({});
+  const [commentsMap, setCommentsMap] = useState<Record<string, Array<{ name: string; text: string; date: string }>>>({
+    'Orange Corners Moçambique: Dia do Embaixador': [
+      { name: 'Afonso Domingos', text: 'Excelente iniciativa! Os embaixadores fazem a diferença.', date: '02/06/2026' }
+    ]
+  });
+
+  const [newCommentName, setNewCommentName] = useState('');
+  const [newCommentText, setNewCommentText] = useState('');
+
   useEffect(() => {
     fetch('/api/config')
       .then(res => res.json())
       .then(data => {
         if (data.configs && data.configs.articles_content) {
-          setArticles(data.configs.articles_content);
+          const list = data.configs.articles_content;
+          setArticles(list);
+          
+          // Seed initial random views and comments for realism
+          const vMap: Record<string, number> = {};
+          const cMap: Record<string, any[]> = { ...commentsMap };
+          list.forEach((item: any) => {
+            if (!vMap[item.title]) {
+              vMap[item.title] = Math.floor(Math.random() * 200) + 45;
+            }
+            if (!cMap[item.title]) {
+              cMap[item.title] = [
+                { name: 'Lucas Maputo', text: 'Incrível ver este ecossistema a crescer!', date: item.date },
+                { name: 'Amélia Santos', text: 'Grande orgulho de fazer parte deste impacto.', date: item.date }
+              ];
+            }
+          });
+          setViewsMap(vMap);
+          setCommentsMap(cMap);
         }
       });
   }, []);
 
+  const handleOpenArticle = (item: any, title: string, desc: string, location: string) => {
+    // Increment view count when clicked
+    setViewsMap(prev => ({
+      ...prev,
+      [title]: (prev[title] || 1) + 1
+    }));
+    setSelectedArticle({ ...item, translatedTitle: title, translatedDesc: desc, translatedLocation: location });
+  };
+
   // Map article type to badge style class
   const badgeStyleMap: Record<string, string> = {
     news: styles.badgeNews,
-    photos: styles.badgePhotos, // We will style this as red (research/event) in CSS
+    photos: styles.badgePhotos, 
     article: styles.badgeArticle
   };
 
@@ -97,11 +134,17 @@ export default function Articles() {
                     <span className={styles.location}>{location}</span>
                   </div>
                   <h3 className={styles.articleTitle}>{title}</h3>
-                  <span className={styles.date}>{item.date}</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                    <span className={styles.date} style={{ margin: 0 }}>{item.date}</span>
+                    <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+                      <span title="Visualizações" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>👁️ {viewsMap[item.title] || 0}</span>
+                      <span title="Comentários" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>💬 {commentsMap[item.title]?.length || 0}</span>
+                    </div>
+                  </div>
                   <p className={styles.desc}>{desc}</p>
                   <button 
                     className={styles.readMoreBtn} 
-                    onClick={() => setSelectedArticle({ ...item, translatedTitle: title, translatedDesc: desc, translatedLocation: location })}
+                    onClick={() => handleOpenArticle(item, title, desc, location)}
                   >
                     {language === 'pt' ? 'Ler mais' : 'Read more'}
                   </button>
@@ -126,6 +169,74 @@ export default function Articles() {
               <h3 className={styles.modalTitle}>{selectedArticle.translatedTitle || selectedArticle.title}</h3>
               <span className={styles.date}>{selectedArticle.date}</span>
               <div className={styles.modalText}>{selectedArticle.translatedDesc || selectedArticle.desc}</div>
+              
+              {/* Dynamic Comments Section inside Article modal */}
+              <div style={{ marginTop: '3rem', borderTop: '1px solid #eee', paddingTop: '2rem' }}>
+                <h4 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '8px', color: '#111' }}>
+                  💬 Comentários ({commentsMap[selectedArticle.title]?.length || 0})
+                </h4>
+                
+                {/* List Comments */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '2rem' }}>
+                  {(commentsMap[selectedArticle.title] || []).length === 0 ? (
+                    <p style={{ fontStyle: 'italic', color: '#999', fontSize: '0.9rem' }}>Nenhum comentário ainda. Seja o primeiro a comentar!</p>
+                  ) : (
+                    (commentsMap[selectedArticle.title] || []).map((c, i) => (
+                      <div key={i} style={{ background: '#f9f9f9', padding: '1.25rem', borderRadius: '8px', borderLeft: '3px solid var(--primary)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', fontSize: '0.85rem' }}>
+                          <strong style={{ color: '#111' }}>{c.name}</strong>
+                          <span style={{ color: '#999' }}>{c.date}</span>
+                        </div>
+                        <p style={{ margin: 0, color: '#555', fontSize: '0.92rem', lineHeight: '1.5' }}>{c.text}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                {/* Add Comment Form */}
+                <form 
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!newCommentName.trim() || !newCommentText.trim()) return;
+                    
+                    const newComment = {
+                      name: newCommentName,
+                      text: newCommentText,
+                      date: new Date().toLocaleDateString('pt-PT')
+                    };
+                    
+                    setCommentsMap(prev => ({
+                      ...prev,
+                      [selectedArticle.title]: [...(prev[selectedArticle.title] || []), newComment]
+                    }));
+                    
+                    setNewCommentName('');
+                    setNewCommentText('');
+                  }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: '#f5f5f5', padding: '1.5rem', borderRadius: '10px' }}
+                >
+                  <h5 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#111' }}>Adicionar um comentário</h5>
+                  <input 
+                    type="text" 
+                    placeholder="Seu nome" 
+                    value={newCommentName}
+                    onChange={e => setNewCommentName(e.target.value)}
+                    required
+                    style={{ padding: '8px 12px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '0.9rem', width: '100%', boxSizing: 'border-box', color: '#111', background: '#fff' }}
+                  />
+                  <textarea 
+                    placeholder="Digite seu comentário..." 
+                    value={newCommentText}
+                    onChange={e => setNewCommentText(e.target.value)}
+                    required
+                    rows={3}
+                    style={{ padding: '8px 12px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '0.9rem', width: '100%', boxSizing: 'border-box', resize: 'vertical', color: '#111', background: '#fff' }}
+                  />
+                  <button type="submit" className="btn-primary" style={{ alignSelf: 'flex-start', padding: '8px 16px', fontSize: '0.85rem' }}>
+                    Comentar
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>

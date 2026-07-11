@@ -22,10 +22,10 @@ export async function seedAdmin() {
       {
         key: 'stats_content',
         value: [
-          { label: 'Startups Incubadas', value: '150+' },
-          { label: 'Capital Captado', value: '$2.5M' },
-          { label: 'Mentores Especialistas', value: '45' },
-          { label: 'Países em África', value: '12' }
+          { label: 'Alumni', value: '968' },
+          { label: 'Parceiros Privados', value: '14+' },
+          { label: 'Mulheres Empreendedoras', value: '13%' },
+          { label: 'Empregos Apoiados', value: '5K+' }
         ]
       },
       {
