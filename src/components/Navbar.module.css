@@ -76,10 +76,45 @@
   color: #1c1917;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  animation: movingLine 3.5s ease-in-out infinite alternate;
 }
 
 .links a:hover {
   color: var(--primary);
+}
+
+.links a:hover::after {
+  animation-play-state: paused;
+  left: 0 !important;
+  width: 100% !important;
+  background: var(--primary);
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+@keyframes movingLine {
+  0% {
+    left: 0;
+    width: 20%;
+  }
+  50% {
+    left: 30%;
+    width: 50%;
+  }
+  100% {
+    left: 80%;
+    width: 20%;
+  }
 }
 
 .actions {

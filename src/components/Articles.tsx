@@ -43,8 +43,16 @@ export default function Articles() {
 
   const [newCommentName, setNewCommentName] = useState('');
   const [newCommentText, setNewCommentText] = useState('');
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      try {
+        setCurrentUser(JSON.parse(savedUser));
+      } catch (e) {}
+    }
+
     fetch('/api/config')
       .then(res => res.json())
       .then(data => {
@@ -197,10 +205,11 @@ export default function Articles() {
                 <form 
                   onSubmit={(e) => {
                     e.preventDefault();
-                    if (!newCommentName.trim() || !newCommentText.trim()) return;
+                    const commenterName = currentUser ? currentUser.name : newCommentName;
+                    if (!commenterName.trim() || !newCommentText.trim()) return;
                     
                     const newComment = {
-                      name: newCommentName,
+                      name: commenterName,
                       text: newCommentText,
                       date: new Date().toLocaleDateString('pt-PT')
                     };
@@ -216,14 +225,20 @@ export default function Articles() {
                   style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: '#f5f5f5', padding: '1.5rem', borderRadius: '10px' }}
                 >
                   <h5 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#111' }}>Adicionar um comentário</h5>
-                  <input 
-                    type="text" 
-                    placeholder="Seu nome" 
-                    value={newCommentName}
-                    onChange={e => setNewCommentName(e.target.value)}
-                    required
-                    style={{ padding: '8px 12px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '0.9rem', width: '100%', boxSizing: 'border-box', color: '#111', background: '#fff' }}
-                  />
+                  {currentUser ? (
+                    <div style={{ fontSize: '0.9rem', color: '#555', marginBottom: '4px' }}>
+                      Comentando como: <strong style={{ color: 'var(--primary)' }}>{currentUser.name}</strong>
+                    </div>
+                  ) : (
+                    <input 
+                      type="text" 
+                      placeholder="Seu nome" 
+                      value={newCommentName}
+                      onChange={e => setNewCommentName(e.target.value)}
+                      required
+                      style={{ padding: '8px 12px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '0.9rem', width: '100%', boxSizing: 'border-box', color: '#111', background: '#fff' }}
+                    />
+                  )}
                   <textarea 
                     placeholder="Digite seu comentário..." 
                     value={newCommentText}
