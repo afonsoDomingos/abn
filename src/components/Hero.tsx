@@ -7,12 +7,12 @@ import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Hero() {
   const { t, language } = useLanguage();
-  const [content, setContent] = useState({
+  const [content, setContent] = useState<any>({
     title: '',
     description: '',
     banners: []
   });
-
+  const [loading, setLoading] = useState(true);
   const [currentBanner, setCurrentBanner] = useState(0);
 
   useEffect(() => {
@@ -22,7 +22,9 @@ export default function Hero() {
         if (data.configs && data.configs.hero_content) {
           setContent(data.configs.hero_content);
         }
-      });
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   // Use translations if content from API is empty or we are not in PT
@@ -43,8 +45,10 @@ export default function Hero() {
     <section className={styles.hero}>
       <div className={styles.heroWrapper}>
         {/* Right side banner image */}
-        <div className={styles.bannerImage} style={{ position: 'relative', overflow: 'hidden' }}>
-          {content.banners && content.banners.length > 0 ? (
+        <div className={styles.bannerImage} style={{ position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f5f5f5' }}>
+          {loading ? (
+            <div className={styles.spinner}></div>
+          ) : content.banners && content.banners.length > 0 ? (
             content.banners.map((imgUrl: string, idx: number) => (
               <div
                 key={idx}

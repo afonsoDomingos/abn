@@ -435,28 +435,38 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
       </section>
 
       {/* 6. Strategic Partners Grid */}
-      {((hub.partners && hub.partners.length > 0) || globalPartners.length > 0) && (
-        <section className={styles.partnersSection}>
-          <div className={styles.container}>
-            
-            {/* Delegation-specific Partners */}
-            {hub.partners && hub.partners.length > 0 && (
-              <div style={{ marginBottom: '4rem' }}>
-                <h2 className={styles.sectionTitle}>Parceiros Locais ({hub.name})</h2>
-                <div className={styles.partnersGrid}>
-                  {hub.partners.map((p: any, idx: number) => (
-                    <div key={idx} className={styles.partnerCard}>
-                      {p.logo && (p.logo.startsWith('http') || p.logo.startsWith('/')) ? (
-                        <img src={p.logo} alt={p.name} className={styles.partnerLogo} />
-                      ) : (
-                        <span className={styles.partnerEmoji}>{p.logo || '🤝'}</span>
-                      )}
-                      <span className={styles.partnerName}>{p.name}</span>
-                    </div>
-                  ))}
+      {(() => {
+        const localPartners = (hub.partners && hub.partners.length > 0)
+          ? hub.partners
+          : (fallbackHubs[slug]?.partners || []);
+        
+        const hasLocalPartners = localPartners && localPartners.length > 0;
+        const hasGlobalPartners = globalPartners && globalPartners.length > 0;
+
+        if (!hasLocalPartners && !hasGlobalPartners) return null;
+
+        return (
+          <section className={styles.partnersSection}>
+            <div className={styles.container}>
+              
+              {/* Delegation-specific Partners */}
+              {hasLocalPartners && (
+                <div style={{ marginBottom: '4rem' }}>
+                  <h2 className={styles.sectionTitle}>Parceiros Locais ({hub.name})</h2>
+                  <div className={styles.partnersGrid}>
+                    {localPartners.map((p: any, idx: number) => (
+                      <div key={idx} className={styles.partnerCard}>
+                        {p.logo && (p.logo.startsWith('http') || p.logo.startsWith('/')) ? (
+                          <img src={p.logo} alt={p.name} className={styles.partnerLogo} />
+                        ) : (
+                          <span className={styles.partnerEmoji}>{p.logo || '🤝'}</span>
+                        )}
+                        <span className={styles.partnerName}>{p.name}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             {/* Global Partners */}
             {globalPartners.length > 0 && (
@@ -479,7 +489,8 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
 
           </div>
         </section>
-      )}
+      )
+    })()}
 
       {/* 7. Where to find us footer */}
       <footer className={styles.hubFooter}>
