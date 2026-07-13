@@ -30,6 +30,10 @@ export default function DashboardPage() {
         setUserName(u.name || 'Empreendedor');
         userRole = u.role || 'empreendedor';
         setRole(userRole);
+        if (userRole === 'admin') {
+          window.location.href = '/admin';
+          return;
+        }
         hasProfileDesc = !!u.description || !!u.email;
       }
 
