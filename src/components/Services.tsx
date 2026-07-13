@@ -139,8 +139,23 @@ export default function Services() {
                     <path className={styles.checkmarkCheck} fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
                   </svg>
                 </div>
-                <h4>Solicitação enviada!</h4>
+                <h4>Solicitação enviada! ✅</h4>
                 <p>Recebemos o seu pedido. A nossa equipa entrará em contacto em breve via email ou WhatsApp.</p>
+                <div style={{
+                  marginTop: '1.2rem',
+                  background: 'rgba(42,79,166,0.12)',
+                  border: '1px solid rgba(42,79,166,0.3)',
+                  borderRadius: '12px',
+                  padding: '1rem 1.2rem',
+                  textAlign: 'left'
+                }}>
+                  <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)' }}>
+                    📊 Quer acompanhar o estado do pedido?
+                  </p>
+                  <p style={{ margin: '6px 0 0 0', fontSize: '0.82rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.5 }}>
+                    Crie uma conta gratuita em <strong style={{ color: '#fff' }}>abnafrobiznetwork.com/registro</strong> com o <strong style={{ color: '#fff' }}>mesmo email</strong> que usou neste formulário. No Dashboard → <strong style={{ color: '#fff' }}>Serviços</strong> poderá ver o estado em tempo real: Pendente → Em Análise → Aprovado.
+                  </p>
+                </div>
                 <button className={styles.successCloseBtn} onClick={closeModal}>Fechar</button>
               </div>
             ) : (
@@ -173,6 +188,9 @@ export default function Services() {
                         onChange={e => setFormData({...formData, email: e.target.value})}
                         placeholder="O seu email principal"
                       />
+                      <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', marginTop: '5px', display: 'block', lineHeight: 1.5 }}>
+                        📌 Use o mesmo email da sua conta ABN para acompanhar o estado do pedido no Dashboard.
+                      </span>
                     </div>
                     <div className={styles.formGroup}>
                       <label>WhatsApp / Telefone *</label>

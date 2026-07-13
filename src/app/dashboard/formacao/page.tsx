@@ -28,6 +28,8 @@ export default function FormacaoPage() {
   const [submitting, setSubmitting] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState('');
   const [msg, setMsg] = useState({ type: '', text: '' });
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [videoModalUrl, setVideoModalUrl] = useState('');
 
   useEffect(() => {
     fetchEnrollments();
@@ -206,10 +208,22 @@ export default function FormacaoPage() {
               {/* Status Action buttons */}
               <div>
                 {status === 'aprovado' && (
-                  <div style={{ display: 'flex', gap: '0.8rem' }}>
+                  <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
                     <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(46,204,113,0.15)', color: '#2ecc71', border: '1px solid #2ecc71', padding: '8px 20px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
                       ✅ Inscrito
                     </span>
+                    {course.videoUrl && course.videoVisible !== false && (
+                      <button
+                        className="btn-primary"
+                        style={{ padding: '8px 16px', fontSize: '0.85rem', background: 'linear-gradient(135deg, #e74c3c, #c0392b)' }}
+                        onClick={() => {
+                          setVideoModalUrl(course.videoUrl);
+                          setShowVideoModal(true);
+                        }}
+                      >
+                        🎥 Assistir Aulas
+                      </button>
+                    )}
                     <button
                       className="btn-primary"
                       style={{ padding: '8px 16px', fontSize: '0.85rem' }}
@@ -259,6 +273,32 @@ export default function FormacaoPage() {
           );
         })}
       </div>
+
+      {/* Video Player Modal */}
+      {showVideoModal && videoModalUrl && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.92)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+          <div style={{ maxWidth: '860px', width: '100%', position: 'relative' }}>
+            <button
+              style={{ position: 'absolute', top: '-2.5rem', right: 0, background: 'none', border: 'none', color: '#ff4d4d', fontSize: '2rem', cursor: 'pointer', fontWeight: 700 }}
+              onClick={() => { setShowVideoModal(false); setVideoModalUrl(''); }}
+            >
+              &times;
+            </button>
+            <h3 style={{ color: '#fff', fontFamily: 'Outfit', marginBottom: '1rem', fontSize: '1.1rem' }}>🎥 Aulas do Curso</h3>
+            <div style={{ borderRadius: '16px', overflow: 'hidden', aspectRatio: '16/9', background: '#000' }}>
+              <iframe
+                src={videoModalUrl}
+                width="100%"
+                height="100%"
+                style={{ border: 'none', display: 'block' }}
+                allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                title="Aulas do Curso"
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Proof Upload Modal */}
       {showModal && selectedCourse && (

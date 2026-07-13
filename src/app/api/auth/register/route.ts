@@ -6,10 +6,14 @@ import User from '@/models/User';
 export async function POST(request: Request) {
   try {
     await dbConnect();
-    const { name, email, password, role } = await request.json();
+    const { name, email, password, role, phone, country, city, company, sector, linkedin, bio } = await request.json();
 
     if (!name || !email || !password) {
       return NextResponse.json({ error: 'Nome, email e senha são obrigatórios.' }, { status: 400 });
+    }
+
+    if (password.length < 6) {
+      return NextResponse.json({ error: 'A palavra-passe deve ter pelo menos 6 caracteres.' }, { status: 400 });
     }
 
     const existingUser = await User.findOne({ email: email.toLowerCase() });
@@ -24,13 +28,20 @@ export async function POST(request: Request) {
       email: email.toLowerCase(),
       password: hashedPassword,
       role: role || 'empreendedor',
+      phone: phone || '',
+      country: country || '',
+      city: city || '',
+      company: company || '',
+      sector: sector || '',
+      linkedin: linkedin || '',
+      bio: bio || '',
     });
 
     const userData = { id: String(user._id), name: user.name, email: user.email, role: user.role };
 
     const response = NextResponse.json({ success: true, user: userData }, { status: 201 });
 
-    // Definir cookie de sessão logo ao registar (auto-login)
+    // Auto-login após registo
     response.cookies.set('abn_session', encodeURIComponent(JSON.stringify(userData)), {
       httpOnly: false,
       secure: process.env.NODE_ENV === 'production',

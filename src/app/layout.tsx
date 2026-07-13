@@ -76,6 +76,7 @@ export const metadata: Metadata = {
 };
 
 import { LanguageProvider } from "@/lib/LanguageContext";
+import CookieConsent from "@/components/CookieConsent";
 
 export default function RootLayout({
   children,
@@ -87,6 +88,7 @@ export default function RootLayout({
       <body>
         <LanguageProvider>
           {children}
+          <CookieConsent />
         </LanguageProvider>
       </body>
     </html>

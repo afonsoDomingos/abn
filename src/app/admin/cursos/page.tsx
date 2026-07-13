@@ -11,6 +11,8 @@ interface Course {
   price: string;
   isPaid: boolean;
   desc: string;
+  videoUrl?: string;
+  videoVisible?: boolean;
 }
 
 export default function AdminCursosPage() {
@@ -31,6 +33,8 @@ export default function AdminCursosPage() {
   const [price, setPrice] = useState('Gratuito');
   const [isPaid, setIsPaid] = useState(false);
   const [desc, setDesc] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
+  const [videoVisible, setVideoVisible] = useState(true);
 
   useEffect(() => {
     fetchCourses();
@@ -60,6 +64,8 @@ export default function AdminCursosPage() {
     setPrice(course.price);
     setIsPaid(course.isPaid);
     setDesc(course.desc);
+    setVideoUrl(course.videoUrl || '');
+    setVideoVisible(course.videoVisible !== false);
     setShowForm(true);
   };
 
@@ -72,6 +78,8 @@ export default function AdminCursosPage() {
     setPrice('Gratuito');
     setIsPaid(false);
     setDesc('');
+    setVideoUrl('');
+    setVideoVisible(true);
     setShowForm(true);
   };
 
@@ -87,7 +95,9 @@ export default function AdminCursosPage() {
       lessons: Number(lessons),
       price,
       isPaid,
-      desc
+      desc,
+      videoUrl,
+      videoVisible
     };
 
     const url = '/api/courses';
@@ -299,6 +309,47 @@ export default function AdminCursosPage() {
                   rows={4}
                   style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff', resize: 'vertical' }}
                 />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>🎥 URL do Vídeo (YouTube Embed)</label>
+                <input 
+                  value={videoUrl} 
+                  onChange={e => setVideoUrl(e.target.value)} 
+                  placeholder="https://www.youtube.com/embed/VIDEO_ID"
+                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
+                />
+                <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
+                  Abra o YouTube → Partilhar → Incorporar → copie apenas o URL do src do iframe (ex: https://www.youtube.com/embed/abc123)
+                </span>
+              </div>
+
+              {/* Video Visibility Toggle */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '14px 18px' }}>
+                <div>
+                  <p style={{ color: '#fff', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>
+                    👁️ Visibilidade do Vídeo
+                  </p>
+                  <p style={{ color: 'rgba(255,255,255,0.45)', margin: '2px 0 0 0', fontSize: '0.75rem' }}>
+                    {videoVisible ? 'O vídeo está visível para os alunos inscritos' : 'O vídeo está oculto para todos os alunos'}
+                  </p>
+                </div>
+                <label style={{ position: 'relative', display: 'inline-block', width: '52px', height: '28px', cursor: 'pointer', flexShrink: 0 }}>
+                  <input
+                    type="checkbox"
+                    checked={videoVisible}
+                    onChange={e => setVideoVisible(e.target.checked)}
+                    style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }}
+                  />
+                  <span style={{
+                    position: 'absolute', inset: 0, borderRadius: '28px', transition: '0.3s',
+                    background: videoVisible ? 'var(--primary)' : 'rgba(255,255,255,0.15)'
+                  }} />
+                  <span style={{
+                    position: 'absolute', top: '4px', left: videoVisible ? '28px' : '4px',
+                    width: '20px', height: '20px', background: '#fff', borderRadius: '50%', transition: '0.3s'
+                  }} />
+                </label>
               </div>
 
               <button type="submit" className="btn-primary" disabled={saving} style={{ marginTop: '0.5rem' }}>

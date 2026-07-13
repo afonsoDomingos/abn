@@ -3,6 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import OurMission from "@/components/OurMission";
+import Services from "@/components/Services";
 import Articles from "@/components/Articles";
 import Courses from "@/components/Courses";
 import Stats from "@/components/Stats";
@@ -21,6 +22,7 @@ export default function Home() {
         <Navbar />
         <Hero />
         <OurMission />
+        <Services />
         <Articles />
         <Courses />
         <Stats />

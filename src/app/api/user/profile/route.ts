@@ -52,7 +52,7 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ 
       success: true, 
-      user: { id: user._id, name: user.name, email: user.email, role: user.role } 
+      user: { id: user._id, name: user.name, email: user.email, role: user.role, profileImage: user.profileImage } 
     });
   } catch (error: any) {
     return NextResponse.json({ error: 'Erro ao atualizar perfil.' }, { status: 500 });

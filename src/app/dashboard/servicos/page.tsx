@@ -78,7 +78,7 @@ export default function ServicosPage() {
     // If hiring, title is formatted
     const serviceTitle = isHiring 
       ? `[Contratação Freelancer: ${selectedService.user.name}] - ${selectedService.category}`
-      : selectedService.title;
+      : selectedService.name;
 
     const price = isHiring ? selectedService.pricePerHour : (selectedService.price || 'Grátis');
 
@@ -191,7 +191,7 @@ export default function ServicosPage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div>
                       <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 700 }}>{s.category}</span>
-                      <h3 style={{ color: '#fff', margin: '4px 0 0 0', fontSize: '1.15rem' }}>{s.title}</h3>
+                      <h3 style={{ color: '#fff', margin: '4px 0 0 0', fontSize: '1.15rem' }}>{s.name}</h3>
                     </div>
                     <span style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--primary)', background: 'rgba(255,107,0,0.1)', padding: '4px 12px', borderRadius: '30px' }}>
                       {s.price}
@@ -352,7 +352,7 @@ export default function ServicosPage() {
               {isHiring ? 'Contratar Freelancer' : 'Solicitar Serviço'}
             </h2>
             <p style={{ color: 'var(--primary)', fontWeight: 700, margin: '0 0 1.5rem 0' }}>
-              {isHiring ? `Proposta para: ${selectedService.user?.name}` : selectedService.title}
+              {isHiring ? `Proposta para: ${selectedService.user?.name}` : selectedService.name}
             </p>
 
             <form onSubmit={handleRequestSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>

@@ -14,7 +14,7 @@ function LogoutButton() {
   };
   return (
     <button onClick={handleLogout} className={styles.logout}>
-      🚪 Sair
+      Sair
     </button>
   );
 }
@@ -49,17 +49,17 @@ export default function DashboardLayout({
           </Link>
         </div>
         <nav className={styles.sidebarNav}>
-          <Link href="/dashboard" className={styles.active}>🏠 Dashboard</Link>
-          <Link href="/dashboard/perfil">👤 Perfil</Link>
-          <Link href="/dashboard/projetos">🚀 Projetos</Link>
-          <Link href="/dashboard/oportunidades">🔥 Oportunidades</Link>
-          <Link href="/dashboard/networking">🤝 Networking</Link>
-          <Link href="/dashboard/servicos">🛠️ Serviços</Link>
+          <Link href="/dashboard" className={styles.active}>Dashboard</Link>
+          <Link href="/dashboard/perfil">Perfil</Link>
+          <Link href="/dashboard/projetos">Projetos</Link>
+          <Link href="/dashboard/oportunidades">Oportunidades</Link>
+          <Link href="/dashboard/networking">Networking</Link>
+          <Link href="/dashboard/servicos">Serviços</Link>
           {user.role === 'investidor' && (
-            <Link href="/dashboard/investimentos">💰 Investimentos</Link>
+            <Link href="/dashboard/investimentos">Investimentos</Link>
           )}
           <Link href="/dashboard/formacao">Formação</Link>
-          <Link href="/dashboard/mensagens">💬 Mensagens</Link>
+          <Link href="/dashboard/mensagens">Mensagens</Link>
         </nav>
         <div className={styles.sidebarFooter}>
           <LogoutButton />
