@@ -23,6 +23,11 @@ export interface IHubTeamMember {
   image?: string;
 }
 
+export interface IHubPartner {
+  name: string;
+  logo: string;
+}
+
 export interface IHub extends Document {
   slug: string;
   name: string;
@@ -40,6 +45,7 @@ export interface IHub extends Document {
   events: IHubEvent[];
   representative: IHubRepresentative;
   team: IHubTeamMember[];
+  partners?: IHubPartner[];
 }
 
 const HubEventSchema = new Schema<IHubEvent>({
@@ -88,6 +94,12 @@ const HubSchema = new Schema<IHub>({
       name: { type: String, default: '' },
       role: { type: String, default: '' },
       image: { type: String, default: '/default-avatar.png' }
+    }
+  ],
+  partners: [
+    {
+      name: { type: String, default: '' },
+      logo: { type: String, default: '🤝' }
     }
   ]
 }, { timestamps: true });

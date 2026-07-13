@@ -56,7 +56,8 @@ export async function POST(request: NextRequest) {
       youtubeUrl,
       events,
       representative,
-      team
+      team,
+      partners
     } = body;
 
     if (!name || !slug || !image || !description || !address || !email || !phone) {
@@ -89,7 +90,8 @@ export async function POST(request: NextRequest) {
       youtubeUrl,
       events: events || [],
       representative: representative || { name: '', role: '', email: '', phone: '', image: '/default-avatar.png' },
-      team: team || []
+      team: team || [],
+      partners: partners || []
     });
 
     return NextResponse.json({ success: true, hub: newHub });

@@ -305,57 +305,67 @@ export async function seedAdmin() {
     }
 
     // 4. Seed Hub (Guiné-Bissau)
+    const gbHubData = {
+      name: 'Guiné-Bissau',
+      slug: 'quinebissau',
+      image: '/guine_bissau_banner.png',
+      description: 'A delegação da ABN em Guiné-Bissau fomenta o ecossistema de empreendedorismo local através de incubação acelerada de ideias, conexão com investidores internacionais e facilitação de redes de mercados sustentáveis.',
+      steps: [
+        { title: 'Fase de Candidatura', description: 'Preencha o formulário online detalhando o seu negócio ou ideia de impacto.' },
+        { title: 'Entrevista & Pitching', description: 'Apresente a sua equipa e proposta de valor à nossa comissão de mentores.' },
+        { title: 'Incubação Activa', description: 'Aceda a mentoria estratégica personalizada e recursos para expansão.' }
+      ],
+      faqs: [
+        { question: 'Quem se pode candidatar?', answer: 'Jovens guineenses residentes em Bissau, estudantes ou profissionais com projetos inovadores de base tecnológica ou sustentável.' },
+        { question: 'Existe algum custo associado?', answer: 'Não, todos os programas oferecidos pela ABN Guiné-Bissau são totalmente gratuitos.' }
+      ],
+      address: 'Bissau, Guiné-Bissau - Avenida Combatentes da Liberdade da Pátria',
+      email: 'guinebissau@afrobiznetwork.com',
+      phone: '+245 955 000 000',
+      facebookUrl: 'https://facebook.com',
+      instagramUrl: 'https://instagram.com',
+      linkedinUrl: 'https://linkedin.com',
+      events: [
+        {
+          title: 'Fórum de Adaptação de Lideranças Juvenis',
+          date: '14 de Outubro de 2026',
+          description: 'Encontro de jovens empreendedores e líderes focado no desenvolvimento de competências verdes e negócios de impacto ecológico.',
+          type: 'future',
+          link: 'https://wa.me/258845773974'
+        },
+        {
+          title: 'Workshop Mentoria Spark Guiné',
+          date: '12 de Fevereiro de 2026',
+          description: 'Sessão intensiva de ideação e validação de modelos de negócio para startups locais na fase inicial.',
+          type: 'past',
+          image: '/guine_bissau_banner.png'
+        }
+      ],
+      representative: {
+        name: 'Mamadu Baldé',
+        role: 'Diretor de Delegação - ABN Guiné-Bissau',
+        email: 'mamadu.balde@afrobiznetwork.com',
+        phone: '+245 955 123 456',
+        image: '/default-avatar.png'
+      },
+      team: [
+        { name: 'Fatoumata Djaló', role: 'Gestora de Programas e Incubação', image: '/default-avatar.png' },
+        { name: 'Umaro Sissoco', role: 'Coordenador de Parcerias e Impacto', image: '/default-avatar.png' }
+      ],
+      partners: [
+        { name: 'Startup Bissau', logo: '🚀' },
+        { name: 'Banco da Guiné', logo: '🏦' },
+        { name: 'Mentores GB', logo: '🤝' }
+      ]
+    };
+
     const gbHub = await Hub.findOne({ slug: 'quinebissau' });
     if (!gbHub) {
-      await Hub.create({
-        name: 'Guiné-Bissau',
-        slug: 'quinebissau',
-        image: '/guine_bissau_banner.png',
-        description: 'A delegação da ABN em Guiné-Bissau fomenta o ecossistema de empreendedorismo local através de incubação acelerada de ideias, conexão com investidores internacionais e facilitação de redes de mercados sustentáveis.',
-        steps: [
-          { title: 'Fase de Candidatura', description: 'Preencha o formulário online detalhando o seu negócio ou ideia de impacto.' },
-          { title: 'Entrevista & Pitching', description: 'Apresente a sua equipa e proposta de valor à nossa comissão de mentores.' },
-          { title: 'Incubação Activa', description: 'Aceda a mentoria estratégica personalizada e recursos para expansão.' }
-        ],
-        faqs: [
-          { question: 'Quem se pode candidatar?', answer: 'Jovens guineenses residentes em Bissau, estudantes ou profissionais com projetos inovadores de base tecnológica ou sustentável.' },
-          { question: 'Existe algum custo associado?', answer: 'Não, todos os programas oferecidos pela ABN Guiné-Bissau são totalmente gratuitos.' }
-        ],
-        address: 'Bissau, Guiné-Bissau - Avenida Combatentes da Liberdade da Pátria',
-        email: 'guinebissau@afrobiznetwork.com',
-        phone: '+245 955 000 000',
-        facebookUrl: 'https://facebook.com',
-        instagramUrl: 'https://instagram.com',
-        linkedinUrl: 'https://linkedin.com',
-        events: [
-          {
-            title: 'Fórum de Adaptação de Lideranças Juvenis',
-            date: '14 de Outubro de 2026',
-            description: 'Encontro de jovens empreendedores e líderes focado no desenvolvimento de competências verdes e negócios de impacto ecológico.',
-            type: 'future',
-            link: 'https://wa.me/258845773974'
-          },
-          {
-            title: 'Workshop Mentoria Spark Guiné',
-            date: '12 de Fevereiro de 2026',
-            description: 'Sessão intensiva de ideação e validação de modelos de negócio para startups locais na fase inicial.',
-            type: 'past',
-            image: '/guine_bissau_banner.png'
-          }
-        ],
-        representative: {
-          name: 'Mamadu Baldé',
-          role: 'Diretor de Delegação - ABN Guiné-Bissau',
-          email: 'mamadu.balde@afrobiznetwork.com',
-          phone: '+245 955 123 456',
-          image: '/default-avatar.png'
-        },
-        team: [
-          { name: 'Fatoumata Djaló', role: 'Gestora de Programas e Incubação', image: '/default-avatar.png' },
-          { name: 'Umaro Sissoco', role: 'Coordenador de Parcerias e Impacto', image: '/default-avatar.png' }
-        ]
-      });
+      await Hub.create(gbHubData);
       console.log('Hub Guiné-Bissau seeded.');
+    } else {
+      await Hub.findOneAndUpdate({ slug: 'quinebissau' }, gbHubData, { new: true });
+      console.log('Hub Guiné-Bissau updated in seed.');
     }
 
     console.log('✅ Seed concluído com sucesso!');

@@ -24,12 +24,20 @@
 }
 
 .hubCard {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hubCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(var(--primary-rgb), 0.3);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
 }
 
 .hubCardImg {
@@ -117,13 +125,14 @@
 
 /* Form Styling */
 .formSection {
-  background: #111;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 24px;
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .formGrid {
@@ -146,9 +155,9 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
-.formGroup input, .formGroup textarea {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+.formGroup input, .formGroup textarea, .formGroup select {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   padding: 0.85rem 1.25rem !important;
   border-radius: 12px !important;
   color: #fff !important;
@@ -159,9 +168,10 @@
   box-sizing: border-box;
 }
 
-.formGroup input:focus, .formGroup textarea:focus {
+.formGroup input:focus, .formGroup textarea:focus, .formGroup select:focus {
   border-color: var(--primary) !important;
-  background: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
 }
 
 .uploadRow {
@@ -252,4 +262,25 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   font-weight: 600;
   z-index: 1000;
+}
+
+/* Custom global overrides for admin theme */
+.formSection :global(.btn-outline),
+.page :global(.btn-outline) {
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #fff !important;
+  background: transparent !important;
+  border-radius: 8px !important;
+}
+
+.formSection :global(.btn-outline):hover,
+.page :global(.btn-outline):hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: #fff !important;
+  color: #fff !important;
+}
+
+.formSection :global(.btn-primary),
+.page :global(.btn-primary) {
+  border-radius: 8px !important;
 }

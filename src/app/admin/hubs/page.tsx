@@ -79,6 +79,12 @@ export default function AdminHubsPage() {
   const [faqs, setFaqs] = useState<Array<{ question: string; answer: string }>>([]);
   const [events, setEvents] = useState<HubEvent[]>([]);
 
+  // Partners states
+  const [partners, setPartners] = useState<Array<{ name: string; logo: string }>>([]);
+  const [newPartnerName, setNewPartnerName] = useState('');
+  const [newPartnerLogo, setNewPartnerLogo] = useState('');
+  const [uploadingPartnerLogo, setUploadingPartnerLogo] = useState(false);
+
   // Add event helper state
   const [newEvtTitle, setNewEvtTitle] = useState('');
   const [newEvtDate, setNewEvtDate] = useState('');
@@ -133,6 +139,9 @@ export default function AdminHubsPage() {
     setNewMemberName('');
     setNewMemberRole('');
     setNewMemberImage('');
+    setPartners([]);
+    setNewPartnerName('');
+    setNewPartnerLogo('');
     setSteps([
       { title: 'Fase de Candidatura', description: 'Preencha o formulário online detalhando o seu negócio.' },
       { title: 'Entrevista & Pitching', description: 'Apresente a sua equipa e proposta de valor a investidores.' },
@@ -176,6 +185,10 @@ export default function AdminHubsPage() {
           setNewMemberName('');
           setNewMemberRole('');
           setNewMemberImage('');
+
+          setPartners(h.partners || []);
+          setNewPartnerName('');
+          setNewPartnerLogo('');
 
           setEditingSlug(hubSlug);
           setIsCreating(false);
@@ -239,7 +252,8 @@ export default function AdminHubsPage() {
             phone: repPhone,
             image: repImage || '/default-avatar.png'
           },
-          team
+          team,
+          partners
         })
       });
 
@@ -291,6 +305,17 @@ export default function AdminHubsPage() {
     setNewMemberName('');
     setNewMemberRole('');
     setNewMemberImage('');
+  };
+
+  // Add Partner
+  const addPartner = () => {
+    if (!newPartnerName) {
+      alert('Preencha o nome do parceiro.');
+      return;
+    }
+    setPartners([...partners, { name: newPartnerName, logo: newPartnerLogo || '🤝' }]);
+    setNewPartnerName('');
+    setNewPartnerLogo('');
   };
 
   if (loading) {
@@ -580,7 +605,6 @@ export default function AdminHubsPage() {
                   <select 
                     value={newEvtType} 
                     onChange={e => setNewEvtType(e.target.value as 'past' | 'future')}
-                    style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '12px', padding: '10px' }}
                   >
                     <option value="future" style={{ background: '#111' }}>Evento Futuro</option>
                     <option value="past" style={{ background: '#111' }}>Evento Passado</option>
@@ -743,6 +767,91 @@ export default function AdminHubsPage() {
                       <button 
                         type="button" 
                         onClick={() => setTeam(team.filter((_, i) => i !== idx))}
+                        style={{ background: 'none', border: 'none', color: '#ff4d4d', cursor: 'pointer', fontSize: '1.5rem', padding: '0 0.5rem' }}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Parceiros Locais Section Config */}
+          <div>
+            <div className={styles.sectionHeader}>Gestão de Parceiros da Delegação</div>
+            
+            {/* Add Partner Block */}
+            <div className={styles.subItemBox} style={{ background: 'rgba(212,175,55,0.02)', borderColor: 'rgba(212,175,55,0.15)' }}>
+              <div className={styles.subItemTitle} style={{ color: 'var(--primary)' }}>+ Adicionar Novo Parceiro</div>
+              <div className={styles.formGrid}>
+                <div className={styles.formGroup}>
+                  <label>Nome do Parceiro *</label>
+                  <input value={newPartnerName} onChange={e => setNewPartnerName(e.target.value)} placeholder="Ex: Banco da Guiné" />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Logótipo/Emoji do Parceiro (Emoji ou Link ou Upload)</label>
+                  <div className={styles.uploadRow}>
+                    <input value={newPartnerLogo} onChange={e => setNewPartnerLogo(e.target.value)} placeholder="Ex: 🤝 ou link da imagem" style={{ flex: 1 }} />
+                    <label className={styles.uploadLabel} title="Carregar Logótipo" style={{ cursor: 'pointer' }}>
+                      {uploadingPartnerLogo ? <div className={styles.spinnerSmall}></div> : '📁'}
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          const formData = new FormData();
+                          formData.append('file', file);
+                          setUploadingPartnerLogo(true);
+                          try {
+                            const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                            const data = await res.json();
+                            if (data.success && data.url) {
+                              setNewPartnerLogo(data.url);
+                            } else {
+                              alert('Erro: ' + (data.error || 'Falha no upload'));
+                            }
+                          } catch {
+                            alert('Erro de conexão ao carregar.');
+                          } finally {
+                            setUploadingPartnerLogo(false);
+                          }
+                        }}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <button type="button" className="btn-outline" onClick={addPartner} style={{ alignSelf: 'flex-start' }}>
+                Adicionar Parceiro
+              </button>
+            </div>
+
+            {/* List Created Partners */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
+              <div className={styles.subItemTitle}>Parceiros Registados ({partners.length})</div>
+              {partners.length === 0 ? (
+                <p style={{ opacity: 0.5, fontStyle: 'italic', fontSize: '0.9rem' }}>Nenhum parceiro associado a este Hub.</p>
+              ) : (
+                <div className={styles.formGrid}>
+                  {partners.map((partner: any, idx: number) => (
+                    <div key={idx} className={styles.subItemBox} style={{ marginBottom: 0, flexDirection: 'row', alignItems: 'center', gap: '1rem' }}>
+                      <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', overflow: 'hidden' }}>
+                        {partner.logo && (partner.logo.startsWith('http') || partner.logo.startsWith('/')) ? (
+                          <img src={partner.logo} alt={partner.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                        ) : (
+                          <span style={{ fontSize: '1.5rem' }}>{partner.logo || '🤝'}</span>
+                        )}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#fff' }}>{partner.name}</div>
+                      </div>
+                      <button 
+                        type="button" 
+                        onClick={() => setPartners(partners.filter((_, i) => i !== idx))}
                         style={{ background: 'none', border: 'none', color: '#ff4d4d', cursor: 'pointer', fontSize: '1.5rem', padding: '0 0.5rem' }}
                       >
                         &times;

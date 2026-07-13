@@ -52,6 +52,11 @@ const fallbackHubs: Record<string, any> = {
     team: [
       { name: 'Fatoumata Djaló', role: 'Gestora de Programas e Incubação', image: '' },
       { name: 'Umaro Sissoco', role: 'Coordenador de Parcerias e Impacto', image: '' }
+    ],
+    partners: [
+      { name: 'Startup Bissau', logo: '🚀' },
+      { name: 'Banco da Guiné', logo: '🏦' },
+      { name: 'Mentores GB', logo: '🤝' }
     ]
   }
 };
@@ -170,9 +175,44 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
     );
   }
 
+  // Define general/global events
+  const globalEvents = [
+    {
+      title: 'Fórum de Adaptação de Lideranças Juvenis',
+      date: '14 de Outubro de 2026',
+      description: 'Encontro global de jovens empreendedores e líderes de todas as delegações da rede ABN para debater inovação social e negócios sustentáveis.',
+      type: 'future',
+      isGlobal: true,
+      image: '/guine_bissau_banner.png'
+    },
+    {
+      title: 'ABN Global Demo Day',
+      date: '28 de Novembro de 2026',
+      description: 'As melhores startups selecionadas de cada delegação local apresentam seus projetos para investidores globais e parceiros de venture capital.',
+      type: 'future',
+      isGlobal: true
+    },
+    {
+      title: 'Ciclo Global de Masterclasses ABN',
+      date: 'Mensal (Online)',
+      description: 'Formações dinâmicas e práticas ministradas por líderes de mercado de prestígio global sobre tecnologia, investimento e marketing.',
+      type: 'future',
+      isGlobal: true
+    }
+  ];
+
   // Filter events
-  const futureEvents = (hub.events || []).filter((e: any) => e.type === 'future');
-  const pastEvents = (hub.events || []).filter((e: any) => e.type === 'past');
+  const localEvents = hub.events || [];
+  
+  // Filter out the fallback local events that duplicate the global ones if needed,
+  // or simply display all. Let's merge them, ensuring unique titles.
+  const uniqueLocalEvents = localEvents.filter(
+    (le: any) => !globalEvents.some((ge) => ge.title.toLowerCase().trim() === le.title.toLowerCase().trim())
+  );
+  
+  const allEvents = [...uniqueLocalEvents, ...globalEvents];
+  const futureEvents = allEvents.filter((e: any) => e.type === 'future');
+  const pastEvents = allEvents.filter((e: any) => e.type === 'past');
   const activeEvents = activeTab === 'future' ? futureEvents : pastEvents;
 
   return (
@@ -302,7 +342,7 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
                   )}
                   <div style={{ padding: evt.image ? '0 2rem' : '0', display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1 }}>
                     <div className={styles.eventBadge}>
-                      {evt.type === 'future' ? 'Brevemente' : 'Concluído'}
+                      {evt.isGlobal ? 'Actividade Geral' : evt.type === 'future' ? 'Brevemente' : 'Concluído'}
                     </div>
                     <span className={styles.eventDate}>📅 {evt.date}</span>
                     <h3>{evt.title}</h3>
@@ -395,22 +435,48 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
       </section>
 
       {/* 6. Strategic Partners Grid */}
-      {globalPartners.length > 0 && (
+      {((hub.partners && hub.partners.length > 0) || globalPartners.length > 0) && (
         <section className={styles.partnersSection}>
           <div className={styles.container}>
-            <h2 className={styles.sectionTitle}>Nossos Parceiros</h2>
-            <div className={styles.partnersGrid}>
-              {globalPartners.map((p, idx) => (
-                <div key={idx} className={styles.partnerCard}>
-                  {p.logo && (p.logo.startsWith('http') || p.logo.startsWith('/')) ? (
-                    <img src={p.logo} alt={p.name} className={styles.partnerLogo} />
-                  ) : (
-                    <span className={styles.partnerEmoji}>{p.logo || '🤝'}</span>
-                  )}
-                  <span className={styles.partnerName}>{p.name}</span>
+            
+            {/* Delegation-specific Partners */}
+            {hub.partners && hub.partners.length > 0 && (
+              <div style={{ marginBottom: '4rem' }}>
+                <h2 className={styles.sectionTitle}>Parceiros Locais ({hub.name})</h2>
+                <div className={styles.partnersGrid}>
+                  {hub.partners.map((p: any, idx: number) => (
+                    <div key={idx} className={styles.partnerCard}>
+                      {p.logo && (p.logo.startsWith('http') || p.logo.startsWith('/')) ? (
+                        <img src={p.logo} alt={p.name} className={styles.partnerLogo} />
+                      ) : (
+                        <span className={styles.partnerEmoji}>{p.logo || '🤝'}</span>
+                      )}
+                      <span className={styles.partnerName}>{p.name}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+
+            {/* Global Partners */}
+            {globalPartners.length > 0 && (
+              <div>
+                <h2 className={styles.sectionTitle} style={{ fontSize: '1.8rem', opacity: 0.85 }}>Parceiros Globais</h2>
+                <div className={styles.partnersGrid}>
+                  {globalPartners.map((p, idx) => (
+                    <div key={idx} className={styles.partnerCard}>
+                      {p.logo && (p.logo.startsWith('http') || p.logo.startsWith('/')) ? (
+                        <img src={p.logo} alt={p.name} className={styles.partnerLogo} />
+                      ) : (
+                        <span className={styles.partnerEmoji}>{p.logo || '🤝'}</span>
+                      )}
+                      <span className={styles.partnerName}>{p.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
           </div>
         </section>
       )}
