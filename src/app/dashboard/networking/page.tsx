@@ -97,7 +97,7 @@ export default function NetworkingPage() {
         />
 
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {(['todos', 'empreendedor', 'startup', 'investidor', 'mentor'] as const).map(role => (
+          {(['todos', 'empreendedor', 'startup', 'investidor'] as const).map(role => (
             <button
               key={role}
               onClick={() => setFilter(role)}

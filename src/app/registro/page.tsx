@@ -68,11 +68,31 @@ export default function RegisterPage() {
           <div className={styles.inputGroup}>
             <label>Tipo de Perfil</label>
             <select value={role} onChange={(e) => setRole(e.target.value)} required>
-              <option value="empreendedor">Empreendedor</option>
-              <option value="startup">Startup</option>
+              <option value="empreendedor">Empreendedor / Startup</option>
               <option value="investidor">Investidor</option>
-              <option value="mentor">Mentor</option>
             </select>
+            
+            {/* Dynamic Role Description */}
+            <div style={{
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px dashed rgba(255,255,255,0.12)',
+              padding: '1rem',
+              borderRadius: '8px',
+              marginTop: '0.6rem',
+              fontSize: '0.8rem',
+              color: '#d6d3d1',
+              lineHeight: '1.4'
+            }}>
+              {role === 'investidor' ? (
+                <>
+                  💼 <strong>Perfil de Investidor:</strong> Aceda a startups qualificadas com ABN Score elevado, consulte pitch decks detalhados de empreendedores e envie propostas diretas de financiamento.
+                </>
+              ) : (
+                <>
+                  🚀 <strong>Perfil de Empreendedor / Startup:</strong> Registe e acelere a sua startup, submeta o seu progresso para aumentar o ABN Score, aceda a cursos certificados gratuitos e pagos e solicite apoio administrativo.
+                </>
+              )}
+            </div>
           </div>
           
           <div className={styles.inputGroup}>

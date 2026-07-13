@@ -143,79 +143,8 @@ export default function DashboardPage() {
         </>
       )}
 
-      {/* 2. MENTOR DASHBOARD */}
-      {role === 'mentor' && (
-        <>
-          <div className={styles.welcome}>
-            <h1>Olá, Mentor <span className="text-gradient-gold">{userName}</span>!</h1>
-            <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Bem-vindo ao seu painel de mentoria. Guie e acelere a próxima geração de startups em África.</p>
-          </div>
-
-          <div className={styles.progressGrid}>
-            <div className={`${styles.progressCard} glass`}>
-              <h3 style={{ color: '#1c1917' }}>Sessões de Aceleração</h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
-                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>
-                  4<span style={{ fontSize: '1rem', color: '#666' }}> startups</span>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#555', fontWeight: 600 }}>
-                    Projetos sob orientação direta no ABN Hub.
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <div className={`${styles.progressCard} glass`}>
-              <h3 style={{ color: '#1c1917' }}>Requisitos de Mentor</h3>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem', color: '#333', fontWeight: 600 }}>
-                <li>✅ Registo de Mentor verificado pela ABN</li>
-                <li>✅ Disponibilidade de Horário de Mentoria</li>
-                <li>❌ Especialização e Skills especificadas</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className={styles.sectionTitle}>
-            <h2>Próximos Compromissos</h2>
-          </div>
-
-          <div className={styles.tasks}>
-            <div className={styles.taskItem}>
-              <input type="checkbox" checked={true} readOnly />
-              <span>Configurar horários semanais disponíveis</span>
-            </div>
-            <div className={styles.taskItem}>
-              <input type="checkbox" checked={false} readOnly />
-              <span>Avaliar pitch decks de novas startups mentoradas</span>
-            </div>
-            <div className={styles.taskItem}>
-              <input type="checkbox" checked={false} readOnly />
-              <span>Agendar sessões 1-on-1 de planeamento estratégico</span>
-            </div>
-          </div>
-
-          <div className={styles.sectionTitle}>
-            <h2>Recursos para Mentores</h2>
-          </div>
-
-          <div className={styles.resources}>
-            <div className={`${styles.resourceCard} glass`}>
-              <div className={styles.resourceIcon}>📚</div>
-              <h4>Metodologias de Aceleração</h4>
-              <p>Manual ABN para Mentores - 2026</p>
-            </div>
-            <div className={`${styles.resourceCard} glass`}>
-              <div className={styles.resourceIcon}>📐</div>
-              <h4>Framework de Planeamento</h4>
-              <p>Template OKRs para Mentoria</p>
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* 3. DEFAULT ENTERPRENEUR / STARTUP DASHBOARD */}
-      {role !== 'investidor' && role !== 'mentor' && (
+      {/* 2. DEFAULT ENTERPRENEUR / STARTUP DASHBOARD */}
+      {role !== 'investidor' && (
         <>
           <div className={styles.welcome}>
             <h1>Olá, <span className="text-gradient-gold">{userName}</span>!</h1>
