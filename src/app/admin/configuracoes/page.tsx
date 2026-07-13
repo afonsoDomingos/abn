@@ -42,7 +42,7 @@ export default function AdminConfigPage() {
     }
   ]);
   const [team, setTeam] = useState([
-    { name: '', role: '', linkedin: '', image: '' }
+    { name: '', role: '', country: '', linkedin: '', image: '', bio: '' }
   ]);
   
   const [loading, setLoading] = useState(true);
@@ -605,19 +605,52 @@ export default function AdminConfigPage() {
                   <input 
                     value={member.role} 
                     onChange={e => updateArrayField(setTeam, team, index, 'role', e.target.value)} 
-                    placeholder="Cargo / Descrição" 
+                    placeholder="Cargo (ex: CEO, Directora, Developer, RH)" 
                     style={{ flex: 1 }}
                   />
+                  <select
+                    value={(member as any).country || ''}
+                    onChange={e => updateArrayField(setTeam, team, index, 'country', e.target.value)}
+                    style={{ width: '200px' }}
+                  >
+                    <option value="">🌍 País</option>
+                    <option value="Angola">🇦🇴 Angola</option>
+                    <option value="Cabo Verde">🇨🇻 Cabo Verde</option>
+                    <option value="Guine-Bissau">🇬🇼 Guiné-Bissau</option>
+                    <option value="Mocambique">🇲🇿 Moçambique</option>
+                    <option value="Portugal">🇵🇹 Portugal</option>
+                    <option value="Sao Tome e Principe">🇸🇹 São Tomé</option>
+                    <option value="Brasil">🇧🇷 Brasil</option>
+                    <option value="Franca">🇫🇷 França</option>
+                    <option value="Espanha">🇪🇸 Espanha</option>
+                    <option value="Nigeria">🇳🇬 Nigéria</option>
+                    <option value="Senegal">🇸🇳 Senegal</option>
+                    <option value="Africa do Sul">🇿🇦 África do Sul</option>
+                    <option value="Gana">🇬🇭 Gana</option>
+                    <option value="Quenia">🇰🇪 Quénia</option>
+                    <option value="Ruanda">🇷🇼 Ruanda</option>
+                  </select>
+                </div>
+                <div className={styles.row} style={{ marginTop: '0.5rem' }}>
                   <input 
                     value={member.linkedin} 
                     onChange={e => updateArrayField(setTeam, team, index, 'linkedin', e.target.value)} 
-                    placeholder="Link do LinkedIn" 
+                    placeholder="Link do LinkedIn (opcional)" 
                     style={{ flex: 1 }}
+                  />
+                </div>
+                <div className={styles.row} style={{ marginTop: '0.5rem' }}>
+                  <textarea 
+                    value={(member as any).bio || ''} 
+                    onChange={e => updateArrayField(setTeam, team, index, 'bio', e.target.value)} 
+                    placeholder="Biografia do membro da equipa (ex: fundador, consultor...)" 
+                    rows={3}
+                    style={{ flex: 1, resize: 'vertical', width: '100%', padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', borderRadius: '8px' }}
                   />
                 </div>
               </div>
             ))}
-            <button className="btn-outline" onClick={() => addItem(setTeam, team, { name: '', role: '', linkedin: '', image: '' })}>+ Adicionar Membro</button>
+            <button className="btn-outline" onClick={() => addItem(setTeam, team, { name: '', role: '', country: '', linkedin: '', image: '', bio: '' })}>+ Adicionar Membro</button>
           </div>
           <button className="btn-primary" onClick={() => saveConfig('team_content', team)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Equipa'}

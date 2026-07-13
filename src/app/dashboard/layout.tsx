@@ -62,6 +62,32 @@ export default function DashboardLayout({
           <Link href="/dashboard/mensagens">Mensagens</Link>
         </nav>
         <div className={styles.sidebarFooter}>
+          <Link 
+            href="/" 
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '8px',
+              color: 'rgba(255,255,255,0.5)',
+              fontSize: '0.85rem',
+              padding: '10px 16px',
+              borderRadius: '10px',
+              marginBottom: '0.5rem',
+              transition: 'all 0.2s',
+              textDecoration: 'none',
+              border: '1px solid rgba(255,255,255,0.08)',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.color = '#fff';
+              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.5)';
+              (e.currentTarget as HTMLElement).style.background = 'transparent';
+            }}
+          >
+            ← Página Inicial
+          </Link>
           <LogoutButton />
         </div>
       </aside>
