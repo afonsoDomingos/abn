@@ -181,6 +181,108 @@ export default function DashboardPage() {
           </div>
 
           <div className={styles.sectionTitle}>
+            <h2>📊 Analytics & Desempenho</h2>
+          </div>
+
+          {/* Analytics Stats Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
+            <div className="glass" style={{ padding: '1.5rem', borderRadius: '20px', textAlign: 'center', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <span style={{ fontSize: '2rem' }}>👁️</span>
+              <h4 style={{ margin: '8px 0 2px 0', fontSize: '0.9rem', color: '#555' }}>Visitas ao Perfil</h4>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>148</div>
+              <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700 }}>+12% este mês</span>
+            </div>
+
+            <div className="glass" style={{ padding: '1.5rem', borderRadius: '20px', textAlign: 'center', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <span style={{ fontSize: '2rem' }}>🚀</span>
+              <h4 style={{ margin: '8px 0 2px 0', fontSize: '0.9rem', color: '#555' }}>Visualizações do Projeto</h4>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>320</div>
+              <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700 }}>+8% esta semana</span>
+            </div>
+
+            <div className="glass" style={{ padding: '1.5rem', borderRadius: '20px', textAlign: 'center', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <span style={{ fontSize: '2rem' }}>🤝</span>
+              <h4 style={{ margin: '8px 0 2px 0', fontSize: '0.9rem', color: '#555' }}>Interessados</h4>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>12</div>
+              <span style={{ fontSize: '0.75rem', color: '#888', fontWeight: 700 }}>Mentores/Investidores</span>
+            </div>
+
+            <div className="glass" style={{ padding: '1.5rem', borderRadius: '20px', textAlign: 'center', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <span style={{ fontSize: '2rem' }}>📥</span>
+              <h4 style={{ margin: '8px 0 2px 0', fontSize: '0.9rem', color: '#555' }}>Downloads do Pitch</h4>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>45</div>
+              <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700 }}>Taxa conv: 14%</span>
+            </div>
+            
+            <div className="glass" style={{ padding: '1.5rem', borderRadius: '20px', textAlign: 'center', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <span style={{ fontSize: '2rem' }}>💬</span>
+              <h4 style={{ margin: '8px 0 2px 0', fontSize: '0.9rem', color: '#555' }}>Mensagens</h4>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>4</div>
+              <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700 }}>Novas respostas</span>
+            </div>
+          </div>
+
+          {/* Growth & Evolution Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', marginBottom: '2.5rem' }}>
+            {/* 1. Crescimento Mensal (Bar Chart) */}
+            <div className="glass" style={{ padding: '2rem', borderRadius: '24px', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <h3 style={{ color: '#1c1917', fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'Outfit' }}>📈 Crescimento Mensal (Visualizações)</h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: '140px', padding: '0 10px', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+                {[
+                  { m: 'Jan', h: '30%', v: '90' },
+                  { m: 'Fev', h: '45%', v: '140' },
+                  { m: 'Mar', h: '60%', v: '190' },
+                  { m: 'Abr', h: '75%', v: '240' },
+                  { m: 'Mai', h: '95%', v: '320' }
+                ].map((item, idx) => (
+                  <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, gap: '0.5rem' }}>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)' }}>{item.v}</div>
+                    <div style={{ width: '24px', height: item.h, background: 'linear-gradient(to top, var(--secondary) 0%, var(--primary) 100%)', borderRadius: '6px 6px 0 0' }}></div>
+                    <span style={{ fontSize: '0.75rem', color: '#666', fontWeight: 600 }}>{item.m}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 2. Evolução do Negócio (Pipeline) */}
+            <div className="glass" style={{ padding: '2rem', borderRadius: '24px', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <h3 style={{ color: '#1c1917', fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'Outfit' }}>🏆 Evolução do Negócio</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                {[
+                  { label: 'Ideação', status: 'done', desc: 'Conceito da ideia e equipa inicial' },
+                  { label: 'Validação', status: 'done', desc: 'Entrevistas de problemas e estudo de mercado' },
+                  { label: 'Mínimo Produto Viável (MVP)', status: 'current', desc: 'Versão de testes da plataforma / serviço' },
+                  { label: 'Tração & Escala', status: 'pending', desc: 'Vendas recorrentes e expansão territorial' }
+                ].map((step, idx) => (
+                  <div key={idx} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+                    <div style={{ 
+                      width: '24px', 
+                      height: '24px', 
+                      borderRadius: '50%', 
+                      background: step.status === 'done' ? '#2ecc71' : step.status === 'current' ? 'var(--primary)' : 'rgba(0,0,0,0.08)',
+                      color: step.status === 'pending' ? '#888' : '#fff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.75rem',
+                      fontWeight: 800,
+                      flexShrink: 0
+                    }}>
+                      {step.status === 'done' ? '✓' : idx + 1}
+                    </div>
+                    <div>
+                      <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#1c1917', fontWeight: 700 }}>
+                        {step.label} {step.status === 'current' && <span style={{ fontSize: '0.7rem', color: 'var(--primary)', background: 'rgba(255,107,0,0.1)', padding: '2px 6px', borderRadius: '4px', marginLeft: '6px' }}>Atual</span>}
+                      </h4>
+                      <p style={{ margin: '2px 0 0 0', fontSize: '0.75rem', color: '#666', lineHeight: 1.3 }}>{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.sectionTitle}>
             <h2>Próximos Passos</h2>
           </div>
 
