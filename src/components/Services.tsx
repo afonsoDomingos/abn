@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import styles from './Services.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
@@ -29,6 +30,7 @@ export default function Services() {
   });
   const [step, setStep] = useState(1);
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const closeModal = () => {
     setSelectedService(null);
@@ -67,6 +69,22 @@ export default function Services() {
   };
 
   useEffect(() => {
+    // Check if user is logged in
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        if (parsed.email) {
+          setFormData(prev => ({
+            ...prev,
+            name: parsed.name || '',
+            email: parsed.email || ''
+          }));
+          setIsLoggedIn(true);
+        }
+      } catch (e) {}
+    }
+
     fetch('/api/services')
       .then(res => res.json())
       .then(data => {
@@ -141,21 +159,39 @@ export default function Services() {
                 </div>
                 <h4>Solicitação enviada! ✅</h4>
                 <p>Recebemos o seu pedido. A nossa equipa entrará em contacto em breve via email ou WhatsApp.</p>
-                <div style={{
-                  marginTop: '1.2rem',
-                  background: 'rgba(42,79,166,0.12)',
-                  border: '1px solid rgba(42,79,166,0.3)',
-                  borderRadius: '12px',
-                  padding: '1rem 1.2rem',
-                  textAlign: 'left'
-                }}>
-                  <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)' }}>
-                    📊 Quer acompanhar o estado do pedido?
-                  </p>
-                  <p style={{ margin: '6px 0 0 0', fontSize: '0.82rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.5 }}>
-                    Crie uma conta gratuita em <strong style={{ color: '#fff' }}>abnafrobiznetwork.com/registro</strong> com o <strong style={{ color: '#fff' }}>mesmo email</strong> que usou neste formulário. No Dashboard → <strong style={{ color: '#fff' }}>Serviços</strong> poderá ver o estado em tempo real: Pendente → Em Análise → Aprovado.
-                  </p>
-                </div>
+                {isLoggedIn ? (
+                  <div style={{
+                    marginTop: '1.2rem',
+                    background: 'rgba(42, 79, 166, 0.08)',
+                    border: '1px solid rgba(42, 79, 166, 0.2)',
+                    borderRadius: '12px',
+                    padding: '1.1rem 1.3rem',
+                    textAlign: 'left'
+                  }}>
+                    <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 700, color: '#1e3a8a' }}>
+                      📊 Acompanhe a sua solicitação
+                    </p>
+                    <p style={{ margin: '6px 0 0 0', fontSize: '0.82rem', color: '#4b5563', lineHeight: 1.5 }}>
+                      Como já está autenticado, pode acompanhar o progresso deste pedido diretamente no seu <Link href="/dashboard/servicos" style={{ color: '#2a4fa6', fontWeight: 700, textDecoration: 'underline' }}>Dashboard → Serviços</Link>.
+                    </p>
+                  </div>
+                ) : (
+                  <div style={{
+                    marginTop: '1.2rem',
+                    background: 'rgba(42, 79, 166, 0.08)',
+                    border: '1px solid rgba(42, 79, 166, 0.2)',
+                    borderRadius: '12px',
+                    padding: '1.1rem 1.3rem',
+                    textAlign: 'left'
+                  }}>
+                    <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 700, color: '#1e3a8a' }}>
+                      📊 Quer acompanhar o estado do pedido?
+                    </p>
+                    <p style={{ margin: '6px 0 0 0', fontSize: '0.82rem', color: '#4b5563', lineHeight: 1.5 }}>
+                      <Link href="/registro" style={{ color: '#2a4fa6', fontWeight: 700, textDecoration: 'underline' }}>Crie a sua conta gratuita aqui</Link> com o <strong style={{ color: '#111827' }}>mesmo email</strong> ({formData.email}) para acompanhar este pedido em tempo real no seu Dashboard (Pendente → Em Análise → Aprovado).
+                    </p>
+                  </div>
+                )}
                 <button className={styles.successCloseBtn} onClick={closeModal}>Fechar</button>
               </div>
             ) : (
