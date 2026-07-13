@@ -5,12 +5,16 @@ import styles from '../Dashboard.module.css';
 
 export default function ServicosPage() {
   const [services, setServices] = useState<any[]>([]);
+  const [freelancers, setFreelancers] = useState<any[]>([]);
   const [requests, setRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
+  const [activeTab, setActiveTab] = useState<'servicos' | 'marketplace'>('servicos');
+  const [marketFilter, setMarketFilter] = useState<string>('todos');
+
   // Modal states
   const [showModal, setShowModal] = useState(false);
   const [selectedService, setSelectedService] = useState<any>(null);
+  const [isHiring, setIsHiring] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [msg, setMsg] = useState({ type: '', text: '' });
 
@@ -32,7 +36,6 @@ export default function ServicosPage() {
       const sData = await sRes.json();
       const loadedServices = sData.success ? sData.services : [];
       
-      // Fallback services if database is empty/not connected
       if (loadedServices.length === 0) {
         setServices([
           { _id: '1', title: 'Consultoria e Mentoria de Negócios', price: 'Gratuito', category: 'Mentoria', description: 'Reuniões individuais com mentores especializados para estruturar o seu plano de negócios.' },
@@ -43,7 +46,14 @@ export default function ServicosPage() {
         setServices(loadedServices);
       }
 
-      // 2. Fetch requests by user
+      // 2. Fetch freelancers list
+      const fRes = await fetch('/api/marketplace/freelancers');
+      const fData = await fRes.json();
+      if (fData.success) {
+        setFreelancers(fData.freelancers);
+      }
+
+      // 3. Fetch requests by user
       const rRes = await fetch('/api/requests');
       const rData = await rRes.json();
       if (rData.success) {
@@ -65,6 +75,13 @@ export default function ServicosPage() {
 
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
+    // If hiring, title is formatted
+    const serviceTitle = isHiring 
+      ? `[Contratação Freelancer: ${selectedService.user.name}] - ${selectedService.category}`
+      : selectedService.title;
+
+    const price = isHiring ? selectedService.pricePerHour : (selectedService.price || 'Grátis');
+
     try {
       const res = await fetch('/api/requests', {
         method: 'POST',
@@ -73,8 +90,8 @@ export default function ServicosPage() {
           name: user.name || 'Empreendedor',
           email: user.email || 'email@example.com',
           phone,
-          service: selectedService.title,
-          servicePrice: selectedService.price || 'Grátis',
+          service: serviceTitle,
+          servicePrice: price,
           company,
           timeline,
           description
@@ -83,14 +100,13 @@ export default function ServicosPage() {
 
       const data = await res.json();
       if (data.success) {
-        setMsg({ type: 'success', text: 'Solicitação enviada com sucesso! Um administrador irá analisar e responder em breve.' });
-        // Reset form
+        setMsg({ type: 'success', text: isHiring ? 'Pedido de contratação enviado! A ABN irá mediar a negociação e responder em breve.' : 'Solicitação enviada com sucesso! Um administrador irá analisar e responder em breve.' });
         setPhone('');
         setCompany('');
         setTimeline('Imediato');
         setDescription('');
         setShowModal(false);
-        // Refresh requests list
+        setIsHiring(false);
         fetchData();
       } else {
         setMsg({ type: 'error', text: data.error || 'Erro ao submeter solicitação.' });
@@ -102,14 +118,54 @@ export default function ServicosPage() {
     }
   };
 
+  const filteredFreelancers = marketFilter === 'todos' 
+    ? freelancers 
+    : freelancers.filter(f => f.category === marketFilter);
+
   if (loading) return <div style={{ padding: '3rem', color: '#fff' }}>A carregar serviços...</div>;
 
   return (
     <div style={{ maxWidth: '1000px' }}>
       <header style={{ marginBottom: '2.5rem' }}>
-        <h1 className="text-gradient-gold">Serviços e Aceleração</h1>
-        <p style={{ opacity: 0.7 }}>Solicite ferramentas, mentoria e apoio técnico para alavancar a sua startup.</p>
+        <h1 className="text-gradient-gold">Serviços e Marketplace</h1>
+        <p style={{ opacity: 0.7 }}>Apoio de aceleração técnica do ABN Hub e contratação de especialistas no Marketplace (ABN recebe comissão).</p>
       </header>
+
+      {/* Tabs */}
+      <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)', marginBottom: '2rem' }}>
+        <button
+          onClick={() => setActiveTab('servicos')}
+          style={{
+            background: 'none',
+            border: 'none',
+            borderBottom: activeTab === 'servicos' ? '3px solid var(--primary)' : '3px solid transparent',
+            color: activeTab === 'servicos' ? 'var(--primary)' : 'rgba(255,255,255,0.6)',
+            padding: '10px 20px',
+            fontSize: '1rem',
+            fontWeight: 700,
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+        >
+          💼 Serviços ABN
+        </button>
+        <button
+          onClick={() => setActiveTab('marketplace')}
+          style={{
+            background: 'none',
+            border: 'none',
+            borderBottom: activeTab === 'marketplace' ? '3px solid var(--primary)' : '3px solid transparent',
+            color: activeTab === 'marketplace' ? 'var(--primary)' : 'rgba(255,255,255,0.6)',
+            padding: '10px 20px',
+            fontSize: '1rem',
+            fontWeight: 700,
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+        >
+          🤝 Marketplace de Freelancers
+        </button>
+      </div>
 
       {msg.text && (
         <div style={{
@@ -124,80 +180,163 @@ export default function ServicosPage() {
         </div>
       )}
 
-      {/* Grid structure: Services Left, Request History Right */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '2.5rem' }}>
-        
-        {/* Available Services */}
-        <div>
-          <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', marginBottom: '1.5rem' }}>Serviços Disponíveis</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {services.map((s) => (
-              <div key={s._id} className="glass" style={{ padding: '1.8rem', borderRadius: '20px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div>
-                    <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 700 }}>{s.category}</span>
-                    <h3 style={{ color: '#fff', margin: '4px 0 0 0', fontSize: '1.15rem' }}>{s.title}</h3>
+      {activeTab === 'servicos' ? (
+        /* UI 1: ABN Platform Services */
+        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '2.5rem' }}>
+          <div>
+            <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', marginBottom: '1.5rem' }}>Serviços Disponíveis</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              {services.map((s) => (
+                <div key={s._id} className="glass" style={{ padding: '1.8rem', borderRadius: '20px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div>
+                      <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 700 }}>{s.category}</span>
+                      <h3 style={{ color: '#fff', margin: '4px 0 0 0', fontSize: '1.15rem' }}>{s.title}</h3>
+                    </div>
+                    <span style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--primary)', background: 'rgba(255,107,0,0.1)', padding: '4px 12px', borderRadius: '30px' }}>
+                      {s.price}
+                    </span>
                   </div>
-                  <span style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--primary)', background: 'rgba(255,107,0,0.1)', padding: '4px 12px', borderRadius: '30px' }}>
-                    {s.price}
-                  </span>
+                  <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', lineHeight: 1.5, margin: 0 }}>{s.description}</p>
+                  <button 
+                    className="btn-primary" 
+                    style={{ alignSelf: 'flex-start', padding: '8px 16px', fontSize: '0.8rem', marginTop: '0.5rem' }}
+                    onClick={() => {
+                      setSelectedService(s);
+                      setIsHiring(false);
+                      setShowModal(true);
+                    }}
+                  >
+                    Solicitar este serviço
+                  </button>
                 </div>
-                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', lineHeight: 1.5, margin: 0 }}>{s.description}</p>
-                <button 
-                  className="btn-primary" 
-                  style={{ alignSelf: 'flex-start', padding: '8px 16px', fontSize: '0.8rem', marginTop: '0.5rem' }}
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', marginBottom: '1.5rem' }}>O Meu Histórico</h2>
+            {requests.length === 0 ? (
+              <div className="glass" style={{ padding: '2rem', borderRadius: '20px', textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontStyle: 'italic', fontSize: '0.9rem' }}>
+                Nenhum pedido de serviço submetido.
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {requests.map((r) => (
+                  <div key={r._id} className="glass" style={{ padding: '1.2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                      <strong style={{ color: '#fff', fontSize: '0.95rem' }}>{r.service}</strong>
+                      <span style={{
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        padding: '2px 8px',
+                        borderRadius: '12px',
+                        background: r.status === 'pendente' ? 'rgba(241,196,15,0.15)' : r.status === 'aprovado' ? 'rgba(46,204,113,0.15)' : 'rgba(231,76,60,0.15)',
+                        color: r.status === 'pendente' ? '#f1c40f' : r.status === 'aprovado' ? '#2ecc71' : '#e74c3c'
+                      }}>
+                        {r.status}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>
+                      📅 {new Date(r.createdAt).toLocaleDateString('pt-PT')}
+                    </div>
+                    {r.notes && (
+                      <div style={{ marginTop: '0.5rem', background: 'rgba(255,255,255,0.03)', padding: '8px', borderRadius: '8px', fontSize: '0.8rem', color: 'var(--primary)', borderLeft: '3px solid var(--primary)' }}>
+                        <strong>Notas do Admin:</strong> {r.notes}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        /* UI 2: Freelancers Marketplace */
+        <div>
+          {/* Sub category filter */}
+          <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+            {['todos', 'Design', 'Tecnologia', 'Jurídico', 'Contabilidade', 'Marketing'].map(cat => (
+              <button
+                key={cat}
+                onClick={() => setMarketFilter(cat)}
+                className="btn-outline"
+                style={{
+                  padding: '6px 12px',
+                  fontSize: '0.75rem',
+                  borderRadius: '6px',
+                  background: marketFilter === cat ? 'var(--primary)' : 'rgba(255,255,255,0.02)',
+                  borderColor: 'rgba(255,255,255,0.1)',
+                  color: '#fff',
+                  cursor: 'pointer'
+                }}
+              >
+                {cat === 'todos' ? 'Ver Todos' : cat}
+              </button>
+            ))}
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+            {filteredFreelancers.map((free) => (
+              <div key={free._id} className="glass" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1.2rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div 
+                    style={{ 
+                      width: '60px', 
+                      height: '60px', 
+                      borderRadius: '50%', 
+                      backgroundImage: `url(${free.user?.profileImage || '/default-avatar.png'})`, 
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center' 
+                    }}
+                  />
+                  <div>
+                    <h3 style={{ color: '#fff', fontSize: '1.1rem', margin: 0, fontFamily: 'Outfit' }}>{free.user?.name}</h3>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700 }}>💼 {free.category}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ fontSize: '0.8rem', color: '#ffc107', marginBottom: '0.4rem' }}>⭐ {free.rating.toFixed(1)} / 5.0</div>
+                  <strong style={{ fontSize: '0.95rem', color: '#fff' }}>💸 {free.pricePerHour}</strong>
+                </div>
+
+                <div>
+                  <h4 style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', marginBottom: '0.4rem' }}>Habilidades</h4>
+                  <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                    {free.skills.map((skill: string, idx: number) => (
+                      <span key={idx} style={{ background: 'rgba(255,255,255,0.05)', color: '#fff', fontSize: '0.75rem', padding: '3px 8px', borderRadius: '6px' }}>
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {free.portfolio && free.portfolio.length > 0 && (
+                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.8rem', fontSize: '0.8rem' }}>
+                    <div style={{ fontWeight: 700, color: 'var(--primary)', marginBottom: '0.2rem' }}>📂 Portfólio Destaque</div>
+                    <strong style={{ color: '#fff' }}>{free.portfolio[0].title}</strong>
+                    <p style={{ color: 'rgba(255,255,255,0.6)', margin: '2px 0 0 0', lineHeight: 1.4 }}>{free.portfolio[0].description}</p>
+                  </div>
+                )}
+
+                <button
+                  className="btn-primary"
+                  style={{ padding: '8px 0', fontSize: '0.8rem', width: '100%', marginTop: 'auto' }}
                   onClick={() => {
-                    setSelectedService(s);
+                    setSelectedService(free);
+                    setIsHiring(true);
                     setShowModal(true);
                   }}
                 >
-                  Solicitar este serviço
+                  Contratar Freelancer
                 </button>
               </div>
             ))}
           </div>
         </div>
-
-        {/* Requests Submitted */}
-        <div>
-          <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', marginBottom: '1.5rem' }}>O Meu Histórico</h2>
-          {requests.length === 0 ? (
-            <div className="glass" style={{ padding: '2rem', borderRadius: '20px', textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontStyle: 'italic', fontSize: '0.9rem' }}>
-              Nenhum pedido de serviço submetido.
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {requests.map((r) => (
-                <div key={r._id} className="glass" style={{ padding: '1.2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                    <strong style={{ color: '#fff', fontSize: '0.95rem' }}>{r.service}</strong>
-                    <span style={{
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      textTransform: 'uppercase',
-                      padding: '2px 8px',
-                      borderRadius: '12px',
-                      background: r.status === 'pendente' ? 'rgba(241,196,15,0.15)' : r.status === 'aprovado' ? 'rgba(46,204,113,0.15)' : 'rgba(231,76,60,0.15)',
-                      color: r.status === 'pendente' ? '#f1c40f' : r.status === 'aprovado' ? '#2ecc71' : '#e74c3c'
-                    }}>
-                      {r.status}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>
-                    📅 {new Date(r.createdAt).toLocaleDateString('pt-PT')}
-                  </div>
-                  {r.notes && (
-                    <div style={{ marginTop: '0.5rem', background: 'rgba(255,255,255,0.03)', padding: '8px', borderRadius: '8px', fontSize: '0.8rem', color: 'var(--primary)', borderLeft: '3px solid var(--primary)' }}>
-                      <strong>Notas do Admin:</strong> {r.notes}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-      </div>
+      )}
 
       {/* Modal Popup */}
       {showModal && selectedService && (
@@ -205,12 +344,16 @@ export default function ServicosPage() {
           <div className="glass" style={{ maxWidth: '550px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative' }}>
             <button 
               style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#ff4d4d', fontSize: '1.5rem', cursor: 'pointer' }}
-              onClick={() => setShowModal(false)}
+              onClick={() => { setShowModal(false); setIsHiring(false); }}
             >
               &times;
             </button>
-            <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', marginBottom: '0.2rem' }}>Solicitar Serviço</h2>
-            <p style={{ color: 'var(--primary)', fontWeight: 700, margin: '0 0 1.5rem 0' }}>{selectedService.title}</p>
+            <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', marginBottom: '0.2rem' }}>
+              {isHiring ? 'Contratar Freelancer' : 'Solicitar Serviço'}
+            </h2>
+            <p style={{ color: 'var(--primary)', fontWeight: 700, margin: '0 0 1.5rem 0' }}>
+              {isHiring ? `Proposta para: ${selectedService.user?.name}` : selectedService.title}
+            </p>
 
             <form onSubmit={handleRequestSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -249,19 +392,21 @@ export default function ServicosPage() {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Descrição dos Requisitos *</label>
+                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>
+                  {isHiring ? 'Descrição do Trabalho / Requisitos *' : 'Descrição dos Requisitos *'}
+                </label>
                 <textarea 
                   value={description} 
                   onChange={e => setDescription(e.target.value)} 
                   required 
                   rows={4}
-                  placeholder="Descreva as suas necessidades de forma detalhada..."
+                  placeholder={isHiring ? "Descreva as tarefas e o perfil de projeto que deseja que este freelancer execute..." : "Descreva as suas necessidades de forma detalhada..."}
                   style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff', resize: 'vertical' }}
                 />
               </div>
 
               <button type="submit" className="btn-primary" disabled={submitting} style={{ marginTop: '0.5rem' }}>
-                {submitting ? 'A submeter...' : 'Enviar Solicitação'}
+                {submitting ? 'A submeter...' : 'Enviar Pedido de Contratação'}
               </button>
             </form>
 

@@ -24,7 +24,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState({ name: 'Empreendedor', profileImage: '/Perfil05.jpg' });
+  const [user, setUser] = useState({ name: 'Empreendedor', profileImage: '/Perfil05.jpg', role: 'user' });
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -33,7 +33,8 @@ export default function DashboardLayout({
         const parsed = JSON.parse(storedUser);
         setUser({
           name: parsed.name || 'Empreendedor',
-          profileImage: parsed.profileImage || '/Perfil05.jpg'
+          profileImage: parsed.profileImage || '/Perfil05.jpg',
+          role: parsed.role || 'user'
         });
       } catch (e) {}
     }
@@ -51,7 +52,12 @@ export default function DashboardLayout({
           <Link href="/dashboard" className={styles.active}>🏠 Dashboard</Link>
           <Link href="/dashboard/perfil">👤 Perfil</Link>
           <Link href="/dashboard/projetos">🚀 Projetos</Link>
+          <Link href="/dashboard/oportunidades">🔥 Oportunidades</Link>
+          <Link href="/dashboard/networking">🤝 Networking</Link>
           <Link href="/dashboard/servicos">🛠️ Serviços</Link>
+          {user.role === 'investidor' && (
+            <Link href="/dashboard/investimentos">💰 Investimentos</Link>
+          )}
           <Link href="/dashboard/formacao">Formação</Link>
           <Link href="/dashboard/mensagens">💬 Mensagens</Link>
         </nav>

@@ -5,18 +5,66 @@ import styles from './Dashboard.module.css';
 
 export default function DashboardPage() {
   const [userName, setUserName] = useState('Empreendedor');
+  const [business, setBusiness] = useState<any>(null);
+  const [score, setScore] = useState(0);
+  const [checklist, setChecklist] = useState({
+    profile: false,
+    business: false,
+    pitchDeck: false,
+    website: false
+  });
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        const parsed = JSON.parse(storedUser);
-        if (parsed.name) {
-          setUserName(parsed.name);
-        }
-      } catch (e) {}
-    }
+    fetchDashboardData();
   }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      // 1. Get user name and details
+      const userStr = localStorage.getItem('user');
+      let hasProfileDesc = false;
+      if (userStr) {
+        const u = JSON.parse(userStr);
+        setUserName(u.name || 'Empreendedor');
+        hasProfileDesc = !!u.description || !!u.email;
+      }
+
+      // 2. Fetch business
+      const res = await fetch('/api/user/business');
+      const data = await res.json();
+      
+      let hasBiz = false;
+      let hasWeb = false;
+      let hasDeck = false;
+
+      if (data.success && data.business) {
+        setBusiness(data.business);
+        hasBiz = true;
+        hasWeb = !!data.business.website;
+        // Pitch deck is simulated by business details descriptions length
+        hasDeck = data.business.description && data.business.description.length >= 30;
+      }
+
+      // Calculate score
+      let calculatedScore = 0;
+      const checks = {
+        profile: hasProfileDesc,
+        business: hasBiz,
+        pitchDeck: !!hasDeck,
+        website: hasWeb
+      };
+
+      if (checks.profile) calculatedScore += 25;
+      if (checks.business) calculatedScore += 25;
+      if (checks.pitchDeck) calculatedScore += 25;
+      if (checks.website) calculatedScore += 25;
+
+      setScore(calculatedScore);
+      setChecklist(checks);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <div className={styles.dashboard}>
@@ -27,17 +75,30 @@ export default function DashboardPage() {
 
       <div className={styles.progressGrid}>
         <div className={`${styles.progressCard} glass`}>
-          <h3>Incubação</h3>
-          <div className={styles.progressBar}>
-            <div className={styles.progressFill} style={{ width: '65%' }}></div>
+          <h3 style={{ color: '#1c1917' }}>ABN Score</h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
+            <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>
+              {score}<span style={{ fontSize: '1rem', color: '#666' }}>/100</span>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div className={styles.progressBar}>
+                <div className={styles.progressFill} style={{ width: `${score}%` }}></div>
+              </div>
+              <p style={{ margin: 0, fontSize: '0.85rem', color: '#555', fontWeight: 600 }}>
+                {score < 50 ? 'Fase Inicial de Configuração' : score < 100 ? 'Projeto Estruturado' : 'Pronto para Investimento! 🚀'}
+              </p>
+            </div>
           </div>
-          <p>65% concluído - Fase de Validação</p>
         </div>
         
         <div className={`${styles.progressCard} glass`}>
-          <h3>Site & Portfólio</h3>
-          <p style={{ color: 'var(--primary)' }}>Em desenvolvimento</p>
-          <button className="btn-outline" style={{ marginTop: '1rem', padding: '8px 16px', fontSize: '0.8rem' }}>Ver Draft</button>
+          <h3 style={{ color: '#1c1917' }}>Progresso do Perfil</h3>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem', color: '#333', fontWeight: 600 }}>
+            <li>{checklist.profile ? '✅' : '❌'} Registo de Perfil Completo</li>
+            <li>{checklist.business ? '✅' : '❌'} Startup Registada</li>
+            <li>{checklist.pitchDeck ? '✅' : '❌'} Modelo de Negócio Descrito</li>
+            <li>{checklist.website ? '✅' : '❌'} Website Indicado</li>
+          </ul>
         </div>
       </div>
 
@@ -47,16 +108,16 @@ export default function DashboardPage() {
 
       <div className={styles.tasks}>
         <div className={styles.taskItem}>
-          <input type="checkbox" checked readOnly />
+          <input type="checkbox" checked={checklist.business} readOnly />
           <span>Definição do Modelo de Negócio</span>
         </div>
         <div className={styles.taskItem}>
-          <input type="checkbox" />
-          <span>Mentoria com Especialista em Finanças</span>
+          <input type="checkbox" checked={checklist.pitchDeck} readOnly />
+          <span>Escrever Descrição Detalhada da Startup</span>
         </div>
         <div className={styles.taskItem}>
-          <input type="checkbox" />
-          <span>Lançamento da Landing Page</span>
+          <input type="checkbox" checked={checklist.website} readOnly />
+          <span>Lançamento do Website / Link de Referência</span>
         </div>
       </div>
 
