@@ -78,7 +78,7 @@ export default function MensagensPage() {
     <div style={{ maxWidth: '800px' }}>
       <header style={{ marginBottom: '2.5rem' }}>
         <h1 className="text-gradient-gold">Mensagens com a Administração</h1>
-        <p style={{ opacity: 0.7 }}>Envie as suas dúvidas, atualizações de projetos e comunique diretamente com o suporte da ABN.</p>
+        <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Envie as suas dúvidas, atualizações de projetos e comunique diretamente com o suporte da ABN.</p>
       </header>
 
       {msg.text && (

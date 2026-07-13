@@ -128,7 +128,7 @@ export default function ServicosPage() {
     <div style={{ maxWidth: '1000px' }}>
       <header style={{ marginBottom: '2.5rem' }}>
         <h1 className="text-gradient-gold">Serviços e Marketplace</h1>
-        <p style={{ opacity: 0.7 }}>Apoio de aceleração técnica do ABN Hub e contratação de especialistas no Marketplace (ABN recebe comissão).</p>
+        <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Apoio de aceleração técnica do ABN Hub e contratação de especialistas no Marketplace (ABN recebe comissão).</p>
       </header>
 
       {/* Tabs */}

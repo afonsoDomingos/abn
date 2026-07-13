@@ -89,7 +89,7 @@ export default function InvestimentosPage() {
     <div style={{ maxWidth: '1000px' }}>
       <header style={{ marginBottom: '2.5rem' }}>
         <h1 className="text-gradient-gold">Portal do Investidor</h1>
-        <p style={{ opacity: 0.7 }}>Explore as startups incubadas no ABN Hub prontas para captação de financiamento e crescimento.</p>
+        <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Explore as startups incubadas no ABN Hub prontas para captação de financiamento e crescimento.</p>
       </header>
 
       {msg.text && (

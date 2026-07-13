@@ -239,3 +239,46 @@
     margin-left: 0;
   }
 }
+
+.dashboardLayout :global(.glass) {
+  background: #ffffff !important;
+  color: #1c1917 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+}
+
+.dashboardLayout :global(.glass) h1,
+.dashboardLayout :global(.glass) h2,
+.dashboardLayout :global(.glass) h3,
+.dashboardLayout :global(.glass) h4,
+.dashboardLayout :global(.glass) p,
+.dashboardLayout :global(.glass) label {
+  color: #1c1917 !important;
+}
+
+.dashboardLayout :global(.glass) div,
+.dashboardLayout :global(.glass) span,
+.dashboardLayout :global(.glass) strong,
+.dashboardLayout :global(.glass) li {
+  color: #1c1917;
+}
+
+.dashboardLayout :global(.glass) input,
+.dashboardLayout :global(.glass) select,
+.dashboardLayout :global(.glass) textarea {
+  color: #1c1917 !important;
+  background: #f5f5f4 !important;
+  border: 1px solid #d6d3d1 !important;
+}
+
+.dashboardLayout :global(.glass) input:focus,
+.dashboardLayout :global(.glass) select:focus,
+.dashboardLayout :global(.glass) textarea:focus {
+  background: #ffffff !important;
+  border-color: var(--primary) !important;
+}
+
+.dashboardLayout :global(.glass) input::placeholder,
+.dashboardLayout :global(.glass) textarea::placeholder {
+  color: #78716c !important;
+}

@@ -75,7 +75,7 @@ export default function NetworkingPage() {
     <div style={{ maxWidth: '1000px' }}>
       <header style={{ marginBottom: '2.5rem' }}>
         <h1 className="text-gradient-gold">Networking & Conexões</h1>
-        <p style={{ opacity: 0.7 }}>Conecte-se com fundadores, encontre parceiros e interaja com investidores no ecossistema ABN.</p>
+        <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Conecte-se com fundadores, encontre parceiros e interaja com investidores no ecossistema ABN.</p>
       </header>
 
       {/* Search and Filters */}

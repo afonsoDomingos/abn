@@ -45,7 +45,7 @@ export default function OportunidadesPage() {
     <div style={{ maxWidth: '1000px' }}>
       <header style={{ marginBottom: '2.5rem' }}>
         <h1 className="text-gradient-gold">Centro de Oportunidades</h1>
-        <p style={{ opacity: 0.7 }}>Acompanhe concursos, bolsas, acelerações e financiamentos abertos em África.</p>
+        <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Acompanhe concursos, bolsas, acelerações e financiamentos abertos em África.</p>
       </header>
 
       {/* Filter Tabs */}

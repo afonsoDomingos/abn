@@ -82,7 +82,7 @@ export default function ProjetosPage() {
     <div style={{ maxWidth: '800px' }}>
       <header style={{ marginBottom: '2.5rem' }}>
         <h1 className="text-gradient-gold">Gestão de Projetos</h1>
-        <p style={{ opacity: 0.7 }}>Acompanhe e edite as informações da sua startup no ecossistema ABN.</p>
+        <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Acompanhe e edite as informações da sua startup no ecossistema ABN.</p>
       </header>
 
       {msg.text && (
