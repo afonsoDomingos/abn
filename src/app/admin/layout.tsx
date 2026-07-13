@@ -23,7 +23,8 @@ export default function AdminLayout({
         <nav className={styles.sidebarNav}>
           <Link href="/admin">{t.admin.dashboard}</Link>
           <Link href="/admin/usuarios">{t.admin.users}</Link>
-          <Link href="/admin/servicos">{t.admin.services}</Link>
+           <Link href="/admin/servicos">{t.admin.services}</Link>
+          <Link href="/admin/cursos">📚 Cursos</Link>
           <Link href="/admin/solicitacoes">📋 Solicitações</Link>
           <Link href="/admin/mensagens">💬 Mensagens</Link>
           <Link href="/admin/pagamentos">{t.admin.payments}</Link>

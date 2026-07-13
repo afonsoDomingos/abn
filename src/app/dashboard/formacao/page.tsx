@@ -15,18 +15,14 @@ interface Course {
 
 export default function FormacaoPage() {
   const [payments, setPayments] = useState<any[]>([]);
+  const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState('Empreendedor');
   const [showCert, setShowCert] = useState(false);
-  const [courses] = useState<Course[]>([
-    { id: 'c1', title: 'Inovação e Modelos de Negócio Verdes', instructor: 'Prof. Amadou Diallo', duration: '12h', lessons: 8, price: 'Gratuito', isPaid: false },
-    { id: 'c2', title: 'Fundamentos de Pitching para Startups', instructor: 'Rita Santos (Mentora ABN)', duration: '6h', lessons: 4, price: '5.000 FCFA', isPaid: true },
-    { id: 'c3', title: 'Certificação em Gestão de Microfomento', instructor: 'Banco de Microfomento', duration: '15h', lessons: 10, price: '15.000 FCFA', isPaid: true }
-  ]);
 
   // Modal states
   const [showModal, setShowModal] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -46,6 +42,14 @@ export default function FormacaoPage() {
 
   const fetchEnrollments = async () => {
     try {
+      // 1. Fetch courses
+      const cRes = await fetch('/api/courses');
+      const cData = await cRes.json();
+      if (cData.success) {
+        setCourses(cData.courses || []);
+      }
+
+      // 2. Fetch payments
       const res = await fetch('/api/payments');
       const data = await res.json();
       if (data.success) {
