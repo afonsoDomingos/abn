@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import OurMission from "@/components/OurMission";
 import Articles from "@/components/Articles";
+import Courses from "@/components/Courses";
 import Stats from "@/components/Stats";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -21,6 +22,7 @@ export default function Home() {
         <Hero />
         <OurMission />
         <Articles />
+        <Courses />
         <Stats />
         
         {/* Footer in style of Orange Corners */}
