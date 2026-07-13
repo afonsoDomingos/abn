@@ -168,6 +168,11 @@
   box-sizing: border-box;
 }
 
+.formGroup select option {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
 .formGroup input:focus, .formGroup textarea:focus, .formGroup select:focus {
   border-color: var(--primary) !important;
   background: rgba(255, 255, 255, 0.08) !important;

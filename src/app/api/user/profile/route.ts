@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
@@ -10,6 +11,23 @@ export async function PUT(request: Request) {
     
     if (!id) {
       return NextResponse.json({ error: 'ID do usuário é obrigatório.' }, { status: 400 });
+    }
+
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get('abn_session');
+    if (!sessionCookie) {
+      return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 });
+    }
+
+    let session;
+    try {
+      session = JSON.parse(decodeURIComponent(sessionCookie.value));
+    } catch {
+      return NextResponse.json({ error: 'Sessão inválida.' }, { status: 401 });
+    }
+
+    if (session.id !== id && session.role !== 'admin') {
+      return NextResponse.json({ error: 'Acesso negado. Apenas o próprio usuário ou administradores podem alterar este perfil.' }, { status: 403 });
     }
 
     const updateData: any = { 

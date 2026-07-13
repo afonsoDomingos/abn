@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from './Dashboard.module.css';
@@ -23,6 +24,21 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [user, setUser] = useState({ name: 'Empreendedor', profileImage: '/Perfil05.jpg' });
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        setUser({
+          name: parsed.name || 'Empreendedor',
+          profileImage: parsed.profileImage || '/Perfil05.jpg'
+        });
+      } catch (e) {}
+    }
+  }, []);
+
   return (
     <div className={styles.dashboardLayout}>
       <aside className={styles.sidebar}>
@@ -52,10 +68,10 @@ export default function DashboardLayout({
           <div className={styles.userArea}>
             <div className={styles.notifications}>🔔</div>
             <div className={styles.userProfile}>
-              <span>Empreendedor</span>
+              <span>{user.name}</span>
               <div 
                 className={styles.avatar}
-                style={{ backgroundImage: `url('/Perfil05.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                style={{ backgroundImage: `url('${user.profileImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
               ></div>
             </div>
           </div>

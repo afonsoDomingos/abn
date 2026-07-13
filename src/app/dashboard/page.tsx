@@ -1,10 +1,27 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import styles from './Dashboard.module.css';
 
 export default function DashboardPage() {
+  const [userName, setUserName] = useState('Empreendedor');
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        if (parsed.name) {
+          setUserName(parsed.name);
+        }
+      } catch (e) {}
+    }
+  }, []);
+
   return (
     <div className={styles.dashboard}>
       <div className={styles.welcome}>
-        <h1>Olá, <span className="text-gradient-gold">Empreendedor</span>!</h1>
+        <h1>Olá, <span className="text-gradient-gold">{userName}</span>!</h1>
         <p>Bem-vindo ao seu painel de crescimento. Aqui está o progresso do seu projeto.</p>
       </div>
 
