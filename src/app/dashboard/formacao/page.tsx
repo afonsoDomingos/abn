@@ -16,6 +16,8 @@ interface Course {
 export default function FormacaoPage() {
   const [payments, setPayments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState('Empreendedor');
+  const [showCert, setShowCert] = useState(false);
   const [courses] = useState<Course[]>([
     { id: 'c1', title: 'Inovação e Modelos de Negócio Verdes', instructor: 'Prof. Amadou Diallo', duration: '12h', lessons: 8, price: 'Gratuito', isPaid: false },
     { id: 'c2', title: 'Fundamentos de Pitching para Startups', instructor: 'Rita Santos (Mentora ABN)', duration: '6h', lessons: 4, price: '5.000 FCFA', isPaid: true },
@@ -33,6 +35,13 @@ export default function FormacaoPage() {
 
   useEffect(() => {
     fetchEnrollments();
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const u = JSON.parse(storedUser);
+        setUserName(u.name || 'Empreendedor');
+      } catch (e) {}
+    }
   }, []);
 
   const fetchEnrollments = async () => {
@@ -193,9 +202,21 @@ export default function FormacaoPage() {
               {/* Status Action buttons */}
               <div>
                 {status === 'aprovado' && (
-                  <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(46,204,113,0.15)', color: '#2ecc71', border: '1px solid #2ecc71', padding: '8px 20px', borderRadius: '40px' }}>
-                    ✅ Aceder ao Curso
-                  </span>
+                  <div style={{ display: 'flex', gap: '0.8rem' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(46,204,113,0.15)', color: '#2ecc71', border: '1px solid #2ecc71', padding: '8px 20px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
+                      ✅ Inscrito
+                    </span>
+                    <button
+                      className="btn-primary"
+                      style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                      onClick={() => {
+                        setSelectedCourse(course);
+                        setShowCert(true);
+                      }}
+                    >
+                      🎓 Certificado
+                    </button>
+                  </div>
                 )}
                 {status === 'pendente' && (
                   <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(241,196,15,0.15)', color: '#f1c40f', border: '1px solid #f1c40f', padding: '8px 20px', borderRadius: '40px' }}>
@@ -277,6 +298,130 @@ export default function FormacaoPage() {
               </button>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* Certificate Modal */}
+      {showCert && selectedCourse && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.95)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+          <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', display: 'flex', gap: '1rem', zIndex: 2010 }}>
+            <button 
+              className="btn-primary"
+              onClick={() => window.print()}
+              style={{ padding: '8px 20px', fontSize: '0.9rem' }}
+            >
+              🖨️ Imprimir / Guardar PDF
+            </button>
+            <button 
+              className="btn-outline" 
+              onClick={() => { setShowCert(false); setSelectedCourse(null); }}
+              style={{ padding: '8px 20px', fontSize: '0.9rem', color: '#fff', borderColor: '#fff' }}
+            >
+              Fechar
+            </button>
+          </div>
+
+          {/* Certificate Template */}
+          <div id="print-certificate" style={{ 
+            width: '842px', 
+            height: '595px', 
+            background: '#fffcf9', 
+            padding: '3rem', 
+            borderRadius: '4px', 
+            boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+            border: '20px solid transparent',
+            borderImage: 'linear-gradient(135deg, #ff6b00 0%, #ffc107 100%) 20 stretch',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            textAlign: 'center',
+            color: '#1c1917',
+            position: 'relative',
+            fontFamily: "'Outfit', sans-serif"
+          }}>
+            {/* Header branding */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <img src="/abn-logo.png" alt="ABN Logo" style={{ height: '50px', marginBottom: '0.5rem' }} />
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#888' }}>
+                AFROBIZ NETWORK ACCELERATION
+              </span>
+            </div>
+
+            {/* Main title */}
+            <div>
+              <h1 style={{ fontSize: '2.8rem', color: '#ff6b00', margin: '0.5rem 0', fontFamily: 'Outfit', fontWeight: 800 }}>
+                CERTIFICADO
+              </h1>
+              <span style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#444' }}>
+                de conclusão e aproveitamento
+              </span>
+            </div>
+
+            {/* Recipient body */}
+            <div style={{ maxWidth: '650px' }}>
+              <p style={{ fontSize: '1rem', margin: '0 0 1rem 0', color: '#555' }}>Certificamos que, para os devidos efeitos de mérito,</p>
+              <h2 style={{ fontSize: '2.2rem', color: '#1c1917', textDecoration: 'underline', margin: '0.5rem 0', fontFamily: 'Outfit', fontWeight: 700 }}>
+                {userName}
+              </h2>
+              <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#444', margin: '1rem 0' }}>
+                concluiu com aproveitamento e sucesso o programa de formação em aceleração de negócios denominado <strong style={{ color: '#ff6b00' }}>{selectedCourse.title}</strong>, com a duração total de <strong>{selectedCourse.duration}</strong> e aproveitamento prático estruturado.
+              </p>
+            </div>
+
+            {/* Footer with date and signatures */}
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: '1.5rem', fontSize: '0.8rem', color: '#666' }}>
+              <div style={{ textAlign: 'left' }}>
+                📍 Bissau, Guiné-Bissau
+                <div style={{ marginTop: '0.2rem' }}>
+                  📅 {new Date().toLocaleDateString('pt-PT', { day: '2-digit', month: 'long', year: 'numeric' })}
+                </div>
+              </div>
+
+              {/* CEO Signature */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ fontStyle: 'italic', fontFamily: 'serif', fontSize: '1.2rem', color: '#2a4fa6', marginBottom: '0.2rem' }}>
+                  Afonso Domingos
+                </div>
+                <div style={{ borderTop: '1px solid #ccc', width: '150px', marginTop: '0.2rem', paddingTop: '0.2rem' }}>
+                  Direção ABN
+                </div>
+              </div>
+
+              {/* Co-founder Signature */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ fontStyle: 'italic', fontFamily: 'serif', fontSize: '1.2rem', color: '#2a4fa6', marginBottom: '0.2rem' }}>
+                  Moisés Nhantumbo
+                </div>
+                <div style={{ borderTop: '1px solid #ccc', width: '150px', marginTop: '0.2rem', paddingTop: '0.2rem' }}>
+                  Aceleração ABN
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Inline styles specifically for printing */}
+          <style>{`
+            @media print {
+              body * {
+                visibility: hidden !important;
+              }
+              #print-certificate, #print-certificate * {
+                visibility: visible !important;
+              }
+              #print-certificate {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                margin: 0 !important;
+                border: 20px solid transparent !important;
+                border-image: linear-gradient(135deg, #ff6b00 0%, #ffc107 100%) 20 stretch !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                height: 100% !important;
+              }
+            }
+          `}</style>
         </div>
       )}
     </div>
