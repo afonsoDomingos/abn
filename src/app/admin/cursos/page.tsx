@@ -20,6 +20,10 @@ interface Course {
   videoUrl?: string;
   videoVisible?: boolean;
   lessonsList?: Lesson[];
+  certBgColor?: string;
+  certTextColor?: string;
+  certUsePartnerLogos?: boolean;
+  certPartnerLogoUrl?: string;
 }
 
 export default function AdminCursosPage() {
@@ -43,6 +47,11 @@ export default function AdminCursosPage() {
   const [desc, setDesc] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [videoVisible, setVideoVisible] = useState(true);
+  const [certBgColor, setCertBgColor] = useState('#ff6b00');
+  const [certTextColor, setCertTextColor] = useState('#1c1917');
+  const [certUsePartnerLogos, setCertUsePartnerLogos] = useState(false);
+  const [certPartnerLogoUrl, setCertPartnerLogoUrl] = useState('');
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const [lessonsList, setLessonsList] = useState<Lesson[]>([]);
   const [newLessonTitle, setNewLessonTitle] = useState('');
   const [newLessonUrl, setNewLessonUrl] = useState('');
@@ -109,6 +118,10 @@ export default function AdminCursosPage() {
     setVideoUrl(course.videoUrl || '');
     setVideoVisible(course.videoVisible !== false);
     setLessonsList(course.lessonsList || []);
+    setCertBgColor(course.certBgColor || '#ff6b00');
+    setCertTextColor(course.certTextColor || '#1c1917');
+    setCertUsePartnerLogos(course.certUsePartnerLogos === true);
+    setCertPartnerLogoUrl(course.certPartnerLogoUrl || '');
     setNewLessonTitle('');
     setNewLessonUrl('');
     setCurrentStep(1);
@@ -127,6 +140,10 @@ export default function AdminCursosPage() {
     setVideoUrl('');
     setVideoVisible(true);
     setLessonsList([]);
+    setCertBgColor('#ff6b00');
+    setCertTextColor('#1c1917');
+    setCertUsePartnerLogos(false);
+    setCertPartnerLogoUrl('');
     setNewLessonTitle('');
     setNewLessonUrl('');
     setCurrentStep(1);
@@ -148,7 +165,11 @@ export default function AdminCursosPage() {
       desc,
       videoUrl,
       videoVisible,
-      lessonsList
+      lessonsList,
+      certBgColor,
+      certTextColor,
+      certUsePartnerLogos,
+      certPartnerLogoUrl
     };
 
     const url = '/api/courses';
@@ -312,15 +333,15 @@ export default function AdminCursosPage() {
                   position: 'absolute', 
                   top: '16px', 
                   left: '0', 
-                  width: `${((currentStep - 1) / 2) * 100}%`, 
+                  width: `${((currentStep - 1) / 3) * 100}%`, 
                   height: '2px', 
                   background: 'var(--primary)', 
                   zIndex: 0, 
                   transition: 'width 0.3s ease-in-out' 
                 }} />
                 
-                {[1, 2, 3].map((step) => {
-                  const stepNames = ["Geral", "Detalhes", "Mídia"];
+                {[1, 2, 3, 4].map((step) => {
+                  const stepNames = ["Geral", "Detalhes", "Mídia", "Certificado"];
                   const isActive = step <= currentStep;
                   return (
                     <div key={step} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 1, position: 'relative' }}>
@@ -550,6 +571,132 @@ export default function AdminCursosPage() {
                     </div>
                   </>
                 )}
+                {currentStep === 4 && (
+                  <>
+                    <h3 style={{ color: '#fff', fontSize: '1rem', fontWeight: 600, margin: '0 0 0.5rem 0' }}>Personalização do Certificado</h3>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Cor do Destaque (Borda/Títulos)</label>
+                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                          <input 
+                            type="color" 
+                            value={certBgColor} 
+                            onChange={e => setCertBgColor(e.target.value)}
+                            style={{ width: '40px', height: '40px', border: 'none', borderRadius: '8px', cursor: 'pointer', background: 'transparent' }}
+                          />
+                          <input 
+                            type="text" 
+                            value={certBgColor} 
+                            onChange={e => setCertBgColor(e.target.value)}
+                            placeholder="#ff6b00"
+                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff', flex: 1, fontFamily: 'monospace' }}
+                          />
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Cor do Texto do Aluno</label>
+                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                          <input 
+                            type="color" 
+                            value={certTextColor} 
+                            onChange={e => setCertTextColor(e.target.value)}
+                            style={{ width: '40px', height: '40px', border: 'none', borderRadius: '8px', cursor: 'pointer', background: 'transparent' }}
+                          />
+                          <input 
+                            type="text" 
+                            value={certTextColor} 
+                            onChange={e => setCertTextColor(e.target.value)}
+                            placeholder="#1c1917"
+                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff', flex: 1, fontFamily: 'monospace' }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '14px 18px', marginTop: '0.5rem' }}>
+                      <div>
+                        <p style={{ color: '#fff', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>
+                          🤝 Logótipo de Parceiro
+                        </p>
+                        <p style={{ color: 'rgba(255,255,255,0.45)', margin: '2px 0 0 0', fontSize: '0.75rem' }}>
+                          Ative para exibir o logótipo de um parceiro oficial no certificado
+                        </p>
+                      </div>
+                      <label style={{ position: 'relative', display: 'inline-block', width: '52px', height: '28px', cursor: 'pointer', flexShrink: 0 }}>
+                        <input
+                          type="checkbox"
+                          checked={certUsePartnerLogos}
+                          onChange={e => setCertUsePartnerLogos(e.target.checked)}
+                          style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }}
+                        />
+                        <span style={{
+                          position: 'absolute', inset: 0, borderRadius: '28px', transition: '0.3s',
+                          background: certUsePartnerLogos ? 'var(--primary)' : 'rgba(255,255,255,0.15)'
+                        }} />
+                        <span style={{
+                          position: 'absolute', top: '4px', left: certUsePartnerLogos ? '28px' : '4px',
+                          width: '20px', height: '20px', background: '#fff', borderRadius: '50%', transition: '0.3s'
+                        }} />
+                      </label>
+                    </div>
+
+                    {certUsePartnerLogos && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: '12px', padding: '1.2rem' }}>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Logótipo do Parceiro (Ficheiro de Imagem)</label>
+                        
+                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                          <input 
+                            type="file" 
+                            accept="image/*"
+                            onChange={async (e) => {
+                              const selectedFile = e.target.files?.[0];
+                              if (!selectedFile) return;
+                              setUploadingLogo(true);
+                              
+                              const formData = new FormData();
+                              formData.append('file', selectedFile);
+                              
+                              try {
+                                const res = await fetch('/api/upload', {
+                                  method: 'POST',
+                                  body: formData
+                                });
+                                const data = await res.json();
+                                if (data.success && data.url) {
+                                  setCertPartnerLogoUrl(data.url);
+                                } else {
+                                  alert(data.error || 'Erro no envio da imagem.');
+                                }
+                              } catch (err) {
+                                alert('Erro de ligação ao servidor.');
+                              } finally {
+                                setUploadingLogo(false);
+                              }
+                            }}
+                            style={{ display: 'block', fontSize: '0.85rem' }}
+                          />
+
+                          {uploadingLogo && <span style={{ fontSize: '0.8rem', color: 'var(--primary)' }}>A carregar...</span>}
+                          
+                          {certPartnerLogoUrl && (
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#fff', padding: '8px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                              <img src={certPartnerLogoUrl} alt="Preview Partner Logo" style={{ height: '40px', maxWidth: '120px', objectFit: 'contain' }} />
+                              <button 
+                                type="button" 
+                                onClick={() => setCertPartnerLogoUrl('')}
+                                style={{ background: 'none', border: 'none', color: '#ff4d4d', fontSize: '0.7rem', cursor: 'pointer', marginTop: '4px', fontWeight: 700 }}
+                              >
+                                Remover
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
 
               {/* Navigation Footer: Sticky to bottom, never hidden */}
@@ -573,16 +720,16 @@ export default function AdminCursosPage() {
                   </button>
                 )}
                 
-                {currentStep < 3 ? (
+                {currentStep < 4 ? (
                   <button 
                     type="button" 
-                    disabled={currentStep === 1 ? !isStep1Valid : !isStep2Valid}
+                    disabled={currentStep === 1 ? !isStep1Valid : currentStep === 2 ? !isStep2Valid : false}
                     onClick={() => setCurrentStep(prev => prev + 1)}
                     className="btn-primary"
                     style={{ 
                       borderRadius: '8px',
-                      opacity: (currentStep === 1 ? !isStep1Valid : !isStep2Valid) ? 0.5 : 1,
-                      cursor: (currentStep === 1 ? !isStep1Valid : !isStep2Valid) ? 'not-allowed' : 'pointer'
+                      opacity: (currentStep === 1 ? !isStep1Valid : currentStep === 2 ? !isStep2Valid : false) ? 0.5 : 1,
+                      cursor: (currentStep === 1 ? !isStep1Valid : currentStep === 2 ? !isStep2Valid : false) ? 'not-allowed' : 'pointer'
                     }}
                   >
                     Seguinte

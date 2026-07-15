@@ -16,6 +16,10 @@ const CourseSchema = new mongoose.Schema({
       videoUrl: { type: String, required: true }
     }
   ],
+  certBgColor: { type: String, default: '#ff6b00' },
+  certTextColor: { type: String, default: '#1c1917' },
+  certUsePartnerLogos: { type: Boolean, default: false },
+  certPartnerLogoUrl: { type: String, default: '' },
   createdAt: { type: Date, default: Date.now }
 });
 

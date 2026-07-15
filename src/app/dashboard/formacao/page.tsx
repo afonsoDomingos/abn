@@ -455,18 +455,45 @@ export default function FormacaoPage() {
                 flexDirection: 'column',
                 gap: '0.6rem'
               }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', display: 'block' }}>Lista de Aulas</span>
-                
                 {(() => {
+                  const courseEnrollment = getEnrollment(videoCourse.title);
+                  const isApproved = courseEnrollment && courseEnrollment.status === 'aprovado';
                   const list = videoCourse.lessonsList && videoCourse.lessonsList.length > 0
                     ? videoCourse.lessonsList
                     : [{ title: 'Aula Geral / Apresentação', videoUrl: videoCourse.videoUrl }];
-                  
-                  const courseEnrollment = getEnrollment(videoCourse.title);
-                  const isApproved = courseEnrollment && courseEnrollment.status === 'aprovado';
 
                   return (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', width: '100%' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', width: '100%' }}>
+                      
+                      {/* Course & Instructor details card */}
+                      <div style={{ padding: '0.8rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div>👨‍🏫 <strong>Formador:</strong> <span style={{ color: '#fff' }}>{videoCourse.instructor}</span></div>
+                        <div>⏱️ <strong>Duração:</strong> <span style={{ color: '#fff' }}>{videoCourse.duration}</span></div>
+                        <div><strong>Descrição:</strong> <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.75rem', display: 'block', marginTop: '2px' }}>{videoCourse.desc}</span></div>
+                        
+                        <div style={{ paddingTop: '0.5rem', borderTop: '1px dashed rgba(255,255,255,0.1)' }}>
+                          <strong>Inscrição:</strong>
+                          <div style={{ marginTop: '4px' }}>
+                            {(() => {
+                              const status = courseEnrollment?.status || 'none';
+                              if (status === 'aprovado') {
+                                return <span style={{ background: 'rgba(46,204,113,0.15)', color: '#2ecc71', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>✔️ Aprovada</span>;
+                              }
+                              if (status === 'pendente') {
+                                return <span style={{ background: 'rgba(241,196,15,0.15)', color: '#f1c40f', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>⏳ Em Verificação</span>;
+                              }
+                              if (status === 'rejeitado') {
+                                return <span style={{ background: 'rgba(231,76,60,0.15)', color: '#e74c3c', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>❌ Rejeitada</span>;
+                              }
+                              return <span style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>Não Inscrito</span>;
+                            })()}
+                          </div>
+                        </div>
+                      </div>
+
+                      <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '4px', display: 'block' }}>Lista de Aulas</span>
+                      
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', width: '100%' }}>
                       {list.map((lesson: any, idx: number) => {
                         const isSelected = lesson.videoUrl === activeVideoUrl;
                         const isLocked = idx > 0 && !isApproved;
@@ -506,6 +533,8 @@ export default function FormacaoPage() {
                           </button>
                         );
                       })}
+                      </div>
+
                       {!isApproved && (
                         <div style={{ marginTop: '1rem', background: 'rgba(255,107,0,0.08)', border: '1px solid rgba(255,107,0,0.2)', borderRadius: '10px', padding: '10px 12px', fontSize: '0.75rem', color: '#ff8c3a', lineHeight: 1.4 }}>
                           🔒 Inscreva-se ou aguarde a aprovação do seu pagamento para desbloquear todas as aulas deste curso.
@@ -684,27 +713,41 @@ export default function FormacaoPage() {
             borderRadius: '4px', 
             boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
             border: '20px solid transparent',
-            borderImage: 'linear-gradient(135deg, #ff6b00 0%, #ffc107 100%) 20 stretch',
+            borderImage: `linear-gradient(135deg, ${selectedCourse.certBgColor || '#ff6b00'} 0%, ${selectedCourse.certBgColor || '#ffc107'} 100%) 20 stretch`,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'center',
             textAlign: 'center',
-            color: '#1c1917',
+            color: selectedCourse.certTextColor || '#1c1917',
             position: 'relative',
             fontFamily: "'Outfit', sans-serif"
           }}>
             {/* Header branding */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <img src="/abn-logo.png" alt="ABN Logo" style={{ height: '50px', marginBottom: '0.5rem' }} />
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#888' }}>
-                AFROBIZ NETWORK ACCELERATION
-              </span>
+            <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <img src="/abn-logo.png" alt="ABN Logo" style={{ height: '50px', marginBottom: '0.5rem' }} />
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#888' }}>
+                  AFROBIZ NETWORK ACCELERATION
+                </span>
+              </div>
+              
+              {selectedCourse.certUsePartnerLogos && selectedCourse.certPartnerLogoUrl && (
+                <>
+                  <div style={{ width: '1px', height: '40px', background: 'rgba(0,0,0,0.1)' }} />
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <img src={selectedCourse.certPartnerLogoUrl} alt="Partner Logo" style={{ height: '50px', maxWidth: '140px', objectFit: 'contain', marginBottom: '0.5rem' }} />
+                    <span style={{ fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#888' }}>
+                      Parceiro Certificador
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Main title */}
             <div>
-              <h1 style={{ fontSize: '2.8rem', color: '#ff6b00', margin: '0.5rem 0', fontFamily: 'Outfit', fontWeight: 800 }}>
+              <h1 style={{ fontSize: '2.8rem', color: selectedCourse.certBgColor || '#ff6b00', margin: '0.5rem 0', fontFamily: 'Outfit', fontWeight: 800 }}>
                 CERTIFICADO
               </h1>
               <span style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#444' }}>
@@ -715,11 +758,11 @@ export default function FormacaoPage() {
             {/* Recipient body */}
             <div style={{ maxWidth: '650px' }}>
               <p style={{ fontSize: '1rem', margin: '0 0 1rem 0', color: '#555' }}>Certificamos que, para os devidos efeitos de mérito,</p>
-              <h2 style={{ fontSize: '2.2rem', color: '#1c1917', textDecoration: 'underline', margin: '0.5rem 0', fontFamily: 'Outfit', fontWeight: 700 }}>
+              <h2 style={{ fontSize: '2.2rem', color: selectedCourse.certTextColor || '#1c1917', textDecoration: 'underline', margin: '0.5rem 0', fontFamily: 'Outfit', fontWeight: 700 }}>
                 {userName}
               </h2>
               <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#444', margin: '1rem 0' }}>
-                concluiu com aproveitamento e sucesso o programa de formação em aceleração de negócios denominado <strong style={{ color: '#ff6b00' }}>{selectedCourse.title}</strong>, com a duração total de <strong>{selectedCourse.duration}</strong> e aproveitamento prático estruturado.
+                concluiu com aproveitamento e sucesso o programa de formação em aceleração de negócios denominado <strong style={{ color: selectedCourse.certBgColor || '#ff6b00' }}>{selectedCourse.title}</strong>, com a duração total de <strong>{selectedCourse.duration}</strong> e aproveitamento prático estruturado.
               </p>
             </div>
 
@@ -769,7 +812,7 @@ export default function FormacaoPage() {
                 top: 0 !important;
                 margin: 0 !important;
                 border: 20px solid transparent !important;
-                border-image: linear-gradient(135deg, #ff6b00 0%, #ffc107 100%) 20 stretch !important;
+                border-image: linear-gradient(135deg, ${selectedCourse.certBgColor || '#ff6b00'} 0%, ${selectedCourse.certBgColor || '#ffc107'} 100%) 20 stretch !important;
                 box-shadow: none !important;
                 width: 100% !important;
                 height: 100% !important;

@@ -70,7 +70,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Acesso negado.' }, { status: 403 });
     }
 
-    const { title, instructor, duration, lessons, price, isPaid, desc, videoUrl, videoVisible, lessonsList } = await request.json();
+    const { 
+      title, instructor, duration, lessons, price, isPaid, desc, videoUrl, videoVisible, lessonsList,
+      certBgColor, certTextColor, certUsePartnerLogos, certPartnerLogoUrl
+    } = await request.json();
 
     if (!title || !instructor || !duration || !lessons || !price || desc === undefined) {
       return NextResponse.json({ error: 'Todos os campos são obrigatórios.' }, { status: 400 });
@@ -86,7 +89,11 @@ export async function POST(request: Request) {
       desc,
       videoUrl: videoUrl || '',
       videoVisible: videoVisible !== false,
-      lessonsList: lessonsList || []
+      lessonsList: lessonsList || [],
+      certBgColor: certBgColor || '#ff6b00',
+      certTextColor: certTextColor || '#1c1917',
+      certUsePartnerLogos: certUsePartnerLogos === true,
+      certPartnerLogoUrl: certPartnerLogoUrl || ''
     });
 
     return NextResponse.json({ success: true, course });
@@ -116,7 +123,10 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Acesso negado.' }, { status: 403 });
     }
 
-    const { id, title, instructor, duration, lessons, price, isPaid, desc, videoUrl, videoVisible, lessonsList } = await request.json();
+    const { 
+      id, title, instructor, duration, lessons, price, isPaid, desc, videoUrl, videoVisible, lessonsList,
+      certBgColor, certTextColor, certUsePartnerLogos, certPartnerLogoUrl
+    } = await request.json();
 
     if (!id || !title || !instructor || !duration || !lessons || !price || desc === undefined) {
       return NextResponse.json({ error: 'Todos os campos são obrigatórios.' }, { status: 400 });
@@ -124,7 +134,14 @@ export async function PUT(request: Request) {
 
     const course = await Course.findByIdAndUpdate(
       id,
-      { title, instructor, duration, lessons, price, isPaid, desc, videoUrl: videoUrl || '', videoVisible: videoVisible !== false, lessonsList: lessonsList || [] },
+      { 
+        title, instructor, duration, lessons, price, isPaid, desc, 
+        videoUrl: videoUrl || '', videoVisible: videoVisible !== false, lessonsList: lessonsList || [],
+        certBgColor: certBgColor || '#ff6b00',
+        certTextColor: certTextColor || '#1c1917',
+        certUsePartnerLogos: certUsePartnerLogos === true,
+        certPartnerLogoUrl: certPartnerLogoUrl || ''
+      },
       { new: true }
     );
 
