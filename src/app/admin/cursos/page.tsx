@@ -2,6 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
+interface Lesson {
+  title: string;
+  videoUrl: string;
+  _id?: string;
+}
+
 interface Course {
   _id: string;
   title: string;
@@ -13,6 +19,7 @@ interface Course {
   desc: string;
   videoUrl?: string;
   videoVisible?: boolean;
+  lessonsList?: Lesson[];
 }
 
 export default function AdminCursosPage() {
@@ -36,6 +43,9 @@ export default function AdminCursosPage() {
   const [desc, setDesc] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [videoVisible, setVideoVisible] = useState(true);
+  const [lessonsList, setLessonsList] = useState<Lesson[]>([]);
+  const [newLessonTitle, setNewLessonTitle] = useState('');
+  const [newLessonUrl, setNewLessonUrl] = useState('');
 
   // Step validations
   const isStep1Valid = title.trim() !== '' && desc.trim() !== '';
@@ -72,6 +82,9 @@ export default function AdminCursosPage() {
     setDesc(course.desc);
     setVideoUrl(course.videoUrl || '');
     setVideoVisible(course.videoVisible !== false);
+    setLessonsList(course.lessonsList || []);
+    setNewLessonTitle('');
+    setNewLessonUrl('');
     setCurrentStep(1);
     setShowForm(true);
   };
@@ -87,6 +100,9 @@ export default function AdminCursosPage() {
     setDesc('');
     setVideoUrl('');
     setVideoVisible(true);
+    setLessonsList([]);
+    setNewLessonTitle('');
+    setNewLessonUrl('');
     setCurrentStep(1);
     setShowForm(true);
   };
@@ -105,7 +121,8 @@ export default function AdminCursosPage() {
       isPaid,
       desc,
       videoUrl,
-      videoVisible
+      videoVisible,
+      lessonsList
     };
 
     const url = '/api/courses';
@@ -396,27 +413,90 @@ export default function AdminCursosPage() {
 
                 {currentStep === 3 && (
                   <>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                      <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>🎥 URL do Vídeo (YouTube Embed)</label>
-                      <input 
-                        value={videoUrl} 
-                        onChange={e => setVideoUrl(e.target.value)} 
-                        placeholder="https://www.youtube.com/embed/VIDEO_ID"
-                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
-                      />
-                      <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
-                        Abra o YouTube → Partilhar → Incorporar → copie apenas o URL do src do iframe (ex: https://www.youtube.com/embed/abc123)
-                      </span>
+                    {/* Lesson builder section */}
+                    <div style={{ border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '1.2rem', background: 'rgba(255,255,255,0.02)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>📚 Aulas do Curso ({lessonsList.length})</label>
+                      
+                      {/* Current lessons list */}
+                      {lessonsList.length === 0 ? (
+                        <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', margin: 0 }}>Nenhuma aula adicionada a este curso de momento.</p>
+                      ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', maxHeight: '160px', overflowY: 'auto', paddingRight: '4px' }}>
+                          {lessonsList.map((lesson, idx) => (
+                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', padding: '8px 12px' }}>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', overflow: 'hidden', flex: 1, marginRight: '10px' }}>
+                                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{idx + 1}. {lesson.title}</span>
+                                <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{lesson.videoUrl}</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => setLessonsList(prev => prev.filter((_, i) => i !== idx))}
+                                style={{ background: 'none', border: 'none', color: '#ff4d4d', cursor: 'pointer', padding: '4px 8px', fontSize: '0.9rem' }}
+                                title="Remover aula"
+                              >
+                                🗑️
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Add new lesson fields */}
+                      <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                          <label style={{ fontSize: '0.7rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)' }}>Título da Aula</label>
+                          <input 
+                            value={newLessonTitle}
+                            onChange={e => setNewLessonTitle(e.target.value)}
+                            placeholder="Ex: Aula 1: Introdução ao Curso"
+                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '8px 10px', borderRadius: '6px', color: '#fff', fontSize: '0.8rem' }}
+                          />
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                          <label style={{ fontSize: '0.7rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)' }}>URL do Vídeo (YouTube Embed)</label>
+                          <input 
+                            value={newLessonUrl}
+                            onChange={e => setNewLessonUrl(e.target.value)}
+                            placeholder="Ex: https://www.youtube.com/embed/VIDEO_ID"
+                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '8px 10px', borderRadius: '6px', color: '#fff', fontSize: '0.8rem' }}
+                          />
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (!newLessonTitle.trim() || !newLessonUrl.trim()) return;
+                            setLessonsList(prev => [...prev, { title: newLessonTitle.trim(), videoUrl: newLessonUrl.trim() }]);
+                            setNewLessonTitle('');
+                            setNewLessonUrl('');
+                          }}
+                          style={{
+                            background: 'rgba(255,255,255,0.08)',
+                            border: '1px solid rgba(255,255,255,0.15)',
+                            color: '#fff',
+                            padding: '8px 16px',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontSize: '0.8rem',
+                            fontWeight: 600,
+                            transition: 'background 0.2s',
+                            textAlign: 'center'
+                          }}
+                        >
+                          ➕ Adicionar Aula à Lista
+                        </button>
+                      </div>
                     </div>
 
                     {/* Video Visibility Toggle */}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '14px 18px' }}>
                       <div>
                         <p style={{ color: '#fff', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>
-                          👁️ Visibilidade do Vídeo
+                          👁️ Visibilidade das Aulas
                         </p>
                         <p style={{ color: 'rgba(255,255,255,0.45)', margin: '2px 0 0 0', fontSize: '0.75rem' }}>
-                          {videoVisible ? 'O vídeo está visível para os alunos inscritos' : 'O vídeo está oculto para todos os alunos'}
+                          {videoVisible ? 'Os vídeos estão visíveis para os alunos inscritos' : 'Os vídeos estão ocultos para todos os alunos'}
                         </p>
                       </div>
                       <label style={{ position: 'relative', display: 'inline-block', width: '52px', height: '28px', cursor: 'pointer', flexShrink: 0 }}>

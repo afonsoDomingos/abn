@@ -32,6 +32,9 @@ export default function FormacaoPage() {
   const [videoModalUrl, setVideoModalUrl] = useState('');
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'disponiveis' | 'minhas'>('disponiveis');
+  const [videoCourse, setVideoCourse] = useState<any | null>(null);
+  const [activeVideoUrl, setActiveVideoUrl] = useState<string>('');
+  const [activeVideoTitle, setActiveVideoTitle] = useState<string>('');
 
 
 
@@ -294,12 +297,17 @@ export default function FormacaoPage() {
                 <div>
                   {status === 'aprovado' && (
                     <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                      {course.videoUrl && course.videoVisible !== false && (
+                      {(((course.videoUrl && course.videoUrl.trim() !== '') || (course.lessonsList && course.lessonsList.length > 0)) && course.videoVisible !== false) && (
                         <button
                           className="btn-primary"
                           style={{ padding: '8px 16px', fontSize: '0.85rem', background: 'linear-gradient(135deg, #e74c3c, #c0392b)' }}
                           onClick={() => {
-                            setVideoModalUrl(course.videoUrl);
+                            const lessons = course.lessonsList && course.lessonsList.length > 0
+                              ? course.lessonsList
+                              : [{ title: 'Aula Geral / Apresentação', videoUrl: course.videoUrl }];
+                            setVideoCourse(course);
+                            setActiveVideoUrl(lessons[0].videoUrl);
+                            setActiveVideoTitle(lessons[0].title);
                             setShowVideoModal(true);
                           }}
                         >
@@ -392,26 +400,96 @@ export default function FormacaoPage() {
       </div>
 
       {/* Video Player Modal */}
-      {showVideoModal && videoModalUrl && (
+      {showVideoModal && videoCourse && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.92)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
-          <div style={{ maxWidth: '860px', width: '100%', position: 'relative' }}>
+          <div style={{ maxWidth: '1000px', width: '100%', position: 'relative', background: '#1c1917', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '24px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', maxHeight: '90vh', overflow: 'hidden' }}>
             <button
-              style={{ position: 'absolute', top: '-2.5rem', right: 0, background: 'none', border: 'none', color: '#ff4d4d', fontSize: '2rem', cursor: 'pointer', fontWeight: 700 }}
-              onClick={() => { setShowVideoModal(false); setVideoModalUrl(''); }}
+              style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#ff4d4d', fontSize: '2rem', cursor: 'pointer', fontWeight: 700, zIndex: 10 }}
+              onClick={() => { setShowVideoModal(false); setVideoCourse(null); setActiveVideoUrl(''); setActiveVideoTitle(''); }}
             >
               &times;
             </button>
-            <h3 style={{ color: '#fff', fontFamily: 'Outfit', marginBottom: '1rem', fontSize: '1.1rem' }}>🎥 Aulas do Curso</h3>
-            <div style={{ borderRadius: '16px', overflow: 'hidden', aspectRatio: '16/9', background: '#000' }}>
-              <iframe
-                src={videoModalUrl}
-                width="100%"
-                height="100%"
-                style={{ border: 'none', display: 'block' }}
-                allowFullScreen
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                title="Aulas do Curso"
-              />
+            
+            <div style={{ flexShrink: 0 }}>
+              <h3 style={{ color: '#fff', fontFamily: 'Outfit', margin: 0, fontSize: '1.4rem' }}>🎥 {videoCourse.title}</h3>
+              <p style={{ color: 'rgba(255,255,255,0.5)', margin: '4px 0 0 0', fontSize: '0.85rem' }}>Assistir a aulas: {activeVideoTitle}</p>
+            </div>
+            
+            {/* Split layout: sidebar and player */}
+            <div style={{ display: 'flex', gap: '1.5rem', flex: 1, minHeight: 0, flexWrap: 'wrap' }}>
+              {/* Sidebar with lessons list */}
+              <div style={{ 
+                flex: '1 1 250px', 
+                background: 'rgba(255,255,255,0.02)', 
+                border: '1px solid rgba(255,255,255,0.05)', 
+                borderRadius: '16px', 
+                padding: '1rem', 
+                maxHeight: '100%', 
+                overflowY: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.6rem'
+              }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', display: 'block' }}>Lista de Aulas</span>
+                
+                {(() => {
+                  const list = videoCourse.lessonsList && videoCourse.lessonsList.length > 0
+                    ? videoCourse.lessonsList
+                    : [{ title: 'Aula Geral / Apresentação', videoUrl: videoCourse.videoUrl }];
+                  
+                  return list.map((lesson: any, idx: number) => {
+                    const isSelected = lesson.videoUrl === activeVideoUrl;
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          setActiveVideoUrl(lesson.videoUrl);
+                          setActiveVideoTitle(lesson.title);
+                        }}
+                        style={{
+                          textAlign: 'left',
+                          background: isSelected ? 'rgba(255,107,0,0.1)' : 'transparent',
+                          border: `1px solid ${isSelected ? 'var(--primary)' : 'rgba(255,255,255,0.05)'}`,
+                          borderRadius: '10px',
+                          padding: '10px 14px',
+                          color: isSelected ? '#fff' : 'rgba(255,255,255,0.7)',
+                          fontSize: '0.85rem',
+                          fontWeight: isSelected ? 600 : 400,
+                          cursor: 'pointer',
+                          transition: 'all 0.2s',
+                          display: 'block',
+                          width: '100%'
+                        }}
+                      >
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <span style={{ color: isSelected ? 'var(--primary)' : 'rgba(255,255,255,0.3)', fontWeight: 700 }}>{idx + 1}.</span>
+                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{lesson.title}</span>
+                        </div>
+                      </button>
+                    );
+                  });
+                })()}
+              </div>
+              
+              {/* Player area */}
+              <div style={{ 
+                flex: '3 1 450px', 
+                borderRadius: '16px', 
+                overflow: 'hidden', 
+                aspectRatio: '16/9', 
+                background: '#000',
+                border: '1px solid rgba(255,255,255,0.05)'
+              }}>
+                <iframe
+                  src={activeVideoUrl}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 'none', display: 'block' }}
+                  allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  title="Player de Vídeo da Aula"
+                />
+              </div>
             </div>
           </div>
         </div>

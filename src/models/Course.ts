@@ -10,6 +10,12 @@ const CourseSchema = new mongoose.Schema({
   desc: { type: String, required: true },
   videoUrl: { type: String, default: '' },
   videoVisible: { type: Boolean, default: true },
+  lessonsList: [
+    {
+      title: { type: String, required: true },
+      videoUrl: { type: String, required: true }
+    }
+  ],
   createdAt: { type: Date, default: Date.now }
 });
 
