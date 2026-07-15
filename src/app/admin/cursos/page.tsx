@@ -47,6 +47,32 @@ export default function AdminCursosPage() {
   const [newLessonTitle, setNewLessonTitle] = useState('');
   const [newLessonUrl, setNewLessonUrl] = useState('');
 
+  // Participants list states
+  const [showParticipantsModal, setShowParticipantsModal] = useState(false);
+  const [selectedCourseForParticipants, setSelectedCourseForParticipants] = useState<Course | null>(null);
+  const [participants, setParticipants] = useState<any[]>([]);
+  const [loadingParticipants, setLoadingParticipants] = useState(false);
+
+  const handleViewParticipants = async (course: Course) => {
+    setSelectedCourseForParticipants(course);
+    setShowParticipantsModal(true);
+    setLoadingParticipants(true);
+    try {
+      const res = await fetch('/api/payments');
+      const data = await res.json();
+      if (data.success) {
+        const courseEnrollments = (data.payments || []).filter(
+          (p: any) => p.itemName.toLowerCase() === course.title.toLowerCase()
+        );
+        setParticipants(courseEnrollments);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingParticipants(false);
+    }
+  };
+
   // Step validations
   const isStep1Valid = title.trim() !== '' && desc.trim() !== '';
   const isStep2Valid = instructor.trim() !== '' && duration.trim() !== '' && Number(lessons) >= 1 && price.trim() !== '';
@@ -225,17 +251,23 @@ export default function AdminCursosPage() {
                 <div>📚 Aulas: <span style={{ color: '#fff' }}>{course.lessons}</span></div>
               </div>
 
-              {/* Edit/Delete Actions */}
-              <div style={{ display: 'flex', gap: '0.8rem', marginTop: '1rem' }}>
+              {/* Actions: View participants, Edit, Delete */}
+              <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1rem' }}>
+                <button
+                  onClick={() => handleViewParticipants(course)}
+                  style={{ flex: 1, padding: '8px 0', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'var(--primary)', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' }}
+                >
+                  👥 Inscritos
+                </button>
                 <button
                   onClick={() => handleEditClick(course)}
-                  style={{ flex: 1, padding: '8px 0', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.03)', color: '#fff', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}
+                  style={{ flex: 1, padding: '8px 0', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.03)', color: '#fff', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' }}
                 >
                   ✏️ Editar
                 </button>
                 <button
                   onClick={() => handleDelete(course._id)}
-                  style={{ flex: 1, padding: '8px 0', border: 'none', background: '#e74c3c', color: '#fff', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}
+                  style={{ flex: 1, padding: '8px 0', border: 'none', background: '#e74c3c', color: '#fff', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' }}
                 >
                   🗑️ Excluir
                 </button>
@@ -567,6 +599,98 @@ export default function AdminCursosPage() {
                 )}
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Participants Modal */}
+      {showParticipantsModal && selectedCourseForParticipants && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+          <div className="glass" style={{ maxWidth: '750px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative', display: 'flex', flexDirection: 'column', maxHeight: '85vh', overflow: 'hidden' }}>
+            <button 
+              style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#ff4d4d', fontSize: '1.8rem', cursor: 'pointer', fontWeight: 700 }}
+              onClick={() => { setShowParticipantsModal(false); setSelectedCourseForParticipants(null); setParticipants([]); }}
+            >
+              &times;
+            </button>
+            
+            <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', margin: '0 0 0.2rem 0' }}>Alunos Inscritos</h2>
+            <p style={{ color: 'var(--primary)', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Curso: {selectedCourseForParticipants.title}</p>
+
+            <div style={{ flex: 1, overflowY: 'auto', paddingRight: '4px' }}>
+              {loadingParticipants ? (
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontStyle: 'italic', textAlign: 'center', padding: '2rem 0' }}>A carregar alunos...</p>
+              ) : participants.length === 0 ? (
+                <p style={{ color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', textAlign: 'center', padding: '2rem 0' }}>Nenhum aluno registado ou aprovado neste curso ainda.</p>
+              ) : (
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                      <th style={{ padding: '10px 8px' }}>Aluno</th>
+                      <th style={{ padding: '10px 8px' }}>Contacto / Telefone</th>
+                      <th style={{ padding: '10px 8px' }}>Empresa / Startup</th>
+                      <th style={{ padding: '10px 8px' }}>Estado</th>
+                      <th style={{ padding: '10px 8px' }}>Progresso</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {participants.map((p, idx) => {
+                      let progressText = 'Iniciado';
+                      let progressColor = '#3498db';
+                      if (p.completed) {
+                        progressText = 'Concluído 🎉';
+                        progressColor = '#2ecc71';
+                      }
+                      if (p.certificateRequested) {
+                        progressText = 'Certificado Solicitado 🎓';
+                        progressColor = '#f1c40f';
+                      }
+
+                      return (
+                        <tr key={p._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: '#fff' }}>
+                          <td style={{ padding: '12px 8px' }}>
+                            <div style={{ fontWeight: 600 }}>{p.user?.name || 'Utilizador Desconhecido'}</div>
+                            <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>{p.user?.email}</div>
+                          </td>
+                          <td style={{ padding: '12px 8px', color: 'rgba(255,255,255,0.8)' }}>
+                            {p.phone || <span style={{ color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>N/A</span>}
+                          </td>
+                          <td style={{ padding: '12px 8px', color: 'rgba(255,255,255,0.8)' }}>
+                            {p.company || <span style={{ color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>N/A</span>}
+                          </td>
+                          <td style={{ padding: '12px 8px' }}>
+                            <span style={{ 
+                              fontSize: '0.75rem', 
+                              fontWeight: 700, 
+                              textTransform: 'uppercase',
+                              padding: '2px 6px',
+                              borderRadius: '4px',
+                              background: p.status === 'aprovado' ? 'rgba(46,204,113,0.15)' : p.status === 'pendente' ? 'rgba(241,196,15,0.15)' : 'rgba(231,76,60,0.15)',
+                              color: p.status === 'aprovado' ? '#2ecc71' : p.status === 'pendente' ? '#f1c40f' : '#e74c3c'
+                            }}>
+                              {p.status}
+                            </span>
+                          </td>
+                          <td style={{ padding: '12px 8px', color: progressColor, fontWeight: 600 }}>
+                            {progressText}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+            
+            <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'flex-end' }}>
+              <button 
+                className="btn-primary" 
+                style={{ borderRadius: '8px', padding: '10px 20px', fontSize: '0.85rem' }} 
+                onClick={() => { setShowParticipantsModal(false); setSelectedCourseForParticipants(null); setParticipants([]); }}
+              >
+                Fechar
+              </button>
+            </div>
           </div>
         </div>
       )}

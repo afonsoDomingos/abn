@@ -193,7 +193,7 @@ export default function FormacaoPage() {
   };
 
   const getEnrollment = (courseTitle: string) => {
-    return payments.find(p => p.itemName === courseTitle);
+    return payments.find(p => p.itemName.trim().toLowerCase() === courseTitle.trim().toLowerCase());
   };
 
   if (loading) return <div style={{ padding: '3rem', color: '#fff' }}>A carregar academia...</div>;
