@@ -5,6 +5,8 @@ const PaymentSchema = new mongoose.Schema({
   itemName: { type: String, required: true },
   price: { type: String, required: true },
   proofUrl: { type: String, required: true }, // URL to uploaded file
+  phone: { type: String, default: '' },
+  company: { type: String, default: '' },
   status: { 
     type: String, 
     enum: ['pendente', 'aprovado', 'rejeitado'], 

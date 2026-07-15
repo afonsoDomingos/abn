@@ -35,8 +35,10 @@ export default function FormacaoPage() {
   const [videoCourse, setVideoCourse] = useState<any | null>(null);
   const [activeVideoUrl, setActiveVideoUrl] = useState<string>('');
   const [activeVideoTitle, setActiveVideoTitle] = useState<string>('');
-
-
+  const [enrollPhone, setEnrollPhone] = useState('');
+  const [enrollCompany, setEnrollCompany] = useState('');
+  const [showEnrollConfirmModal, setShowEnrollConfirmModal] = useState(false);
+  const [courseToEnroll, setCourseToEnroll] = useState<any | null>(null);
 
   useEffect(() => {
     fetchEnrollments();
@@ -45,6 +47,8 @@ export default function FormacaoPage() {
       try {
         const u = JSON.parse(storedUser);
         setUserName(u.name || 'Empreendedor');
+        if (u.phone) setEnrollPhone(u.phone);
+        if (u.company) setEnrollCompany(u.company);
       } catch (e) {}
     }
   }, []);
@@ -71,7 +75,7 @@ export default function FormacaoPage() {
     }
   };
 
-  const handleEnrollFree = async (course: Course) => {
+  const handleEnrollFree = async (course: any, phoneVal: string, companyVal: string) => {
     setLoading(true);
     try {
       const res = await fetch('/api/payments', {
@@ -80,7 +84,9 @@ export default function FormacaoPage() {
         body: JSON.stringify({
           itemName: course.title,
           price: 'Gratuito',
-          proofUrl: 'gratuito'
+          proofUrl: 'gratuito',
+          phone: phoneVal,
+          company: companyVal
         })
       });
       const data = await res.json();
@@ -143,7 +149,9 @@ export default function FormacaoPage() {
         body: JSON.stringify({
           itemName: selectedCourse.title,
           price: selectedCourse.price,
-          proofUrl: uploadedUrl
+          proofUrl: uploadedUrl,
+          phone: enrollPhone,
+          company: enrollCompany
         })
       });
       const data = await res.json();
@@ -389,8 +397,8 @@ export default function FormacaoPage() {
                         className="btn-primary"
                         style={{ background: '#e74c3c', borderRadius: '8px' }}
                         onClick={() => {
-                          setSelectedCourse(course);
-                          setShowModal(true);
+                          setCourseToEnroll(course);
+                          setShowEnrollConfirmModal(true);
                         }}
                       >
                         ❌ Rejeitado - Reenviar
@@ -401,12 +409,8 @@ export default function FormacaoPage() {
                         className="btn-primary"
                         style={{ borderRadius: '8px' }}
                         onClick={() => {
-                          if (course.isPaid) {
-                            setSelectedCourse(course);
-                            setShowModal(true);
-                          } else {
-                            handleEnrollFree(course);
-                          }
+                          setCourseToEnroll(course);
+                          setShowEnrollConfirmModal(true);
                         }}
                       >
                         {course.isPaid ? 'Comprar e Inscrever' : 'Inscrever Grátis'}
@@ -532,6 +536,76 @@ export default function FormacaoPage() {
                 />
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm Registration Details Modal */}
+      {showEnrollConfirmModal && courseToEnroll && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+          <div className="glass" style={{ maxWidth: '500px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative' }}>
+            <button 
+              style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#ff4d4d', fontSize: '1.5rem', cursor: 'pointer' }}
+              onClick={() => { setShowEnrollConfirmModal(false); setCourseToEnroll(null); }}
+            >
+              &times;
+            </button>
+            <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', marginBottom: '0.2rem' }}>Ficha de Inscrição</h2>
+            <p style={{ color: 'var(--primary)', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Curso: {courseToEnroll.title}</p>
+
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                setShowEnrollConfirmModal(false);
+                if (courseToEnroll.isPaid) {
+                  setSelectedCourse(courseToEnroll);
+                  setShowModal(true);
+                } else {
+                  handleEnrollFree(courseToEnroll, enrollPhone, enrollCompany);
+                  setCourseToEnroll(null);
+                }
+              }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Nome do Aluno</label>
+                <input 
+                  value={userName} 
+                  disabled
+                  style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', padding: '10px', borderRadius: '8px', color: 'rgba(255,255,255,0.4)', cursor: 'not-allowed' }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Telefone / WhatsApp *</label>
+                <input 
+                  value={enrollPhone}
+                  onChange={e => setEnrollPhone(e.target.value)}
+                  placeholder="Ex: +258 84 123 4567"
+                  required
+                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Empresa / Startup *</label>
+                <input 
+                  value={enrollCompany}
+                  onChange={e => setEnrollCompany(e.target.value)}
+                  placeholder="Nome da sua empresa ou projeto"
+                  required
+                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                className="btn-primary" 
+                style={{ borderRadius: '8px', marginTop: '0.5rem' }}
+              >
+                {courseToEnroll.isPaid ? 'Avançar para Pagamento 💳' : 'Confirmar e Inscrever Grátis 🚀'}
+              </button>
+            </form>
           </div>
         </div>
       )}

@@ -13,6 +13,8 @@ interface PaymentLog {
   proofUrl: string;
   status: 'pendente' | 'aprovado' | 'rejeitado';
   createdAt: string;
+  phone?: string;
+  company?: string;
 }
 
 export default function AdminPagamentosPage() {
@@ -125,9 +127,11 @@ export default function AdminPagamentosPage() {
                 <h3 style={{ color: '#fff', fontSize: '1.25rem', fontFamily: 'Outfit', margin: 0 }}>{pay.itemName}</h3>
                 
                 {/* User information */}
-                <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', display: 'flex', gap: '1rem' }}>
+                <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   <span>👤 <strong>{pay.user?.name}</strong></span>
                   <span>✉️ {pay.user?.email}</span>
+                  {pay.phone && <span>📞 {pay.phone}</span>}
+                  {pay.company && <span>🏢 {pay.company}</span>}
                   <span>💰 {pay.price}</span>
                 </div>
               </div>
