@@ -360,38 +360,59 @@ export default function FormacaoPage() {
                       )}
                     </div>
                   )}
-                  {status === 'pendente' && (
-                    <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(241,196,15,0.15)', color: '#f1c40f', border: '1px solid #f1c40f', padding: '8px 20px', borderRadius: '40px' }}>
-                      ⏳ Pagamento em Verificação
-                    </span>
-                  )}
-                  {status === 'rejeitado' && (
-                    <button
-                      className="btn-primary"
-                      style={{ background: '#e74c3c' }}
-                      onClick={() => {
-                        setSelectedCourse(course);
-                        setShowModal(true);
-                      }}
-                    >
-                      ❌ Rejeitado - Reenviar
-                    </button>
-                  )}
-                  {status === 'none' && (
-                    <button
-                      className="btn-primary"
-                      onClick={() => {
-                        if (course.isPaid) {
+                  <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                    {status !== 'aprovado' && (((course.videoUrl && course.videoUrl.trim() !== '') || (course.lessonsList && course.lessonsList.length > 0)) && course.videoVisible !== false) && (
+                      <button
+                        className="btn-outline"
+                        style={{ padding: '8px 16px', fontSize: '0.85rem', color: 'var(--primary)', borderColor: 'var(--primary)', borderRadius: '8px', cursor: 'pointer', background: 'transparent' }}
+                        onClick={() => {
+                          const lessons = course.lessonsList && course.lessonsList.length > 0
+                            ? course.lessonsList
+                            : [{ title: 'Aula Geral / Apresentação', videoUrl: course.videoUrl }];
+                          setVideoCourse(course);
+                          setActiveVideoUrl(lessons[0].videoUrl);
+                          setActiveVideoTitle(lessons[0].title);
+                          setShowVideoModal(true);
+                        }}
+                      >
+                        🎥 Aula de Introdução
+                      </button>
+                    )}
+
+                    {status === 'pendente' && (
+                      <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(241,196,15,0.15)', color: '#f1c40f', border: '1px solid #f1c40f', padding: '8px 20px', borderRadius: '40px' }}>
+                        ⏳ Pagamento em Verificação
+                      </span>
+                    )}
+                    {status === 'rejeitado' && (
+                      <button
+                        className="btn-primary"
+                        style={{ background: '#e74c3c', borderRadius: '8px' }}
+                        onClick={() => {
                           setSelectedCourse(course);
                           setShowModal(true);
-                        } else {
-                          handleEnrollFree(course);
-                        }
-                      }}
-                    >
-                      {course.isPaid ? 'Comprar e Inscrever' : 'Inscrever Grátis'}
-                    </button>
-                  )}
+                        }}
+                      >
+                        ❌ Rejeitado - Reenviar
+                      </button>
+                    )}
+                    {status === 'none' && (
+                      <button
+                        className="btn-primary"
+                        style={{ borderRadius: '8px' }}
+                        onClick={() => {
+                          if (course.isPaid) {
+                            setSelectedCourse(course);
+                            setShowModal(true);
+                          } else {
+                            handleEnrollFree(course);
+                          }
+                        }}
+                      >
+                        {course.isPaid ? 'Comprar e Inscrever' : 'Inscrever Grátis'}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             );
@@ -437,37 +458,57 @@ export default function FormacaoPage() {
                     ? videoCourse.lessonsList
                     : [{ title: 'Aula Geral / Apresentação', videoUrl: videoCourse.videoUrl }];
                   
-                  return list.map((lesson: any, idx: number) => {
-                    const isSelected = lesson.videoUrl === activeVideoUrl;
-                    return (
-                      <button
-                        key={idx}
-                        onClick={() => {
-                          setActiveVideoUrl(lesson.videoUrl);
-                          setActiveVideoTitle(lesson.title);
-                        }}
-                        style={{
-                          textAlign: 'left',
-                          background: isSelected ? 'rgba(255,107,0,0.1)' : 'transparent',
-                          border: `1px solid ${isSelected ? 'var(--primary)' : 'rgba(255,255,255,0.05)'}`,
-                          borderRadius: '10px',
-                          padding: '10px 14px',
-                          color: isSelected ? '#fff' : 'rgba(255,255,255,0.7)',
-                          fontSize: '0.85rem',
-                          fontWeight: isSelected ? 600 : 400,
-                          cursor: 'pointer',
-                          transition: 'all 0.2s',
-                          display: 'block',
-                          width: '100%'
-                        }}
-                      >
-                        <div style={{ display: 'flex', gap: '8px' }}>
-                          <span style={{ color: isSelected ? 'var(--primary)' : 'rgba(255,255,255,0.3)', fontWeight: 700 }}>{idx + 1}.</span>
-                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{lesson.title}</span>
+                  const courseEnrollment = getEnrollment(videoCourse.title);
+                  const isApproved = courseEnrollment && courseEnrollment.status === 'aprovado';
+
+                  return (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', width: '100%' }}>
+                      {list.map((lesson: any, idx: number) => {
+                        const isSelected = lesson.videoUrl === activeVideoUrl;
+                        const isLocked = idx > 0 && !isApproved;
+                        return (
+                          <button
+                            key={idx}
+                            disabled={isLocked}
+                            onClick={() => {
+                              if (isLocked) return;
+                              setActiveVideoUrl(lesson.videoUrl);
+                              setActiveVideoTitle(lesson.title);
+                            }}
+                            style={{
+                              textAlign: 'left',
+                              background: isSelected ? 'rgba(255,107,0,0.1)' : 'transparent',
+                              border: `1px solid ${isSelected ? 'var(--primary)' : 'rgba(255,255,255,0.05)'}`,
+                              borderRadius: '10px',
+                              padding: '10px 14px',
+                              color: isLocked ? 'rgba(255,255,255,0.3)' : isSelected ? '#fff' : 'rgba(255,255,255,0.7)',
+                              fontSize: '0.85rem',
+                              fontWeight: isSelected ? 600 : 400,
+                              cursor: isLocked ? 'not-allowed' : 'pointer',
+                              transition: 'all 0.2s',
+                              display: 'block',
+                              width: '100%'
+                            }}
+                          >
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                              <div style={{ display: 'flex', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                <span style={{ color: isSelected ? 'var(--primary)' : 'rgba(255,255,255,0.3)', fontWeight: 700 }}>{idx + 1}.</span>
+                                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{lesson.title}</span>
+                              </div>
+                              {isLocked && (
+                                <span style={{ fontSize: '0.8rem', marginLeft: '6px' }}>🔒</span>
+                              )}
+                            </div>
+                          </button>
+                        );
+                      })}
+                      {!isApproved && (
+                        <div style={{ marginTop: '1rem', background: 'rgba(255,107,0,0.08)', border: '1px solid rgba(255,107,0,0.2)', borderRadius: '10px', padding: '10px 12px', fontSize: '0.75rem', color: '#ff8c3a', lineHeight: 1.4 }}>
+                          🔒 Inscreva-se ou aguarde a aprovação do seu pagamento para desbloquear todas as aulas deste curso.
                         </div>
-                      </button>
-                    );
-                  });
+                      )}
+                    </div>
+                  );
                 })()}
               </div>
               
