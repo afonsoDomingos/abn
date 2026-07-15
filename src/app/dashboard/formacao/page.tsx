@@ -31,6 +31,8 @@ export default function FormacaoPage() {
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [videoModalUrl, setVideoModalUrl] = useState('');
   const [processingId, setProcessingId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'disponiveis' | 'minhas'>('disponiveis');
+
 
 
   useEffect(() => {
@@ -205,125 +207,188 @@ export default function FormacaoPage() {
         </div>
       )}
 
+      {/* Tabs */}
+      <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.08)', marginBottom: '2rem', gap: '2rem' }}>
+        <button
+          onClick={() => setActiveTab('disponiveis')}
+          style={{
+            background: 'none',
+            border: 'none',
+            paddingBottom: '12px',
+            color: activeTab === 'disponiveis' ? 'var(--primary)' : 'rgba(255,255,255,0.5)',
+            fontSize: '1rem',
+            fontWeight: 700,
+            cursor: 'pointer',
+            position: 'relative',
+            transition: 'color 0.2s'
+          }}
+        >
+          Formações Disponíveis
+          {activeTab === 'disponiveis' && (
+            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: 'var(--primary)' }} />
+          )}
+        </button>
+        <button
+          onClick={() => setActiveTab('minhas')}
+          style={{
+            background: 'none',
+            border: 'none',
+            paddingBottom: '12px',
+            color: activeTab === 'minhas' ? 'var(--primary)' : 'rgba(255,255,255,0.5)',
+            fontSize: '1rem',
+            fontWeight: 700,
+            cursor: 'pointer',
+            position: 'relative',
+            transition: 'color 0.2s'
+          }}
+        >
+          Minhas Formações
+          {activeTab === 'minhas' && (
+            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: 'var(--primary)' }} />
+          )}
+        </button>
+      </div>
+
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {courses.map((course) => {
-          const enrollment = getEnrollment(course.title);
-          const status = enrollment ? enrollment.status : 'none';
-          return (
-            <div key={course.id} className="glass" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid rgba(255,255,255,0.05)', flexWrap: 'wrap', gap: '1.5rem' }}>
-              <div>
-                <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 700 }}>Curso Certificado</span>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 800, color: course.isPaid ? 'var(--secondary)' : '#2ecc71', background: course.isPaid ? 'rgba(42,79,166,0.1)' : 'rgba(46,204,113,0.1)', padding: '2px 8px', borderRadius: '10px' }}>
-                    {course.price}
-                  </span>
-                </div>
-                <h3 style={{ color: '#fff', margin: '6px 0 8px 0', fontSize: '1.25rem', fontFamily: 'Outfit' }}>{course.title}</h3>
-                <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>
-                  <span>👨‍🏫 {course.instructor}</span>
-                  <span>⏱️ {course.duration}</span>
-                  <span>📚 {course.lessons} Aulas</span>
-                </div>
+        {(() => {
+          const displayCourses = courses.filter((course) => {
+            const enrollment = getEnrollment(course.title);
+            if (activeTab === 'disponiveis') {
+              return !enrollment;
+            } else {
+              return !!enrollment;
+            }
+          });
+
+          if (displayCourses.length === 0) {
+            return (
+              <div className="glass" style={{ padding: '3rem', borderRadius: '20px', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic' }}>
+                {activeTab === 'disponiveis' 
+                  ? 'De momento não existem novas formações disponíveis.' 
+                  : 'Ainda não se inscreveu em nenhuma formação. Explore as formações disponíveis para começar!'}
               </div>
+            );
+          }
 
-              {/* Status Action buttons */}
-              <div>
-                {status === 'aprovado' && (
-                  <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                    {course.videoUrl && course.videoVisible !== false && (
-                      <button
-                        className="btn-primary"
-                        style={{ padding: '8px 16px', fontSize: '0.85rem', background: 'linear-gradient(135deg, #e74c3c, #c0392b)' }}
-                        onClick={() => {
-                          setVideoModalUrl(course.videoUrl);
-                          setShowVideoModal(true);
-                        }}
-                      >
-                        🎥 Assistir Aulas
-                      </button>
-                    )}
+          return displayCourses.map((course) => {
+            const enrollment = getEnrollment(course.title);
+            const status = enrollment ? enrollment.status : 'none';
+            return (
+              <div key={course.id} className="glass" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid rgba(255,255,255,0.05)', flexWrap: 'wrap', gap: '1.5rem' }}>
+                <div>
+                  <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 700 }}>Curso Certificado</span>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 800, color: course.isPaid ? 'var(--secondary)' : '#2ecc71', background: course.isPaid ? 'rgba(42,79,166,0.1)' : 'rgba(46,204,113,0.1)', padding: '2px 8px', borderRadius: '10px' }}>
+                      {course.price}
+                    </span>
+                  </div>
+                  <h3 style={{ color: '#fff', margin: '6px 0 8px 0', fontSize: '1.25rem', fontFamily: 'Outfit' }}>{course.title}</h3>
+                  <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>
+                    <span>👨‍🏫 {course.instructor}</span>
+                    <span>⏱️ {course.duration}</span>
+                    <span>📚 {course.lessons} Aulas</span>
+                  </div>
+                </div>
 
-                    {!enrollment.completed ? (
-                      <>
-                        <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(46,204,113,0.15)', color: '#2ecc71', border: '1px solid #2ecc71', padding: '8px 20px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
-                          ✅ Inscrito
-                        </span>
+                {/* Status Action buttons */}
+                <div>
+                  {status === 'aprovado' && (
+                    <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                      {course.videoUrl && course.videoVisible !== false && (
                         <button
                           className="btn-primary"
-                          style={{ padding: '8px 16px', fontSize: '0.85rem', background: 'var(--primary)' }}
-                          disabled={processingId === enrollment._id}
-                          onClick={() => handleUpdateProgress(enrollment._id, { completed: true })}
+                          style={{ padding: '8px 16px', fontSize: '0.85rem', background: 'linear-gradient(135deg, #e74c3c, #c0392b)' }}
+                          onClick={() => {
+                            setVideoModalUrl(course.videoUrl);
+                            setShowVideoModal(true);
+                          }}
                         >
-                          {processingId === enrollment._id ? 'A processar...' : '✔️ Concluir Curso'}
+                          🎥 Assistir Aulas
                         </button>
-                      </>
-                    ) : (
-                      <>
-                        <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(255,107,0,0.15)', color: 'var(--primary)', border: '1px solid var(--primary)', padding: '8px 20px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
-                          🎉 Concluído
-                        </span>
+                      )}
 
-                        {!enrollment.certificateRequested ? (
+                      {!enrollment.completed ? (
+                        <>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(46,204,113,0.15)', color: '#2ecc71', border: '1px solid #2ecc71', padding: '8px 20px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
+                            ✅ Inscrito
+                          </span>
                           <button
                             className="btn-primary"
-                            style={{ padding: '8px 16px', fontSize: '0.85rem', background: '#27ae60' }}
+                            style={{ padding: '8px 16px', fontSize: '0.85rem', background: 'var(--primary)' }}
                             disabled={processingId === enrollment._id}
-                            onClick={() => handleUpdateProgress(enrollment._id, { certificateRequested: true })}
+                            onClick={() => handleUpdateProgress(enrollment._id, { completed: true })}
                           >
-                            {processingId === enrollment._id ? 'A processar...' : '🎓 Solicitar Certificado'}
+                            {processingId === enrollment._id ? 'A processar...' : '✔️ Concluir Curso'}
                           </button>
-                        ) : (
-                          <button
-                            className="btn-primary"
-                            style={{ padding: '8px 16px', fontSize: '0.85rem', background: '#2980b9' }}
-                            onClick={() => {
-                              setSelectedCourse(course);
-                              setShowCert(true);
-                            }}
-                          >
-                            🎓 Ver Certificado
-                          </button>
-                        )}
-                      </>
-                    )}
-                  </div>
-                )}
-                {status === 'pendente' && (
-                  <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(241,196,15,0.15)', color: '#f1c40f', border: '1px solid #f1c40f', padding: '8px 20px', borderRadius: '40px' }}>
-                    ⏳ Pagamento em Verificação
-                  </span>
-                )}
-                {status === 'rejeitado' && (
-                  <button
-                    className="btn-primary"
-                    style={{ background: '#e74c3c' }}
-                    onClick={() => {
-                      setSelectedCourse(course);
-                      setShowModal(true);
-                    }}
-                  >
-                    ❌ Rejeitado - Reenviar
-                  </button>
-                )}
-                {status === 'none' && (
-                  <button
-                    className="btn-primary"
-                    onClick={() => {
-                      if (course.isPaid) {
+                        </>
+                      ) : (
+                        <>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(255,107,0,0.15)', color: 'var(--primary)', border: '1px solid var(--primary)', padding: '8px 20px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
+                            🎉 Concluído
+                          </span>
+
+                          {!enrollment.certificateRequested ? (
+                            <button
+                              className="btn-primary"
+                              style={{ padding: '8px 16px', fontSize: '0.85rem', background: '#27ae60' }}
+                              disabled={processingId === enrollment._id}
+                              onClick={() => handleUpdateProgress(enrollment._id, { certificateRequested: true })}
+                            >
+                              {processingId === enrollment._id ? 'A processar...' : '🎓 Solicitar Certificado'}
+                            </button>
+                          ) : (
+                            <button
+                              className="btn-primary"
+                              style={{ padding: '8px 16px', fontSize: '0.85rem', background: '#2980b9' }}
+                              onClick={() => {
+                                setSelectedCourse(course);
+                                setShowCert(true);
+                              }}
+                            >
+                              🎓 Ver Certificado
+                            </button>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  )}
+                  {status === 'pendente' && (
+                    <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(241,196,15,0.15)', color: '#f1c40f', border: '1px solid #f1c40f', padding: '8px 20px', borderRadius: '40px' }}>
+                      ⏳ Pagamento em Verificação
+                    </span>
+                  )}
+                  {status === 'rejeitado' && (
+                    <button
+                      className="btn-primary"
+                      style={{ background: '#e74c3c' }}
+                      onClick={() => {
                         setSelectedCourse(course);
                         setShowModal(true);
-                      } else {
-                        handleEnrollFree(course);
-                      }
-                    }}
-                  >
-                    {course.isPaid ? 'Comprar e Inscrever' : 'Inscrever Grátis'}
-                  </button>
-                )}
+                      }}
+                    >
+                      ❌ Rejeitado - Reenviar
+                    </button>
+                  )}
+                  {status === 'none' && (
+                    <button
+                      className="btn-primary"
+                      onClick={() => {
+                        if (course.isPaid) {
+                          setSelectedCourse(course);
+                          setShowModal(true);
+                        } else {
+                          handleEnrollFree(course);
+                        }
+                      }}
+                    >
+                      {course.isPaid ? 'Comprar e Inscrever' : 'Inscrever Grátis'}
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          });
+        })()}
       </div>
 
       {/* Video Player Modal */}
