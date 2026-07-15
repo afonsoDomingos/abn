@@ -152,6 +152,10 @@ export default function AdminCursosPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (currentStep < 4) {
+      setCurrentStep(prev => prev + 1);
+      return;
+    }
     setSaving(true);
 
     const payload = {
