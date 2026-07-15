@@ -10,6 +10,8 @@ const PaymentSchema = new mongoose.Schema({
     enum: ['pendente', 'aprovado', 'rejeitado'], 
     default: 'pendente' 
   },
+  completed: { type: Boolean, default: false },
+  certificateRequested: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now }
 });
 

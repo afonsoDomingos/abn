@@ -88,22 +88,46 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: false, error: 'Sessão inválida' }, { status: 401 });
     }
 
-    if (session.role !== 'admin') {
-      return NextResponse.json({ error: 'Acesso negado.' }, { status: 403 });
+    const body = await request.json();
+    const { paymentId, status, completed, certificateRequested } = body;
+
+    if (!paymentId) {
+      return NextResponse.json({ error: 'ID do pagamento é obrigatório.' }, { status: 400 });
     }
 
-    const { paymentId, status } = await request.json();
-
-    if (!paymentId || !status) {
-      return NextResponse.json({ error: 'ID e Estado do pagamento são obrigatórios.' }, { status: 400 });
+    if (status !== undefined) {
+      if (session.role !== 'admin') {
+        const checkPayment = await Payment.findById(paymentId);
+        if (checkPayment && checkPayment.price === 'Gratuito' && checkPayment.user.toString() === session.id && status === 'aprovado') {
+          // Allowed for free course auto-approval
+        } else {
+          return NextResponse.json({ error: 'Acesso negado.' }, { status: 403 });
+        }
+      }
+      const payment = await Payment.findByIdAndUpdate(paymentId, { status }, { new: true });
+      if (!payment) {
+        return NextResponse.json({ error: 'Pagamento não encontrado.' }, { status: 404 });
+      }
+      return NextResponse.json({ success: true, payment });
     }
 
-    const payment = await Payment.findByIdAndUpdate(paymentId, { status }, { new: true });
+    // Progress updates (completed, certificateRequested)
+    const payment = await Payment.findById(paymentId);
     if (!payment) {
       return NextResponse.json({ error: 'Pagamento não encontrado.' }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, payment });
+    // Verify ownership or admin role
+    if (payment.user.toString() !== session.id && session.role !== 'admin') {
+      return NextResponse.json({ error: 'Acesso negado.' }, { status: 403 });
+    }
+
+    const updates: any = {};
+    if (completed !== undefined) updates.completed = completed;
+    if (certificateRequested !== undefined) updates.certificateRequested = certificateRequested;
+
+    const updatedPayment = await Payment.findByIdAndUpdate(paymentId, updates, { new: true });
+    return NextResponse.json({ success: true, payment: updatedPayment });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

@@ -30,6 +30,8 @@ export default function FormacaoPage() {
   const [msg, setMsg] = useState({ type: '', text: '' });
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [videoModalUrl, setVideoModalUrl] = useState('');
+  const [processingId, setProcessingId] = useState<string | null>(null);
+
 
   useEffect(() => {
     fetchEnrollments();
@@ -156,11 +158,29 @@ export default function FormacaoPage() {
     }
   };
 
-  // Helper to check current course enrollment status
-  const getEnrollmentStatus = (courseTitle: string) => {
-    const match = payments.find(p => p.itemName === courseTitle);
-    if (!match) return 'none';
-    return match.status; // 'pendente', 'aprovado', 'rejeitado'
+  const handleUpdateProgress = async (paymentId: string, updates: { completed?: boolean; certificateRequested?: boolean }) => {
+    setProcessingId(paymentId);
+    try {
+      const res = await fetch('/api/payments', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentId, ...updates })
+      });
+      const data = await res.json();
+      if (data.success) {
+        await fetchEnrollments();
+      } else {
+        alert(data.error || 'Erro ao atualizar o progresso.');
+      }
+    } catch (e) {
+      alert('Erro ao ligar ao servidor para atualizar o progresso.');
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  const getEnrollment = (courseTitle: string) => {
+    return payments.find(p => p.itemName === courseTitle);
   };
 
   if (loading) return <div style={{ padding: '3rem', color: '#fff' }}>A carregar academia...</div>;
@@ -187,7 +207,8 @@ export default function FormacaoPage() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {courses.map((course) => {
-          const status = getEnrollmentStatus(course.title);
+          const enrollment = getEnrollment(course.title);
+          const status = enrollment ? enrollment.status : 'none';
           return (
             <div key={course.id} className="glass" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid rgba(255,255,255,0.05)', flexWrap: 'wrap', gap: '1.5rem' }}>
               <div>
@@ -208,10 +229,7 @@ export default function FormacaoPage() {
               {/* Status Action buttons */}
               <div>
                 {status === 'aprovado' && (
-                  <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(46,204,113,0.15)', color: '#2ecc71', border: '1px solid #2ecc71', padding: '8px 20px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
-                      ✅ Inscrito
-                    </span>
+                  <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
                     {course.videoUrl && course.videoVisible !== false && (
                       <button
                         className="btn-primary"
@@ -224,16 +242,50 @@ export default function FormacaoPage() {
                         🎥 Assistir Aulas
                       </button>
                     )}
-                    <button
-                      className="btn-primary"
-                      style={{ padding: '8px 16px', fontSize: '0.85rem' }}
-                      onClick={() => {
-                        setSelectedCourse(course);
-                        setShowCert(true);
-                      }}
-                    >
-                      🎓 Certificado
-                    </button>
+
+                    {!enrollment.completed ? (
+                      <>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(46,204,113,0.15)', color: '#2ecc71', border: '1px solid #2ecc71', padding: '8px 20px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
+                          ✅ Inscrito
+                        </span>
+                        <button
+                          className="btn-primary"
+                          style={{ padding: '8px 16px', fontSize: '0.85rem', background: 'var(--primary)' }}
+                          disabled={processingId === enrollment._id}
+                          onClick={() => handleUpdateProgress(enrollment._id, { completed: true })}
+                        >
+                          {processingId === enrollment._id ? 'A processar...' : '✔️ Concluir Curso'}
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(255,107,0,0.15)', color: 'var(--primary)', border: '1px solid var(--primary)', padding: '8px 20px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
+                          🎉 Concluído
+                        </span>
+
+                        {!enrollment.certificateRequested ? (
+                          <button
+                            className="btn-primary"
+                            style={{ padding: '8px 16px', fontSize: '0.85rem', background: '#27ae60' }}
+                            disabled={processingId === enrollment._id}
+                            onClick={() => handleUpdateProgress(enrollment._id, { certificateRequested: true })}
+                          >
+                            {processingId === enrollment._id ? 'A processar...' : '🎓 Solicitar Certificado'}
+                          </button>
+                        ) : (
+                          <button
+                            className="btn-primary"
+                            style={{ padding: '8px 16px', fontSize: '0.85rem', background: '#2980b9' }}
+                            onClick={() => {
+                              setSelectedCourse(course);
+                              setShowCert(true);
+                            }}
+                          >
+                            🎓 Ver Certificado
+                          </button>
+                        )}
+                      </>
+                    )}
                   </div>
                 )}
                 {status === 'pendente' && (
