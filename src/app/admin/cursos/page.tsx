@@ -448,9 +448,9 @@ export default function AdminCursosPage() {
                     onClick={() => setCurrentStep(prev => prev - 1)}
                     style={{ 
                       padding: '12px 24px', 
-                      background: 'rgba(255,255,255,0.05)', 
-                      border: '1px solid rgba(255,255,255,0.1)', 
-                      color: '#fff', 
+                      background: 'rgba(0, 0, 0, 0.05)', 
+                      border: '1px solid rgba(0, 0, 0, 0.1)', 
+                      color: '#1c1917', 
                       borderRadius: '8px', 
                       cursor: 'pointer', 
                       fontWeight: 600,
