@@ -51,10 +51,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Sessão inválida' }, { status: 401 });
     }
 
-    const { itemName, price, proofUrl } = await request.json();
+    const { itemName, price, proofUrl, phone, company } = await request.json();
 
     if (!itemName || !price || !proofUrl) {
       return NextResponse.json({ error: 'Ficheiro de comprovativo e detalhes do curso são obrigatórios.' }, { status: 400 });
+    }
+
+    // Check if enrollment already exists
+    const existingPayment = await Payment.findOne({
+      user: session.id,
+      itemName: { $regex: new RegExp(`^${itemName.trim()}$`, 'i') },
+      status: { $in: ['pendente', 'aprovado'] }
+    });
+
+    if (existingPayment) {
+      return NextResponse.json({ error: 'Já se encontra inscrito ou a aguardar validação para este curso.' }, { status: 400 });
     }
 
     const payment = await Payment.create({
@@ -62,6 +73,8 @@ export async function POST(request: Request) {
       itemName,
       price,
       proofUrl,
+      phone: phone || '',
+      company: company || '',
       status: 'pendente'
     });
 

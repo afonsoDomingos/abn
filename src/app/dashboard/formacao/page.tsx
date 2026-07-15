@@ -409,6 +409,11 @@ export default function FormacaoPage() {
                         className="btn-primary"
                         style={{ borderRadius: '8px' }}
                         onClick={() => {
+                          const enrollment = getEnrollment(course.title);
+                          if (enrollment && (enrollment.status === 'aprovado' || enrollment.status === 'pendente')) {
+                            setMsg({ type: 'error', text: `Já se encontra inscrito ou a aguardar validação para o curso "${course.title}".` });
+                            return;
+                          }
                           setCourseToEnroll(course);
                           setShowEnrollConfirmModal(true);
                         }}
