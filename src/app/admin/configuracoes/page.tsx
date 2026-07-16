@@ -50,7 +50,9 @@ export default function AdminConfigPage() {
     eventos: '/articles/gala.png',
     noticias: '/articles/ambassador-day.png',
     galeria: '/partners_hero.png',
-    oportunidades: '/articles/nilza.png'
+    oportunidades: '/articles/nilza.png',
+    equipa: '/abn-cover.jpg',
+    parceiros: '/partners_hero.png'
   });
   
   const [loading, setLoading] = useState(true);
@@ -958,7 +960,9 @@ export default function AdminConfigPage() {
               { id: 'eventos', label: 'Página de Eventos' },
               { id: 'noticias', label: 'Página de Notícias' },
               { id: 'galeria', label: 'Página de Galeria' },
-              { id: 'oportunidades', label: 'Página de Oportunidades' }
+              { id: 'oportunidades', label: 'Página de Oportunidades' },
+              { id: 'equipa', label: 'Página de Equipa' },
+              { id: 'parceiros', label: 'Página de Parceiros' }
             ].map(page => (
               <div key={page.id} className={styles.field} style={{ marginBottom: '1.25rem' }}>
                 <label>{page.label}</label>

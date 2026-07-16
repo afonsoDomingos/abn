@@ -58,6 +58,7 @@ export default function Parceiros() {
 
   const [partnersList, setPartnersList] = useState<any[]>(partnersLogos);
   const [supportedCompaniesList, setSupportedCompaniesList] = useState<any[]>(defaultSupportedCompanies);
+  const [bannerUrl, setBannerUrl] = useState('/partners_hero.png');
 
   useEffect(() => {
     fetch('/api/config')
@@ -69,6 +70,9 @@ export default function Parceiros() {
           }
           if (data.configs.supported_companies) {
             setSupportedCompaniesList(data.configs.supported_companies);
+          }
+          if (data.configs.page_banners && data.configs.page_banners.parceiros) {
+            setBannerUrl(data.configs.page_banners.parceiros);
           }
         }
       });
@@ -422,7 +426,7 @@ ${formData.msg}`;
       {/* Hero Header */}
       <section 
         className={styles.hero} 
-        style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('/partners_hero.png')` }}
+        style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('${bannerUrl}')` }}
       >
         <div className={styles.heroContainer}>
           <div className={styles.heroBadge}>{currentContent.badge}</div>

@@ -71,13 +71,21 @@ export default function TeamPage() {
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedBio, setExpandedBio] = useState<number | null>(null);
+  const [bannerUrl, setBannerUrl] = useState('/abn-cover.jpg');
 
   useEffect(() => {
     fetch('/api/config')
       .then(res => res.json())
       .then(data => {
-        if (data.configs?.team_content && data.configs.team_content.length > 0) {
-          setTeam(data.configs.team_content);
+        if (data.configs) {
+          if (data.configs.team_content && data.configs.team_content.length > 0) {
+            setTeam(data.configs.team_content);
+          } else {
+            setTeam(DEFAULT_TEAM);
+          }
+          if (data.configs.page_banners && data.configs.page_banners.equipa) {
+            setBannerUrl(data.configs.page_banners.equipa);
+          }
         } else {
           setTeam(DEFAULT_TEAM);
         }
@@ -93,7 +101,7 @@ export default function TeamPage() {
     <>
       <Navbar />
       <main className={styles.main}>
-        <div className={styles.hero}>
+        <div className={styles.hero} style={{ backgroundImage: `url('${bannerUrl}')` }}>
           <div className={styles.heroOverlay} />
           <div className={styles.heroContent}>
             <span className={styles.heroBadge}>A Nossa Equipa</span>
