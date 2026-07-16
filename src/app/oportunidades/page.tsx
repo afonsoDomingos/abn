@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import dbConnect from '@/lib/mongodb';
 import Opportunity from '@/models/Opportunity';
+import Config from '@/models/Config';
 import OportunidadesClient from './OportunidadesClient';
 import styles from './OportunidadesPublic.module.css';
 
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
 export default async function PublicOportunidadesPage() {
   await dbConnect();
   
+  const bannerConfig = await Config.findOne({ key: 'page_banners' }).lean();
+  const bannerUrl = bannerConfig?.value?.oportunidades || '/articles/nilza.png';
+
   const rawOpportunities = await Opportunity.find({}).sort({ deadline: 1 }).lean();
 
   const serializedOpportunities = rawOpportunities.map((opp: any) => ({
@@ -33,7 +37,7 @@ export default async function PublicOportunidadesPage() {
     <main className={styles.oportunidadesPage}>
       <Navbar />
 
-      <header className={styles.hero}>
+      <header className={styles.hero} style={{ backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(10, 10, 10, 0.95) 100%), url('${bannerUrl}')` }}>
         <div className={styles.container}>
           <h1 className="text-gradient-gold">Oportunidades de Crescimento</h1>
           <p>

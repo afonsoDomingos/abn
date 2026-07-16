@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import dbConnect from '@/lib/mongodb';
 import Event from '@/models/Event';
+import Config from '@/models/Config';
 import EventosClient from './EventosClient';
 import styles from './EventosPublic.module.css';
 
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
 export default async function EventosPage() {
   await dbConnect();
   
+  const bannerConfig = await Config.findOne({ key: 'page_banners' }).lean();
+  const bannerUrl = bannerConfig?.value?.eventos || '/articles/gala.png';
+
   const rawEvents = await Event.find({}).sort({ date: 1, createdAt: 1 }).lean();
 
   // Seeding default events directly in Server Component if DB is empty
@@ -82,7 +86,7 @@ export default async function EventosPage() {
     <main className={styles.eventosPage}>
       <Navbar />
       
-      <header className={styles.hero}>
+      <header className={styles.hero} style={{ backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(10, 10, 10, 0.95) 100%), url('${bannerUrl}')` }}>
         <div className={styles.container}>
           <h1 className="text-gradient-gold">Eventos ABN</h1>
           <p>

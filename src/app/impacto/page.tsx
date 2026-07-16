@@ -16,13 +16,16 @@ export default async function ImpactoPage() {
   await dbConnect();
   
   const configs = await Config.find({
-    key: { $in: ['stats_content', 'reports_content', 'cases_content', 'supported_companies'] }
+    key: { $in: ['stats_content', 'reports_content', 'cases_content', 'supported_companies', 'page_banners'] }
   }).lean();
 
   const configMap: Record<string, any> = {};
   configs.forEach((c: any) => {
     configMap[c.key] = c.value;
   });
+
+  const banners = configMap['page_banners'] || {};
+  const bannerUrl = banners.impacto || '/mission_team.png';
 
   // Fallbacks
   const stats = configMap['stats_content'] || [
@@ -72,7 +75,7 @@ export default async function ImpactoPage() {
     <main className={styles.impactoPage}>
       <Navbar />
       
-      <header className={styles.hero}>
+      <header className={styles.hero} style={{ backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(10, 10, 10, 0.95) 100%), url('${bannerUrl}')` }}>
         <div className={styles.container}>
           <h1 className="text-gradient-gold">Nosso Impacto</h1>
           <p>

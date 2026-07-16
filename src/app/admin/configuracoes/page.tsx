@@ -44,6 +44,14 @@ export default function AdminConfigPage() {
   const [team, setTeam] = useState([
     { name: '', role: '', country: '', linkedin: '', image: '', bio: '' }
   ]);
+  const [pageBanners, setPageBanners] = useState({
+    incubacao: '/hero_entrepreneurs.png',
+    impacto: '/mission_team.png',
+    eventos: '/articles/gala.png',
+    noticias: '/articles/ambassador-day.png',
+    galeria: '/partners_hero.png',
+    oportunidades: '/articles/nilza.png'
+  });
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -66,6 +74,12 @@ export default function AdminConfigPage() {
           if (data.configs.faq_content) setFaq(data.configs.faq_content);
           if (data.configs.articles_content) setArticles(data.configs.articles_content);
           if (data.configs.team_content) setTeam(data.configs.team_content);
+          if (data.configs.page_banners) {
+            setPageBanners(prev => ({
+              ...prev,
+              ...data.configs.page_banners
+            }));
+          }
         }
         setLoading(false);
       });
@@ -928,6 +942,83 @@ export default function AdminConfigPage() {
           
           <button className="btn-primary" onClick={() => saveConfig('articles_content', articles)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Artigos'}
+          </button>
+        </section>
+
+        {/* Page Banners Section Config */}
+        <section className={`glass ${styles.section} ${styles.fullWidth}`}>
+          <h3>Banners das Páginas Públicas</h3>
+          <p style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '1.5rem' }}>
+            Edite a imagem de cabeçalho das páginas principais do portal. Você pode colar uma URL ou fazer upload de uma nova imagem.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+            {[
+              { id: 'incubacao', label: 'Página de Incubação & Aceleração' },
+              { id: 'impacto', label: 'Página de Impacto ABN' },
+              { id: 'eventos', label: 'Página de Eventos' },
+              { id: 'noticias', label: 'Página de Notícias' },
+              { id: 'galeria', label: 'Página de Galeria' },
+              { id: 'oportunidades', label: 'Página de Oportunidades' }
+            ].map(page => (
+              <div key={page.id} className={styles.field} style={{ marginBottom: '1.25rem' }}>
+                <label>{page.label}</label>
+                <div className={styles.logoInputWrapper} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <input
+                    value={(pageBanners as any)[page.id] || ''}
+                    onChange={e => setPageBanners({ ...pageBanners, [page.id]: e.target.value })}
+                    placeholder="/placeholder-banner.png"
+                    style={{ flex: 1 }}
+                  />
+                  <label className={styles.uploadLabel} title="Carregar imagem" style={{ cursor: 'pointer', fontSize: '1.2rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {((pageBanners as any)[page.id] && (pageBanners as any)[page.id].startsWith('⏳')) ? (
+                      <div className={styles.spinnerSmall}></div>
+                    ) : (
+                      '📁'
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        setPageBanners(prev => ({ ...prev, [page.id]: '⏳ Carregando...' }));
+
+                        try {
+                          const res = await fetch('/api/upload', {
+                            method: 'POST',
+                            body: formData
+                          });
+                          const uploadData = await res.json();
+                          if (uploadData.success && uploadData.url) {
+                            setPageBanners(prev => ({ ...prev, [page.id]: uploadData.url }));
+                          } else {
+                            setPageBanners(prev => ({ ...prev, [page.id]: '' }));
+                            alert('Erro no upload: ' + (uploadData.error || 'Erro desconhecido'));
+                          }
+                        } catch (err) {
+                          setPageBanners(prev => ({ ...prev, [page.id]: '' }));
+                          alert('Erro na conexão para upload.');
+                        }
+                      }}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                </div>
+                {/* Visual Preview */}
+                {(pageBanners as any)[page.id] && !(pageBanners as any)[page.id].startsWith('⏳') && (
+                  <div style={{ marginTop: '0.5rem', width: '100%', height: '80px', borderRadius: '10px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <img src={(pageBanners as any)[page.id]} alt="Preview Banner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          <button className="btn-primary" onClick={() => saveConfig('page_banners', pageBanners)} disabled={saving} style={{ marginTop: '1.5rem' }}>
+            {saving ? 'A guardar...' : 'Atualizar Banners das Páginas'}
           </button>
         </section>
       </div>

@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import dbConnect from '@/lib/mongodb';
 import Program from '@/models/Program';
+import Config from '@/models/Config';
 import ProgramsList from './ProgramsList';
 import styles from './Incubacao.module.css';
 
@@ -140,6 +141,10 @@ const mentors = [
 
 export default async function Incubacao() {
   await dbConnect();
+  
+  const bannerConfig = await Config.findOne({ key: 'page_banners' }).lean();
+  const bannerUrl = bannerConfig?.value?.incubacao || '/hero_entrepreneurs.png';
+
   let dbPrograms = await Program.find({}).sort({ order: 1, createdAt: 1 }).lean();
 
   // If database is empty, seed the default programs
@@ -170,7 +175,7 @@ export default async function Incubacao() {
     <main className={styles.incubacaoPage}>
       <Navbar />
       
-      <header className={styles.header}>
+      <header className={styles.header} style={{ backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(10, 10, 10, 0.95) 100%), url('${bannerUrl}')` }}>
         <div className={styles.container}>
           <h1 className="text-gradient-gold">Área de Incubação</h1>
           <p>Transformamos ideias em negócios sustentáveis com impacto real em África.</p>

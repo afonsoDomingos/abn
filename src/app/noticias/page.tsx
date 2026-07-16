@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import dbConnect from '@/lib/mongodb';
 import Post from '@/models/Post';
+import Config from '@/models/Config';
 import NoticiasClient from './NoticiasClient';
 import styles from './NoticiasPublic.module.css';
 
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
 export default async function PublicNoticiasPage() {
   await dbConnect();
   
+  const bannerConfig = await Config.findOne({ key: 'page_banners' }).lean();
+  const bannerUrl = bannerConfig?.value?.noticias || '/articles/ambassador-day.png';
+
   const rawPosts = await Post.find({ section: 'news' }).sort({ date: -1, createdAt: -1 }).lean();
 
   const serializedPosts = rawPosts.map((p: any) => ({
@@ -38,7 +42,7 @@ export default async function PublicNoticiasPage() {
     <main className={styles.noticiasPage}>
       <Navbar />
 
-      <header className={styles.hero}>
+      <header className={styles.hero} style={{ backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(10, 10, 10, 0.95) 100%), url('${bannerUrl}')` }}>
         <div className={styles.container}>
           <h1 className="text-gradient-gold">ABN Notícias & Mídia</h1>
           <p>
