@@ -471,3 +471,18 @@
   color: var(--primary) !important;
   background: var(--alpha-bg-5) !important;
 }
+
+.divider {
+  height: 1px;
+  background: #eaeaea;
+  margin: 0.5rem 0;
+}
+
+.dropdownHeader {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #999;
+  padding: 0.4rem 1.5rem 0.25rem;
+  letter-spacing: 0.06em;
+}

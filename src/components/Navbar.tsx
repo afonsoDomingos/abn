@@ -51,33 +51,46 @@ export default function Navbar() {
             <Link href="/impacto">{t.nav.impact}</Link>
             <Link href="/incubacao">{t.nav.incubator}</Link>
             <Link href="/marketplace">{t.nav.marketplace}</Link>
-            <Link href="/eventos">Eventos</Link>
-            <Link href="/noticias">Notícias</Link>
-            <Link href="/galeria">Galeria</Link>
             <Link href="/oportunidades">Oportunidades</Link>
             
-            {/* Desktop Hubs Dropdown */}
+            {/* Mídia Dropdown */}
             <div className={styles.dropdown}>
               <span className={styles.dropdownTrigger}>
-                {language === 'pt' ? 'Delegações' : language === 'fr' ? 'Délégations' : 'Hubs'} <span className={styles.arrow}>▼</span>
+                Mídia <span className={styles.arrow}>▼</span>
               </span>
               <div className={styles.dropdownMenu}>
+                <Link href="/eventos" onClick={closeMenu}>Eventos</Link>
+                <Link href="/noticias" onClick={closeMenu}>Notícias</Link>
+                <Link href="/galeria" onClick={closeMenu}>Galeria</Link>
+              </div>
+            </div>
+
+            {/* Sobre Nós Dropdown */}
+            <div className={styles.dropdown}>
+              <span className={styles.dropdownTrigger}>
+                Sobre Nós <span className={styles.arrow}>▼</span>
+              </span>
+              <div className={styles.dropdownMenu}>
+                <Link href="/equipa" onClick={closeMenu}>Equipa</Link>
+                <Link href="/parceiros" onClick={closeMenu}>{t.nav.connections}</Link>
+                <div className={styles.divider}></div>
+                <div className={styles.dropdownHeader}>
+                  {language === 'pt' ? 'Delegações' : language === 'fr' ? 'Délégations' : 'Hubs'}
+                </div>
                 {hubs.length === 0 ? (
                   <Link href="/country/quinebissau" onClick={closeMenu}>
-                    Guiné-Bissau
+                    📍 Guiné-Bissau
                   </Link>
                 ) : (
                   hubs.map(hub => (
                     <Link key={hub.slug} href={`/country/${hub.slug}`} onClick={closeMenu}>
-                      {hub.name}
+                      📍 {hub.name}
                     </Link>
                   ))
                 )}
               </div>
             </div>
 
-            <Link href="/parceiros">{t.nav.connections}</Link>
-            <Link href="/equipa">Equipa</Link>
             <Link href="/contacto">Contacto</Link>
           </div>
 
@@ -120,32 +133,34 @@ export default function Navbar() {
           <Link href="/impacto" onClick={closeMenu}>{t.nav.impact}</Link>
           <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
           <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
-          <Link href="/eventos" onClick={closeMenu}>Eventos</Link>
-          <Link href="/noticias" onClick={closeMenu}>Notícias</Link>
-          <Link href="/galeria" onClick={closeMenu}>Galeria</Link>
           <Link href="/oportunidades" onClick={closeMenu}>Oportunidades</Link>
-          <Link href="/parceiros" onClick={closeMenu}>{t.nav.connections}</Link>
+          <Link href="/contacto" onClick={closeMenu}>Contacto</Link>
 
-          {/* Mobile Hubs List */}
+          <div className={styles.drawerSectionTitle}>Mídia</div>
+          <Link href="/eventos" onClick={closeMenu}>📅 Eventos</Link>
+          <Link href="/noticias" onClick={closeMenu}>📰 Notícias</Link>
+          <Link href="/galeria" onClick={closeMenu}>🖼️ Galeria</Link>
+
+          <div className={styles.drawerSectionTitle}>Sobre Nós</div>
+          <Link href="/equipa" onClick={closeMenu}>👥 Equipa</Link>
+          <Link href="/parceiros" onClick={closeMenu}>🤝 Parceiros</Link>
+
           <div className={styles.drawerSectionTitle}>
-            {language === 'pt' ? 'Delegações' : language === 'fr' ? 'Délégations' : 'Hubs'}
+            📍 {language === 'pt' ? 'Delegações' : language === 'fr' ? 'Délégations' : 'Hubs'}
           </div>
           <div className={styles.drawerHubsList}>
             {hubs.length === 0 ? (
               <Link href="/country/quinebissau" onClick={closeMenu} className={styles.drawerHubLink}>
-                📍 Guiné-Bissau
+                Guiné-Bissau
               </Link>
             ) : (
               hubs.map(hub => (
                 <Link key={hub.slug} href={`/country/${hub.slug}`} onClick={closeMenu} className={styles.drawerHubLink}>
-                  📍 {hub.name}
+                  {hub.name}
                 </Link>
               ))
             )}
           </div>
-
-          <Link href="/equipa" onClick={closeMenu}>Equipa</Link>
-          <Link href="/contacto" onClick={closeMenu}>Contacto</Link>
         </nav>
 
         <div className={styles.drawerActions}>
