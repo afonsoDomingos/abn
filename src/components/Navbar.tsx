@@ -63,6 +63,7 @@ export default function Navbar() {
                 <Link href="/noticias" onClick={closeMenu}>Notícias</Link>
                 <Link href="/galeria" onClick={closeMenu}>Galeria</Link>
                 <Link href="/#cursos" onClick={closeMenu}>Cursos</Link>
+                <Link href="/programas" onClick={closeMenu}>Programas</Link>
               </div>
             </div>
 
@@ -142,6 +143,7 @@ export default function Navbar() {
           <Link href="/noticias" onClick={closeMenu}>📰 Notícias</Link>
           <Link href="/galeria" onClick={closeMenu}>🖼️ Galeria</Link>
           <Link href="/#cursos" onClick={closeMenu}>📚 Cursos</Link>
+          <Link href="/programas" onClick={closeMenu}>🚀 Programas</Link>
 
           <div className={styles.drawerSectionTitle}>Sobre Nós</div>
           <Link href="/equipa" onClick={closeMenu}>👥 Equipa</Link>

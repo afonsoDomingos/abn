@@ -28,6 +28,8 @@ export default function Marketplace() {
   const [filter, setFilter] = useState('Todos');
   const [categories, setCategories] = useState<string[]>([]);
 
+  const [bannerUrl, setBannerUrl] = useState('/partners_hero.png');
+
   useEffect(() => {
     fetch('/api/services')
       .then(res => res.json())
@@ -40,6 +42,15 @@ export default function Marketplace() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
+
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs?.page_banners?.marketplace) {
+          setBannerUrl(data.configs.page_banners.marketplace);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const filtered = filter === 'Todos' ? services : services.filter(s => s.category === filter);
@@ -48,7 +59,7 @@ export default function Marketplace() {
     <main className={styles.marketplace}>
       <Navbar />
 
-      <header className={styles.header}>
+      <header className={styles.header} style={{ backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(10, 10, 10, 0.95) 100%), url('${bannerUrl}')` }}>
         <div className={styles.container}>
           <span className={styles.tag}>🛍️ Marketplace</span>
           <h1 className="text-gradient-gold">Serviços para o Seu Negócio</h1>
