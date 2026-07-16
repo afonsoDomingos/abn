@@ -48,9 +48,13 @@ export default function Navbar() {
           </Link>
 
           <div className={styles.links}>
-            <Link href="/#impacto">{t.nav.impact}</Link>
+            <Link href="/impacto">{t.nav.impact}</Link>
             <Link href="/incubacao">{t.nav.incubator}</Link>
             <Link href="/marketplace">{t.nav.marketplace}</Link>
+            <Link href="/eventos">Eventos</Link>
+            <Link href="/noticias">Notícias</Link>
+            <Link href="/galeria">Galeria</Link>
+            <Link href="/oportunidades">Oportunidades</Link>
             
             {/* Desktop Hubs Dropdown */}
             <div className={styles.dropdown}>
@@ -113,9 +117,13 @@ export default function Navbar() {
         </div>
 
         <nav className={styles.drawerNav}>
-          <Link href="/#impacto" onClick={closeMenu}>{t.nav.impact}</Link>
+          <Link href="/impacto" onClick={closeMenu}>{t.nav.impact}</Link>
           <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
           <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
+          <Link href="/eventos" onClick={closeMenu}>Eventos</Link>
+          <Link href="/noticias" onClick={closeMenu}>Notícias</Link>
+          <Link href="/galeria" onClick={closeMenu}>Galeria</Link>
+          <Link href="/oportunidades" onClick={closeMenu}>Oportunidades</Link>
           <Link href="/parceiros" onClick={closeMenu}>{t.nav.connections}</Link>
 
           {/* Mobile Hubs List */}

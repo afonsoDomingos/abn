@@ -25,6 +25,12 @@ export default function AdminLayout({
           <Link href="/admin/usuarios">{t.admin.users}</Link>
            <Link href="/admin/servicos">{t.admin.services}</Link>
           <Link href="/admin/cursos">📚 Cursos</Link>
+          <Link href="/admin/programas">🚀 Programas</Link>
+          <Link href="/admin/impacto">📊 Impacto</Link>
+          <Link href="/admin/eventos">📅 Eventos</Link>
+          <Link href="/admin/noticias">📰 Notícias</Link>
+          <Link href="/admin/galeria">🖼️ Galeria</Link>
+          <Link href="/admin/oportunidades">💼 Oportunidades</Link>
           <Link href="/admin/solicitacoes">📋 Solicitações</Link>
           <Link href="/admin/mensagens">💬 Mensagens</Link>
           <Link href="/admin/comunicacao">📢 Envio de E-mails</Link>
