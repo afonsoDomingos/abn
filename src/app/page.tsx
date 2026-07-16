@@ -3,7 +3,10 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import OurMission from "@/components/OurMission";
+import HomePrograms from "@/components/HomePrograms";
 import Services from "@/components/Services";
+import HomeOpportunities from "@/components/HomeOpportunities";
+import HomeEvents from "@/components/HomeEvents";
 import Articles from "@/components/Articles";
 import Courses from "@/components/Courses";
 import Stats from "@/components/Stats";
@@ -22,9 +25,12 @@ export default function Home() {
         <Navbar />
         <Hero />
         <OurMission />
+        <HomePrograms />
         <Services />
-        <Articles />
+        <HomeOpportunities />
+        <HomeEvents />
         <Courses />
+        <Articles />
         <Stats />
         
         {/* Footer in style of Orange Corners */}
