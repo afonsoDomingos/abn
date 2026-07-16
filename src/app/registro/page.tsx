@@ -1,20 +1,34 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import styles from './Auth.module.css';
+import {
+  User,
+  Mail,
+  Lock,
+  Briefcase,
+  Phone,
+  Globe2,
+  MapPin,
+  Building2,
+  Compass,
+  Link2,
+  FileText,
+  ArrowLeft
+} from 'lucide-react';
+import styles from '../login/Auth.module.css';
 
 const SECTORS = [
-  'Agro-negocio', 'Tecnologia e Software', 'Fintech e Financas', 'Saude e Bem-estar',
-  'Educacao', 'Comercio e Retalho', 'Construcao e Imobiliario', 'Energia e Ambiente',
-  'Transportes e Logistica', 'Turismo e Hotelaria', 'Media e Comunicacao',
-  'Moda e Textil', 'Alimentacao e Bebidas', 'Consultoria e Servicos', 'Outro'
+  'Agro-negócio', 'Tecnologia e Software', 'Fintech e Finanças', 'Saúde e Bem-estar',
+  'Educação', 'Comércio e Retalho', 'Construção e Imobiliário', 'Energia e Ambiente',
+  'Transportes e Logística', 'Turismo e Hotelaria', 'Média e Comunicação',
+  'Moda e Têxtil', 'Alimentação e Bebidas', 'Consultoria e Serviços', 'Outro'
 ];
 
 const COUNTRIES = [
-  'Angola', 'Cabo Verde', 'Guine-Bissau', 'Mocambique', 'Portugal',
-  'Sao Tome e Principe', 'Brasil', 'Franca', 'Espanha', 'Outro'
+  'Angola', 'Cabo Verde', 'Guiné-Bissau', 'Moçambique', 'Portugal',
+  'São Tomé e Príncipe', 'Brasil', 'França', 'Espanha', 'Outro'
 ];
 
 export default function RegisterPage() {
@@ -37,18 +51,34 @@ export default function RegisterPage() {
     e.preventDefault();
     setLoading(true);
     setError('');
+
     if (password.length < 6) {
       setError('A palavra-passe deve ter pelo menos 6 caracteres.');
       setLoading(false);
       return;
     }
+
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, role, phone, country, city, company, sector, linkedin, bio }),
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          role,
+          phone,
+          country,
+          city,
+          company,
+          sector,
+          linkedin,
+          bio
+        }),
       });
+
       const data = await res.json();
+
       if (res.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
         router.push('/dashboard');
@@ -56,155 +86,256 @@ export default function RegisterPage() {
         setError(data.error || 'Erro ao registar');
       }
     } catch (err) {
-      setError('Erro de conexao');
+      setError('Erro de ligação ao servidor.');
     } finally {
       setLoading(false);
     }
   };
 
-  const inp: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.12)',
-    borderRadius: '10px',
-    padding: '11px 14px',
-    color: '#fff',
-    width: '100%',
-    fontSize: '0.9rem',
-    outline: 'none',
-    fontFamily: 'Outfit, sans-serif',
-    boxSizing: 'border-box',
-  };
-
-  const lbl: React.CSSProperties = {
-    fontSize: '0.78rem',
-    fontWeight: 700,
-    color: 'rgba(255,255,255,0.6)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-    marginBottom: '5px',
-    display: 'block',
-  };
-
-  const fg = (label: string, required: boolean, children: React.ReactNode) => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-      <label style={lbl}>
-        {label}{' '}
-        {required
-          ? <span style={{ color: 'var(--primary)' }}>*</span>
-          : <span style={{ color: 'rgba(255,255,255,0.3)', fontWeight: 400, textTransform: 'none' }}>(opcional)</span>}
-      </label>
-      {children}
-    </div>
-  );
-
-  const sectionTitle = (num: string, title: string) => (
-    <p style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 800, letterSpacing: '0.1em', margin: '0 0 1rem 0' }}>
-      {num}. {title}
-    </p>
-  );
-
-  const divider: React.CSSProperties = { borderBottom: '1px solid rgba(255,255,255,0.07)', paddingBottom: '1.2rem', marginBottom: '0.2rem' };
-
   return (
     <div className={styles.authPage}>
-      <div className={styles.authCard} style={{ maxWidth: '560px' }}>
-        <Link href="/" className={styles.backHome}>&#8592; Voltar ao Site</Link>
+      <div className={styles.authCard} style={{ maxWidth: '580px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1.5rem' }}>
+          <Link href="/" className={styles.backHome}>
+            <ArrowLeft size={16} /> Voltar ao Site
+          </Link>
+        </div>
+        
         <div className={styles.header}>
-          <h1 className="text-gradient-gold">Junte-se a Rede</h1>
-          <p>Comece a sua jornada empresarial hoje.</p>
+          <h1 className="text-gradient-gold">Junte-se à Rede</h1>
+          <p>Comece a sua jornada empresarial hoje na ABN.</p>
         </div>
 
         {error && (
-          <div style={{ color: '#ff4d4d', marginBottom: '1rem', fontSize: '0.9rem', background: 'rgba(255,77,77,0.1)', padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(255,77,77,0.2)' }}>
+          <div style={{ color: '#ff4d4d', marginBottom: '1.5rem', fontSize: '0.9rem', background: 'rgba(255,77,77,0.1)', padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(255,77,77,0.2)' }}>
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          
+          {/* 1. DADOS DE ACESSO */}
+          <div className={styles.stepDivider}>
+            <h3 className={styles.sectionTitle}>
+              <span>1.</span> Dados de Acesso
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div className={styles.inputGroup}>
+                <label>Nome Completo *</label>
+                <div className={styles.inputWrapper}>
+                  <input
+                    type="text"
+                    placeholder="O seu nome completo"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    required
+                  />
+                  <User className={styles.inputIcon} size={18} />
+                </div>
+              </div>
 
-          {/* 1. Dados de Acesso */}
-          <div style={divider}>
-            {sectionTitle('1', 'Dados de Acesso')}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {fg('Nome Completo', true, <input style={inp} type="text" placeholder="O seu nome completo" value={name} onChange={e => setName(e.target.value)} required />)}
-              {fg('Email', true, <input style={inp} type="email" placeholder="seu@email.com" value={email} onChange={e => setEmail(e.target.value)} required />)}
-              {fg('Palavra-passe', true, <>
-                <input style={inp} type="password" placeholder="Minimo 6 caracteres" value={password} onChange={e => setPassword(e.target.value)} required />
-                <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)' }}>Minimo 6 caracteres</span>
-              </>)}
+              <div className={styles.inputGroup}>
+                <label>Email *</label>
+                <div className={styles.inputWrapper}>
+                  <input
+                    type="email"
+                    placeholder="seu@email.com"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
+                  />
+                  <Mail className={styles.inputIcon} size={18} />
+                </div>
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label>Palavra-passe *</label>
+                <div className={styles.inputWrapper}>
+                  <input
+                    type="password"
+                    placeholder="Mínimo 6 caracteres"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    required
+                  />
+                  <Lock className={styles.inputIcon} size={18} />
+                </div>
+                <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)', marginTop: '2px' }}>
+                  A palavra-passe deve conter pelo menos 6 caracteres.
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* 2. Tipo de Perfil */}
-          <div style={divider}>
-            {sectionTitle('2', 'Tipo de Perfil')}
-            {fg('Tipo de Conta', true, <>
-              <select style={{ ...inp, cursor: 'pointer' }} value={role} onChange={e => setRole(e.target.value)} required>
-                <option value="empreendedor">Empreendedor / Startup</option>
-                <option value="investidor">Investidor</option>
-              </select>
-              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.1)', padding: '0.8rem 1rem', borderRadius: '8px', fontSize: '0.8rem', color: '#d6d3d1', lineHeight: 1.5 }}>
-                {role === 'investidor'
-                  ? <><span>&#x1F4BC;</span> <strong>Investidor:</strong> Aceda a startups qualificadas, consulte pitch decks e envie propostas de financiamento.</>
-                  : <><span>&#x1F680;</span> <strong>Empreendedor / Startup:</strong> Registe a sua startup, aceda a cursos certificados e solicite apoio ao ABN Hub.</>}
+          {/* 2. TIPO DE PERFIL */}
+          <div className={styles.stepDivider}>
+            <h3 className={styles.sectionTitle}>
+              <span>2.</span> Tipo de Perfil
+            </h3>
+            <div className={styles.inputGroup}>
+              <label>Tipo de Conta *</label>
+              <div className={styles.inputWrapper}>
+                <select
+                  value={role}
+                  onChange={e => setRole(e.target.value)}
+                  required
+                >
+                  <option value="empreendedor">Empreendedor / Startup</option>
+                  <option value="investidor">Investidor</option>
+                </select>
+                <Briefcase className={styles.inputIcon} size={18} />
               </div>
-            </>)}
-          </div>
-
-          {/* 3. Contacto e Localizacao */}
-          <div style={divider}>
-            {sectionTitle('3', 'Contacto e Localizacao')}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                {fg('WhatsApp / Telefone', false, <input style={inp} type="tel" placeholder="+245 96 123 4567" value={phone} onChange={e => setPhone(e.target.value)} />)}
-                {fg('Pais', false,
-                  <select style={{ ...inp, cursor: 'pointer' }} value={country} onChange={e => setCountry(e.target.value)}>
-                    <option value="">Seleccionar pais</option>
-                    {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
+              
+              <div className={styles.infoBox}>
+                {role === 'investidor' ? (
+                  <>
+                    💼 <strong>Investidor:</strong> Aceda a startups qualificadas, consulte pitch decks detalhados e envie propostas de financiamento na nossa plataforma.
+                  </>
+                ) : (
+                  <>
+                    🚀 <strong>Empreendedor / Startup:</strong> Registe a sua startup, aceda a cursos certificados exclusivos e solicite mentorias no ABN Hub.
+                  </>
                 )}
               </div>
-              {fg('Cidade', false, <input style={inp} type="text" placeholder="Ex: Bissau, Maputo, Lisboa..." value={city} onChange={e => setCity(e.target.value)} />)}
             </div>
           </div>
 
-          {/* 4. Perfil Profissional */}
-          <div>
-            {sectionTitle('4', 'Perfil Profissional')}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                {fg(role === 'investidor' ? 'Empresa / Fundo' : 'Empresa / Startup', false,
-                  <input style={inp} type="text" placeholder={role === 'investidor' ? 'Ex: Fundo Africa Growth' : 'Ex: AgriTech Solutions'} value={company} onChange={e => setCompany(e.target.value)} />
-                )}
-                {fg('Sector de Actividade', false,
-                  <select style={{ ...inp, cursor: 'pointer' }} value={sector} onChange={e => setSector(e.target.value)}>
-                    <option value="">Seleccionar sector</option>
-                    {SECTORS.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                )}
+          {/* 3. CONTACTO E LOCALIZAÇÃO */}
+          <div className={styles.stepDivider}>
+            <h3 className={styles.sectionTitle}>
+              <span>3.</span> Contacto e Localização
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div className={styles.grid2}>
+                <div className={styles.inputGroup}>
+                  <label>WhatsApp / Telefone</label>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      type="tel"
+                      placeholder="+245 96 123 4567"
+                      value={phone}
+                      onChange={e => setPhone(e.target.value)}
+                    />
+                    <Phone className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>País</label>
+                  <div className={styles.inputWrapper}>
+                    <select
+                      value={country}
+                      onChange={e => setCountry(e.target.value)}
+                    >
+                      <option value="">Seleccionar país</option>
+                      {COUNTRIES.map(c => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                    <Globe2 className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
               </div>
-              {fg('LinkedIn', false, <input style={inp} type="url" placeholder="https://linkedin.com/in/seuperfil" value={linkedin} onChange={e => setLinkedin(e.target.value)} />)}
-              {fg(role === 'investidor' ? 'O que procura investir / Ticket medio' : 'O que faz / O que procura', false,
-                <textarea
-                  style={{ ...inp, resize: 'vertical', minHeight: '80px', lineHeight: '1.5' } as React.CSSProperties}
-                  placeholder={role === 'investidor'
-                    ? 'Ex: Invisto em startups de Agro-Tech na Africa Lusofona com tickets entre 10k-100k USD...'
-                    : 'Ex: Desenvolvemos uma plataforma de pagamentos para agricultores rurais em Mocambique...'}
-                  value={bio}
-                  onChange={e => setBio(e.target.value)}
-                  rows={3}
-                />
-              )}
+
+              <div className={styles.inputGroup}>
+                <label>Cidade</label>
+                <div className={styles.inputWrapper}>
+                  <input
+                    type="text"
+                    placeholder="Ex: Bissau, Maputo, Lisboa..."
+                    value={city}
+                    onChange={e => setCity(e.target.value)}
+                  />
+                  <MapPin className={styles.inputIcon} size={18} />
+                </div>
+              </div>
             </div>
           </div>
 
-          <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: '0.5rem', padding: '14px' }}>
-            {loading ? 'A criar conta...' : 'Criar Conta Gratuita \u2192'}
+          {/* 4. PERFIL PROFISSIONAL */}
+          <div style={{ marginBottom: '0.5rem' }}>
+            <h3 className={styles.sectionTitle}>
+              <span>4.</span> Perfil Profissional
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div className={styles.grid2}>
+                <div className={styles.inputGroup}>
+                  <label>
+                    {role === 'investidor' ? 'Empresa / Fundo' : 'Empresa / Startup'}
+                  </label>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      type="text"
+                      placeholder={role === 'investidor' ? 'Ex: Fundo Growth' : 'Ex: AgriTech Solutions'}
+                      value={company}
+                      onChange={e => setCompany(e.target.value)}
+                    />
+                    <Building2 className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>Sector de Actividade</label>
+                  <div className={styles.inputWrapper}>
+                    <select
+                      value={sector}
+                      onChange={e => setSector(e.target.value)}
+                    >
+                      <option value="">Seleccionar sector</option>
+                      {SECTORS.map(s => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
+                    <Compass className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label>LinkedIn</label>
+                <div className={styles.inputWrapper}>
+                  <input
+                    type="url"
+                    placeholder="https://linkedin.com/in/seuperfil"
+                    value={linkedin}
+                    onChange={e => setLinkedin(e.target.value)}
+                  />
+                  <Link2 className={styles.inputIcon} size={18} />
+                </div>
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label>
+                  {role === 'investidor' ? 'O que procura investir / Ticket médio' : 'O que faz / O que procura'}
+                </label>
+                <div className={styles.inputWrapper}>
+                  <textarea
+                    placeholder={role === 'investidor'
+                      ? 'Ex: Invisto em startups de Agro-Tech na África Lusófona com tickets entre 10k-100k USD...'
+                      : 'Ex: Desenvolvemos uma plataforma de pagamentos para agricultores rurais em Moçambique...'}
+                    value={bio}
+                    onChange={e => setBio(e.target.value)}
+                    rows={3}
+                    style={{ paddingLeft: '44px' }}
+                  />
+                  <FileText className={styles.inputIcon} size={18} style={{ alignSelf: 'flex-start', marginTop: '12px' }} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={loading}
+            style={{ marginTop: '1rem', padding: '14px 20px', width: '100%', fontSize: '0.95rem' }}
+          >
+            {loading ? 'A criar conta...' : 'Criar Conta Gratuita →'}
           </button>
         </form>
 
         <p className={styles.footerText}>
-          Ja tem uma conta? <Link href="/login" className="text-gradient-gold">Faca login</Link>
+          Já tem uma conta? <Link href="/login" className="text-gradient-gold">Faça login</Link>
         </p>
       </div>
     </div>

@@ -658,14 +658,20 @@ export default function FormacaoPage() {
             <p style={{ color: 'var(--primary)', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Curso: {selectedCourse.title} ({selectedCourse.price})</p>
 
             {/* ABN Bank Account details */}
-            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', padding: '1.2rem', borderRadius: '12px', fontSize: '0.85rem', color: '#e5e5e5', display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.5rem' }}>
-              <strong>🏦 Dados Bancários ABN para Transferência:</strong>
-              <div><strong>Banco:</strong> Banco da África Ocidental (BAO)</div>
-              <div><strong>Conta (NIB):</strong> 0012-9876-0026-NIB-ABN</div>
-              <div><strong>Titular:</strong> AfroBiz Network Lda.</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--primary)', marginTop: '0.3rem' }}>
-                * Por favor, realize a transferência e faça upload do comprovativo abaixo.
-              </div>
+            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', padding: '1.2rem', borderRadius: '12px', fontSize: '0.85rem', color: '#e5e5e5', display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '1.5rem', whiteSpace: 'pre-line', lineHeight: '1.5' }}>
+              {selectedCourse.paymentInstructions ? (
+                selectedCourse.paymentInstructions
+              ) : (
+                <>
+                  <strong>🏦 Dados Bancários ABN para Transferência:</strong>
+                  <strong>Banco:</strong> Banco da África Ocidental (BAO)
+                  <strong>Conta (NIB):</strong> 0012-9876-0026-NIB-ABN
+                  <strong>Titular:</strong> AfroBiz Network Lda.
+                  <span style={{ fontSize: '0.75rem', color: 'var(--primary)', display: 'block', marginTop: '0.3rem' }}>
+                    * Por favor, realize a transferência e faça upload do comprovativo abaixo.
+                  </span>
+                </>
+              )}
             </div>
 
             <form onSubmit={handlePaySubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>

@@ -20,6 +20,7 @@ const CourseSchema = new mongoose.Schema({
   certTextColor: { type: String, default: '#1c1917' },
   certUsePartnerLogos: { type: Boolean, default: false },
   certPartnerLogoUrl: { type: String, default: '' },
+  paymentInstructions: { type: String, default: '' },
   createdAt: { type: Date, default: Date.now }
 });
 

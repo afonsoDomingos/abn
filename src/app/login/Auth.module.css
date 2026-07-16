@@ -3,51 +3,72 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0d0d0d;
+  background: #070708;
   background-image: 
-    radial-gradient(ellipse at 20% 50%, rgba(212, 175, 55, 0.07) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
-  padding: 2rem;
+    radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.8) 0%, #070708 100%);
+  padding: 3rem 1.5rem;
 }
 
 .authCard {
-  max-width: 460px;
+  max-width: 480px;
   width: 100%;
   padding: 3rem;
   border-radius: 24px;
-  text-align: center;
-  background: #141414;
+  background: rgba(20, 20, 22, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.authCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
 }
 
 .backHome {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 0.85rem;
   text-decoration: none;
   margin-bottom: 2rem;
-  transition: color 0.2s;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.2s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .backHome:hover {
-  color: var(--primary, #d4af37);
-  border-color: rgba(212,175,55,0.3);
+  color: #fff;
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.05);
+  transform: translateX(-4px);
 }
 
 .header {
   margin-bottom: 2.5rem;
+  text-align: center;
 }
 
 .header h1 {
   font-size: 2.2rem;
   font-family: 'Outfit', sans-serif;
   margin-bottom: 0.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .header p {
@@ -58,7 +79,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
   text-align: left;
 }
 
@@ -71,56 +92,82 @@
 .inputGroup label {
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--primary, #d4af37);
+  color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
 }
 
-.inputGroup input,
-.inputGroup select {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 13px 16px;
-  border-radius: 10px;
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 14px;
+  color: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.inputWrapper input,
+.inputWrapper select,
+.inputWrapper textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 13px 16px 13px 44px !important;
+  border-radius: 12px;
   color: #fff !important;
   font-family: inherit;
-  font-size: 1rem;
-  transition: border-color 0.2s, background 0.2s;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
   -webkit-text-fill-color: #fff !important;
 }
 
 /* Fix browser autofill overriding our dark styles */
-.inputGroup input:-webkit-autofill,
-.inputGroup input:-webkit-autofill:hover,
-.inputGroup input:-webkit-autofill:focus,
-.inputGroup input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 100px #1a1a1a inset !important;
+.inputWrapper input:-webkit-autofill,
+.inputWrapper input:-webkit-autofill:hover,
+.inputWrapper input:-webkit-autofill:focus,
+.inputWrapper input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 100px #141416 inset !important;
   -webkit-text-fill-color: #fff !important;
-  background-color: #1a1a1a !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
+  background-color: #141416 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
   caret-color: #fff;
 }
 
-.inputGroup select {
+.inputWrapper select {
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
 }
 
-.inputGroup select option {
-  background: #1a1a1a;
+.inputWrapper select option {
+  background: #141416;
   color: #fff;
 }
 
-.inputGroup input:focus,
-.inputGroup select:focus {
+.inputWrapper input:focus,
+.inputWrapper select:focus,
+.inputWrapper textarea:focus {
   outline: none;
-  border-color: var(--primary, #d4af37);
-  background: rgba(212, 175, 55, 0.06) !important;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  border-color: #d4af37;
+  background: rgba(212, 175, 55, 0.04) !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
 }
 
-.inputGroup input::placeholder {
+.inputWrapper input:focus + .inputIcon,
+.inputWrapper select:focus + .inputIcon,
+.inputWrapper textarea:focus + .inputIcon {
+  color: #d4af37;
+}
+
+.inputWrapper input::placeholder,
+.inputWrapper textarea::placeholder {
   color: rgba(255, 255, 255, 0.3);
 }
 
@@ -138,25 +185,89 @@
   gap: 0.5rem;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.5);
+  user-select: none;
+}
+
+.remember input {
+  accent-color: #d4af37;
+  cursor: pointer;
 }
 
 .forgot {
-  color: var(--primary, #d4af37);
-  font-size: 0.85rem;
+  color: #d4af37;
+  font-weight: 500;
+  text-decoration: none;
   transition: opacity 0.2s;
 }
 
 .forgot:hover {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .footerText {
   margin-top: 2rem;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
 }
 
 .footerText a {
   font-weight: 700;
-  color: var(--primary, #d4af37);
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.footerText a:hover {
+  text-decoration: underline;
+}
+
+/* Multi-step Registration styles */
+.sectionTitle {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #d4af37;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin: 0 0 1.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepDivider {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.infoBox {
+  background: rgba(212, 175, 55, 0.03);
+  border: 1px dashed rgba(212, 175, 55, 0.15);
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin-top: 0.75rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .authPage {
+    padding: 1.5rem 1rem;
+  }
+  .authCard {
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+  }
+  .grid2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 }

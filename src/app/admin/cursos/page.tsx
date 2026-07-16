@@ -24,6 +24,7 @@ interface Course {
   certTextColor?: string;
   certUsePartnerLogos?: boolean;
   certPartnerLogoUrl?: string;
+  paymentInstructions?: string;
 }
 
 export default function AdminCursosPage() {
@@ -55,6 +56,9 @@ export default function AdminCursosPage() {
   const [lessonsList, setLessonsList] = useState<Lesson[]>([]);
   const [newLessonTitle, setNewLessonTitle] = useState('');
   const [newLessonUrl, setNewLessonUrl] = useState('');
+  const [paymentInstructions, setPaymentInstructions] = useState(
+    '🏦 Dados Bancários ABN para Transferência:\nBanco: Millennium BIM\nConta (NIB): 0001-0000-0012-3456-1\nTitular: AfroBiz Network Lda.\n\n📱 M-Pesa: 84 123 4567\n\n* Por favor, realize a transferência e faça upload do comprovativo.'
+  );
 
   // Participants list states
   const [showParticipantsModal, setShowParticipantsModal] = useState(false);
@@ -122,6 +126,7 @@ export default function AdminCursosPage() {
     setCertTextColor(course.certTextColor || '#1c1917');
     setCertUsePartnerLogos(course.certUsePartnerLogos === true);
     setCertPartnerLogoUrl(course.certPartnerLogoUrl || '');
+    setPaymentInstructions(course.paymentInstructions || '🏦 Dados Bancários ABN para Transferência:\nBanco: Millennium BIM\nConta (NIB): 0001-0000-0012-3456-1\nTitular: AfroBiz Network Lda.\n\n📱 M-Pesa: 84 123 4567\n\n* Por favor, realize a transferência e faça upload do comprovativo.');
     setNewLessonTitle('');
     setNewLessonUrl('');
     setCurrentStep(1);
@@ -150,8 +155,8 @@ export default function AdminCursosPage() {
     setShowForm(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (currentStep < 4) {
       setCurrentStep(prev => prev + 1);
       return;
@@ -173,7 +178,8 @@ export default function AdminCursosPage() {
       certBgColor,
       certTextColor,
       certUsePartnerLogos,
-      certPartnerLogoUrl
+      certPartnerLogoUrl,
+      paymentInstructions
     };
 
     const url = '/api/courses';
@@ -465,6 +471,22 @@ export default function AdminCursosPage() {
                         <label htmlFor="isPaidCheck" style={{ fontSize: '0.75rem', color: '#fff', cursor: 'pointer' }}>Curso Pago</label>
                       </div>
                     </div>
+
+                    {isPaid && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', gridColumn: '1 / -1' }}>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>💳 Instruções de Pagamento (Dados Bancários / M-Pesa)</label>
+                        <textarea
+                          value={paymentInstructions}
+                          onChange={e => setPaymentInstructions(e.target.value)}
+                          rows={6}
+                          placeholder={'🏦 Dados Bancários ABN:\nBanco: ...\nConta: ...\nTitular: ...\n\n📱 M-Pesa: ...'}
+                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff', resize: 'vertical', fontSize: '0.85rem', lineHeight: '1.6' }}
+                        />
+                        <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', margin: 0 }}>
+                          Estas instruções serão exibidas ao aluno quando ele se inscrever no curso pago.
+                        </p>
+                      </div>
+                    )}
                   </>
                 )}
 
@@ -810,17 +832,40 @@ export default function AdminCursosPage() {
                             {p.company || <span style={{ color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>N/A</span>}
                           </td>
                           <td style={{ padding: '12px 8px' }}>
-                            <span style={{ 
-                              fontSize: '0.75rem', 
-                              fontWeight: 700, 
-                              textTransform: 'uppercase',
-                              padding: '2px 6px',
-                              borderRadius: '4px',
-                              background: p.status === 'aprovado' ? 'rgba(46,204,113,0.15)' : p.status === 'pendente' ? 'rgba(241,196,15,0.15)' : 'rgba(231,76,60,0.15)',
-                              color: p.status === 'aprovado' ? '#2ecc71' : p.status === 'pendente' ? '#f1c40f' : '#e74c3c'
-                            }}>
-                              {p.status}
-                            </span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                              <span style={{ 
+                                fontSize: '0.75rem', 
+                                fontWeight: 700, 
+                                textTransform: 'uppercase',
+                                padding: '2px 6px',
+                                borderRadius: '4px',
+                                background: p.status === 'aprovado' ? 'rgba(46,204,113,0.15)' : p.status === 'pendente' ? 'rgba(241,196,15,0.15)' : 'rgba(231,76,60,0.15)',
+                                color: p.status === 'aprovado' ? '#2ecc71' : p.status === 'pendente' ? '#f1c40f' : '#e74c3c'
+                              }}>
+                                {p.status}
+                              </span>
+                              {p.status === 'pendente' && (
+                                <>
+                                  <button
+                                    onClick={async () => {
+                                      await fetch('/api/payments', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ paymentId: p._id, status: 'aprovado' }) });
+                                      setParticipants(prev => prev.map(x => x._id === p._id ? { ...x, status: 'aprovado' } : x));
+                                    }}
+                                    style={{ background: 'rgba(46,204,113,0.15)', border: '1px solid rgba(46,204,113,0.3)', color: '#2ecc71', padding: '2px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 700 }}
+                                  >✓ Aprovar</button>
+                                  <button
+                                    onClick={async () => {
+                                      await fetch('/api/payments', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ paymentId: p._id, status: 'rejeitado' }) });
+                                      setParticipants(prev => prev.map(x => x._id === p._id ? { ...x, status: 'rejeitado' } : x));
+                                    }}
+                                    style={{ background: 'rgba(231,76,60,0.15)', border: '1px solid rgba(231,76,60,0.3)', color: '#e74c3c', padding: '2px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 700 }}
+                                  >✕ Rejeitar</button>
+                                </>
+                              )}
+                              {p.proofUrl && p.proofUrl !== 'gratuito' && (
+                                <a href={p.proofUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.7rem', color: '#3498db', fontWeight: 600 }}>📎 Ver Comprovativo</a>
+                              )}
+                            </div>
                           </td>
                           <td style={{ padding: '12px 8px', color: progressColor, fontWeight: 600 }}>
                             {progressText}

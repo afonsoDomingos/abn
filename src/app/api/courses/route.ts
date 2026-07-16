@@ -72,7 +72,7 @@ export async function POST(request: Request) {
 
     const { 
       title, instructor, duration, lessons, price, isPaid, desc, videoUrl, videoVisible, lessonsList,
-      certBgColor, certTextColor, certUsePartnerLogos, certPartnerLogoUrl
+      certBgColor, certTextColor, certUsePartnerLogos, certPartnerLogoUrl, paymentInstructions
     } = await request.json();
 
     if (!title || !instructor || !duration || !lessons || !price || desc === undefined) {
@@ -93,7 +93,8 @@ export async function POST(request: Request) {
       certBgColor: certBgColor || '#ff6b00',
       certTextColor: certTextColor || '#1c1917',
       certUsePartnerLogos: certUsePartnerLogos === true,
-      certPartnerLogoUrl: certPartnerLogoUrl || ''
+      certPartnerLogoUrl: certPartnerLogoUrl || '',
+      paymentInstructions: paymentInstructions || ''
     });
 
     return NextResponse.json({ success: true, course });
@@ -125,7 +126,7 @@ export async function PUT(request: Request) {
 
     const { 
       id, title, instructor, duration, lessons, price, isPaid, desc, videoUrl, videoVisible, lessonsList,
-      certBgColor, certTextColor, certUsePartnerLogos, certPartnerLogoUrl
+      certBgColor, certTextColor, certUsePartnerLogos, certPartnerLogoUrl, paymentInstructions
     } = await request.json();
 
     if (!id || !title || !instructor || !duration || !lessons || !price || desc === undefined) {
@@ -140,7 +141,8 @@ export async function PUT(request: Request) {
         certBgColor: certBgColor || '#ff6b00',
         certTextColor: certTextColor || '#1c1917',
         certUsePartnerLogos: certUsePartnerLogos === true,
-        certPartnerLogoUrl: certPartnerLogoUrl || ''
+        certPartnerLogoUrl: certPartnerLogoUrl || '',
+        paymentInstructions: paymentInstructions || ''
       },
       { new: true }
     );

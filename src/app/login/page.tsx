@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Mail, Lock, ArrowLeft } from 'lucide-react';
 import styles from './Auth.module.css';
 
 export default function LoginPage() {
@@ -46,9 +47,11 @@ export default function LoginPage() {
   return (
     <div className={styles.authPage}>
       <div className={styles.authCard}>
-        <Link href="/" className={styles.backHome}>
-          ← Voltar ao Site
-        </Link>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1.5rem' }}>
+          <Link href="/" className={styles.backHome}>
+            <ArrowLeft size={16} /> Voltar ao Site
+          </Link>
+        </div>
         <div className={styles.header}>
           <h1 className="text-gradient-gold">Bem-vindo de Volta</h1>
           <p>Entre na sua conta ABN para continuar.</p>
@@ -59,24 +62,30 @@ export default function LoginPage() {
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
             <label>Email</label>
-            <input 
-              type="email" 
-              placeholder="seu@email.com" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required 
-            />
+            <div className={styles.inputWrapper}>
+              <input 
+                type="email" 
+                placeholder="seu@email.com" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required 
+              />
+              <Mail className={styles.inputIcon} size={18} />
+            </div>
           </div>
           
           <div className={styles.inputGroup}>
             <label>Palavra-passe</label>
-            <input 
-              type="password" 
-              placeholder="••••••••" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required 
-            />
+            <div className={styles.inputWrapper}>
+              <input 
+                type="password" 
+                placeholder="••••••••" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required 
+              />
+              <Lock className={styles.inputIcon} size={18} />
+            </div>
           </div>
           
           <div className={styles.options}>
@@ -86,7 +95,7 @@ export default function LoginPage() {
             <Link href="/recuperar" className={styles.forgot}>Esqueceu a senha?</Link>
           </div>
           
-          <button type="submit" className="btn-primary" disabled={loading}>
+          <button type="submit" className="btn-primary" disabled={loading} style={{ padding: '14px', width: '100%' }}>
             {loading ? 'A entrar...' : 'Entrar'}
           </button>
         </form>
