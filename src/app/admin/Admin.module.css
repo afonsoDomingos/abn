@@ -1,122 +1,259 @@
+/* =============================
+   LAYOUT
+   ============================= */
 .adminLayout {
   display: flex;
   min-height: 100vh;
-  background: #050505;
-  color: #fff;
+  background: #f5f6fa;
+  color: #1c1917;
 }
 
+.adminLayoutCollapsed .adminMain {
+  margin-left: 0;
+}
+
+/* =============================
+   SIDEBAR
+   ============================= */
 .sidebar {
   width: 260px;
-  background: #0a0a0a;
-  border-right: 1px solid var(--glass-border);
-  padding: 2rem 1.5rem;
+  min-width: 260px;
+  background: #ffffff;
+  border-right: 1px solid #e8eaf0;
+  padding: 1.5rem 1rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.25s ease, min-width 0.25s ease;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.04);
+  flex-shrink: 0;
 }
 
+.sidebarCollapsed {
+  width: 68px;
+  min-width: 68px;
+}
+
+/* =============================
+   BRAND
+   ============================= */
 .sidebarBrand {
-  font-size: 1.5rem;
-  font-weight: 700;
-  font-family: 'Outfit', sans-serif;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem 1.25rem;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid #f0f0f0;
+  min-height: 52px;
 }
 
+/* =============================
+   COLLAPSE BUTTON
+   ============================= */
+.collapseBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #f4f5f8;
+  border: 1px solid #e8eaf0;
+  color: #64748b;
+  cursor: pointer;
+  margin: 0.75rem auto 0.25rem;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.collapseBtn:hover {
+  background: #e8eaf0;
+  color: #1c1917;
+}
+
+/* =============================
+   NAV
+   ============================= */
 .sidebarNav {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0;
+  flex: 1;
+  margin-top: 0.5rem;
+  overflow: hidden;
 }
 
-.sidebarNav a {
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  transition: all 0.2s;
-  color: rgba(255, 255, 255, 0.6);
+.navGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 0.5rem;
 }
 
-.sidebarNav a:hover, .sidebarNav a.active {
-  background: rgba(212, 175, 55, 0.1);
-  color: var(--primary);
-  border-right: 3px solid var(--primary);
+.navGroupTitle {
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #94a3b8;
+  padding: 0.75rem 0.75rem 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: 'Outfit', sans-serif;
 }
 
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.navLink:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.navLinkActive {
+  background: rgba(212, 175, 55, 0.1) !important;
+  color: #b8860b !important;
+  font-weight: 600;
+  border-left: 3px solid #d4af37;
+}
+
+.navIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+}
+
+.navLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =============================
+   FOOTER (Home + Logout)
+   ============================= */
 .sidebarFooter {
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--glass-border);
+  padding-top: 1rem;
+  border-top: 1px solid #f0f0f0;
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 2px;
 }
 
 .footerLink {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 0.875rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.6);
-  transition: all 0.2s;
+  color: #64748b;
+  transition: all 0.15s ease;
   background: transparent;
   border: none;
   cursor: pointer;
   width: 100%;
   text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .footerLink:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
+  background: #f1f5f9;
+  color: #1e293b;
 }
 
 .logout {
-  color: #ff4d4d !important;
+  color: #ef4444 !important;
 }
 
 .logout:hover {
-  background: rgba(255, 77, 77, 0.1) !important;
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
 }
 
+/* =============================
+   MAIN CONTENT
+   ============================= */
 .adminMain {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .adminHeader {
-  height: 80px;
+  height: 68px;
   padding: 0 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--glass-border);
-  background: #0a0a0a;
+  border-bottom: 1px solid #e8eaf0;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.adminUser {
-  display: flex;
+.headerTitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.mobileToggle {
+  display: none;
   align-items: center;
-  gap: 1rem;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s;
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  background: var(--gradient-gold);
-  border-radius: 50%;
+.mobileToggle:hover {
+  background: #f1f5f9;
+  color: #1e293b;
 }
 
 .adminContent {
   padding: 2rem;
   overflow-y: auto;
-  max-width: 1600px;
-  margin: 0 auto;
-  width: 100%;
+  flex: 1;
 }
 
+/* =============================
+   STAT CARDS (dashboard)
+   ============================= */
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -125,23 +262,27 @@
 }
 
 .statCard {
-  background: #161616;
+  background: #ffffff;
   padding: 1.5rem;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid #e8eaf0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .statCard h4 {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.8rem;
+  color: #94a3b8;
   text-transform: uppercase;
+  letter-spacing: 0.07em;
   margin-bottom: 0.5rem;
+  font-family: 'Outfit', sans-serif;
 }
 
 .statValue {
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--primary);
+  font-family: 'Outfit', sans-serif;
 }
 
 .chartsGrid {
@@ -154,17 +295,19 @@
 .chartCard {
   padding: 2rem;
   border-radius: 20px;
-  background: #161616;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #ffffff;
+  border: 1px solid #e8eaf0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .chartCard h3 {
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin-bottom: 2rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: #1e293b;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
 }
 
-/* Bar Chart */
 .barChart {
   display: flex;
   align-items: flex-end;
@@ -188,10 +331,9 @@
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: #94a3b8;
 }
 
-/* Donut Chart Mockup */
 .donutChartBox {
   display: flex;
   flex-direction: column;
@@ -219,7 +361,7 @@
   transform: translate(-50%, -50%);
   width: 90px;
   height: 90px;
-  background: #161616;
+  background: #ffffff;
   border-radius: 50%;
 }
 
@@ -235,7 +377,7 @@
   align-items: center;
   gap: 0.8rem;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.75);
+  color: #64748b;
 }
 
 .legendItem span {
@@ -244,68 +386,14 @@
   border-radius: 2px;
 }
 
-@media (max-width: 900px) {
-  .adminLayout {
-    flex-direction: column;
-  }
-  
-  .sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--glass-border);
-    padding: 1rem;
-    gap: 1.5rem;
-  }
-  
-  .sidebarNav {
-    flex-direction: row;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-  }
-  
-  .sidebarNav a {
-    white-space: nowrap;
-    padding: 8px 12px;
-  }
-  
-  .sidebarFooter {
-    display: none;
-  }
-
-  .adminHeader {
-    padding: 0 1rem;
-  }
-
-  .adminHeader h2 {
-    font-size: 1.2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .chartsGrid {
-    grid-template-columns: 1fr;
-  }
-  
-  .adminContent {
-    padding: 1rem;
-  }
-  
-  .statsGrid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .statsGrid {
-    grid-template-columns: 1fr;
-  }
-}
-
+/* =============================
+   GLASS SECTIONS (white light)
+   ============================= */
 .adminLayout :global(.glass) {
   background: #ffffff !important;
   color: #1c1917 !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid #e8eaf0 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
 }
 
 .adminLayout :global(.glass) h1,
@@ -328,8 +416,8 @@
 .adminLayout :global(.glass) select,
 .adminLayout :global(.glass) textarea {
   color: #1c1917 !important;
-  background: #f5f5f4 !important;
-  border: 1px solid #d6d3d1 !important;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
 }
 
 .adminLayout :global(.glass) input:focus,
@@ -341,5 +429,53 @@
 
 .adminLayout :global(.glass) input::placeholder,
 .adminLayout :global(.glass) textarea::placeholder {
-  color: #78716c !important;
+  color: #94a3b8 !important;
+}
+
+/* =============================
+   RESPONSIVE
+   ============================= */
+@media (max-width: 900px) {
+  .mobileToggle {
+    display: flex;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    height: 100vh;
+    transform: translateX(0);
+    transition: transform 0.25s ease, width 0.25s ease;
+  }
+
+  .sidebarCollapsed {
+    transform: translateX(-100%);
+    width: 260px;
+  }
+
+  .adminContent {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .chartsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .adminHeader {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
 }

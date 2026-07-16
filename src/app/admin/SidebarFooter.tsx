@@ -6,7 +6,7 @@ import { Home, LogOut } from 'lucide-react';
 import styles from './Admin.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
-export default function SidebarFooter() {
+export default function SidebarFooter({ isCollapsed }: { isCollapsed?: boolean }) {
   const { t } = useLanguage();
   const router = useRouter();
 
@@ -19,13 +19,13 @@ export default function SidebarFooter() {
 
   return (
     <div className={styles.sidebarFooter}>
-      <Link href="/" className={styles.footerLink}>
+      <Link href="/" className={styles.footerLink} title={isCollapsed ? t.admin.goHome : undefined}>
         <Home size={18} />
-        <span>{t.admin.goHome}</span>
+        {!isCollapsed && <span>{t.admin.goHome}</span>}
       </Link>
-      <button onClick={handleLogout} className={`${styles.footerLink} ${styles.logout}`}>
+      <button onClick={handleLogout} className={`${styles.footerLink} ${styles.logout}`} title={isCollapsed ? t.admin.logout : undefined}>
         <LogOut size={18} />
-        <span>{t.admin.logout}</span>
+        {!isCollapsed && <span>{t.admin.logout}</span>}
       </button>
     </div>
   );

@@ -1,48 +1,149 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import SidebarFooter from './SidebarFooter';
 import UserMenu from '@/components/UserMenu';
 import styles from './Admin.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
+import {
+  LayoutDashboard,
+  Users,
+  Briefcase,
+  BookOpen,
+  Rocket,
+  BarChart3,
+  CalendarDays,
+  Newspaper,
+  ImageIcon,
+  Target,
+  ClipboardList,
+  MessageSquare,
+  Mail,
+  CreditCard,
+  Settings,
+  Building2,
+  ChevronLeft,
+  ChevronRight,
+  Menu
+} from 'lucide-react';
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+interface NavItem {
+  href: string;
+  label: string;
+  icon: React.ReactNode;
+}
+
+interface NavGroup {
+  title: string;
+  items: NavItem[];
+}
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { t } = useLanguage();
+  const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(false);
+
+  const navGroups: NavGroup[] = [
+    {
+      title: 'Geral',
+      items: [
+        { href: '/admin', label: t.admin.dashboard, icon: <LayoutDashboard size={18} /> },
+        { href: '/admin/usuarios', label: t.admin.users, icon: <Users size={18} /> },
+        { href: '/admin/servicos', label: t.admin.services, icon: <Briefcase size={18} /> },
+      ]
+    },
+    {
+      title: 'Conteúdo',
+      items: [
+        { href: '/admin/cursos', label: 'Cursos', icon: <BookOpen size={18} /> },
+        { href: '/admin/programas', label: 'Programas', icon: <Rocket size={18} /> },
+        { href: '/admin/impacto', label: 'Impacto', icon: <BarChart3 size={18} /> },
+        { href: '/admin/eventos', label: 'Eventos', icon: <CalendarDays size={18} /> },
+        { href: '/admin/noticias', label: 'Notícias', icon: <Newspaper size={18} /> },
+        { href: '/admin/galeria', label: 'Galeria', icon: <ImageIcon size={18} /> },
+        { href: '/admin/oportunidades', label: 'Oportunidades', icon: <Target size={18} /> },
+      ]
+    },
+    {
+      title: 'Comunicação',
+      items: [
+        { href: '/admin/solicitacoes', label: 'Solicitações', icon: <ClipboardList size={18} /> },
+        { href: '/admin/mensagens', label: 'Mensagens', icon: <MessageSquare size={18} /> },
+        { href: '/admin/comunicacao', label: 'Envio de E-mails', icon: <Mail size={18} /> },
+      ]
+    },
+    {
+      title: 'Sistema',
+      items: [
+        { href: '/admin/pagamentos', label: t.admin.payments, icon: <CreditCard size={18} /> },
+        { href: '/admin/configuracoes', label: t.admin.settings, icon: <Settings size={18} /> },
+        { href: '/admin/hubs', label: 'Delegações', icon: <Building2 size={18} /> },
+      ]
+    }
+  ];
 
   return (
-    <div className={styles.adminLayout}>
-      <aside className={styles.sidebar}>
+    <div className={`${styles.adminLayout} ${collapsed ? styles.adminLayoutCollapsed : ''}`}>
+      {/* Sidebar */}
+      <aside className={`${styles.sidebar} ${collapsed ? styles.sidebarCollapsed : ''}`}>
+        {/* Brand */}
         <div className={styles.sidebarBrand}>
-          <img src="/abn-logo.png" alt="ABN Logo" style={{ height: '40px', marginBottom: '0.5rem', display: 'block' }} />
-          <div style={{ fontSize: '0.8rem', opacity: 0.6 }}>Admin Panel</div>
+          {!collapsed && (
+            <img src="/abn-logo.png" alt="ABN" style={{ height: '36px', display: 'block' }} />
+          )}
+          {collapsed && (
+            <img src="/icon.png" alt="ABN" style={{ height: '32px', display: 'block', margin: '0 auto' }} />
+          )}
         </div>
+
+        {/* Toggle button */}
+        <button
+          className={styles.collapseBtn}
+          onClick={() => setCollapsed(!collapsed)}
+          title={collapsed ? 'Expandir menu' : 'Recolher menu'}
+        >
+          {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
+
+        {/* Navigation */}
         <nav className={styles.sidebarNav}>
-          <Link href="/admin">{t.admin.dashboard}</Link>
-          <Link href="/admin/usuarios">{t.admin.users}</Link>
-           <Link href="/admin/servicos">{t.admin.services}</Link>
-          <Link href="/admin/cursos">📚 Cursos</Link>
-          <Link href="/admin/programas">🚀 Programas</Link>
-          <Link href="/admin/impacto">📊 Impacto</Link>
-          <Link href="/admin/eventos">📅 Eventos</Link>
-          <Link href="/admin/noticias">📰 Notícias</Link>
-          <Link href="/admin/galeria">🖼️ Galeria</Link>
-          <Link href="/admin/oportunidades">💼 Oportunidades</Link>
-          <Link href="/admin/solicitacoes">📋 Solicitações</Link>
-          <Link href="/admin/mensagens">💬 Mensagens</Link>
-          <Link href="/admin/comunicacao">📢 Envio de E-mails</Link>
-          <Link href="/admin/pagamentos">{t.admin.payments}</Link>
-          <Link href="/admin/configuracoes">{t.admin.settings}</Link>
-          <Link href="/admin/hubs">🏢 Delegações</Link>
+          {navGroups.map(group => (
+            <div key={group.title} className={styles.navGroup}>
+              {!collapsed && (
+                <span className={styles.navGroupTitle}>{group.title}</span>
+              )}
+              {group.items.map(item => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
+                    title={collapsed ? item.label : undefined}
+                  >
+                    <span className={styles.navIcon}>{item.icon}</span>
+                    {!collapsed && <span className={styles.navLabel}>{item.label}</span>}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
-        <SidebarFooter />
+
+        <SidebarFooter isCollapsed={collapsed} />
       </aside>
+
+      {/* Main */}
       <main className={styles.adminMain}>
         <header className={styles.adminHeader}>
-          <h2>{t.admin.panel}</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <button className={styles.mobileToggle} onClick={() => setCollapsed(!collapsed)}>
+              <Menu size={20} />
+            </button>
+            <h2 className={styles.headerTitle}>{t.admin.panel}</h2>
+          </div>
           <UserMenu />
         </header>
         <div className={styles.adminContent}>
