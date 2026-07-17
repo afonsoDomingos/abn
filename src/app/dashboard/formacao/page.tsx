@@ -296,11 +296,26 @@ export default function FormacaoPage() {
             return (
               <div key={course.id} className="glass" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid rgba(255,255,255,0.05)', flexWrap: 'wrap', gap: '1.5rem' }}>
                 <div>
-                  <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
                     <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 700 }}>Curso Certificado</span>
                     <span style={{ fontSize: '0.8rem', fontWeight: 800, color: isCoursePaid(course) ? 'var(--secondary)' : '#2ecc71', background: isCoursePaid(course) ? 'rgba(42,79,166,0.1)' : 'rgba(46,204,113,0.1)', padding: '2px 8px', borderRadius: '10px' }}>
                       {course.price}
                     </span>
+                    {status === 'aprovado' && (
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: 'rgba(46,204,113,0.15)', color: '#2ecc71', padding: '2px 8px', borderRadius: '10px', textTransform: 'uppercase' }}>
+                        ✓ Inscrito
+                      </span>
+                    )}
+                    {status === 'pendente' && (
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: 'rgba(241,196,15,0.15)', color: '#f1c40f', padding: '2px 8px', borderRadius: '10px', textTransform: 'uppercase' }}>
+                        ⏳ Pendente
+                      </span>
+                    )}
+                    {status === 'rejeitado' && (
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: 'rgba(231,76,60,0.15)', color: '#e74c3c', padding: '2px 8px', borderRadius: '10px', textTransform: 'uppercase' }}>
+                        ✕ Rejeitado
+                      </span>
+                    )}
                   </div>
                   <h3 style={{ color: '#fff', margin: '6px 0 8px 0', fontSize: '1.25rem', fontFamily: 'Outfit' }}>{course.title}</h3>
                   <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>
