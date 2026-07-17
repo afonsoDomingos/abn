@@ -3,7 +3,21 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { Menu, X, LogOut, Home, User as UserIcon } from 'lucide-react';
+import {
+  LayoutDashboard,
+  User as UserIcon,
+  Rocket,
+  Target,
+  Users,
+  Briefcase,
+  CalendarDays,
+  BookOpen,
+  MessageSquare,
+  Menu,
+  X,
+  LogOut,
+  Home
+} from 'lucide-react';
 import styles from './Dashboard.module.css';
 
 export default function DashboardLayout({
@@ -71,17 +85,44 @@ export default function DashboardLayout({
           </button>
         </div>
         <nav className={styles.sidebarNav}>
-          <Link href="/dashboard" className={isActive('/dashboard') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>Dashboard</Link>
-          <Link href="/dashboard/perfil" className={isActive('/dashboard/perfil') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>Perfil</Link>
-          <Link href="/dashboard/projetos" className={isActive('/dashboard/projetos') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>Projetos</Link>
-          <Link href="/dashboard/oportunidades" className={isActive('/dashboard/oportunidades') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>Oportunidades</Link>
-          <Link href="/dashboard/networking" className={isActive('/dashboard/networking') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>Networking</Link>
-          <Link href="/dashboard/servicos" className={isActive('/dashboard/servicos') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>Serviços</Link>
+          <Link href="/dashboard" className={isActive('/dashboard') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+            <LayoutDashboard size={18} />
+            <span>Dashboard</span>
+          </Link>
+          <Link href="/dashboard/perfil" className={isActive('/dashboard/perfil') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+            <UserIcon size={18} />
+            <span>Perfil</span>
+          </Link>
+          <Link href="/dashboard/projetos" className={isActive('/dashboard/projetos') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+            <Rocket size={18} />
+            <span>Projetos</span>
+          </Link>
+          <Link href="/dashboard/oportunidades" className={isActive('/dashboard/oportunidades') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+            <Target size={18} />
+            <span>Oportunidades</span>
+          </Link>
+          <Link href="/dashboard/networking" className={isActive('/dashboard/networking') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+            <Users size={18} />
+            <span>Networking</span>
+          </Link>
+          <Link href="/dashboard/servicos" className={isActive('/dashboard/servicos') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+            <Briefcase size={18} />
+            <span>Serviços</span>
+          </Link>
           {(user.role === 'investidor' || user.role === 'mentor') && (
-            <Link href="/dashboard/investimentos" className={isActive('/dashboard/investimentos') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>Investimentos</Link>
+            <Link href="/dashboard/investimentos" className={isActive('/dashboard/investimentos') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+              <CalendarDays size={18} />
+              <span>Investimentos</span>
+            </Link>
           )}
-          <Link href="/dashboard/formacao" className={isActive('/dashboard/formacao') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>Formação</Link>
-          <Link href="/dashboard/mensagens" className={isActive('/dashboard/mensagens') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>Mensagens</Link>
+          <Link href="/dashboard/formacao" className={isActive('/dashboard/formacao') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+            <BookOpen size={18} />
+            <span>Formação</span>
+          </Link>
+          <Link href="/dashboard/mensagens" className={isActive('/dashboard/mensagens') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+            <MessageSquare size={18} />
+            <span>Mensagens</span>
+          </Link>
         </nav>
         <div className={styles.sidebarFooter}>
           <Link 

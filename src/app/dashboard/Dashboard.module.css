@@ -39,6 +39,10 @@
   color: rgba(255, 255, 255, 0.6);
   font-weight: 500;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
 }
 
 .sidebarNav a:hover, .sidebarNav a.active {
