@@ -17,6 +17,7 @@ export default function AdminServicosPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingService, setEditingService] = useState<Service | null>(null);
   const [form, setForm] = useState({ name: '', description: '', price: '', category: 'Marketing Digital', status: 'ativo' });
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
@@ -34,20 +35,44 @@ export default function AdminServicosPage() {
       });
   };
 
+  const handleEditClick = (service: Service) => {
+    setEditingService(service);
+    setForm({
+      name: service.name,
+      description: service.description,
+      price: service.price,
+      category: service.category,
+      status: service.status
+    });
+    setShowForm(true);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    const res = await fetch('/api/admin/services', {
-      method: 'POST',
+
+    const isEdit = !!editingService;
+    const url = '/api/admin/services';
+    const method = isEdit ? 'PUT' : 'POST';
+    const body = isEdit ? { ...form, id: editingService._id } : form;
+
+    const res = await fetch(url, {
+      method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify(body),
     });
     const data = await res.json();
     if (data.success) {
-      setServices(prev => [data.service, ...prev]);
+      if (isEdit) {
+        setServices(prev => prev.map(s => s._id === editingService._id ? data.service : s));
+        setMsg('✅ Serviço atualizado com sucesso!');
+      } else {
+        setServices(prev => [data.service, ...prev]);
+        setMsg('✅ Serviço adicionado com sucesso!');
+      }
       setForm({ name: '', description: '', price: '', category: 'Marketing Digital', status: 'ativo' });
+      setEditingService(null);
       setShowForm(false);
-      setMsg('✅ Serviço adicionado com sucesso!');
       setTimeout(() => setMsg(''), 3000);
     }
     setSaving(false);
@@ -76,7 +101,13 @@ export default function AdminServicosPage() {
           <h1 className="text-gradient-gold">Gestão de Serviços</h1>
           <p className={styles.subtitle}>{services.length} serviços no catálogo</p>
         </div>
-        <button className={`btn-primary ${styles.addBtn}`} onClick={() => setShowForm(!showForm)}>
+        <button className={`btn-primary ${styles.addBtn}`} onClick={() => {
+          if (showForm) {
+            setEditingService(null);
+            setForm({ name: '', description: '', price: '', category: 'Marketing Digital', status: 'ativo' });
+          }
+          setShowForm(!showForm);
+        }}>
           {showForm ? '✕ Cancelar' : '+ Novo Serviço'}
         </button>
       </div>
@@ -85,7 +116,7 @@ export default function AdminServicosPage() {
 
       {showForm && (
         <form onSubmit={handleSubmit} className={styles.form}>
-          <h3>Adicionar Novo Serviço</h3>
+          <h3>{editingService ? 'Editar Serviço' : 'Adicionar Novo Serviço'}</h3>
           <div className={styles.formGrid}>
             <div className={styles.field}>
               <label>Nome do Serviço *</label>
@@ -149,7 +180,10 @@ export default function AdminServicosPage() {
               <p className={styles.cardDesc}>{service.description}</p>
               <div className={styles.cardFooter}>
                 <span className={styles.price}>{service.price}</span>
-                <button className={styles.deleteBtn} onClick={() => handleDelete(service._id)}>🗑️ Remover</button>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button className={styles.editBtn} onClick={() => handleEditClick(service)}>✏️ Editar</button>
+                  <button className={styles.deleteBtn} onClick={() => handleDelete(service._id)}>🗑️ Remover</button>
+                </div>
               </div>
             </div>
           ))}

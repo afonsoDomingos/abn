@@ -178,6 +178,22 @@
 
 .deleteBtn:hover { background: rgba(231,76,60,0.2); }
 
+.editBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f5f5f5;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.editBtn:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: var(--primary);
+}
+
 .loading {
   display: flex;
   flex-direction: column;

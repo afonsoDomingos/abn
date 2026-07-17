@@ -35,3 +35,28 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: 'Erro ao remover serviço.' }, { status: 500 });
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    await dbConnect();
+    const { id, name, description, price, category, status } = await request.json();
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID do serviço é obrigatório.' }, { status: 400 });
+    }
+
+    const service = await Service.findByIdAndUpdate(
+      id,
+      { name, description, price, category, status },
+      { new: true }
+    );
+
+    if (!service) {
+      return NextResponse.json({ error: 'Serviço não encontrado.' }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, service });
+  } catch (error: any) {
+    return NextResponse.json({ error: 'Erro ao atualizar serviço.' }, { status: 500 });
+  }
+}

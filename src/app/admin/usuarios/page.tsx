@@ -9,6 +9,7 @@ interface User {
   email: string;
   role: string;
   createdAt: string;
+  password?: string;
 }
 
 const roleLabels: Record<string, { label: string; color: string }> = {
@@ -59,7 +60,8 @@ export default function AdminUsuariosPage() {
         id: editingUser._id,
         name: editingUser.name,
         email: editingUser.email,
-        role: editingUser.role
+        role: editingUser.role,
+        password: editingUser.password
       }),
     });
     
@@ -218,6 +220,16 @@ export default function AdminUsuariosPage() {
                   <option value="mentor">Mentor</option>
                   <option value="admin">Admin</option>
                 </select>
+              </div>
+              <div className={styles.field}>
+                <label>Palavra-passe (deixe em branco para manter a atual)</label>
+                <input 
+                  type="password"
+                  placeholder="Nova palavra-passe (mín. 6 caracteres)"
+                  value={editingUser.password || ''}
+                  onChange={e => setEditingUser({...editingUser, password: e.target.value})}
+                  minLength={6}
+                />
               </div>
               
               <div className={styles.modalActions}>

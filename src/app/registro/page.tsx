@@ -180,8 +180,10 @@ export default function RegisterPage() {
                   onChange={e => setRole(e.target.value)}
                   required
                 >
-                  <option value="empreendedor">Empreendedor / Startup</option>
+                  <option value="empreendedor">Empreendedor</option>
+                  <option value="startup">Startup</option>
                   <option value="investidor">Investidor</option>
+                  <option value="mentor">Mentor</option>
                 </select>
                 <Briefcase className={styles.inputIcon} size={18} />
               </div>
@@ -191,9 +193,17 @@ export default function RegisterPage() {
                   <>
                     💼 <strong>Investidor:</strong> Aceda a startups qualificadas, consulte pitch decks detalhados e envie propostas de financiamento na nossa plataforma.
                   </>
+                ) : role === 'mentor' ? (
+                  <>
+                    🤝 <strong>Mentor:</strong> Ofereça mentoria estratégica e smart money, acompanhe o crescimento de startups e contribua para o ecossistema ABN.
+                  </>
+                ) : role === 'startup' ? (
+                  <>
+                    🏢 <strong>Startup:</strong> Registe o seu negócio, aceda a oportunidades de investimento, cursos certificados exclusivos e aumente o seu ABN Score.
+                  </>
                 ) : (
                   <>
-                    🚀 <strong>Empreendedor / Startup:</strong> Registe a sua startup, aceda a cursos certificados exclusivos e solicite mentorias no ABN Hub.
+                    🚀 <strong>Empreendedor:</strong> Desenvolva as suas ideias, aceda a cursos certificados, candidate-se a programas de incubação e solicite mentorias no ABN Hub.
                   </>
                 )}
               </div>

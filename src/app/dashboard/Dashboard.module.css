@@ -13,6 +13,8 @@
   padding: 2rem;
   position: fixed;
   height: 100vh;
+  transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
 .sidebarBrand {
@@ -145,19 +147,20 @@
 .progressCard {
   padding: 2rem;
   border-radius: 24px;
-  background: #ffffff !important;
-  color: #1c1917 !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
 .progressCard h3 {
   margin-bottom: 1rem;
-  color: #1c1917 !important;
+  color: #ffffff !important;
 }
 
 .progressBar {
   height: 8px;
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 10px;
   margin-bottom: 1rem;
   overflow: hidden;
@@ -189,7 +192,7 @@
   align-items: center;
   gap: 1rem;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.04) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   color: rgba(255, 255, 255, 0.9) !important;
@@ -212,13 +215,14 @@
   border-radius: 20px;
   text-align: center;
   transition: transform 0.2s;
-  background: #ffffff !important;
-  color: #1c1917 !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
 .resourceCard h4 {
-  color: #1c1917 !important;
+  color: #ffffff !important;
   margin-bottom: 0.5rem;
 }
 
@@ -241,10 +245,12 @@
 }
 
 .dashboardLayout :global(.glass) {
-  background: #ffffff !important;
-  color: #1c1917 !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+  color: #ffffff !important;
 }
 
 .dashboardLayout :global(.glass) h1,
@@ -253,32 +259,148 @@
 .dashboardLayout :global(.glass) h4,
 .dashboardLayout :global(.glass) p,
 .dashboardLayout :global(.glass) label {
-  color: #1c1917 !important;
+  color: #ffffff !important;
 }
 
 .dashboardLayout :global(.glass) div,
 .dashboardLayout :global(.glass) span,
 .dashboardLayout :global(.glass) strong,
 .dashboardLayout :global(.glass) li {
-  color: #1c1917;
+  color: #e5e5e5;
 }
 
 .dashboardLayout :global(.glass) input,
 .dashboardLayout :global(.glass) select,
 .dashboardLayout :global(.glass) textarea {
-  color: #1c1917 !important;
-  background: #f5f5f4 !important;
-  border: 1px solid #d6d3d1 !important;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .dashboardLayout :global(.glass) input:focus,
 .dashboardLayout :global(.glass) select:focus,
 .dashboardLayout :global(.glass) textarea:focus {
-  background: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
   border-color: var(--primary) !important;
 }
 
 .dashboardLayout :global(.glass) input::placeholder,
 .dashboardLayout :global(.glass) textarea::placeholder {
-  color: #78716c !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Mobile responsive hamburger menu button in header */
+.mobileToggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile sidebar close button inside drawer */
+.mobileToggleClose {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dropdown Menu styling in header */
+.profileContainer {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.8rem;
+  background: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  min-width: 190px;
+  z-index: 1010;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dropdownItem {
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  text-align: left;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+}
+
+.dropdownItem:hover {
+  background: rgba(255, 107, 0, 0.1);
+  color: var(--primary);
+}
+
+.dropdownItem.logout {
+  color: #ff4d4d;
+}
+
+.dropdownItem.logout:hover {
+  background: rgba(231, 76, 60, 0.1);
+  color: #ff4d4d;
+}
+
+.separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0.4rem 0;
+}
+
+@media (max-width: 1024px) {
+  .mobileToggle {
+    display: flex;
+  }
+  
+  .mobileToggleClose {
+    display: flex;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .mainContent {
+    margin-left: 0;
+  }
+
+  .header {
+    padding: 0 1.5rem;
+  }
+
+  .scrollArea {
+    padding: 1.5rem;
+  }
+
+  .search {
+    display: none; /* Hide search bar on small mobile screens to save space */
+  }
 }

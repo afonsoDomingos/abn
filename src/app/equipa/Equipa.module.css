@@ -8,14 +8,14 @@
 .hero {
   position: relative;
   height: 42vh;
-  min-height: 280px;
+  min-height: 320px;
   background: url('/abn-cover.jpg') center/cover no-repeat;
   background-color: #111;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 2rem;
+  padding: 100px 2rem 40px;
 }
 
 .heroOverlay {

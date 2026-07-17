@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
 
@@ -28,11 +29,16 @@ export async function DELETE(request: Request) {
 export async function PUT(request: Request) {
   try {
     await dbConnect();
-    const { id, name, email, role } = await request.json();
+    const { id, name, email, role, password } = await request.json();
+    
+    const updateData: any = { name, email, role };
+    if (password && password.length >= 6) {
+      updateData.password = await bcrypt.hash(password, 10);
+    }
     
     const user = await User.findByIdAndUpdate(
       id,
-      { name, email, role },
+      updateData,
       { new: true }
     ).select('-password');
 

@@ -50,10 +50,28 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Usuário não encontrado.' }, { status: 404 });
     }
 
-    return NextResponse.json({ 
+    const userData = { 
+      id: String(user._id), 
+      name: user.name, 
+      email: user.email, 
+      role: user.role, 
+      profileImage: user.profileImage 
+    };
+
+    const response = NextResponse.json({ 
       success: true, 
-      user: { id: user._id, name: user.name, email: user.email, role: user.role, profileImage: user.profileImage } 
+      user: userData 
     });
+
+    response.cookies.set('abn_session', encodeURIComponent(JSON.stringify(userData)), {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
+      path: '/',
+    });
+
+    return response;
   } catch (error: any) {
     return NextResponse.json({ error: 'Erro ao atualizar perfil.' }, { status: 500 });
   }

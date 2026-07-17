@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
 
@@ -45,5 +46,52 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('Password reset error:', error);
     return NextResponse.json({ error: 'Erro no servidor.' }, { status: 500 });
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    await dbConnect();
+    const { id, token, password } = await request.json();
+
+    if (!id || !token || !password) {
+      return NextResponse.json({ error: 'Todos os campos são obrigatórios.' }, { status: 400 });
+    }
+
+    if (password.length < 6) {
+      return NextResponse.json({ error: 'A senha deve ter pelo menos 6 caracteres.' }, { status: 400 });
+    }
+
+    const user = await User.findById(id);
+
+    if (!user) {
+      return NextResponse.json({ error: 'Usuário não encontrado.' }, { status: 404 });
+    }
+
+    // Verify token
+    if (user.resetToken !== token) {
+      return NextResponse.json({ error: 'Token inválido ou expirado.' }, { status: 400 });
+    }
+
+    if (user.resetTokenExpiry && new Date() > user.resetTokenExpiry) {
+      return NextResponse.json({ error: 'Token expirado.' }, { status: 400 });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Save and clear reset token fields
+    await User.findByIdAndUpdate(id, {
+      password: hashedPassword,
+      resetToken: null,
+      resetTokenExpiry: null
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: 'Senha redefinida com sucesso!'
+    });
+  } catch (error: any) {
+    console.error('Password reset PUT error:', error);
+    return NextResponse.json({ error: 'Erro no servidor ao redefinir senha.' }, { status: 500 });
   }
 }

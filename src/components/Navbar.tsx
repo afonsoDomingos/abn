@@ -169,7 +169,7 @@ export default function Navbar() {
 
         <div className={styles.drawerActions}>
           <LanguageSelector />
-          <Link href="/login" className={`${styles.login} ${styles.drawerLogin}`} onClick={closeMenu}>
+          <Link href="/login" className={styles.drawerLogin} onClick={closeMenu}>
             {t.nav.login}
           </Link>
           <Link href="/registro" className="btn-primary" onClick={closeMenu} style={{ textAlign: 'center' }}>
