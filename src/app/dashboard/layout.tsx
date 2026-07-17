@@ -16,7 +16,9 @@ import {
   Menu,
   X,
   LogOut,
-  Home
+  Home,
+  ChevronRight,
+  ChevronLeft
 } from 'lucide-react';
 import styles from './Dashboard.module.css';
 
@@ -28,6 +30,7 @@ export default function DashboardLayout({
   const [user, setUser] = useState({ name: 'Empreendedor', profileImage: '', role: 'user' });
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -72,10 +75,14 @@ export default function DashboardLayout({
         />
       )}
 
-      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
+      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''} ${collapsed ? styles.sidebarCollapsed : ''}`}>
         <div className={styles.sidebarBrand} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Link href="/" onClick={() => setSidebarOpen(false)}>
-            <img src="/abn-logo.png" alt="ABN Logo" style={{ height: '50px' }} />
+            {!collapsed ? (
+              <img src="/abn-logo.png" alt="ABN Logo" style={{ height: '50px' }} />
+            ) : (
+              <img src="/icon.png" alt="ABN Logo" style={{ height: '32px', display: 'block', margin: '0 auto' }} />
+            )}
           </Link>
           <button 
             className={styles.mobileToggleClose} 
@@ -84,80 +91,92 @@ export default function DashboardLayout({
             <X size={24} />
           </button>
         </div>
+
+        {/* Botão de Colapso */}
+        <button
+          className={styles.collapseBtn}
+          onClick={() => setCollapsed(!collapsed)}
+          title={collapsed ? 'Expandir menu' : 'Recolher menu'}
+        >
+          {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
+
         <nav className={styles.sidebarNav}>
-          <Link href="/dashboard" className={isActive('/dashboard') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+          <Link href="/dashboard" className={isActive('/dashboard') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Dashboard' : undefined}>
             <LayoutDashboard size={18} />
-            <span>Dashboard</span>
+            {!collapsed && <span>Dashboard</span>}
           </Link>
-          <Link href="/dashboard/perfil" className={isActive('/dashboard/perfil') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+          <Link href="/dashboard/perfil" className={isActive('/dashboard/perfil') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Perfil' : undefined}>
             <UserIcon size={18} />
-            <span>Perfil</span>
+            {!collapsed && <span>Perfil</span>}
           </Link>
-          <Link href="/dashboard/projetos" className={isActive('/dashboard/projetos') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+          <Link href="/dashboard/projetos" className={isActive('/dashboard/projetos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Projetos' : undefined}>
             <Rocket size={18} />
-            <span>Projetos</span>
+            {!collapsed && <span>Projetos</span>}
           </Link>
-          <Link href="/dashboard/oportunidades" className={isActive('/dashboard/oportunidades') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+          <Link href="/dashboard/oportunidades" className={isActive('/dashboard/oportunidades') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Oportunidades' : undefined}>
             <Target size={18} />
-            <span>Oportunidades</span>
+            {!collapsed && <span>Oportunidades</span>}
           </Link>
-          <Link href="/dashboard/networking" className={isActive('/dashboard/networking') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+          <Link href="/dashboard/networking" className={isActive('/dashboard/networking') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Networking' : undefined}>
             <Users size={18} />
-            <span>Networking</span>
+            {!collapsed && <span>Networking</span>}
           </Link>
-          <Link href="/dashboard/servicos" className={isActive('/dashboard/servicos') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+          <Link href="/dashboard/servicos" className={isActive('/dashboard/servicos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Serviços' : undefined}>
             <Briefcase size={18} />
-            <span>Serviços</span>
+            {!collapsed && <span>Serviços</span>}
           </Link>
           {(user.role === 'investidor' || user.role === 'mentor') && (
-            <Link href="/dashboard/investimentos" className={isActive('/dashboard/investimentos') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+            <Link href="/dashboard/investimentos" className={isActive('/dashboard/investimentos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Investimentos' : undefined}>
               <CalendarDays size={18} />
-              <span>Investimentos</span>
+              {!collapsed && <span>Investimentos</span>}
             </Link>
           )}
-          <Link href="/dashboard/formacao" className={isActive('/dashboard/formacao') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+          <Link href="/dashboard/formacao" className={isActive('/dashboard/formacao') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Formação' : undefined}>
             <BookOpen size={18} />
-            <span>Formação</span>
+            {!collapsed && <span>Formação</span>}
           </Link>
-          <Link href="/dashboard/mensagens" className={isActive('/dashboard/mensagens') ? styles.active : ''} onClick={() => setSidebarOpen(false)}>
+          <Link href="/dashboard/mensagens" className={isActive('/dashboard/mensagens') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Mensagens' : undefined}>
             <MessageSquare size={18} />
-            <span>Mensagens</span>
+            {!collapsed && <span>Mensagens</span>}
           </Link>
         </nav>
         <div className={styles.sidebarFooter}>
           <Link 
             href="/" 
+            title={collapsed ? 'Página Inicial' : undefined}
             style={{ 
               display: 'flex', 
               alignItems: 'center', 
+              justifyContent: collapsed ? 'center' : 'flex-start',
               gap: '8px',
-              color: 'rgba(255,255,255,0.5)',
+              color: 'rgba(0,0,0,0.6)',
               fontSize: '0.85rem',
               padding: '10px 16px',
               borderRadius: '10px',
               marginBottom: '0.5rem',
               transition: 'all 0.2s',
               textDecoration: 'none',
-              border: '1px solid rgba(255,255,255,0.08)',
+              border: '1px solid rgba(0,0,0,0.08)',
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.color = '#fff';
-              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)';
+              (e.currentTarget as HTMLElement).style.color = '#000';
+              (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.03)';
             }}
             onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.5)';
+              (e.currentTarget as HTMLElement).style.color = 'rgba(0,0,0,0.6)';
               (e.currentTarget as HTMLElement).style.background = 'transparent';
             }}
           >
-            ← Página Inicial
+            {collapsed ? '🏠' : '← Página Inicial'}
           </Link>
-          <button onClick={handleLogout} className={styles.logout} style={{ background: 'none', border: 'none', textAlign: 'left', width: '100%', cursor: 'pointer' }}>
-            Sair
+          <button onClick={handleLogout} className={styles.logout} style={{ background: 'none', border: 'none', textAlign: collapsed ? 'center' : 'left', width: '100%', cursor: 'pointer' }}>
+            {collapsed ? '🚪' : 'Sair'}
           </button>
         </div>
       </aside>
       
-      <main className={styles.mainContent}>
+      <main className={styles.mainContent} style={{ marginLeft: collapsed ? '68px' : '280px' }}>
         <header className={styles.header}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <button 
