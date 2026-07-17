@@ -11,7 +11,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState({ name: 'Empreendedor', profileImage: '/Perfil05.jpg', role: 'user' });
+  const [user, setUser] = useState({ name: 'Empreendedor', profileImage: '', role: 'user' });
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
@@ -24,7 +24,7 @@ export default function DashboardLayout({
         const parsed = JSON.parse(storedUser);
         setUser({
           name: parsed.name || 'Empreendedor',
-          profileImage: parsed.profileImage || '/Perfil05.jpg',
+          profileImage: parsed.profileImage || '',
           role: parsed.role || 'user'
         });
       } catch (e) {}
@@ -142,11 +142,22 @@ export default function DashboardLayout({
                 }}
                 style={{ cursor: 'pointer' }}
               >
-                <span>{user.name}</span>
-                <div 
-                  className={styles.avatar}
-                  style={{ backgroundImage: `url('${user.profileImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-                ></div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '4px' }}>
+                  <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>{user.name}</span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--primary, #d4af37)', textTransform: 'capitalize', opacity: 0.9, fontWeight: 700 }}>
+                    {user.role}
+                  </span>
+                </div>
+                {user.profileImage ? (
+                  <div 
+                    className={styles.avatar}
+                    style={{ backgroundImage: `url('${user.profileImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                  ></div>
+                ) : (
+                  <div className={styles.avatarInitials}>
+                    {user.name ? user.name.charAt(0).toUpperCase() : 'E'}
+                  </div>
+                )}
               </div>
 
               {dropdownOpen && (

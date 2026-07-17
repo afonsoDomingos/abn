@@ -9,7 +9,7 @@ import { useLanguage } from '@/lib/LanguageContext';
 export default function UserMenu() {
   const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState({ name: 'Administrador', profileImage: '/perfil09.jpg' });
+  const [user, setUser] = useState({ name: 'Administrador', profileImage: '' });
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -19,7 +19,7 @@ export default function UserMenu() {
       const parsed = JSON.parse(storedUser);
       setUser({
         name: parsed.name || 'Administrador',
-        profileImage: parsed.profileImage || '/perfil09.jpg'
+        profileImage: parsed.profileImage || ''
       });
     }
 
@@ -42,11 +42,22 @@ export default function UserMenu() {
   return (
     <div className={styles.userMenuContainer} ref={menuRef}>
       <div className={styles.userInfo} onClick={() => setIsOpen(!isOpen)}>
-        <span className={styles.userName}>{user.name}</span>
-        <div 
-          className={styles.avatar}
-          style={{ backgroundImage: `url('${user.profileImage}')` }}
-        ></div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '4px' }}>
+          <span className={styles.userName}>{user.name}</span>
+          <span style={{ fontSize: '0.7rem', color: 'var(--primary, #d4af37)', opacity: 0.9, fontWeight: 700, textTransform: 'uppercase' }}>
+            Admin
+          </span>
+        </div>
+        {user.profileImage ? (
+          <div 
+            className={styles.avatar}
+            style={{ backgroundImage: `url('${user.profileImage}')` }}
+          ></div>
+        ) : (
+          <div className={styles.avatarInitials}>
+            {user.name ? user.name.charAt(0).toUpperCase() : 'A'}
+          </div>
+        )}
       </div>
 
       {isOpen && (

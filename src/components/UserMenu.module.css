@@ -100,3 +100,19 @@
     display: none;
   }
 }
+
+.avatarInitials {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary, #d4af37);
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  font-family: 'Outfit', sans-serif;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}

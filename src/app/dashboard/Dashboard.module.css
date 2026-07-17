@@ -404,3 +404,18 @@
     display: none; /* Hide search bar on small mobile screens to save space */
   }
 }
+
+.avatarInitials {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary, #d4af37);
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  font-family: 'Outfit', sans-serif;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+}
