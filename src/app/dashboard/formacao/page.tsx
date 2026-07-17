@@ -14,6 +14,15 @@ interface Course {
 }
 
 export default function FormacaoPage() {
+  const isCoursePaid = (course: any) => {
+    if (!course) return false;
+    const priceStr = String(course.price || '').toLowerCase().trim();
+    if (priceStr === 'gratuito' || priceStr === 'grátis' || priceStr === '0' || priceStr === '0 mt' || priceStr === '0mt' || priceStr === 'free') {
+      return false;
+    }
+    return !!course.isPaid;
+  };
+
   const [payments, setPayments] = useState<any[]>([]);
   const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -289,7 +298,7 @@ export default function FormacaoPage() {
                 <div>
                   <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
                     <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 700 }}>Curso Certificado</span>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 800, color: course.isPaid ? 'var(--secondary)' : '#2ecc71', background: course.isPaid ? 'rgba(42,79,166,0.1)' : 'rgba(46,204,113,0.1)', padding: '2px 8px', borderRadius: '10px' }}>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 800, color: isCoursePaid(course) ? 'var(--secondary)' : '#2ecc71', background: isCoursePaid(course) ? 'rgba(42,79,166,0.1)' : 'rgba(46,204,113,0.1)', padding: '2px 8px', borderRadius: '10px' }}>
                       {course.price}
                     </span>
                   </div>
@@ -414,11 +423,22 @@ export default function FormacaoPage() {
                             setMsg({ type: 'error', text: `Já se encontra inscrito ou a aguardar validação para o curso "${course.title}".` });
                             return;
                           }
-                          setCourseToEnroll(course);
-                          setShowEnrollConfirmModal(true);
+                          
+                          const hasInfo = enrollPhone && enrollCompany;
+                          if (hasInfo) {
+                            if (isCoursePaid(course)) {
+                              setSelectedCourse(course);
+                              setShowModal(true);
+                            } else {
+                              handleEnrollFree(course, enrollPhone, enrollCompany);
+                            }
+                          } else {
+                            setCourseToEnroll(course);
+                            setShowEnrollConfirmModal(true);
+                          }
                         }}
                       >
-                        {course.isPaid ? 'Comprar e Inscrever' : 'Inscrever Grátis'}
+                        {isCoursePaid(course) ? 'Comprar e Inscrever' : 'Inscrever Grátis'}
                       </button>
                     )}
                   </div>
@@ -591,7 +611,7 @@ export default function FormacaoPage() {
               onSubmit={(e) => {
                 e.preventDefault();
                 setShowEnrollConfirmModal(false);
-                if (courseToEnroll.isPaid) {
+                if (isCoursePaid(courseToEnroll)) {
                   setSelectedCourse(courseToEnroll);
                   setShowModal(true);
                 } else {
@@ -637,7 +657,7 @@ export default function FormacaoPage() {
                 className="btn-primary" 
                 style={{ borderRadius: '8px', marginTop: '0.5rem' }}
               >
-                {courseToEnroll.isPaid ? 'Avançar para Pagamento 💳' : 'Confirmar e Inscrever Grátis 🚀'}
+                {isCoursePaid(courseToEnroll) ? 'Avançar para Pagamento 💳' : 'Confirmar e Inscrever Grátis 🚀'}
               </button>
             </form>
           </div>
@@ -677,14 +697,45 @@ export default function FormacaoPage() {
             <form onSubmit={handlePaySubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Ficheiro do Comprovativo *</label>
-                <input 
-                  type="file" 
-                  onChange={handleFileUpload} 
-                  required 
-                  accept="image/*,application/pdf"
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
-                />
-                {uploading && <div style={{ fontSize: '0.8rem', color: 'var(--primary)' }}>A carregar ficheiro para o servidor...</div>}
+                <label 
+                  style={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    padding: '2rem 1rem', 
+                    border: '2px dashed rgba(212, 175, 55, 0.3)', 
+                    borderRadius: '16px', 
+                    cursor: 'pointer', 
+                    background: 'rgba(255,255,255,0.02)',
+                    transition: 'all 0.2s',
+                    textAlign: 'center'
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--primary)';
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(212, 175, 55, 0.03)';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(212, 175, 55, 0.3)';
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)';
+                  }}
+                >
+                  <span style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📤</span>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff' }}>
+                    {file ? file.name : 'Selecionar Comprovativo'}
+                  </span>
+                  <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>
+                    Formatos suportados: PNG, JPG ou PDF (Máx. 5MB)
+                  </span>
+                  <input 
+                    type="file" 
+                    onChange={handleFileUpload} 
+                    required 
+                    accept="image/*,application/pdf"
+                    style={{ display: 'none' }} 
+                  />
+                </label>
+                {uploading && <div style={{ fontSize: '0.8rem', color: 'var(--primary)', textAlign: 'center', marginTop: '0.5rem' }}>⏳ A enviar ficheiro para o servidor...</div>}
               </div>
 
               <button type="submit" className="btn-primary" disabled={submitting || uploading || !uploadedUrl} style={{ marginTop: '0.5rem' }}>
