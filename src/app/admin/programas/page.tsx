@@ -18,6 +18,18 @@ interface Program {
   status: string;
   order: number;
   createdAt: string;
+  // Club specific fields
+  missao?: string;
+  visao?: string;
+  valores?: string;
+  objectivos?: string;
+  areasActuacao?: string;
+  actividades?: string;
+  beneficiosMembros?: string;
+  compromissoMembros?: string;
+  lema?: string;
+  isClub?: boolean;
+  province?: string;
 }
 
 export default function AdminProgramasPage() {
@@ -27,7 +39,7 @@ export default function AdminProgramasPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
-  const [activeTab, setActiveTab] = useState<'geral' | 'conteudo' | 'selecao'>('geral');
+  const [activeTab, setActiveTab] = useState<'geral' | 'conteudo' | 'selecao' | 'clube'>('geral');
 
   // Form states
   const [title, setTitle] = useState('');
@@ -42,6 +54,18 @@ export default function AdminProgramasPage() {
   const [investimento, setInvestimento] = useState('');
   const [processoSelecao, setProcessoSelecao] = useState('');
   const [criteriosSelecao, setCriteriosSelecao] = useState('');
+  // Club specific states
+  const [isClub, setIsClub] = useState(false);
+  const [province, setProvince] = useState('');
+  const [missao, setMissao] = useState('');
+  const [visao, setVisao] = useState('');
+  const [valores, setValores] = useState('');
+  const [objectivos, setObjectivos] = useState('');
+  const [areasActuacao, setAreasActuacao] = useState('');
+  const [actividades, setActividades] = useState('');
+  const [beneficiosMembros, setBeneficiosMembros] = useState('');
+  const [compromissoMembros, setCompromissoMembros] = useState('');
+  const [lema, setLema] = useState('');
 
   useEffect(() => {
     fetchPrograms();
@@ -75,6 +99,17 @@ export default function AdminProgramasPage() {
     setInvestimento(prog.investimento || '');
     setProcessoSelecao(prog.processoSelecao || '');
     setCriteriosSelecao(prog.criteriosSelecao || '');
+    setIsClub(prog.isClub || false);
+    setProvince(prog.province || '');
+    setMissao(prog.missao || '');
+    setVisao(prog.visao || '');
+    setValores(prog.valores || '');
+    setObjectivos(prog.objectivos || '');
+    setAreasActuacao(prog.areasActuacao || '');
+    setActividades(prog.actividades || '');
+    setBeneficiosMembros(prog.beneficiosMembros || '');
+    setCompromissoMembros(prog.compromissoMembros || '');
+    setLema(prog.lema || '');
     setActiveTab('geral');
     setShowForm(true);
   };
@@ -93,6 +128,17 @@ export default function AdminProgramasPage() {
     setInvestimento('');
     setProcessoSelecao('');
     setCriteriosSelecao('');
+    setIsClub(false);
+    setProvince('');
+    setMissao('');
+    setVisao('');
+    setValores('');
+    setObjectivos('');
+    setAreasActuacao('');
+    setActividades('');
+    setBeneficiosMembros('');
+    setCompromissoMembros('');
+    setLema('');
     setActiveTab('geral');
     setShowForm(true);
   };
@@ -118,6 +164,17 @@ export default function AdminProgramasPage() {
       investimento,
       processoSelecao,
       criteriosSelecao,
+      isClub,
+      province,
+      missao,
+      visao,
+      valores,
+      objectivos,
+      areasActuacao,
+      actividades,
+      beneficiosMembros,
+      compromissoMembros,
+      lema,
     };
 
     try {
@@ -221,6 +278,13 @@ export default function AdminProgramasPage() {
             >
               🤝 Seleção & Critérios
             </button>
+            <button
+              type="button"
+              className={`${styles.tabBtn} ${activeTab === 'clube' ? styles.activeTabBtn : ''}`}
+              onClick={() => setActiveTab('clube')}
+            >
+              🏛️ Clube de Empreendedores
+            </button>
           </div>
 
           {activeTab === 'geral' && (
@@ -268,6 +332,13 @@ export default function AdminProgramasPage() {
                     </select>
                   </div>
                 </div>
+              </div>
+              <div className={styles.field}>
+                <label>Tipo de Programa</label>
+                <select value={isClub ? 'clube' : 'programa'} onChange={e => setIsClub(e.target.value === 'clube')}>
+                  <option value="programa">Programa Regular</option>
+                  <option value="clube">Clube de Empreendedores</option>
+                </select>
               </div>
               <div className={`${styles.field} ${styles.fullWidth}`}>
                 <label>Descrição / O que é? *</label>
@@ -352,6 +423,104 @@ export default function AdminProgramasPage() {
             </div>
           )}
 
+          {activeTab === 'clube' && (
+            <div className={styles.formGrid}>
+              <div className={styles.field}>
+                <label>Província</label>
+                <input
+                  value={province}
+                  onChange={e => setProvince(e.target.value)}
+                  placeholder="Ex: Sofala, Gaza, Maputo"
+                />
+              </div>
+              <div className={styles.field}>
+                <label>Lema</label>
+                <input
+                  value={lema}
+                  onChange={e => setLema(e.target.value)}
+                  placeholder="Ex: Unidos pelo Empreendedorismo"
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Missão</label>
+                <textarea
+                  rows={3}
+                  value={missao}
+                  onChange={e => setMissao(e.target.value)}
+                  placeholder="Descreva a missão do clube..."
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Visão</label>
+                <textarea
+                  rows={3}
+                  value={visao}
+                  onChange={e => setVisao(e.target.value)}
+                  placeholder="Descreva a visão do clube..."
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Valores</label>
+                <textarea
+                  rows={3}
+                  value={valores}
+                  onChange={e => setValores(e.target.value)}
+                  placeholder="Liste os valores do clube (separados por vírgula ou um por linha)..."
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Objectivos</label>
+                <span className={styles.fieldHint}>Um objectivo por linha</span>
+                <textarea
+                  rows={5}
+                  value={objectivos}
+                  onChange={e => setObjectivos(e.target.value)}
+                  placeholder="- Capacitar 500 empreendedores até 2027&#10;- Facilitar o acesso a financiamento"
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Áreas de Actuação</label>
+                <span className={styles.fieldHint}>Uma área por linha</span>
+                <textarea
+                  rows={4}
+                  value={areasActuacao}
+                  onChange={e => setAreasActuacao(e.target.value)}
+                  placeholder="- Tecnologia e Inovação&#10;- Agricultura e Agroprocessamento"
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Actividades</label>
+                <span className={styles.fieldHint}>Uma actividade por linha</span>
+                <textarea
+                  rows={5}
+                  value={actividades}
+                  onChange={e => setActividades(e.target.value)}
+                  placeholder="- Workshops mensais de capacitação&#10;- Pitch sessions com investidores"
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Benefícios para os Membros</label>
+                <span className={styles.fieldHint}>Um benefício por linha</span>
+                <textarea
+                  rows={5}
+                  value={beneficiosMembros}
+                  onChange={e => setBeneficiosMembros(e.target.value)}
+                  placeholder="- Acesso a mentoria especializada&#10;- Participação em eventos exclusivos"
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Compromisso dos Membros</label>
+                <span className={styles.fieldHint}>Um compromisso por linha</span>
+                <textarea
+                  rows={5}
+                  value={compromissoMembros}
+                  onChange={e => setCompromissoMembros(e.target.value)}
+                  placeholder="- Participar activamente nas actividades do clube&#10;- Compartilhar conhecimento e experiências"
+                />
+              </div>
+            </div>
+          )}
+
           <div className={styles.formActions}>
             <button type="submit" className="btn-primary" disabled={saving}>
               {saving ? 'A guardar...' : 'Guardar Programa'}
@@ -380,8 +549,10 @@ export default function AdminProgramasPage() {
             <div key={prog._id} className={styles.card}>
               <div className={styles.cardHeader}>
                 <div className={styles.badgeGroup}>
-                  {prog.phase && <span className={styles.phase}>{prog.phase}</span>}
-                  {prog.duration && <span className={styles.duration}>⏱ {prog.duration}</span>}
+                  {prog.isClub && <span className={styles.phase}>🏛️ Clube</span>}
+                  {prog.isClub && prog.province && <span className={styles.duration}>📍 {prog.province}</span>}
+                  {!prog.isClub && prog.phase && <span className={styles.phase}>{prog.phase}</span>}
+                  {!prog.isClub && prog.duration && <span className={styles.duration}>⏱ {prog.duration}</span>}
                 </div>
                 <span
                   className={styles.statusBadge}

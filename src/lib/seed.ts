@@ -4,6 +4,7 @@ import Business from '../models/Business';
 import Service from '../models/Service';
 import Config from '../models/Config';
 import Hub from '../models/Hub';
+import Program from '../models/Program';
 import bcrypt from 'bcryptjs';
 
 export async function seedAdmin() {
@@ -387,6 +388,57 @@ export async function seedAdmin() {
     } else {
       await Hub.findOneAndUpdate({ slug: 'quinebissau' }, gbHubData, { new: true });
       console.log('Hub Guiné-Bissau updated in seed.');
+    }
+
+    // 5. Seed Entrepreneur Clubs
+    const clubsData = [
+      {
+        title: 'Clube de Empreendedores de Sofala',
+        description: 'O Clube de Empreendedores da província de Sofala é uma iniciativa da ABN dedicada a fomentar o ecossistema empreendedor local, conectando empreendedores, mentores e investidores para impulsionar o desenvolvimento económico da região.',
+        isClub: true,
+        province: 'Sofala',
+        phase: 'Networking',
+        missao: 'Promover o desenvolvimento do ecossistema empreendedor na província de Sofala através da capacitação, networking e acesso a oportunidades de negócios.',
+        visao: 'Ser a referência provincial em apoio ao empreendedorismo, transformando Sofala num hub de inovação e desenvolvimento económico sustentável.',
+        valores: 'Inovação, Integridade, Colaboração, Sustentabilidade, Excelência, Inclusão',
+        objectivos: '- Capacitar 500 empreendedores até 2027\n- Facilitar o acesso a financiamento para startups locais\n- Criar uma rede de 100 mentores activos\n- Promover a internacionalização de negócios de Sofala\n- Fomentar a economia circular e sustentável',
+        areasActuacao: '- Tecnologia e Inovação\n- Agricultura e Agroprocessamento\n- Turismo e Hospitalidade\n- Serviços Financeiros\n- Energias Renováveis\n- Indústria Transformadora',
+        actividades: '- Workshops mensais de capacitação\n- Pitch sessions com investidores\n- Mentoria individual e em grupo\n- Networking events trimestrais\n- Visitas técnicas a empresas de sucesso\n- Hackathons e desafios de inovação\n- Feiras de empreendedorismo',
+        beneficiosMembros: '- Acesso a mentoria especializada\n- Participação em eventos exclusivos\n- Networking com outros empreendedores\n- Acesso a oportunidades de financiamento\n- Formação contínua e workshops\n- Visibilidade na plataforma ABN\n- Descontos em serviços parceiros',
+        compromissoMembros: '- Participar activamente nas actividades do clube\n- Compartilhar conhecimento e experiências\n- Contribuir para o crescimento do ecossistema\n- Respeitar os valores e código de conduta\n- Pagar a quota de associação (quando aplicável)\n- Promover a iniciativa do clube',
+        lema: 'Unidos pelo Empreendedorismo',
+        status: 'ativo',
+        order: 1
+      },
+      {
+        title: 'Clube de Empreendedores de Gaza',
+        description: 'O Clube de Empreendedores da província de Gaza é uma plataforma da ABN focada em desenvolver o potencial empreendedor da região, com especial ênfase na agricultura, turismo e inovação tecnológica.',
+        isClub: true,
+        province: 'Gaza',
+        phase: 'Networking',
+        missao: 'Impulsionar o empreendedorismo na província de Gaza através da formação, conexão estratégica e apoio ao desenvolvimento de negócios sustentáveis.',
+        visao: 'Tornar Gaza num centro de excelência empreendedora, reconhecido nacionalmente pela inovação e impacto económico.',
+        valores: 'Solidariedade, Inovação, Perseverança, Sustentabilidade, Respeito, Cooperação',
+        objectivos: '- Formar 300 empreendedores em 3 anos\n- Apoiar a criação de 50 novas startups\n- Estabelecer parcerias com 20 instituições\n- Promover o empreendedorismo feminino\n- Desenvolver o sector agropecuário',
+        areasActuacao: '- Agricultura e Pecuária\n- Turismo e Ecoturismo\n- Tecnologia Agrícola (AgTech)\n- Comércio e Serviços\n- Artesanato e Cultura\n- Energia Solar',
+        actividades: '- Formação em gestão de negócios\n- Dias de campo e demonstrações técnicas\n- Concursos de ideias de negócios\n- Encontros com investidores\n- Visitas a cooperativas de sucesso\n- Sessões de mentoria presencial e online\n- Feiras agrícolas e de artesanato',
+        beneficiosMembros: '- Formação técnica e empresarial\n- Acesso a redes de contacto\n- Oportunidades de financiamento\n- Acompanhamento personalizado\n- Participação em eventos nacionais\n- Divulgação de produtos/serviços\n- Certificação de qualidade',
+        compromissoMembros: '- Assiduidade nas formações e eventos\n- Aplicação dos conhecimentos adquiridos\n- Colaboração com outros membros\n- Defesa dos valores do clube\n- Contribuição para actividades comunitárias\n- Sustentabilidade do negócio',
+        lema: 'Crescendo Juntos, Transformando Gaza',
+        status: 'ativo',
+        order: 2
+      }
+    ];
+
+    for (const club of clubsData) {
+      const exists = await Program.findOne({ title: club.title, isClub: true });
+      if (!exists) {
+        await Program.create(club);
+        console.log(`Clube ${club.title} criado.`);
+      } else {
+        await Program.findOneAndUpdate({ title: club.title, isClub: true }, club, { new: true });
+        console.log(`Clube ${club.title} atualizado.`);
+      }
     }
 
     console.log('✅ Seed concluído com sucesso!');
