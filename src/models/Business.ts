@@ -17,10 +17,21 @@ const BusinessSchema = new mongoose.Schema({
   stats: {
     projects: { type: Number, default: 0 },
     rating: { type: Number, default: 0 },
-    clients: { type: Number, default: 0 }
+    clients: { type: Number, default: 0 },
+    profileViews: { type: Number, default: 0 },
+    projectViews: { type: Number, default: 0 },
+    pitchDownloads: { type: Number, default: 0 },
+    messagesCount: { type: Number, default: 0 },
+    interestedCount: { type: Number, default: 0 }
   },
+  monthlyGrowth: [{
+    month: String,
+    views: Number,
+    percentage: String,
+    height: String
+  }],
   isIncubated: { type: Boolean, default: false },
-  incubationPhase: { type: String, enum: ['Ideação', 'Validação', 'Crescimento', 'Escala'] },
+  incubationPhase: { type: String, enum: ['Ideação', 'Validação', 'Mínimo Produto Viável (MVP)', 'Tração & Escala', 'Crescimento', 'Escala'], default: 'Ideação' },
   createdAt: { type: Date, default: Date.now },
 });
 

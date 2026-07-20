@@ -21,6 +21,15 @@ const UserSchema = new mongoose.Schema({
   // Recuperação de password
   resetToken: { type: String },
   resetTokenExpiry: { type: Date },
+  
+  // Analytics para Mentores/Investidores
+  stats: {
+    mentorshipHours: { type: Number, default: 0 },
+    averageRating: { type: Number, default: 0 },
+    startupsFollowing: { type: Number, default: 0 },
+    nextSession: { type: Date }
+  },
+
   createdAt: { type: Date, default: Date.now },
 });
 
