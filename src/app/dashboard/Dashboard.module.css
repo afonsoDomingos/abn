@@ -109,6 +109,11 @@
   margin-left: 280px;
   display: flex;
   flex-direction: column;
+  transition: margin-left 0.25s ease;
+}
+
+.mainContentCollapsed {
+  margin-left: 68px;
 }
 
 .header {
@@ -427,8 +432,8 @@
     transform: translateX(0);
   }
 
-  .mainContent {
-    margin-left: 0;
+  .mainContent, .mainContentCollapsed {
+    margin-left: 0 !important;
   }
 
   .header {

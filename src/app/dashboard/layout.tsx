@@ -176,7 +176,7 @@ export default function DashboardLayout({
         </div>
       </aside>
       
-      <main className={styles.mainContent} style={{ marginLeft: collapsed ? '68px' : '280px' }}>
+      <main className={`${styles.mainContent} ${collapsed ? styles.mainContentCollapsed : ''}`}>
         <header className={styles.header}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <button 
