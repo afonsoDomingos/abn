@@ -277,60 +277,48 @@ export default function DashboardPage() {
             <h2 style={{ margin: 0 }}>Analytics & Desempenho</h2>
           </div>
 
-          {/* Analytics Stats Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
-            <div className="glass" style={{ padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div style={{ background: 'rgba(212, 175, 55, 0.1)', padding: '10px', borderRadius: '12px' }}>
-                  <Eye size={20} color="var(--primary)" />
+          <div className="glass" style={{ padding: '2rem', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '2.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '2rem' }}>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px' }}>Visitas</h4>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                  <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.profileViews || 0}</span>
+                  <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700, background: 'rgba(46, 204, 113, 0.1)', padding: '2px 6px', borderRadius: '12px' }}>+12%</span>
                 </div>
-                <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700, background: 'rgba(46, 204, 113, 0.1)', padding: '4px 8px', borderRadius: '20px' }}>+12%</span>
               </div>
-              <h4 style={{ margin: '8px 0 0 0', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>Visitas ao Perfil</h4>
-              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit' }}>{analytics?.stats?.profileViews || 0}</div>
-            </div>
 
-            <div className="glass" style={{ padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div style={{ background: 'rgba(212, 175, 55, 0.1)', padding: '10px', borderRadius: '12px' }}>
-                  <Rocket size={20} color="var(--primary)" />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px' }}>Cliques</h4>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                  <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.projectViews || 0}</span>
+                  <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700, background: 'rgba(46, 204, 113, 0.1)', padding: '2px 6px', borderRadius: '12px' }}>+8%</span>
                 </div>
-                <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700, background: 'rgba(46, 204, 113, 0.1)', padding: '4px 8px', borderRadius: '20px' }}>+8%</span>
               </div>
-              <h4 style={{ margin: '8px 0 0 0', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>Visitas ao Projeto</h4>
-              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit' }}>{analytics?.stats?.projectViews || 0}</div>
-            </div>
 
-            <div className="glass" style={{ padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div style={{ background: 'rgba(212, 175, 55, 0.1)', padding: '10px', borderRadius: '12px' }}>
-                  <Users size={20} color="var(--primary)" />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px' }}>Interesse</h4>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                  <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.interestedCount || 0}</span>
                 </div>
               </div>
-              <h4 style={{ margin: '8px 0 0 0', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>Interessados</h4>
-              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit' }}>{analytics?.stats?.interestedCount || 0}</div>
-            </div>
 
-            <div className="glass" style={{ padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div style={{ background: 'rgba(212, 175, 55, 0.1)', padding: '10px', borderRadius: '12px' }}>
-                  <Download size={20} color="var(--primary)" />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px' }}>Pitch</h4>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                  <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.pitchDownloads || 0}</span>
+                  <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>Downloads</span>
                 </div>
-                <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700, background: 'rgba(46, 204, 113, 0.1)', padding: '4px 8px', borderRadius: '20px' }}>14% tx</span>
               </div>
-              <h4 style={{ margin: '8px 0 0 0', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>Downloads do Pitch</h4>
-              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit' }}>{analytics?.stats?.pitchDownloads || 0}</div>
-            </div>
-            
-            <div className="glass" style={{ padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div style={{ background: 'rgba(212, 175, 55, 0.1)', padding: '10px', borderRadius: '12px' }}>
-                  <MessageCircle size={20} color="var(--primary)" />
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px' }}>Leads</h4>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                  <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.messagesCount || 0}</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700, background: 'rgba(212, 175, 55, 0.1)', padding: '2px 6px', borderRadius: '12px' }}>Novos</span>
                 </div>
-                <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700, background: 'rgba(46, 204, 113, 0.1)', padding: '4px 8px', borderRadius: '20px' }}>Novas</span>
               </div>
-              <h4 style={{ margin: '8px 0 0 0', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>Mensagens</h4>
-              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit' }}>{analytics?.stats?.messagesCount || 0}</div>
+
             </div>
           </div>
 
