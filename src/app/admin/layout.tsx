@@ -26,7 +26,8 @@ import {
   Building2,
   ChevronLeft,
   ChevronRight,
-  Menu
+  Menu,
+  Users as UsersIcon
 } from 'lucide-react';
 
 interface NavItem {
@@ -51,6 +52,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       items: [
         { href: '/admin', label: t.admin.dashboard, icon: <LayoutDashboard size={18} /> },
         { href: '/admin/usuarios', label: t.admin.users, icon: <Users size={18} /> },
+        { href: '/admin/equipa', label: 'Equipa', icon: <UsersIcon size={18} /> },
         { href: '/admin/servicos', label: t.admin.services, icon: <Briefcase size={18} /> },
       ]
     },
