@@ -5,6 +5,7 @@ import Service from '../models/Service';
 import Config from '../models/Config';
 import Hub from '../models/Hub';
 import Program from '../models/Program';
+import Team from '../models/Team';
 import bcrypt from 'bcryptjs';
 
 export async function seedAdmin() {
@@ -438,6 +439,229 @@ export async function seedAdmin() {
       } else {
         await Program.findOneAndUpdate({ title: club.title, isClub: true }, club, { new: true });
         console.log(`Clube ${club.title} atualizado.`);
+      }
+    }
+
+    // 6. Seed Team/Leadership
+    const teamData = [
+      // 1. Direcção de Programas, Incubação e Sustentabilidade
+      {
+        name: 'Leonel Sapite',
+        role: 'Director de Programas',
+        department: 'Direcção de Programas, Incubação e Sustentabilidade',
+        bio: 'Leonel Sapite é especialista em desenvolvimento comunitário, empreendedorismo, direitos humanos e fortalecimento institucional. Possui vasta experiência na gestão de programas e projectos de desenvolvimento, tendo contribuído para a capacitação de mais de 10.000 empreendedores em Moçambique. É Director Executivo da Organização Orientadora dos Direitos Humanos (ODH), fundador da Green Light Service, Lda. e foi reconhecido pela Fundação Dom Cabral como Professor Internacional do Programa PRAFRENTE.',
+        expertise: ['Desenvolvimento Comunitário', 'Empreendedorismo', 'Direitos Humanos', 'Fortalecimento Institucional', 'Gestão de Programas'],
+        responsibilities: [
+          'Liderança estratégica dos programas',
+          'Incubação de empresas',
+          'Aceleração de negócios',
+          'Sustentabilidade institucional',
+          'Coordenação das equipas técnicas'
+        ],
+        order: 1,
+        status: 'ativo'
+      },
+      {
+        name: 'Josina Aurora Nhantumbo',
+        role: 'Directora Adjunta de Programas',
+        department: 'Direcção de Programas, Incubação e Sustentabilidade',
+        bio: 'Josina Aurora Nhantumbo é Antropóloga e especialista em Igualdade de Género, Inclusão Social e Empoderamento Económico de Mulheres e Jovens. Possui mais de 20 anos de experiência em organismos governamentais, Nações Unidas, organizações internacionais e consultoria. Actualmente exerce funções como Especialista em Igualdade de Género na SOCODEVI, liderando iniciativas de empoderamento económico e desenvolvimento inclusivo.',
+        expertise: ['Antropologia', 'Igualdade de Género', 'Inclusão Social', 'Empoderamento Económico', 'Desenvolvimento Comunitário'],
+        responsibilities: [
+          'Desenvolvimento e implementação dos programas',
+          'Integração das abordagens de género',
+          'Inclusão social',
+          'Desenvolvimento comunitário'
+        ],
+        order: 2,
+        status: 'ativo'
+      },
+      {
+        name: 'Contardo Muarramuassa',
+        role: 'Director Adjunto de Programas',
+        department: 'Direcção de Programas, Incubação e Sustentabilidade',
+        bio: 'Especialista em Desenvolvimento Comunitário, Desenvolvimento Humano, Planeamento Territorial, Governança Local e Salvaguardas Sociais e Ambientais. É fundador da BCC Moçambique, SU, Lda., Mestre em Planeamento Territorial e possui experiência na implementação de programas ligados ao desenvolvimento local, segurança alimentar, meios de subsistência, WASH e fortalecimento da resiliência comunitária.',
+        expertise: ['Desenvolvimento Comunitário', 'Desenvolvimento Humano', 'Planeamento Territorial', 'Governança Local', 'Salvaguardas Sociais e Ambientais'],
+        responsibilities: [
+          'Desenho e implementação dos programas',
+          'Integração de componentes de desenvolvimento comunitário',
+          'Sustentabilidade',
+          'Governação'
+        ],
+        order: 3,
+        status: 'ativo'
+      },
+      // 2. Direcção Comercial
+      {
+        name: 'Cargo por preencher',
+        role: 'Director Comercial',
+        department: 'Direcção Comercial',
+        bio: 'Responsável pela estratégia comercial, desenvolvimento de negócios, relacionamento com clientes e parceiros, expansão de mercado e crescimento sustentável das soluções da ABN.',
+        expertise: ['Estratégia Comercial', 'Desenvolvimento de Negócios', 'Gestão de Clientes', 'Expansão de Mercado'],
+        responsibilities: [
+          'Estratégia comercial',
+          'Desenvolvimento de negócios',
+          'Relacionamento com clientes e parceiros',
+          'Expansão de mercado',
+          'Crescimento sustentável'
+        ],
+        order: 4,
+        status: 'ativo'
+      },
+      // 3. Direcção de Marketing e Comunicação
+      {
+        name: 'Cargo por preencher',
+        role: 'Director de Marketing e Comunicação',
+        department: 'Direcção de Marketing e Comunicação',
+        bio: 'Responsável pela comunicação institucional, posicionamento da marca ABN, marketing estratégico, relações públicas, comunicação digital e promoção das iniciativas da organização.',
+        expertise: ['Comunicação Institucional', 'Marketing Estratégico', 'Relações Públicas', 'Comunicação Digital', 'Branding'],
+        responsibilities: [
+          'Comunicação institucional',
+          'Posicionamento da marca ABN',
+          'Marketing estratégico',
+          'Relações públicas',
+          'Comunicação digital',
+          'Promoção das iniciativas'
+        ],
+        order: 5,
+        status: 'ativo'
+      },
+      // 4. Direcção Jurídica
+      {
+        name: 'Cargo por preencher',
+        role: 'Director Jurídico',
+        department: 'Direcção Jurídica',
+        bio: 'Responsável pelo acompanhamento jurídico, contratos, conformidade legal, regulamentação institucional e gestão de riscos jurídicos.',
+        expertise: ['Direito Corporativo', 'Contratos', 'Conformidade Legal', 'Regulamentação', 'Gestão de Riscos Jurídicos'],
+        responsibilities: [
+          'Acompanhamento jurídico',
+          'Gestão de contratos',
+          'Conformidade legal',
+          'Regulamentação institucional',
+          'Gestão de riscos jurídicos'
+        ],
+        order: 6,
+        status: 'ativo'
+      },
+      // 5. Direcção de Tecnologia e Inovação
+      {
+        name: 'Afonso Domingos',
+        role: 'Director de Tecnologia e Inovação',
+        department: 'Direcção de Tecnologia e Inovação',
+        bio: 'Afonso Domingos é especialista em Inteligência Artificial, Branding e Startups, com formação em Multimédia pela Above e experiência na intersecção entre tecnologia, inovação e transformação digital. Actualmente lidera a RPA Moçambique, uma plataforma digital orientada para soluções tecnológicas e recuperação de documentos, promovendo a simplificação de processos através da inovação. Possui experiência como Especialista em Inteligência Artificial, Coordenador de TI e Consultor de Tecnologia.',
+        expertise: [
+          'Inteligência Artificial',
+          'Transformação Digital',
+          'Branding e Estratégia Digital',
+          'Desenvolvimento de Startups',
+          'Web Development',
+          'Web Design',
+          'Design de Marca',
+          'Edição de Vídeo',
+          'Experiência do Cliente',
+          'Desenvolvimento de soluções tecnológicas'
+        ],
+        responsibilities: [
+          'Liderar a estratégia tecnológica e de inovação',
+          'Coordenar os processos de transformação digital',
+          'Desenvolver soluções tecnológicas para apoiar empreendedores',
+          'Promover a utilização estratégica da Inteligência Artificial',
+          'Apoiar a criação e evolução das plataformas digitais',
+          'Fortalecer o ecossistema de inovação tecnológica'
+        ],
+        order: 7,
+        status: 'ativo'
+      },
+      // 6. Direcção de Administração, Finanças e Recursos Humanos
+      {
+        name: 'Lizi Cristina Mulambo',
+        role: 'Directora de Administração, Finanças e Recursos Humanos',
+        department: 'Direcção de Administração, Finanças e Recursos Humanos',
+        bio: 'Lizi Cristina Mulambo é uma profissional sénior moçambicana com mais de 20 anos de experiência em gestão administrativa, financeira, recursos humanos e desenvolvimento organizacional, tendo exercido funções de liderança em organizações nacionais, internacionais, empresas privadas e instituições do sector financeiro. É licenciada em Administração e Gestão de Empresas e certificada como Coach Integral Sistémica. Possui experiência profissional em organizações como CAFOD, Health Alliance International, MozHOPE e ISOLMOC, Lda., bem como experiência no sector bancário e financeiro.',
+        expertise: [
+          'Gestão Administrativa e Financeira',
+          'Gestão de Recursos Humanos',
+          'Liderança Corporativa',
+          'Compliance',
+          'Procurement',
+          'Gestão Patrimonial',
+          'Gestão de Subvenções',
+          'Desenvolvimento de Políticas',
+          'Planeamento Estratégico',
+          'Desenvolvimento Organizacional'
+        ],
+        responsibilities: [
+          'Gestão administrativa e financeira',
+          'Gestão de recursos humanos',
+          'Implementação de políticas internas',
+          'Compliance institucional',
+          'Fortalecimento organizacional',
+          'Apoio à sustentabilidade administrativa'
+        ],
+        order: 8,
+        status: 'ativo'
+      },
+      {
+        name: 'Yolanda',
+        role: 'Assistente Administrativa',
+        department: 'Direcção de Administração, Finanças e Recursos Humanos',
+        bio: 'Yolanda integra a Direcção de Administração, Finanças e Recursos Humanos como Assistente Administrativa. Será responsável pelo apoio administrativo à Presidência e às Direcções Corporativas, gestão documental, organização de agendas, acompanhamento dos processos administrativos, apoio logístico às reuniões e eventos, bem como suporte às operações diárias da organização.',
+        expertise: ['Apoio Administrativo', 'Gestão Documental', 'Organização de Agendas', 'Apoio Logístico'],
+        responsibilities: [
+          'Apoio administrativo à Presidência e Direcções',
+          'Gestão documental',
+          'Organização de agendas',
+          'Acompanhamento dos processos administrativos',
+          'Apoio logístico às reuniões e eventos',
+          'Suporte às operações diárias'
+        ],
+        order: 9,
+        status: 'ativo'
+      },
+      // 7. Direcção de Investimentos e Parcerias
+      {
+        name: 'Nádya Cristina Domingos Cosmo',
+        role: 'Directora de Investimentos e Parcerias',
+        department: 'Direcção de Investimentos e Parcerias',
+        bio: 'Nádya Cristina Domingos Cosmo é uma profissional moçambicana com 29 anos de experiência, dos quais mais de 20 anos dedicados à gestão de recursos humanos, desenvolvimento organizacional, consultoria administrativa e fortalecimento institucional. Possui vasta experiência na criação de departamentos, negociação, desenvolvimento de parcerias estratégicas, liderança de equipas e fortalecimento das relações institucionais. É igualmente uma promotora activa de iniciativas culturais e comunitárias.',
+        expertise: ['Gestão de Recursos Humanos', 'Desenvolvimento Organizacional', 'Consultoria Administrativa', 'Fortalecimento Institucional', 'Negociação', 'Parcerias Estratégicas'],
+        responsibilities: [
+          'Mobilização de investimentos',
+          'Desenvolvimento de parcerias nacionais e internacionais',
+          'Captação de recursos',
+          'Construção de alianças estratégicas',
+          'Fortalecimento das relações institucionais'
+        ],
+        order: 10,
+        status: 'ativo'
+      },
+      // 8. Direcção de Monitoria, Avaliação e Aprendizagem (MEAL)
+      {
+        name: 'Gabriel Armindo',
+        role: 'Director de Monitoria, Avaliação e Aprendizagem (MEAL)',
+        department: 'Direcção de Monitoria, Avaliação e Aprendizagem (MEAL)',
+        bio: 'Gabriel Armindo é especialista em Monitoria, Avaliação, Aprendizagem e Prestação de Contas (MEAL), Psicólogo Social e Comunitário, consultor e pesquisador. Possui experiência na implementação de sistemas de monitoria e avaliação, desenvolvimento de indicadores, dashboards, avaliação de impacto e análise de dados para programas de desenvolvimento.',
+        expertise: ['Monitoria e Avaliação', 'Aprendizagem Organizacional', 'Prestação de Contas', 'Psicologia Social e Comunitária', 'Análise de Dados'],
+        responsibilities: [
+          'Implementação do sistema institucional de MEAL',
+          'Definição de indicadores de desempenho',
+          'Monitoria de resultados',
+          'Avaliação de impacto dos programas',
+          'Promoção da aprendizagem organizacional e melhoria contínua'
+        ],
+        order: 11,
+        status: 'ativo'
+      }
+    ];
+
+    for (const member of teamData) {
+      const exists = await Team.findOne({ name: member.name, role: member.role });
+      if (!exists) {
+        await Team.create(member);
+        console.log(`Membro ${member.name} criado.`);
+      } else {
+        await Team.findOneAndUpdate({ name: member.name, role: member.role }, member, { new: true });
+        console.log(`Membro ${member.name} atualizado.`);
       }
     }
 

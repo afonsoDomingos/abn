@@ -7,12 +7,18 @@ import ScrollToTop from '@/components/ScrollToTop';
 import styles from './Equipa.module.css';
 
 interface TeamMember {
+  _id: string;
   name: string;
   role: string;
-  country: string;
-  linkedin: string;
-  image: string;
+  department: string;
   bio: string;
+  expertise: string[];
+  responsibilities: string[];
+  image: string;
+  linkedin: string;
+  email: string;
+  order: number;
+  status: string;
 }
 
 const FLAGS: Record<string, string> = {
@@ -48,24 +54,7 @@ function getRoleMeta(role: string): { color: string; bg: string } {
   return { color: 'var(--primary)', bg: 'rgba(212,175,55,0.1)' };
 }
 
-const DEFAULT_TEAM: TeamMember[] = [
-  {
-    name: 'Culpa Francisco Xavier',
-    role: 'Fundador e Vice-Director',
-    country: 'Mocambique',
-    linkedin: '',
-    image: '/Perfil01.jpg',
-    bio: 'Culpa Francisco Xavier é um jovem líder, consultor e especialista em Educação, Tecnologia, Ciência e Inovação, ex-Comissário da União da Juventude Africana. NO MOMENTO VICE DIRECTOR DA Comissão da Juventude da uniao Áfricana para África Austral. É fundador da CCA – Consulting and Coaching Agency, da ODEI – Organização para o Desenvolvimento e Educação Infantil e da Afrobiz Network (ABN), plataforma de conexão e fortalecimento de negócios africanos, atualmente presente in 13 países.\n\nCom mais de 18 anos de experiência em projetos ligados à primeira infância, juventude, liderança e transformação social, já foi reconhecido como Jovem da Mudança pela Save the Children e Estudante referencia pela Universidade Eduardo Mondlane além de ter a formação de Formador pela UNICEF.'
-  },
-  {
-    name: 'Afonso Domingos',
-    role: 'Co-Fundador e CTO / Developer',
-    country: 'Mocambique',
-    linkedin: '',
-    image: '/Perfil05.jpg',
-    bio: 'Afonso Domingos é um profissional moçambicano de TI e autodidata em inovação com mais de 6 anos de experiência. Formado em Multimédia, lidera a RPA Moçambique e é especialista em IA e soluções digitais escaláveis.\n\nAo longo de sua jornada, Afonso tem se destacado na criação de ecossistemas tecnológicos que resolvem problemas reais. Como fundador do Inscreva-se, ele trouxe uma visão de simplificação e eficiência para o mercado africano de eventos, integrando inteligência artificial e processos automatizados para maximizar resultados.\n\nSuas especialidades incluem desenvolvimento de software, automação de processos (RPA), estratégia de produto e liderança de equipes técnicas. Ele acredita que a tecnologia deve ser um facilitador do progresso humano e trabalha incansavelmente para democratizar o acesso a soluções de ponta.'
-  }
-];
+const DEFAULT_TEAM: TeamMember[] = [];
 
 export default function TeamPage() {
   const [team, setTeam] = useState<TeamMember[]>([]);
@@ -74,27 +63,26 @@ export default function TeamPage() {
   const [bannerUrl, setBannerUrl] = useState('/abn-cover.jpg');
 
   useEffect(() => {
-    fetch('/api/config')
+    fetch('/api/team')
       .then(res => res.json())
       .then(data => {
-        if (data.configs) {
-          if (data.configs.team_content && data.configs.team_content.length > 0) {
-            setTeam(data.configs.team_content);
-          } else {
-            setTeam(DEFAULT_TEAM);
-          }
-          if (data.configs.page_banners && data.configs.page_banners.equipa) {
-            setBannerUrl(data.configs.page_banners.equipa);
-          }
-        } else {
-          setTeam(DEFAULT_TEAM);
+        if (data.team && data.team.length > 0) {
+          setTeam(data.team.filter((m: TeamMember) => m.status === 'ativo'));
         }
         setLoading(false);
       })
       .catch(() => {
-        setTeam(DEFAULT_TEAM);
         setLoading(false);
       });
+
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs?.page_banners?.equipa) {
+          setBannerUrl(data.configs.page_banners.equipa);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   return (
@@ -125,10 +113,9 @@ export default function TeamPage() {
             <div className={styles.grid}>
               {team.map((member, idx) => {
                 const { color, bg } = getRoleMeta(member.role);
-                const flag = FLAGS[member.country] || '';
                 const isExpanded = expandedBio === idx;
                 return (
-                  <div key={idx} className={styles.card}>
+                  <div key={member._id} className={styles.card}>
                     <div className={styles.imageWrapper}>
                       {member.image ? (
                         <img src={member.image} alt={member.name} className={styles.image} />
@@ -147,9 +134,11 @@ export default function TeamPage() {
                         {member.role}
                       </span>
                       <div className={styles.nameRow}>
-                        {flag && <span className={styles.flag}>{flag}</span>}
                         <h3 className={styles.name}>{member.name}</h3>
                       </div>
+                      {member.department && (
+                        <p className={styles.department}>{member.department}</p>
+                      )}
 
                       {member.bio && (
                         <div className={styles.bioSection}>
@@ -164,6 +153,20 @@ export default function TeamPage() {
                               {isExpanded ? 'Ver menos' : 'Ler mais'}
                             </button>
                           )}
+                        </div>
+                      )}
+
+                      {member.expertise && member.expertise.length > 0 && (
+                        <div className={styles.expertiseSection}>
+                          <h4>Expertise</h4>
+                          <div className={styles.tags}>
+                            {member.expertise.slice(0, 4).map((exp, i) => (
+                              <span key={i} className={styles.tag}>{exp}</span>
+                            ))}
+                            {member.expertise.length > 4 && (
+                              <span className={styles.tag}>+{member.expertise.length - 4}</span>
+                            )}
+                          </div>
                         </div>
                       )}
 
