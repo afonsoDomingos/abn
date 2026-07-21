@@ -54,10 +54,123 @@ function getRoleMeta(role: string): { color: string; bg: string } {
   return { color: 'var(--primary)', bg: 'rgba(212,175,55,0.1)' };
 }
 
-const DEFAULT_TEAM: TeamMember[] = [];
+const DEFAULT_TEAM: TeamMember[] = [
+  {
+    _id: 'default-1',
+    name: 'Leonel Sapite',
+    role: 'Director de Programas',
+    department: 'Direcção de Programas, Incubação e Sustentabilidade',
+    bio: 'Leonel Sapite é especialista em desenvolvimento comunitário, empreendedorismo, direitos humanos e fortalecimento institucional. Possui vasta experiência na gestão de programas e projectos de desenvolvimento, tendo contribuído para a capacitação de mais de 10.000 empreendedores em Moçambique.',
+    expertise: ['Desenvolvimento Comunitário', 'Empreendedorismo', 'Direitos Humanos', 'Fortalecimento Institucional'],
+    responsibilities: ['Liderança estratégica dos programas', 'Incubação de empresas', 'Aceleração de negócios'],
+    image: '',
+    linkedin: '',
+    email: '',
+    order: 1,
+    status: 'ativo'
+  },
+  {
+    _id: 'default-2',
+    name: 'Josina Aurora Nhantumbo',
+    role: 'Directora Adjunta de Programas',
+    department: 'Direcção de Programas, Incubação e Sustentabilidade',
+    bio: 'Josina Aurora Nhantumbo é Antropóloga e especialista em Igualdade de Género, Inclusão Social e Empoderamento Económico de Mulheres e Jovens. Possui mais de 20 anos de experiência em organismos governamentais, Nações Unidas e consultoria.',
+    expertise: ['Igualdade de Género', 'Inclusão Social', 'Empoderamento Económico', 'Antropologia'],
+    responsibilities: ['Desenvolvimento e implementação dos programas', 'Abordagens de género e inclusão'],
+    image: '',
+    linkedin: '',
+    email: '',
+    order: 2,
+    status: 'ativo'
+  },
+  {
+    _id: 'default-3',
+    name: 'Contardo Muarramuassa',
+    role: 'Director Adjunto de Programas',
+    department: 'Direcção de Programas, Incubação e Sustentabilidade',
+    bio: 'Especialista em Desenvolvimento Comunitário, Desenvolvimento Humano, Planeamento Territorial, Governança Local e Salvaguardas Sociais e Ambientais. É fundador da BCC Moçambique, SU, Lda. e Mestre em Planeamento Territorial.',
+    expertise: ['Desenvolvimento Comunitário', 'Planeamento Territorial', 'Governança Local', 'WASH'],
+    responsibilities: ['Desenho e implementação de programas', 'Sustentabilidade e governação'],
+    image: '',
+    linkedin: '',
+    email: '',
+    order: 3,
+    status: 'ativo'
+  },
+  {
+    _id: 'default-4',
+    name: 'Afonso Domingos',
+    role: 'Director de Tecnologia e Inovação',
+    department: 'Direcção de Tecnologia e Inovação',
+    bio: 'Afonso Domingos é especialista em Inteligência Artificial, Branding e Startups, com experiência na intersecção entre tecnologia, inovação e transformação digital. Lidera a RPA Moçambique e actua como Consultor de Tecnologia.',
+    expertise: ['Inteligência Artificial', 'Transformação Digital', 'Branding', 'Startups', 'Web Dev'],
+    responsibilities: ['Liderar estratégia tecnológica', 'Transformação digital', 'Soluções para startups'],
+    image: '',
+    linkedin: '',
+    email: '',
+    order: 4,
+    status: 'ativo'
+  },
+  {
+    _id: 'default-5',
+    name: 'Lizi Cristina Mulambo',
+    role: 'Directora de Administração, Finanças e RH',
+    department: 'Direcção de Administração, Finanças e Recursos Humanos',
+    bio: 'Profissional sénior moçambicana com mais de 20 anos de experiência em gestão administrativa, financeira, recursos humanos e desenvolvimento organizacional. Licenciada em Administração e Gestão de Empresas e Executive Coach.',
+    expertise: ['Gestão Financeira', 'Recursos Humanos', 'Liderança', 'Compliance', 'Procurement'],
+    responsibilities: ['Gestão administrativa e financeira', 'Gestão de RH', 'Compliance'],
+    image: '',
+    linkedin: '',
+    email: '',
+    order: 5,
+    status: 'ativo'
+  },
+  {
+    _id: 'default-6',
+    name: 'Yolanda',
+    role: 'Assistente Administrativa',
+    department: 'Direcção de Administração, Finanças e Recursos Humanos',
+    bio: 'Integra a Direcção de Administração, Finanças e Recursos Humanos como Assistente Administrativa, sendo responsável pelo apoio administrativo à Presidência e às Direcções Corporativas, gestão documental e suporte às operações.',
+    expertise: ['Apoio Administrativo', 'Gestão Documental', 'Organização de Agendas'],
+    responsibilities: ['Apoio à Presidência e Direcções', 'Gestão documental', 'Apoio logístico'],
+    image: '',
+    linkedin: '',
+    email: '',
+    order: 6,
+    status: 'ativo'
+  },
+  {
+    _id: 'default-7',
+    name: 'Nádya Cristina Domingos Cosmo',
+    role: 'Directora de Investimentos e Parcerias',
+    department: 'Direcção de Investimentos e Parcerias',
+    bio: 'Profissional moçambicana com 29 anos de experiência, dedicada à gestão de recursos humanos, desenvolvimento organizacional, consultoria administrativa e parcerias estratégicas nacionais e internacionais.',
+    expertise: ['Mobilização de Investimentos', 'Parcerias Estratégicas', 'Captação de Recursos'],
+    responsibilities: ['Mobilização de investimentos', 'Parcerias nacionais e internacionais'],
+    image: '',
+    linkedin: '',
+    email: '',
+    order: 7,
+    status: 'ativo'
+  },
+  {
+    _id: 'default-8',
+    name: 'Gabriel Armindo',
+    role: 'Director de MEAL',
+    department: 'Direcção de Monitoria, Avaliação e Aprendizagem (MEAL)',
+    bio: 'Especialista em Monitoria, Avaliação, Aprendizagem e Prestação de Contas (MEAL), Psicólogo Social e Comunitário. Possui experiência na implementação de sistemas de M&E, indicadores e avaliação de impacto.',
+    expertise: ['MEAL', 'Monitoria e Avaliação', 'Power BI', 'SPSS', 'Análise de Dados'],
+    responsibilities: ['Sistema institucional de MEAL', 'Avaliação de impacto', 'Aprendizagem organizacional'],
+    image: '',
+    linkedin: '',
+    email: '',
+    order: 8,
+    status: 'ativo'
+  }
+];
 
 export default function TeamPage() {
-  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [team, setTeam] = useState<TeamMember[]>(DEFAULT_TEAM);
   const [loading, setLoading] = useState(true);
   const [expandedBio, setExpandedBio] = useState<number | null>(null);
   const [bannerUrl, setBannerUrl] = useState('/abn-cover.jpg');
@@ -67,7 +180,10 @@ export default function TeamPage() {
       .then(res => res.json())
       .then(data => {
         if (data.team && data.team.length > 0) {
-          setTeam(data.team.filter((m: TeamMember) => m.status === 'ativo'));
+          const activeMembers = data.team.filter((m: TeamMember) => m.status === 'ativo');
+          if (activeMembers.length > 0) {
+            setTeam(activeMembers);
+          }
         }
         setLoading(false);
       })
