@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { CreditCard, CheckCircle, XCircle, FileText, Search, User, Mail, Phone, Building2, Award, Calendar, DollarSign, BarChart2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CreditCard, CheckCircle, XCircle, FileText, Search, User, Mail, Phone, Building2, Award, Calendar, DollarSign, BarChart2, ChevronLeft, ChevronRight, MessageSquare } from 'lucide-react';
 
 interface PaymentLog {
   _id: string;
@@ -113,6 +113,30 @@ export default function AdminPagamentosPage() {
     }
   };
 
+  // Helper function for pre-filled personalized WhatsApp links
+  const getWhatsAppUrl = (pay: PaymentLog) => {
+    const phone = pay.phone || '';
+    const cleanPhone = phone.replace(/[^\d]/g, '');
+    if (!cleanPhone) return '';
+
+    const userName = pay.user?.name || 'Estimado(a) Aluno(a)';
+    const courseTitle = pay.itemName || 'Curso ABN';
+
+    let message = '';
+
+    if (pay.certificateApproved) {
+      message = `Olá ${userName}! 🎓\n\nParabéns! O seu certificado do curso *${courseTitle}* foi validado e aprovado pela Direção da ABN.\n\nJá pode aceder ao seu painel em https://abnafrobiznetwork.com para descarregar o documento em PDF!\n\nQualquer dúvida, estamos ao dispor.`;
+    } else if (pay.status === 'pendente') {
+      message = `Olá ${userName}! 💳\n\nConfirmamos a receção da sua inscrição para o curso *${courseTitle}*.\n\nA nossa equipa está a analisar o seu comprovativo de pagamento e dará novidades em breve!\n\nObrigado pela preferência, AfroBiz Network (ABN).`;
+    } else if (pay.status === 'aprovado') {
+      message = `Olá ${userName}! 🚀\n\nEntramos em contacto da AfroBiz Network (ABN) relativamente à sua inscrição no curso *${courseTitle}*.\n\nPrecisa de algum apoio ou ajuda com o acesso às videoaulas e materiais de apoio?`;
+    } else {
+      message = `Olá ${userName}! 👋\n\nEntramos em contacto da AfroBiz Network (ABN) relativamente ao curso *${courseTitle}*.\n\nComo podemos ajudar?`;
+    }
+
+    return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+  };
+
   // Calculate total approved revenue
   const totalApprovedRevenue = payments
     .filter(p => p.status === 'aprovado' && p.price && p.price !== 'Gratuito')
@@ -156,7 +180,7 @@ export default function AdminPagamentosPage() {
           Validação de Inscrições & Certificados
         </h1>
         <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
-          Verifique pagamentos, consulte o progresso dos alunos em tempo real e aprove os pedidos de emissão de certificados.
+          Verifique pagamentos, consulte o progresso dos alunos em tempo real e envie mensagens personalizadas pelo WhatsApp.
         </p>
       </header>
 
@@ -254,6 +278,7 @@ export default function AdminPagamentosPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           {paginatedPayments.map(pay => {
             const completedCount = pay.completedLessons?.length || (pay.completed ? 1 : 0);
+            const waUrl = getWhatsAppUrl(pay);
 
             return (
               <div 
@@ -338,7 +363,35 @@ export default function AdminPagamentosPage() {
                 </div>
 
                 {/* Actions & Certificate Approval Link */}
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                  
+                  {/* 💬 Dynamic WhatsApp Button with Pre-filled Personalized Template */}
+                  {waUrl && (
+                    <a
+                      href={waUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`Enviar mensagem personalizada no WhatsApp para ${pay.phone || pay.user?.name}`}
+                      style={{
+                        padding: '10px 18px',
+                        fontSize: '0.85rem',
+                        background: '#25D366',
+                        color: '#ffffff',
+                        border: 'none',
+                        borderRadius: '10px',
+                        fontWeight: 800,
+                        textDecoration: 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        boxShadow: '0 4px 12px rgba(37,211,102,0.25)',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      💬 WhatsApp
+                    </a>
+                  )}
+
                   {pay.proofUrl !== 'gratuito' ? (
                     <a
                       href={pay.proofUrl}
