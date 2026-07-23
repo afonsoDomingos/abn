@@ -1,29 +1,31 @@
+/* ──────────────────────────────────────────────
+   AUTH PAGES (LOGIN & REGISTRO) — Responsive Design
+────────────────────────────────────────────── */
 .authPage {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #070708;
+  background: #f8fafc;
   background-image: 
-    radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.06) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.8) 0%, #070708 100%);
-  padding: 3rem 1.5rem;
+    radial-gradient(circle at 10% 20%, rgba(255, 107, 0, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(42, 79, 166, 0.05) 0%, transparent 45%);
+  padding: 3rem 1.25rem;
+  font-family: 'Inter', sans-serif;
+  color: #0f172a;
 }
 
 .authCard {
-  max-width: 480px;
+  max-width: 520px;
   width: 100%;
-  padding: 3rem;
+  padding: 2.75rem 2.5rem;
   border-radius: 24px;
-  background: rgba(20, 20, 22, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.08);
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .authCard::before {
@@ -32,69 +34,156 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+  height: 3px;
+  background: linear-gradient(90deg, #ff6b00 0%, #ff8c3a 50%, #2a4fa6 100%);
 }
 
 .backHome {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: #64748b;
   font-size: 0.85rem;
+  font-weight: 600;
   text-decoration: none;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   transition: all 0.2s ease;
-  padding: 0.5rem 1rem;
+  padding: 6px 14px;
   border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
 }
 
 .backHome:hover {
-  color: #fff;
-  border-color: rgba(212, 175, 55, 0.4);
-  background: rgba(212, 175, 55, 0.05);
+  color: #ff6b00;
+  border-color: rgba(255, 107, 0, 0.3);
+  background: #fff7ed;
   transform: translateX(-4px);
 }
 
 .header {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
 .header h1 {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-family: 'Outfit', sans-serif;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   font-weight: 800;
   letter-spacing: -0.02em;
+  color: #0f172a;
 }
 
 .header p {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.95rem;
+  color: #64748b;
+  font-size: 0.92rem;
+  line-height: 1.5;
 }
 
+/* ──────────────────────────────────────────────
+   MULTI-STEP PROGRESS BAR
+────────────────────────────────────────────── */
+.stepBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.stepBarProgressTrack {
+  position: absolute;
+  top: 18px;
+  left: 30px;
+  right: 30px;
+  height: 3px;
+  background: #e2e8f0;
+  z-index: 1;
+}
+
+.stepBarProgressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff6b00, #ff8c3a);
+  transition: width 0.3s ease;
+  border-radius: 3px;
+}
+
+.stepItem {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.stepBubble {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.25s ease;
+}
+
+.stepItemActive .stepBubble {
+  background: #ff6b00;
+  border-color: #ff6b00;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
+}
+
+.stepItemDone .stepBubble {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #ffffff;
+}
+
+.stepLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stepItemActive .stepLabel {
+  color: #ff6b00;
+}
+
+/* ──────────────────────────────────────────────
+   FORM FIELDS
+────────────────────────────────────────────── */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   text-align: left;
 }
 
 .inputGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
 .inputGroup label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #334155;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 
 .inputWrapper {
@@ -107,7 +196,7 @@
 .inputIcon {
   position: absolute;
   left: 14px;
-  color: rgba(255, 255, 255, 0.35);
+  color: #94a3b8;
   pointer-events: none;
   transition: color 0.2s ease;
 }
@@ -116,28 +205,17 @@
 .inputWrapper select,
 .inputWrapper textarea {
   width: 100%;
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 13px 16px 13px 44px !important;
+  background: #f8fafc !important;
+  border: 1.5px solid #cbd5e1;
+  padding: 12px 16px 12px 44px !important;
   border-radius: 12px;
-  color: #fff !important;
+  color: #0f172a !important;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   transition: all 0.2s ease;
   box-sizing: border-box;
-  -webkit-text-fill-color: #fff !important;
-}
-
-/* Fix browser autofill overriding our dark styles */
-.inputWrapper input:-webkit-autofill,
-.inputWrapper input:-webkit-autofill:hover,
-.inputWrapper input:-webkit-autofill:focus,
-.inputWrapper input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 100px #141416 inset !important;
-  -webkit-text-fill-color: #fff !important;
-  background-color: #141416 !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  caret-color: #fff;
+  outline: none;
+  -webkit-text-fill-color: #0f172a !important;
 }
 
 .inputWrapper select {
@@ -147,28 +225,28 @@
 }
 
 .inputWrapper select option {
-  background: #141416;
-  color: #fff;
+  background: #ffffff;
+  color: #0f172a;
 }
 
 .inputWrapper input:focus,
 .inputWrapper select:focus,
 .inputWrapper textarea:focus {
   outline: none;
-  border-color: #d4af37;
-  background: rgba(212, 175, 55, 0.04) !important;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  border-color: #ff6b00;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 3.5px rgba(255, 107, 0, 0.12);
 }
 
 .inputWrapper input:focus + .inputIcon,
 .inputWrapper select:focus + .inputIcon,
 .inputWrapper textarea:focus + .inputIcon {
-  color: #d4af37;
+  color: #ff6b00;
 }
 
 .inputWrapper input::placeholder,
 .inputWrapper textarea::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+  color: #94a3b8;
 }
 
 .options {
@@ -176,7 +254,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
-  margin-top: -0.25rem;
+  margin-top: 0.2rem;
 }
 
 .remember {
@@ -184,18 +262,21 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.5);
+  color: #64748b;
+  font-weight: 500;
   user-select: none;
 }
 
 .remember input {
-  accent-color: #d4af37;
+  accent-color: #ff6b00;
   cursor: pointer;
+  width: 16px;
+  height: 16px;
 }
 
 .forgot {
-  color: #d4af37;
-  font-weight: 500;
+  color: #ff6b00;
+  font-weight: 700;
   text-decoration: none;
   transition: opacity 0.2s;
 }
@@ -205,9 +286,9 @@
 }
 
 .footerText {
-  margin-top: 2rem;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.5);
+  margin-top: 1.75rem;
+  font-size: 0.88rem;
+  color: #64748b;
   text-align: center;
 }
 
@@ -221,53 +302,52 @@
   text-decoration: underline;
 }
 
-/* Multi-step Registration styles */
-.sectionTitle {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  color: #d4af37;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  margin: 0 0 1.25rem 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.stepDivider {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
 .grid2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 .infoBox {
-  background: rgba(212, 175, 55, 0.03);
-  border: 1px dashed rgba(212, 175, 55, 0.15);
-  padding: 1rem 1.2rem;
+  background: #fff7ed;
+  border: 1.5px dashed #ffedd5;
+  padding: 0.9rem 1.1rem;
   border-radius: 12px;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
-  margin-top: 0.75rem;
+  font-size: 0.82rem;
+  color: #c2410c;
+  line-height: 1.55;
+  margin-top: 0.5rem;
 }
 
-/* Mobile responsive */
-@media (max-width: 640px) {
+.stepActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.stepActions button {
+  flex: 1;
+}
+
+/* Responsive breakpoint */
+@media (max-width: 580px) {
   .authPage {
-    padding: 1.5rem 1rem;
+    padding: 1.25rem 0.85rem;
   }
   .authCard {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.25rem;
     border-radius: 20px;
   }
   .grid2 {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.85rem;
+  }
+  .header h1 {
+    font-size: 1.7rem;
+  }
+  .stepLabel {
+    font-size: 0.65rem;
   }
 }

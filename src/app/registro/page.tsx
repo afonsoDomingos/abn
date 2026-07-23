@@ -15,7 +15,9 @@ import {
   Compass,
   Link2,
   FileText,
-  ArrowLeft
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2
 } from 'lucide-react';
 import styles from '../login/Auth.module.css';
 
@@ -32,6 +34,9 @@ const COUNTRIES = [
 ];
 
 export default function RegisterPage() {
+  const [currentStep, setCurrentStep] = useState(1);
+
+  // Form state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,6 +51,34 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  // Validate step before advancing
+  const handleNextStep = () => {
+    setError('');
+
+    if (currentStep === 1) {
+      if (!name.trim()) {
+        setError('Por favor, indique o seu nome completo.');
+        return;
+      }
+      if (!email.trim() || !email.includes('@')) {
+        setError('Por favor, indique um endereço de email válido.');
+        return;
+      }
+      if (password.length < 6) {
+        setError('A palavra-passe deve ter pelo menos 6 caracteres.');
+        return;
+      }
+      setCurrentStep(2);
+    } else if (currentStep === 2) {
+      setCurrentStep(3);
+    }
+  };
+
+  const handlePrevStep = () => {
+    setError('');
+    setCurrentStep(prev => Math.max(1, prev - 1));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,7 +116,7 @@ export default function RegisterPage() {
         localStorage.setItem('user', JSON.stringify(data.user));
         router.push('/dashboard');
       } else {
-        setError(data.error || 'Erro ao registar');
+        setError(data.error || 'Erro ao registar conta.');
       }
     } catch (err) {
       setError('Erro de ligação ao servidor.');
@@ -94,31 +127,63 @@ export default function RegisterPage() {
 
   return (
     <div className={styles.authPage}>
-      <div className={styles.authCard} style={{ maxWidth: '580px' }}>
-        <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1.5rem' }}>
+      <div className={styles.authCard}>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1.25rem' }}>
           <Link href="/" className={styles.backHome}>
             <ArrowLeft size={16} /> Voltar ao Site
           </Link>
         </div>
-        
+
         <div className={styles.header}>
           <h1 className="text-gradient-gold">Junte-se à Rede</h1>
           <p>Comece a sua jornada empresarial hoje na ABN.</p>
         </div>
 
+        {/* ── STEP PROGRESS BAR ── */}
+        <div className={styles.stepBar}>
+          <div className={styles.stepBarProgressTrack}>
+            <div 
+              className={styles.stepBarProgressFill} 
+              style={{ width: currentStep === 1 ? '0%' : currentStep === 2 ? '50%' : '100%' }}
+            />
+          </div>
+
+          <div 
+            className={`${styles.stepItem} ${currentStep === 1 ? styles.stepItemActive : currentStep > 1 ? styles.stepItemDone : ''}`}
+            onClick={() => currentStep > 1 && setCurrentStep(1)}
+          >
+            <div className={styles.stepBubble}>
+              {currentStep > 1 ? <CheckCircle2 size={18} /> : 1}
+            </div>
+            <span className={styles.stepLabel}>Acesso</span>
+          </div>
+
+          <div 
+            className={`${styles.stepItem} ${currentStep === 2 ? styles.stepItemActive : currentStep > 2 ? styles.stepItemDone : ''}`}
+            onClick={() => currentStep > 2 && setCurrentStep(2)}
+          >
+            <div className={styles.stepBubble}>
+              {currentStep > 2 ? <CheckCircle2 size={18} /> : 2}
+            </div>
+            <span className={styles.stepLabel}>Perfil</span>
+          </div>
+
+          <div className={`${styles.stepItem} ${currentStep === 3 ? styles.stepItemActive : ''}`}>
+            <div className={styles.stepBubble}>3</div>
+            <span className={styles.stepLabel}>Detalhes</span>
+          </div>
+        </div>
+
         {error && (
-          <div style={{ color: '#ff4d4d', marginBottom: '1.5rem', fontSize: '0.9rem', background: 'rgba(255,77,77,0.1)', padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(255,77,77,0.2)' }}>
+          <div style={{ color: '#dc2626', marginBottom: '1.25rem', fontSize: '0.88rem', background: '#fef2f2', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #fecaca', fontWeight: 600 }}>
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           
-          {/* 1. DADOS DE ACESSO */}
-          <div className={styles.stepDivider}>
-            <h3 className={styles.sectionTitle}>
-              <span>1.</span> Dados de Acesso
-            </h3>
+          {/* ──────────────── PASSO 1: DADOS DE ACESSO ──────────────── */}
+          {currentStep === 1 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div className={styles.inputGroup}>
                 <label>Nome Completo *</label>
@@ -160,114 +225,62 @@ export default function RegisterPage() {
                   />
                   <Lock className={styles.inputIcon} size={18} />
                 </div>
-                <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)', marginTop: '2px' }}>
+                <span style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '2px' }}>
                   A palavra-passe deve conter pelo menos 6 caracteres.
                 </span>
               </div>
-            </div>
-          </div>
 
-          {/* 2. TIPO DE PERFIL */}
-          <div className={styles.stepDivider}>
-            <h3 className={styles.sectionTitle}>
-              <span>2.</span> Tipo de Perfil
-            </h3>
-            <div className={styles.inputGroup}>
-              <label>Tipo de Conta *</label>
-              <div className={styles.inputWrapper}>
-                <select
-                  value={role}
-                  onChange={e => setRole(e.target.value)}
-                  required
-                >
-                  <option value="empreendedor">Empreendedor</option>
-                  <option value="startup">Startup</option>
-                  <option value="investidor">Investidor</option>
-                  <option value="mentor">Mentor</option>
-                </select>
-                <Briefcase className={styles.inputIcon} size={18} />
-              </div>
-              
-              <div className={styles.infoBox}>
-                {role === 'investidor' ? (
-                  <>
-                    💼 <strong>Investidor:</strong> Aceda a startups qualificadas, consulte pitch decks detalhados e envie propostas de financiamento na nossa plataforma.
-                  </>
-                ) : role === 'mentor' ? (
-                  <>
-                    🤝 <strong>Mentor:</strong> Ofereça mentoria estratégica e smart money, acompanhe o crescimento de startups e contribua para o ecossistema ABN.
-                  </>
-                ) : role === 'startup' ? (
-                  <>
-                    🏢 <strong>Startup:</strong> Registe o seu negócio, aceda a oportunidades de investimento, cursos certificados exclusivos e aumente o seu ABN Score.
-                  </>
-                ) : (
-                  <>
-                    🚀 <strong>Empreendedor:</strong> Desenvolva as suas ideias, aceda a cursos certificados, candidate-se a programas de incubação e solicite mentorias no ABN Hub.
-                  </>
-                )}
-              </div>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={handleNextStep}
+                style={{ marginTop: '0.75rem', padding: '14px 20px', width: '100%', fontSize: '0.92rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}
+              >
+                Continuar para Perfil →
+              </button>
             </div>
-          </div>
+          )}
 
-          {/* 3. CONTACTO E LOCALIZAÇÃO */}
-          <div className={styles.stepDivider}>
-            <h3 className={styles.sectionTitle}>
-              <span>3.</span> Contacto e Localização
-            </h3>
+          {/* ──────────────── PASSO 2: TIPO DE CONTA & PERFIL ──────────────── */}
+          {currentStep === 2 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div className={styles.grid2}>
-                <div className={styles.inputGroup}>
-                  <label>WhatsApp / Telefone</label>
-                  <div className={styles.inputWrapper}>
-                    <input
-                      type="tel"
-                      placeholder="+245 96 123 4567"
-                      value={phone}
-                      onChange={e => setPhone(e.target.value)}
-                    />
-                    <Phone className={styles.inputIcon} size={18} />
-                  </div>
-                </div>
-
-                <div className={styles.inputGroup}>
-                  <label>País</label>
-                  <div className={styles.inputWrapper}>
-                    <select
-                      value={country}
-                      onChange={e => setCountry(e.target.value)}
-                    >
-                      <option value="">Seleccionar país</option>
-                      {COUNTRIES.map(c => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                    <Globe2 className={styles.inputIcon} size={18} />
-                  </div>
-                </div>
-              </div>
-
               <div className={styles.inputGroup}>
-                <label>Cidade</label>
+                <label>Tipo de Conta *</label>
                 <div className={styles.inputWrapper}>
-                  <input
-                    type="text"
-                    placeholder="Ex: Bissau, Maputo, Lisboa..."
-                    value={city}
-                    onChange={e => setCity(e.target.value)}
-                  />
-                  <MapPin className={styles.inputIcon} size={18} />
+                  <select
+                    value={role}
+                    onChange={e => setRole(e.target.value)}
+                    required
+                  >
+                    <option value="empreendedor">Empreendedor</option>
+                    <option value="startup">Startup</option>
+                    <option value="investidor">Investidor</option>
+                    <option value="mentor">Mentor</option>
+                  </select>
+                  <Briefcase className={styles.inputIcon} size={18} />
+                </div>
+                
+                <div className={styles.infoBox}>
+                  {role === 'investidor' ? (
+                    <>
+                      💼 <strong>Investidor:</strong> Aceda a startups qualificadas, consulte pitch decks detalhados e envie propostas de financiamento na nossa plataforma.
+                    </>
+                  ) : role === 'mentor' ? (
+                    <>
+                      🤝 <strong>Mentor:</strong> Ofereça mentoria estratégica e smart money, acompanhe o crescimento de startups e contribua para o ecossistema ABN.
+                    </>
+                  ) : role === 'startup' ? (
+                    <>
+                      🏢 <strong>Startup:</strong> Registe o seu negócio, aceda a oportunidades de investimento, cursos certificados exclusivos e aumente o seu ABN Score.
+                    </>
+                  ) : (
+                    <>
+                      🚀 <strong>Empreendedor:</strong> Desenvolva as suas ideias, aceda a cursos certificados, candidate-se a programas de incubação e solicite mentorias no ABN Hub.
+                    </>
+                  )}
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* 4. PERFIL PROFISSIONAL */}
-          <div style={{ marginBottom: '0.5rem' }}>
-            <h3 className={styles.sectionTitle}>
-              <span>4.</span> Perfil Profissional
-            </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div className={styles.grid2}>
                 <div className={styles.inputGroup}>
                   <label>
@@ -301,16 +314,86 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              <div className={styles.inputGroup}>
-                <label>LinkedIn</label>
-                <div className={styles.inputWrapper}>
-                  <input
-                    type="url"
-                    placeholder="https://linkedin.com/in/seuperfil"
-                    value={linkedin}
-                    onChange={e => setLinkedin(e.target.value)}
-                  />
-                  <Link2 className={styles.inputIcon} size={18} />
+              <div className={styles.stepActions}>
+                <button
+                  type="button"
+                  className="btn-outline"
+                  onClick={handlePrevStep}
+                  style={{ padding: '12px 18px', fontSize: '0.88rem' }}
+                >
+                  ← Anterior
+                </button>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={handleNextStep}
+                  style={{ padding: '12px 20px', fontSize: '0.88rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}
+                >
+                  Continuar →
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ──────────────── PASSO 3: DETALHES & LOCALIZAÇÃO ──────────────── */}
+          {currentStep === 3 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div className={styles.grid2}>
+                <div className={styles.inputGroup}>
+                  <label>WhatsApp / Telefone</label>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      type="tel"
+                      placeholder="+245 96 123 4567"
+                      value={phone}
+                      onChange={e => setPhone(e.target.value)}
+                    />
+                    <Phone className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>País</label>
+                  <div className={styles.inputWrapper}>
+                    <select
+                      value={country}
+                      onChange={e => setCountry(e.target.value)}
+                    >
+                      <option value="">Seleccionar país</option>
+                      {COUNTRIES.map(c => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                    <Globe2 className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.grid2}>
+                <div className={styles.inputGroup}>
+                  <label>Cidade</label>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      type="text"
+                      placeholder="Ex: Bissau, Maputo..."
+                      value={city}
+                      onChange={e => setCity(e.target.value)}
+                    />
+                    <MapPin className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>LinkedIn</label>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      type="url"
+                      placeholder="https://linkedin.com/in/..."
+                      value={linkedin}
+                      onChange={e => setLinkedin(e.target.value)}
+                    />
+                    <Link2 className={styles.inputIcon} size={18} />
+                  </div>
                 </div>
               </div>
 
@@ -321,8 +404,8 @@ export default function RegisterPage() {
                 <div className={styles.inputWrapper}>
                   <textarea
                     placeholder={role === 'investidor'
-                      ? 'Ex: Invisto em startups de Agro-Tech na África Lusófona com tickets entre 10k-100k USD...'
-                      : 'Ex: Desenvolvemos uma plataforma de pagamentos para agricultores rurais em Moçambique...'}
+                      ? 'Ex: Invisto em startups de Agro-Tech na África Lusófona...'
+                      : 'Ex: Desenvolvemos soluções de tecnologia agrícola...'}
                     value={bio}
                     onChange={e => setBio(e.target.value)}
                     rows={3}
@@ -331,17 +414,29 @@ export default function RegisterPage() {
                   <FileText className={styles.inputIcon} size={18} style={{ alignSelf: 'flex-start', marginTop: '12px' }} />
                 </div>
               </div>
-            </div>
-          </div>
 
-          <button
-            type="submit"
-            className="btn-primary"
-            disabled={loading}
-            style={{ marginTop: '1rem', padding: '14px 20px', width: '100%', fontSize: '0.95rem' }}
-          >
-            {loading ? 'A criar conta...' : 'Criar Conta Gratuita →'}
-          </button>
+              <div className={styles.stepActions}>
+                <button
+                  type="button"
+                  className="btn-outline"
+                  onClick={handlePrevStep}
+                  disabled={loading}
+                  style={{ padding: '12px 18px', fontSize: '0.88rem' }}
+                >
+                  ← Anterior
+                </button>
+                <button
+                  type="submit"
+                  className="btn-primary"
+                  disabled={loading}
+                  style={{ padding: '14px 20px', fontSize: '0.92rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}
+                >
+                  {loading ? 'A criar conta...' : 'Criar Conta Gratuita 🚀'}
+                </button>
+              </div>
+            </div>
+          )}
+
         </form>
 
         <p className={styles.footerText}>

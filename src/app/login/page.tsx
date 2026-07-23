@@ -47,7 +47,7 @@ export default function LoginPage() {
   return (
     <div className={styles.authPage}>
       <div className={styles.authCard}>
-        <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1.25rem' }}>
           <Link href="/" className={styles.backHome}>
             <ArrowLeft size={16} /> Voltar ao Site
           </Link>
@@ -57,7 +57,11 @@ export default function LoginPage() {
           <p>Entre na sua conta ABN para continuar.</p>
         </div>
         
-        {error && <div style={{ color: '#ff4d4d', marginBottom: '1rem', fontSize: '0.9rem', background: 'rgba(255,77,77,0.1)', padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(255,77,77,0.2)' }}>{error}</div>}
+        {error && (
+          <div style={{ color: '#dc2626', marginBottom: '1.25rem', fontSize: '0.88rem', background: '#fef2f2', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #fecaca', fontWeight: 600 }}>
+            {error}
+          </div>
+        )}
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
@@ -95,7 +99,7 @@ export default function LoginPage() {
             <Link href="/recuperar" className={styles.forgot}>Esqueceu a senha?</Link>
           </div>
           
-          <button type="submit" className="btn-primary" disabled={loading} style={{ padding: '14px', width: '100%' }}>
+          <button type="submit" className="btn-primary" disabled={loading} style={{ padding: '14px', width: '100%', fontSize: '0.95rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             {loading ? 'A entrar...' : 'Entrar'}
           </button>
         </form>
