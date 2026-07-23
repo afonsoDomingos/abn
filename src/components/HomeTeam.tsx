@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './HomeTeam.module.css';
 
@@ -50,7 +50,7 @@ function getInitials(name: string): string {
 export default function HomeTeam() {
   const [team, setTeam] = useState<TeamMember[]>(FALLBACK);
   const [loading, setLoading] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [startIndex, setStartIndex] = useState(0);
   const [cardsPerPage, setCardsPerPage] = useState(4);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -69,7 +69,7 @@ export default function HomeTeam() {
       .catch(() => setLoading(false));
   }, []);
 
-  // Update cards per page based on window size
+  // Update cards per page based on screen width
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 480) setCardsPerPage(1);
@@ -83,38 +83,33 @@ export default function HomeTeam() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const totalPages = Math.ceil(team.length / cardsPerPage);
-
-  // Auto-rotate carousel every 4.5 seconds
+  // Auto-rotate 1 card at a time every 3.2 seconds automatically
   useEffect(() => {
-    if (loading || totalPages <= 1 || isPaused) return;
+    if (loading || team.length <= 1 || isPaused) return;
 
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % totalPages);
-    }, 4500);
+    const timer = setInterval(() => {
+      setStartIndex(prev => (prev + 1) % team.length);
+    }, 3200);
 
-    return () => clearInterval(interval);
-  }, [loading, totalPages, isPaused]);
+    return () => clearInterval(timer);
+  }, [loading, team.length, isPaused]);
 
   const handlePrev = () => {
-    setCurrentIndex(prev => (prev - 1 + totalPages) % totalPages);
+    setStartIndex(prev => (prev - 1 + team.length) % team.length);
   };
 
   const handleNext = () => {
-    setCurrentIndex(prev => (prev + 1) % totalPages);
+    setStartIndex(prev => (prev + 1) % team.length);
   };
 
-  // Get current visible subset of team members
-  const visibleMembers = team.slice(
-    currentIndex * cardsPerPage,
-    currentIndex * cardsPerPage + cardsPerPage
-  );
-
-  // If page overflows near the end, fill up with wrapping members
-  const displayMembers = [...visibleMembers];
-  if (displayMembers.length < cardsPerPage && team.length >= cardsPerPage) {
-    const needed = cardsPerPage - displayMembers.length;
-    displayMembers.push(...team.slice(0, needed));
+  // Build the list of visible cards wrapping around circularly
+  const displayMembers = [];
+  if (team.length > 0) {
+    const count = Math.min(cardsPerPage, team.length);
+    for (let i = 0; i < count; i++) {
+      const memberIdx = (startIndex + i) % team.length;
+      displayMembers.push(team[memberIdx]);
+    }
   }
 
   return (
@@ -130,7 +125,7 @@ export default function HomeTeam() {
 
           <div className={styles.headerActions}>
             {/* Carousel navigation arrows */}
-            {totalPages > 1 && (
+            {team.length > cardsPerPage && (
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button 
                   className={styles.navBtn} 
@@ -222,14 +217,14 @@ export default function HomeTeam() {
             </div>
 
             {/* Pagination dots */}
-            {totalPages > 1 && (
+            {team.length > cardsPerPage && (
               <div className={styles.dotsContainer}>
-                {Array.from({ length: totalPages }).map((_, dotIdx) => (
+                {team.map((_, dotIdx) => (
                   <button
                     key={dotIdx}
-                    className={`${styles.dot} ${currentIndex === dotIdx ? styles.dotActive : ''}`}
-                    onClick={() => setCurrentIndex(dotIdx)}
-                    aria-label={`Página ${dotIdx + 1}`}
+                    className={`${styles.dot} ${startIndex === dotIdx ? styles.dotActive : ''}`}
+                    onClick={() => setStartIndex(dotIdx)}
+                    aria-label={`Membro ${dotIdx + 1}`}
                   />
                 ))}
               </div>
