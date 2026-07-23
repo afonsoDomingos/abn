@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import dbConnect from '@/lib/mongodb';
 import Payment from '@/models/Payment';
+import Notification from '@/models/Notification';
 
 export const dynamic = 'force-dynamic';
 
@@ -78,7 +79,13 @@ export async function POST(request: Request) {
       status: 'pendente'
     });
 
-    return NextResponse.json({ success: true, payment });
+    // 5. Format WhatsApp Alert to Admin
+    const adminPhone = process.env.ADMIN_WHATSAPP || '245955000000'; // Default or configured WhatsApp admin phone
+    const studentName = session.name || 'Aluno';
+    const waText = encodeURIComponent(`🚨 *Novo Comprovativo Recebido!*\n\n📚 *Curso:* ${itemName}\n👤 *Aluno:* ${studentName}\n📱 *Contacto:* ${phone || 'N/A'}\n🏢 *Empresa:* ${company || 'N/A'}\n💰 *Valor:* ${price}\n\nPor favor, valide no painel Admin em /admin/pagamentos`);
+    const waUrl = `https://api.whatsapp.com/send?phone=${adminPhone}&text=${waText}`;
+
+    return NextResponse.json({ success: true, payment, adminWaUrl: waUrl });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -102,7 +109,7 @@ export async function PUT(request: Request) {
     }
 
     const body = await request.json();
-    const { paymentId, status, completed, certificateRequested } = body;
+    const { paymentId, status, completed, completedLessons, certificateRequested } = body;
 
     if (!paymentId) {
       return NextResponse.json({ error: 'ID do pagamento é obrigatório.' }, { status: 400 });
@@ -117,9 +124,27 @@ export async function PUT(request: Request) {
           return NextResponse.json({ error: 'Acesso negado.' }, { status: 403 });
         }
       }
+
       const payment = await Payment.findByIdAndUpdate(paymentId, { status }, { new: true });
       if (!payment) {
         return NextResponse.json({ error: 'Pagamento não encontrado.' }, { status: 404 });
+      }
+
+      // 3. Create Real-Time Bell Notification for Student
+      if (status === 'aprovado') {
+        await Notification.create({
+          user: payment.user,
+          title: 'Inscrição Aprovada! 🎓',
+          message: `A sua inscrição no curso "${payment.itemName}" foi aprovada com sucesso. Já pode assistir a todas as aulas!`,
+          link: '/dashboard/formacao'
+        });
+      } else if (status === 'rejeitado') {
+        await Notification.create({
+          user: payment.user,
+          title: 'Comprovativo Rejeitado ❌',
+          message: `O comprovativo enviado para o curso "${payment.itemName}" foi rejeitado. Por favor, verifique e reenvie.`,
+          link: '/dashboard/formacao'
+        });
       }
 
       // Send automatic email confirmation to student via Resend if approved
@@ -165,11 +190,6 @@ export async function PUT(request: Request) {
                   subject: emailSubject,
                   html: emailHtml
                 })
-              }).then(async (res) => {
-                if (!res.ok) {
-                  const errData = await res.json();
-                  console.error('Failed to send enrollment email confirmation:', errData);
-                }
               }).catch(err => {
                 console.error('Network error sending enrollment email:', err);
               });
@@ -183,7 +203,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: true, payment });
     }
 
-    // Progress updates (completed, certificateRequested)
+    // Progress updates (completed, completedLessons, certificateRequested)
     const payment = await Payment.findById(paymentId);
     if (!payment) {
       return NextResponse.json({ error: 'Pagamento não encontrado.' }, { status: 404 });
@@ -196,6 +216,7 @@ export async function PUT(request: Request) {
 
     const updates: any = {};
     if (completed !== undefined) updates.completed = completed;
+    if (completedLessons !== undefined) updates.completedLessons = completedLessons;
     if (certificateRequested !== undefined) updates.certificateRequested = certificateRequested;
 
     const updatedPayment = await Payment.findByIdAndUpdate(paymentId, updates, { new: true });

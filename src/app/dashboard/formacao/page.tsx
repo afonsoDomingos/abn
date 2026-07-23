@@ -26,6 +26,7 @@ export default function FormacaoPage() {
   const [submitting, setSubmitting] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState('');
   const [msg, setMsg] = useState({ type: '', text: '' });
+  const [adminWaLink, setAdminWaLink] = useState('');
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'disponiveis' | 'minhas'>('disponiveis');
@@ -150,6 +151,9 @@ export default function FormacaoPage() {
       });
       const data = await res.json();
       if (data.success) {
+        if (data.adminWaUrl) {
+          setAdminWaLink(data.adminWaUrl);
+        }
         setMsg({ type: 'success', text: `Comprovativo para "${selectedCourse.title}" enviado! A aguardar verificação administrativa.` });
         setShowModal(false);
         setFile(null);
@@ -165,7 +169,7 @@ export default function FormacaoPage() {
     }
   };
 
-  const handleUpdateProgress = async (paymentId: string, updates: { completed?: boolean; certificateRequested?: boolean }) => {
+  const handleUpdateProgress = async (paymentId: string, updates: { completed?: boolean; completedLessons?: number[]; certificateRequested?: boolean }) => {
     setProcessingId(paymentId);
     try {
       const res = await fetch('/api/payments', {
@@ -186,6 +190,22 @@ export default function FormacaoPage() {
     }
   };
 
+  const handleToggleLessonComplete = async (payment: any, lessonIdx: number, totalLessonsCount: number) => {
+    const currentList = payment.completedLessons || [];
+    let updatedList: number[];
+    if (currentList.includes(lessonIdx)) {
+      updatedList = currentList.filter((idx: number) => idx !== lessonIdx);
+    } else {
+      updatedList = [...currentList, lessonIdx];
+    }
+
+    const isAllDone = updatedList.length >= totalLessonsCount;
+    await handleUpdateProgress(payment._id, {
+      completedLessons: updatedList,
+      completed: isAllDone
+    });
+  };
+
   const getEnrollment = (courseTitle: string) => {
     return payments.find(p => p.itemName.trim().toLowerCase() === courseTitle.trim().toLowerCase());
   };
@@ -193,7 +213,7 @@ export default function FormacaoPage() {
   if (loading) return <div style={{ padding: '3rem', color: '#0f172a', fontWeight: 600 }}>A carregar academia...</div>;
 
   return (
-    <div style={{ maxWidth: '920px' }}>
+    <div style={{ maxWidth: '940px' }}>
       <header style={{ marginBottom: '2.5rem' }}>
         <h1 style={{ fontSize: '2.2rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', marginBottom: '0.4rem' }}>
           Academia & Formação
@@ -207,14 +227,41 @@ export default function FormacaoPage() {
         <div style={{
           color: msg.type === 'success' ? '#16a34a' : '#dc2626',
           background: msg.type === 'success' ? '#f0fdf4' : '#fef2f2',
-          padding: '1rem 1.25rem',
-          borderRadius: '14px',
+          padding: '1.2rem 1.4rem',
+          borderRadius: '16px',
           border: `1px solid ${msg.type === 'success' ? '#bbf7d0' : '#fecaca'}`,
           marginBottom: '2rem',
           fontWeight: 600,
-          fontSize: '0.92rem'
+          fontSize: '0.95rem',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '1rem'
         }}>
-          {msg.text}
+          <span>{msg.text}</span>
+          {/* 5. Alerta no WhatsApp do Admin Link */}
+          {adminWaLink && (
+            <a
+              href={adminWaLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: '#25D366',
+                color: '#ffffff',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                fontWeight: 800,
+                fontSize: '0.8rem',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              💬 Avisar Admin no WhatsApp
+            </a>
+          )}
         </div>
       )}
 
@@ -286,45 +333,102 @@ export default function FormacaoPage() {
           return displayCourses.map((course) => {
             const enrollment = getEnrollment(course.title);
             const status = enrollment ? enrollment.status : 'none';
-            return (
-              <div key={course.id} style={{ padding: '2rem', borderRadius: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', flexWrap: 'wrap', gap: '1.5rem' }}>
-                <div>
-                  <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#ff6b00', fontWeight: 800, letterSpacing: '0.08em' }}>Curso Certificado</span>
-                    <span style={{ fontSize: '0.78rem', fontWeight: 800, color: isCoursePaid(course) ? '#2a4fa6' : '#16a34a', background: isCoursePaid(course) ? '#eff6ff' : '#f0fdf4', padding: '3px 10px', borderRadius: '50px', border: `1px solid ${isCoursePaid(course) ? '#bfdbfe' : '#bbf7d0'}` }}>
-                      {course.price}
-                    </span>
-                    {status === 'aprovado' && (
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#f0fdf4', color: '#16a34a', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #bbf7d0' }}>
-                        ✓ Inscrito
-                      </span>
-                    )}
-                    {status === 'pendente' && (
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#fefce8', color: '#ca8a04', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #fef08a' }}>
-                        ⏳ Pendente
-                      </span>
-                    )}
-                    {status === 'rejeitado' && (
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#fef2f2', color: '#dc2626', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #fecaca' }}>
-                        ✕ Rejeitado
-                      </span>
-                    )}
-                  </div>
-                  <h3 style={{ color: '#0f172a', margin: '8px 0', fontSize: '1.3rem', fontFamily: 'Outfit', fontWeight: 800 }}>{course.title}</h3>
-                  <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.88rem', color: '#64748b', fontWeight: 500 }}>
-                    <span>👨‍🏫 {course.instructor}</span>
-                    <span>⏱️ {course.duration}</span>
-                    <span>📚 {course.lessons} Aulas</span>
-                  </div>
-                </div>
+            const totalLessons = course.lessonsList && course.lessonsList.length > 0 ? course.lessonsList.length : (course.lessons || 1);
+            const doneCount = enrollment?.completedLessons ? enrollment.completedLessons.length : (enrollment?.completed ? totalLessons : 0);
+            const progressPercent = Math.min(100, Math.round((doneCount / totalLessons) * 100));
 
-                {/* Action buttons */}
-                <div>
-                  {status === 'aprovado' && (
+            return (
+              <div key={course.id} style={{ padding: '2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
+                  <div>
+                    <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#ff6b00', fontWeight: 800, letterSpacing: '0.08em' }}>Curso Certificado</span>
+                      <span style={{ fontSize: '0.78rem', fontWeight: 800, color: isCoursePaid(course) ? '#2a4fa6' : '#16a34a', background: isCoursePaid(course) ? '#eff6ff' : '#f0fdf4', padding: '3px 10px', borderRadius: '50px', border: `1px solid ${isCoursePaid(course) ? '#bfdbfe' : '#bbf7d0'}` }}>
+                        {course.price}
+                      </span>
+                      {status === 'aprovado' && (
+                        <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#f0fdf4', color: '#16a34a', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #bbf7d0' }}>
+                          ✓ Inscrito
+                        </span>
+                      )}
+                      {status === 'pendente' && (
+                        <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#fefce8', color: '#ca8a04', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #fef08a' }}>
+                          ⏳ Pendente
+                        </span>
+                      )}
+                      {status === 'rejeitado' && (
+                        <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#fef2f2', color: '#dc2626', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #fecaca' }}>
+                          ✕ Rejeitado
+                        </span>
+                      )}
+                    </div>
+                    <h3 style={{ color: '#0f172a', margin: '8px 0', fontSize: '1.3rem', fontFamily: 'Outfit', fontWeight: 800 }}>{course.title}</h3>
+                    <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.88rem', color: '#64748b', fontWeight: 500 }}>
+                      <span>👨‍🏫 {course.instructor}</span>
+                      <span>⏱️ {course.duration}</span>
+                      <span>📚 {totalLessons} Aulas</span>
+                    </div>
+                  </div>
+
+                  {/* Action buttons */}
+                  <div>
+                    {status === 'aprovado' && (
+                      <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                        {(((course.videoUrl && course.videoUrl.trim() !== '') || (course.lessonsList && course.lessonsList.length > 0)) && course.videoVisible !== false) && (
+                          <button
+                            style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#dc2626', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(220,38,38,0.2)' }}
+                            onClick={() => {
+                              const lessons = course.lessonsList && course.lessonsList.length > 0
+                                ? course.lessonsList
+                                : [{ title: 'Aula Geral / Apresentação', videoUrl: course.videoUrl }];
+                              setVideoCourse(course);
+                              setActiveVideoUrl(lessons[0].videoUrl);
+                              setActiveVideoTitle(lessons[0].title);
+                              setShowVideoModal(true);
+                            }}
+                          >
+                            🎥 Assistir Aulas
+                          </button>
+                        )}
+
+                        {!enrollment.completed ? (
+                          <button
+                            style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#ff6b00', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', boxShadow: '0 4px 14px rgba(255,107,0,0.25)' }}
+                            disabled={processingId === enrollment._id}
+                            onClick={() => handleUpdateProgress(enrollment._id, { completed: true })}
+                          >
+                            {processingId === enrollment._id ? 'A processar...' : '✔️ Concluir Curso'}
+                          </button>
+                        ) : (
+                          <>
+                            {!enrollment.certificateRequested ? (
+                              <button
+                                style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#16a34a', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
+                                disabled={processingId === enrollment._id}
+                                onClick={() => handleUpdateProgress(enrollment._id, { certificateRequested: true })}
+                              >
+                                {processingId === enrollment._id ? 'A processar...' : '🎓 Solicitar Certificado'}
+                              </button>
+                            ) : (
+                              <button
+                                style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#2563eb', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
+                                onClick={() => {
+                                  setSelectedCourse(course);
+                                  setShowCert(true);
+                                }}
+                              >
+                                🎓 Ver Certificado
+                              </button>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    )}
+
                     <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                      {(((course.videoUrl && course.videoUrl.trim() !== '') || (course.lessonsList && course.lessonsList.length > 0)) && course.videoVisible !== false) && (
+                      {status !== 'aprovado' && (((course.videoUrl && course.videoUrl.trim() !== '') || (course.lessonsList && course.lessonsList.length > 0)) && course.videoVisible !== false) && (
                         <button
-                          style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#dc2626', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(220,38,38,0.2)' }}
+                          style={{ padding: '10px 18px', fontSize: '0.85rem', fontWeight: 700, color: '#ff6b00', border: '1.5px solid #ff6b00', borderRadius: '10px', cursor: 'pointer', background: '#fff7ed' }}
                           onClick={() => {
                             const lessons = course.lessonsList && course.lessonsList.length > 0
                               ? course.lessonsList
@@ -335,131 +439,96 @@ export default function FormacaoPage() {
                             setShowVideoModal(true);
                           }}
                         >
-                          🎥 Assistir Aulas
+                          🎥 Aula de Introdução
                         </button>
                       )}
 
-                      {!enrollment.completed ? (
-                        <>
-                          <span style={{ fontSize: '0.85rem', fontWeight: 700, background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0', padding: '8px 18px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
-                            ✅ Inscrito
-                          </span>
-                          <button
-                            style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#ff6b00', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', boxShadow: '0 4px 14px rgba(255,107,0,0.25)' }}
-                            disabled={processingId === enrollment._id}
-                            onClick={() => handleUpdateProgress(enrollment._id, { completed: true })}
-                          >
-                            {processingId === enrollment._id ? 'A processar...' : '✔️ Concluir Curso'}
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <span style={{ fontSize: '0.85rem', fontWeight: 700, background: '#fff7ed', color: '#ff6b00', border: '1px solid #ffedd5', padding: '8px 18px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
-                            🎉 Concluído
-                          </span>
-
-                          {!enrollment.certificateRequested ? (
-                            <button
-                              style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#16a34a', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
-                              disabled={processingId === enrollment._id}
-                              onClick={() => handleUpdateProgress(enrollment._id, { certificateRequested: true })}
-                            >
-                              {processingId === enrollment._id ? 'A processar...' : '🎓 Solicitar Certificado'}
-                            </button>
-                          ) : (
-                            <button
-                              style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#2563eb', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
-                              onClick={() => {
-                                setSelectedCourse(course);
-                                setShowCert(true);
-                              }}
-                            >
-                              🎓 Ver Certificado
-                            </button>
-                          )}
-                        </>
+                      {status === 'pendente' && (
+                        <span style={{ fontSize: '0.85rem', fontWeight: 700, background: '#fefce8', color: '#ca8a04', border: '1px solid #fef08a', padding: '8px 18px', borderRadius: '40px' }}>
+                          ⏳ Pagamento em Verificação
+                        </span>
                       )}
-                    </div>
-                  )}
-
-                  <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                    {status !== 'aprovado' && (((course.videoUrl && course.videoUrl.trim() !== '') || (course.lessonsList && course.lessonsList.length > 0)) && course.videoVisible !== false) && (
-                      <button
-                        style={{ padding: '10px 18px', fontSize: '0.85rem', fontWeight: 700, color: '#ff6b00', border: '1.5px solid #ff6b00', borderRadius: '10px', cursor: 'pointer', background: '#fff7ed' }}
-                        onClick={() => {
-                          const lessons = course.lessonsList && course.lessonsList.length > 0
-                            ? course.lessonsList
-                            : [{ title: 'Aula Geral / Apresentação', videoUrl: course.videoUrl }];
-                          setVideoCourse(course);
-                          setActiveVideoUrl(lessons[0].videoUrl);
-                          setActiveVideoTitle(lessons[0].title);
-                          setShowVideoModal(true);
-                        }}
-                      >
-                        🎥 Aula de Introdução
-                      </button>
-                    )}
-
-                    {status === 'pendente' && (
-                      <span style={{ fontSize: '0.85rem', fontWeight: 700, background: '#fefce8', color: '#ca8a04', border: '1px solid #fef08a', padding: '8px 18px', borderRadius: '40px' }}>
-                        ⏳ Pagamento em Verificação
-                      </span>
-                    )}
-                    {status === 'rejeitado' && (
-                      <button
-                        style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#dc2626', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
-                        onClick={() => {
-                          setCourseToEnroll(course);
-                          setShowEnrollConfirmModal(true);
-                        }}
-                      >
-                        ❌ Rejeitado - Reenviar
-                      </button>
-                    )}
-                    {status === 'none' && (
-                      <button
-                        style={{
-                          padding: '12px 24px',
-                          fontSize: '0.88rem',
-                          fontWeight: 800,
-                          background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)',
-                          color: '#ffffff',
-                          border: 'none',
-                          borderRadius: '12px',
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 14px rgba(255, 107, 0, 0.3)',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.04em',
-                          transition: 'transform 0.2s ease, box-shadow 0.2s ease'
-                        }}
-                        onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
-                        onMouseLeave={e => (e.currentTarget.style.transform = 'translateY(0)')}
-                        onClick={() => {
-                          const enrollment = getEnrollment(course.title);
-                          if (enrollment && (enrollment.status === 'aprovado' || enrollment.status === 'pendente')) {
-                            setMsg({ type: 'error', text: `Já se encontra inscrito ou a aguardar validação para o curso "${course.title}".` });
-                            return;
-                          }
-                          
-                          const hasInfo = enrollPhone && enrollCompany;
-                          if (hasInfo) {
-                            if (isCoursePaid(course)) {
-                              setSelectedCourse(course);
-                              setShowModal(true);
-                            } else {
-                              handleEnrollFree(course, enrollPhone, enrollCompany);
-                            }
-                          } else {
+                      {status === 'rejeitado' && (
+                        <button
+                          style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#dc2626', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
+                          onClick={() => {
                             setCourseToEnroll(course);
                             setShowEnrollConfirmModal(true);
-                          }
-                        }}
-                      >
-                        {isCoursePaid(course) ? 'Comprar e Inscrever' : 'Inscrever Grátis'}
-                      </button>
-                    )}
+                          }}
+                        >
+                          ❌ Rejeitado - Reenviar
+                        </button>
+                      )}
+                      {status === 'none' && (
+                        <button
+                          style={{
+                            padding: '12px 24px',
+                            fontSize: '0.88rem',
+                            fontWeight: 800,
+                            background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)',
+                            color: '#ffffff',
+                            border: 'none',
+                            borderRadius: '12px',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 14px rgba(255, 107, 0, 0.3)',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.04em',
+                            transition: 'transform 0.2s ease'
+                          }}
+                          onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
+                          onMouseLeave={e => (e.currentTarget.style.transform = 'translateY(0)')}
+                          onClick={() => {
+                            const enrollment = getEnrollment(course.title);
+                            if (enrollment && (enrollment.status === 'aprovado' || enrollment.status === 'pendente')) {
+                              setMsg({ type: 'error', text: `Já se encontra inscrito ou a aguardar validação para o curso "${course.title}".` });
+                              return;
+                            }
+                            
+                            const hasInfo = enrollPhone && enrollCompany;
+                            if (hasInfo) {
+                              if (isCoursePaid(course)) {
+                                setSelectedCourse(course);
+                                setShowModal(true);
+                              } else {
+                                handleEnrollFree(course, enrollPhone, enrollCompany);
+                              }
+                            } else {
+                              setCourseToEnroll(course);
+                              setShowEnrollConfirmModal(true);
+                            }
+                          }}
+                        >
+                          {isCoursePaid(course) ? 'Comprar e Inscrever' : 'Inscrever Grátis'}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
+
+                {/* 2. BARRA DE PROGRESSO AULA A AULA (% CONCLUÍDO) */}
+                {status === 'aprovado' && (
+                  <div style={{ paddingTop: '0.75rem', borderTop: '1px solid #f1f5f9' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem', fontSize: '0.82rem' }}>
+                      <span style={{ fontWeight: 700, color: '#334155' }}>
+                        Progresso do Curso: <span style={{ color: '#ff6b00' }}>{doneCount} de {totalLessons} Aulas</span>
+                      </span>
+                      <span style={{ fontWeight: 800, color: progressPercent === 100 ? '#16a34a' : '#ff6b00' }}>
+                        {progressPercent}% Concluído
+                      </span>
+                    </div>
+                    <div style={{ height: '8px', background: '#f1f5f9', borderRadius: '10px', overflow: 'hidden' }}>
+                      <div
+                        style={{
+                          height: '100%',
+                          width: `${progressPercent}%`,
+                          background: progressPercent === 100 ? '#16a34a' : 'linear-gradient(90deg, #ff6b00 0%, #ff8c3a 100%)',
+                          borderRadius: '10px',
+                          transition: 'width 0.3s ease'
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             );
           });
@@ -469,7 +538,7 @@ export default function FormacaoPage() {
       {/* Video Player Modal */}
       {showVideoModal && videoCourse && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.75)', backdropFilter: 'blur(6px)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
-          <div style={{ maxWidth: '1000px', width: '100%', position: 'relative', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', maxHeight: '90vh', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.2)' }}>
+          <div style={{ maxWidth: '1050px', width: '100%', position: 'relative', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', maxHeight: '90vh', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.2)' }}>
             <button
               style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: '#f1f5f9', border: 'none', color: '#64748b', fontSize: '1.5rem', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', fontWeight: 700, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               onClick={() => { setShowVideoModal(false); setVideoCourse(null); setActiveVideoUrl(''); setActiveVideoTitle(''); }}
@@ -485,7 +554,7 @@ export default function FormacaoPage() {
             {/* Split layout: sidebar and player */}
             <div style={{ display: 'flex', gap: '1.5rem', flex: 1, minHeight: 0, flexWrap: 'wrap' }}>
               <div style={{ 
-                flex: '1 1 260px', 
+                flex: '1 1 280px', 
                 background: '#f8fafc', 
                 border: '1px solid #e2e8f0', 
                 borderRadius: '16px', 
@@ -502,13 +571,13 @@ export default function FormacaoPage() {
                   const list = videoCourse.lessonsList && videoCourse.lessonsList.length > 0
                     ? videoCourse.lessonsList
                     : [{ title: 'Aula Geral / Apresentação', videoUrl: videoCourse.videoUrl }];
+                  const completedLessonsArr = courseEnrollment?.completedLessons || [];
 
                   return (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', width: '100%' }}>
                       <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', color: '#475569' }}>
                         <div>👨‍🏫 <strong>Formador:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.instructor}</span></div>
                         <div>⏱️ <strong>Duração:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.duration}</span></div>
-                        <div><strong>Descrição:</strong> <span style={{ color: '#64748b', fontSize: '0.78rem', display: 'block', marginTop: '2px' }}>{videoCourse.desc}</span></div>
                       </div>
 
                       <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '4px', display: 'block' }}>Lista de Aulas</span>
@@ -517,38 +586,63 @@ export default function FormacaoPage() {
                       {list.map((lesson: any, idx: number) => {
                         const isSelected = lesson.videoUrl === activeVideoUrl;
                         const isLocked = idx > 0 && !isApproved;
+                        const isChecked = completedLessonsArr.includes(idx);
+
                         return (
-                          <button
+                          <div
                             key={idx}
-                            disabled={isLocked}
-                            onClick={() => {
-                              if (isLocked) return;
-                              setActiveVideoUrl(lesson.videoUrl);
-                              setActiveVideoTitle(lesson.title);
-                            }}
                             style={{
-                              textAlign: 'left',
                               background: isSelected ? '#fff7ed' : '#ffffff',
                               border: `1.5px solid ${isSelected ? '#ff6b00' : '#e2e8f0'}`,
                               borderRadius: '10px',
                               padding: '10px 14px',
-                              color: isLocked ? '#94a3b8' : isSelected ? '#ff6b00' : '#334155',
-                              fontSize: '0.85rem',
-                              fontWeight: isSelected ? 700 : 500,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: '8px',
                               cursor: isLocked ? 'not-allowed' : 'pointer',
-                              transition: 'all 0.2s',
-                              display: 'block',
-                              width: '100%'
+                              transition: 'all 0.2s'
                             }}
                           >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                              <div style={{ display: 'flex', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                <span style={{ color: isSelected ? '#ff6b00' : '#94a3b8', fontWeight: 700 }}>{idx + 1}.</span>
-                                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{lesson.title}</span>
-                              </div>
-                              {isLocked && <span style={{ fontSize: '0.8rem', marginLeft: '6px' }}>🔒</span>}
-                            </div>
-                          </button>
+                            <button
+                              disabled={isLocked}
+                              onClick={() => {
+                                if (isLocked) return;
+                                setActiveVideoUrl(lesson.videoUrl);
+                                setActiveVideoTitle(lesson.title);
+                              }}
+                              style={{
+                                textAlign: 'left',
+                                background: 'none',
+                                border: 'none',
+                                padding: 0,
+                                color: isLocked ? '#94a3b8' : isSelected ? '#ff6b00' : '#334155',
+                                fontSize: '0.85rem',
+                                fontWeight: isSelected ? 700 : 500,
+                                cursor: isLocked ? 'not-allowed' : 'pointer',
+                                flex: 1,
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap'
+                              }}
+                            >
+                              <span style={{ color: isSelected ? '#ff6b00' : '#94a3b8', fontWeight: 700, marginRight: '6px' }}>{idx + 1}.</span>
+                              {lesson.title}
+                            </button>
+
+                            {/* 2. Checkbox Concluir Aula Individual */}
+                            {isApproved ? (
+                              <input
+                                type="checkbox"
+                                checked={isChecked}
+                                title={isChecked ? "Aula Concluída" : "Marcar como Concluída"}
+                                onChange={() => handleToggleLessonComplete(courseEnrollment, idx, list.length)}
+                                style={{ width: '18px', height: '18px', accentColor: '#16a34a', cursor: 'pointer', flexShrink: 0 }}
+                              />
+                            ) : isLocked && (
+                              <span style={{ fontSize: '0.8rem' }}>🔒</span>
+                            )}
+                          </div>
                         );
                       })}
                       </div>
@@ -624,8 +718,6 @@ export default function FormacaoPage() {
                   placeholder="Ex: +258 84 123 4567"
                   required
                   style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
-                  onFocus={e => (e.currentTarget.style.borderColor = '#ff6b00')}
-                  onBlur={e => (e.currentTarget.style.borderColor = '#cbd5e1')}
                 />
               </div>
 
@@ -637,8 +729,6 @@ export default function FormacaoPage() {
                   placeholder="Nome da sua empresa ou projeto"
                   required
                   style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
-                  onFocus={e => (e.currentTarget.style.borderColor = '#ff6b00')}
-                  onBlur={e => (e.currentTarget.style.borderColor = '#cbd5e1')}
                 />
               </div>
 
@@ -764,7 +854,7 @@ export default function FormacaoPage() {
         </div>
       )}
 
-      {/* Certificate Modal */}
+      {/* Certificate Modal with 4. Gerador de Certificado PDF Direto */}
       {showCert && selectedCourse && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.9)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
           <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', display: 'flex', gap: '1rem', zIndex: 2010 }}>
@@ -772,7 +862,7 @@ export default function FormacaoPage() {
               onClick={() => window.print()}
               style={{ padding: '10px 20px', fontSize: '0.9rem', fontWeight: 700, background: '#ff6b00', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
             >
-              🖨️ Imprimir / Guardar PDF
+              📄 Descarregar / Imprimir PDF
             </button>
             <button 
               onClick={() => { setShowCert(false); setSelectedCourse(null); }}
@@ -812,7 +902,7 @@ export default function FormacaoPage() {
               {selectedCourse.certUsePartnerLogos && selectedCourse.certPartnerLogoUrl && (
                 <>
                   <div style={{ width: '1px', height: '40px', background: 'rgba(0,0,0,0.1)' }} />
-                  <div style={{ display: 'flex', flexDirection: 'column', label: '', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <img src={selectedCourse.certPartnerLogoUrl} alt="Partner Logo" style={{ height: '50px', maxWidth: '140px', objectFit: 'contain', marginBottom: '0.5rem' }} />
                     <span style={{ fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#888' }}>
                       Parceiro Certificador
