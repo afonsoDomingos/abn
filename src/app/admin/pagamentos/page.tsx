@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { CreditCard, CheckCircle, XCircle, FileText, Search, User, Mail, Phone, Building2, Award, Calendar, DollarSign, BarChart2 } from 'lucide-react';
+import { CreditCard, CheckCircle, XCircle, FileText, Search, User, Mail, Phone, Building2, Award, Calendar, DollarSign, BarChart2, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PaymentLog {
   _id: string;
@@ -28,10 +28,19 @@ export default function AdminPagamentosPage() {
   const [filter, setFilter] = useState<'todos' | 'pendente' | 'aprovado' | 'rejeitado' | 'certificados'>('todos');
   const [searchTerm, setSearchTerm] = useState('');
   const [msg, setMsg] = useState('');
+  
+  // Pagination State (6 items per page)
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 6;
 
   useEffect(() => {
     fetchPayments();
   }, []);
+
+  // Reset to page 1 whenever filter or search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filter, searchTerm]);
 
   const fetchPayments = async () => {
     setLoading(true);
@@ -132,6 +141,12 @@ export default function AdminPagamentosPage() {
 
   const certCount = payments.filter(p => p.certificateRequested && !p.certificateApproved).length;
 
+  // Pagination Math
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filtered.length);
+  const paginatedPayments = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
   if (loading) return <div style={{ padding: '3rem', color: '#0f172a', fontWeight: 600 }}>A carregar validações de pagamentos e certificados...</div>;
 
   return (
@@ -183,7 +198,7 @@ export default function AdminPagamentosPage() {
       )}
 
       {/* Filter and Search Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem', marginBottom: '1.5rem' }}>
         <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
           {(['todos', 'pendente', 'aprovado', 'rejeitado', 'certificados'] as const).map(f => (
             <button
@@ -223,15 +238,22 @@ export default function AdminPagamentosPage() {
         </div>
       </div>
 
+      {/* Pagination Info Header */}
+      {filtered.length > 0 && (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', fontSize: '0.82rem', color: '#64748b', fontWeight: 600 }}>
+          <span>A mostrar <strong style={{ color: '#0f172a' }}>{startIndex + 1}–{endIndex}</strong> de <strong style={{ color: '#0f172a' }}>{filtered.length}</strong> inscrições</span>
+          <span>Página {currentPage} de {totalPages}</span>
+        </div>
+      )}
+
       {filtered.length === 0 ? (
         <div style={{ padding: '3.5rem 2rem', borderRadius: '20px', textAlign: 'center', color: '#64748b', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.03)', fontWeight: 500 }}>
           Nenhum registo ou pedido de certificado nesta categoria.
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          {filtered.map(pay => {
+          {paginatedPayments.map(pay => {
             const completedCount = pay.completedLessons?.length || (pay.completed ? 1 : 0);
-            const isFinished = pay.completed || (pay.completedLessons && pay.completedLessons.length > 0);
 
             return (
               <div 
@@ -380,6 +402,74 @@ export default function AdminPagamentosPage() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.8rem', marginTop: '2.5rem' }}>
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '10px',
+              border: '1.5px solid #cbd5e1',
+              background: currentPage === 1 ? '#f1f5f9' : '#ffffff',
+              color: currentPage === 1 ? '#94a3b8' : '#0f172a',
+              cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            <ChevronLeft size={16} /> Anterior
+          </button>
+
+          <div style={{ display: 'flex', gap: '0.4rem' }}>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+              <button
+                key={p}
+                onClick={() => setCurrentPage(p)}
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '10px',
+                  border: currentPage === p ? 'none' : '1.5px solid #cbd5e1',
+                  background: currentPage === p ? '#ff6b00' : '#ffffff',
+                  color: currentPage === p ? '#ffffff' : '#0f172a',
+                  fontWeight: 800,
+                  fontSize: '0.85rem',
+                  cursor: 'pointer',
+                  boxShadow: currentPage === p ? '0 4px 12px rgba(255, 107, 0, 0.25)' : 'none'
+                }}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '10px',
+              border: '1.5px solid #cbd5e1',
+              background: currentPage === totalPages ? '#f1f5f9' : '#ffffff',
+              color: currentPage === totalPages ? '#94a3b8' : '#0f172a',
+              cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            Seguinte <ChevronRight size={16} />
+          </button>
         </div>
       )}
     </div>
