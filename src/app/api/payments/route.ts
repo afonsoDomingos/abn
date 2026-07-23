@@ -6,6 +6,17 @@ import Notification from '@/models/Notification';
 
 export const dynamic = 'force-dynamic';
 
+function escapeRegExp(str: string) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function isPriceFree(priceStr: string, proofUrlStr: string): boolean {
+  if (proofUrlStr === 'gratuito') return true;
+  if (!priceStr) return false;
+  const p = priceStr.toLowerCase().trim();
+  return p === 'gratuito' || p === 'grátis' || p === '0' || p === '0 mt' || p === '0mt' || p === 'free';
+}
+
 export async function GET() {
   try {
     await dbConnect();
@@ -13,14 +24,14 @@ export async function GET() {
     const sessionCookie = cookieStore.get('abn_session');
     
     if (!sessionCookie) {
-      return NextResponse.json({ success: false, error: 'Não autenticado' }, { status: 401 });
+      return NextResponse.json({ success: false, error: 'Não autenticado. Por favor, faça login.' }, { status: 401 });
     }
 
     let session;
     try {
       session = JSON.parse(decodeURIComponent(sessionCookie.value));
     } catch {
-      return NextResponse.json({ success: false, error: 'Sessão inválida' }, { status: 401 });
+      return NextResponse.json({ success: false, error: 'Sessão inválida.' }, { status: 401 });
     }
 
     // Admins get all payment logs, users get only their own
@@ -42,52 +53,77 @@ export async function POST(request: Request) {
     const sessionCookie = cookieStore.get('abn_session');
     
     if (!sessionCookie) {
-      return NextResponse.json({ success: false, error: 'Não autenticado' }, { status: 401 });
+      return NextResponse.json({ success: false, error: 'Não autenticado. Faça login para continuar.' }, { status: 401 });
     }
 
     let session;
     try {
       session = JSON.parse(decodeURIComponent(sessionCookie.value));
     } catch {
-      return NextResponse.json({ success: false, error: 'Sessão inválida' }, { status: 401 });
+      return NextResponse.json({ success: false, error: 'Sessão de utilizador inválida.' }, { status: 401 });
     }
 
-    const { itemName, price, proofUrl, phone, company } = await request.json();
+    const body = await request.json();
+    const { itemName, price, proofUrl, phone, company } = body || {};
 
     if (!itemName || !price || !proofUrl) {
-      return NextResponse.json({ error: 'Ficheiro de comprovativo e detalhes do curso são obrigatórios.' }, { status: 400 });
+      return NextResponse.json({ error: 'Comprovativo e detalhes do curso são obrigatórios.' }, { status: 400 });
     }
 
-    // Check if enrollment already exists
+    // Safely check if enrollment already exists without regex SyntaxError
+    const escapedItemName = escapeRegExp(String(itemName).trim());
     const existingPayment = await Payment.findOne({
       user: session.id,
-      itemName: { $regex: new RegExp(`^${itemName.trim()}$`, 'i') },
+      itemName: { $regex: new RegExp(`^${escapedItemName}$`, 'i') },
       status: { $in: ['pendente', 'aprovado'] }
     });
 
     if (existingPayment) {
-      return NextResponse.json({ error: 'Já se encontra inscrito ou a aguardar validação para este curso.' }, { status: 400 });
+      return NextResponse.json({ 
+        error: 'Já se encontra inscrito ou com a inscrição a aguardar validação para este curso.' 
+      }, { status: 400 });
     }
+
+    // Determine initial status: free courses are instantly approved
+    const free = isPriceFree(String(price), String(proofUrl));
+    const initialStatus = free ? 'aprovado' : 'pendente';
 
     const payment = await Payment.create({
       user: session.id,
-      itemName,
-      price,
-      proofUrl,
+      itemName: String(itemName).trim(),
+      price: String(price).trim(),
+      proofUrl: String(proofUrl).trim(),
       phone: phone || '',
       company: company || '',
-      status: 'pendente'
+      status: initialStatus
     });
 
-    // 5. Format WhatsApp Alert to Admin
-    const adminPhone = process.env.ADMIN_WHATSAPP || '245955000000'; // Default or configured WhatsApp admin phone
+    // Create Notification if auto-approved
+    if (initialStatus === 'aprovado') {
+      try {
+        await Notification.create({
+          user: session.id,
+          title: 'Inscrição Confirmada! 🎓',
+          message: `A sua inscrição no curso "${payment.itemName}" foi efetuada com sucesso. Já pode assistir às aulas!`,
+          link: '/dashboard/formacao'
+        });
+      } catch (notifErr) {
+        console.error('Notification creation warning:', notifErr);
+      }
+    }
+
+    // Format WhatsApp Alert link for Admin
+    const adminPhone = process.env.ADMIN_WHATSAPP || '245955000000';
     const studentName = session.name || 'Aluno';
-    const waText = encodeURIComponent(`🚨 *Novo Comprovativo Recebido!*\n\n📚 *Curso:* ${itemName}\n👤 *Aluno:* ${studentName}\n📱 *Contacto:* ${phone || 'N/A'}\n🏢 *Empresa:* ${company || 'N/A'}\n💰 *Valor:* ${price}\n\nPor favor, valide no painel Admin em /admin/pagamentos`);
+    const waText = encodeURIComponent(
+      `🚨 *Novo Comprovativo Recebido!*\n\n📚 *Curso:* ${itemName}\n👤 *Aluno:* ${studentName}\n📱 *Contacto:* ${phone || 'N/A'}\n🏢 *Empresa:* ${company || 'N/A'}\n💰 *Valor:* ${price}\n\nPor favor, valide no painel Admin em /admin/pagamentos`
+    );
     const waUrl = `https://api.whatsapp.com/send?phone=${adminPhone}&text=${waText}`;
 
     return NextResponse.json({ success: true, payment, adminWaUrl: waUrl });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('Error in POST /api/payments:', error);
+    return NextResponse.json({ error: error.message || 'Erro interno ao processar inscrição.' }, { status: 500 });
   }
 }
 
@@ -98,27 +134,33 @@ export async function PUT(request: Request) {
     const sessionCookie = cookieStore.get('abn_session');
     
     if (!sessionCookie) {
-      return NextResponse.json({ success: false, error: 'Não autenticado' }, { status: 401 });
+      return NextResponse.json({ success: false, error: 'Não autenticado.' }, { status: 401 });
     }
 
     let session;
     try {
       session = JSON.parse(decodeURIComponent(sessionCookie.value));
     } catch {
-      return NextResponse.json({ success: false, error: 'Sessão inválida' }, { status: 401 });
+      return NextResponse.json({ success: false, error: 'Sessão inválida.' }, { status: 401 });
     }
 
     const body = await request.json();
-    const { paymentId, status, completed, completedLessons, certificateRequested } = body;
+    const { paymentId, status, completed, completedLessons, certificateRequested } = body || {};
 
     if (!paymentId) {
       return NextResponse.json({ error: 'ID do pagamento é obrigatório.' }, { status: 400 });
     }
 
     if (status !== undefined) {
+      const checkPayment = await Payment.findById(paymentId);
+      if (!checkPayment) {
+        return NextResponse.json({ error: 'Pagamento não encontrado.' }, { status: 404 });
+      }
+
       if (session.role !== 'admin') {
-        const checkPayment = await Payment.findById(paymentId);
-        if (checkPayment && checkPayment.price === 'Gratuito' && checkPayment.user.toString() === session.id && status === 'aprovado') {
+        const isFree = isPriceFree(checkPayment.price, checkPayment.proofUrl);
+        const isOwner = checkPayment.user.toString() === session.id;
+        if (isFree && isOwner && status === 'aprovado') {
           // Allowed for free course auto-approval
         } else {
           return NextResponse.json({ error: 'Acesso negado.' }, { status: 403 });
@@ -126,11 +168,8 @@ export async function PUT(request: Request) {
       }
 
       const payment = await Payment.findByIdAndUpdate(paymentId, { status }, { new: true });
-      if (!payment) {
-        return NextResponse.json({ error: 'Pagamento não encontrado.' }, { status: 404 });
-      }
 
-      // 3. Create Real-Time Bell Notification for Student
+      // Create Real-Time Bell Notification for Student
       if (status === 'aprovado') {
         await Notification.create({
           user: payment.user,
@@ -147,7 +186,7 @@ export async function PUT(request: Request) {
         });
       }
 
-      // Send automatic email confirmation to student via Resend if approved
+      // Send confirmation email via Resend if approved
       if (status === 'aprovado') {
         try {
           const paymentWithUser = await Payment.findById(paymentId).populate('user', 'name email');
@@ -171,10 +210,10 @@ export async function PUT(request: Request) {
                     3. Clique em <strong>🎥 Assistir Aulas</strong> para iniciar a sua aprendizagem.
                   </div>
                   <p style="text-align: center; margin: 30px 0;">
-                    <a href="https://afrobiznetwork.com/login" style="background: #ff6b00; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">Iniciar Aulas Agora</a>
+                    <a href="https://abnafrobiznetwork.com/login" style="background: #ff6b00; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">Iniciar Aulas Agora</a>
                   </p>
                   <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;" />
-                  <p style="font-size: 0.8rem; color: #888; text-align: center;">AfroBiz Network Lda. — Moçambique. Todos os direitos reservados.</p>
+                  <p style="font-size: 0.8rem; color: #888; text-align: center;">AfroBiz Network Lda. Todos os direitos reservados.</p>
                 </div>
               `;
 

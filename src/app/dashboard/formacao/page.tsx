@@ -88,12 +88,9 @@ export default function FormacaoPage() {
       const data = await res.json();
       if (data.success) {
         setMsg({ type: 'success', text: `Inscrição no curso "${course.title}" concluída com sucesso!` });
-        await fetch('/api/payments', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ paymentId: data.payment._id, status: 'aprovado' })
-        });
         fetchEnrollments();
+      } else {
+        setMsg({ type: 'error', text: data.error || 'Erro ao processar inscrição gratuita.' });
       }
     } catch (e) {
       setMsg({ type: 'error', text: 'Erro ao processar inscrição gratuita.' });
