@@ -15,6 +15,10 @@ export async function GET() {
     const totalStartups = await Business.countDocuments();
     const activeServices = await Service.countDocuments({ status: 'ativo' });
     
+    // Total Enrollments & Pending Certificate Requests
+    const totalEnrollments = await Payment.countDocuments();
+    const pendingCertificates = await Payment.countDocuments({ certificateRequested: true, certificateApproved: false });
+
     // Distribution data for chart
     const empreendedores = await User.countDocuments({ role: 'empreendedor' });
     const startups = await User.countDocuments({ role: 'startup' });
@@ -26,7 +30,6 @@ export async function GET() {
 
     for (const payment of approvedPayments) {
       if (payment.price && payment.price !== 'Gratuito') {
-        // Remove non-digit characters to parse numeric amount
         const cleanPrice = payment.price.replace(/[^\d]/g, '');
         const val = parseInt(cleanPrice, 10);
         if (!isNaN(val)) {
@@ -42,6 +45,8 @@ export async function GET() {
         totalUsers,
         totalStartups,
         activeServices,
+        totalEnrollments,
+        pendingCertificates,
         revenue: formattedRevenue
       },
       distribution: {

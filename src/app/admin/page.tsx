@@ -2,12 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import styles from './Admin.module.css';
+import { Users, GraduationCap, Award, DollarSign, Building2, Briefcase } from 'lucide-react';
+import Link from 'next/link';
 
 export default function AdminPage() {
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalStartups: 0,
     activeServices: 0,
+    totalEnrollments: 0,
+    pendingCertificates: 0,
     revenue: '0 MT'
   });
   const [distribution, setDistribution] = useState({
@@ -27,24 +31,93 @@ export default function AdminPage() {
   }, []);
 
   return (
-    <div className={styles.dashboard}>
-      <div className={styles.statsGrid}>
-        <div className={styles.statCard}>
-          <h4>Total Usuários</h4>
-          <div className={styles.statValue}>{stats.totalUsers}</div>
+    <div className={styles.dashboard} style={{ fontFamily: 'Inter, sans-serif' }}>
+      <header style={{ marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '2.2rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', marginBottom: '0.4rem' }}>
+          Painel de Gestão Geral ABN
+        </h1>
+        <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
+          Resumo geral da plataforma, inscrições em cursos, certificados por aprovar e receita acumulada.
+        </p>
+      </header>
+
+      {/* KPI Cards Grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
+        
+        <Link href="/admin/pagamentos" style={{ textDecoration: 'none' }}>
+          <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', transition: 'transform 0.2s', cursor: 'pointer' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Inscrições em Cursos</span>
+              <GraduationCap size={22} color="#ff6b00" />
+            </div>
+            <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '6px' }}>
+              {stats.totalEnrollments}
+            </div>
+            <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Alunos registados nos cursos</div>
+          </div>
+        </Link>
+
+        <Link href="/admin/pagamentos" style={{ textDecoration: 'none' }}>
+          <div style={{ background: '#ffffff', border: stats.pendingCertificates > 0 ? '1.5px solid #bfdbfe' : '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', transition: 'transform 0.2s', cursor: 'pointer' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.78rem', color: '#2563eb', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Certificados por Aprovar</span>
+              <Award size={22} color="#2563eb" />
+            </div>
+            <div style={{ fontSize: '2rem', fontWeight: 800, color: stats.pendingCertificates > 0 ? '#2563eb' : '#0f172a', fontFamily: 'Outfit', marginTop: '6px' }}>
+              {stats.pendingCertificates}
+            </div>
+            <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>
+              {stats.pendingCertificates > 0 ? '⚠️ Pedidos pendentes de validação' : 'Todos os certificados validados'}
+            </div>
+          </div>
+        </Link>
+
+        <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.78rem', color: '#16a34a', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Faturação Aprovada</span>
+            <DollarSign size={22} color="#16a34a" />
+          </div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#16a34a', fontFamily: 'Outfit', marginTop: '6px' }}>
+            {stats.revenue}
+          </div>
+          <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Receita total de cursos pagos</div>
         </div>
-        <div className={styles.statCard}>
-          <h4>Startups Incubadas</h4>
-          <div className={styles.statValue}>{stats.totalStartups}</div>
+
+        <Link href="/admin/usuarios" style={{ textDecoration: 'none' }}>
+          <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', cursor: 'pointer' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Usuários</span>
+              <Users size={22} color="#64748b" />
+            </div>
+            <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '6px' }}>
+              {stats.totalUsers}
+            </div>
+            <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Membros na plataforma</div>
+          </div>
+        </Link>
+
+        <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Startups Incubadas</span>
+            <Building2 size={22} color="#64748b" />
+          </div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '6px' }}>
+            {stats.totalStartups}
+          </div>
+          <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Empresas aceleradas ABN</div>
         </div>
-        <div className={styles.statCard}>
-          <h4>Serviços Ativos</h4>
-          <div className={styles.statValue}>{stats.activeServices}</div>
+
+        <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Serviços Ativos</span>
+            <Briefcase size={22} color="#64748b" />
+          </div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '6px' }}>
+            {stats.activeServices}
+          </div>
+          <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Serviços de aceleração</div>
         </div>
-        <div className={styles.statCard}>
-          <h4>Faturação / Receita</h4>
-          <div className={styles.statValue} style={{ color: '#16a34a' }}>{stats.revenue}</div>
-        </div>
+
       </div>
 
       <div className={styles.chartsGrid}>
@@ -64,7 +137,7 @@ export default function AdminPage() {
           <div className={styles.donutChartBox}>
             <div className={styles.donutChart}></div>
             <div className={styles.donutLegend}>
-              <div className={styles.legendItem}><span style={{background: 'var(--primary, #ff6b00)'}}></span> Empreendedores ({distribution.empreendedores})</div>
+              <div className={styles.legendItem}><span style={{background: '#ff6b00'}}></span> Empreendedores ({distribution.empreendedores})</div>
               <div className={styles.legendItem}><span style={{background: '#2563eb'}}></span> Startups ({distribution.startups})</div>
               <div className={styles.legendItem}><span style={{background: '#16a34a'}}></span> Investidores ({distribution.investidores})</div>
             </div>
