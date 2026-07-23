@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import styles from './Admin.module.css';
-import { Users, GraduationCap, Award, DollarSign, Building2, Briefcase, Calendar, Newspaper, Layers, Clock, ShieldCheck } from 'lucide-react';
+import { Users, GraduationCap, Award, DollarSign, Building2, Briefcase, Calendar, Newspaper, Layers, Clock, ShieldCheck, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 interface ActivityItem {
@@ -16,6 +16,7 @@ interface ActivityItem {
 }
 
 export default function AdminPage() {
+  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalStartups: 0,
@@ -36,6 +37,7 @@ export default function AdminPage() {
   const [recentActivities, setRecentActivities] = useState<ActivityItem[]>([]);
 
   useEffect(() => {
+    setLoading(true);
     fetch('/api/admin/stats')
       .then(res => res.json())
       .then(data => {
@@ -44,7 +46,8 @@ export default function AdminPage() {
         if (data.userGrowth) setUserGrowth(data.userGrowth);
         if (data.recentActivities) setRecentActivities(data.recentActivities);
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
   }, []);
 
   const formatDate = (dateStr?: string) => {
@@ -61,8 +64,29 @@ export default function AdminPage() {
 
   const maxGrowthCount = Math.max(...userGrowth.map(g => g.count), 1);
 
+  // Spinner component
+  const Spinner = ({ color = '#ff6b00' }: { color?: string }) => (
+    <div style={{ display: 'inline-flex', alignItems: 'center', height: '2.2rem', marginTop: '8px' }}>
+      <span style={{ 
+        width: '24px', 
+        height: '24px', 
+        border: `3px solid ${color}30`, 
+        borderTop: `3px solid ${color}`, 
+        borderRadius: '50%', 
+        animation: 'spin 0.8s linear infinite' 
+      }} />
+    </div>
+  );
+
   return (
     <div className={styles.dashboard} style={{ fontFamily: 'Inter, sans-serif' }}>
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
+
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2.2rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', marginBottom: '0.4rem' }}>
           Painel de Gestão Geral ABN
@@ -85,9 +109,11 @@ export default function AdminPage() {
                 <span style={{ fontSize: '0.78rem', color: '#475569', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Usuários</span>
                 <Users size={22} color="#475569" />
               </div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
-                {stats.totalUsers}
-              </div>
+              {loading ? <Spinner color="#475569" /> : (
+                <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                  {stats.totalUsers}
+                </div>
+              )}
               <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Membros registados na plataforma</div>
             </div>
           </Link>
@@ -98,9 +124,11 @@ export default function AdminPage() {
                 <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Startups Incubadas</span>
                 <Building2 size={22} color="#ff6b00" />
               </div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
-                {stats.totalStartups}
-              </div>
+              {loading ? <Spinner color="#ff6b00" /> : (
+                <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                  {stats.totalStartups}
+                </div>
+              )}
               <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Empresas em aceleração ABN</div>
             </div>
           </Link>
@@ -111,9 +139,11 @@ export default function AdminPage() {
                 <span style={{ fontSize: '0.78rem', color: '#2563eb', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Serviços Ativos</span>
                 <Briefcase size={22} color="#2563eb" />
               </div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
-                {stats.activeServices}
-              </div>
+              {loading ? <Spinner color="#2563eb" /> : (
+                <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                  {stats.activeServices}
+                </div>
+              )}
               <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Serviços de aceleração ativos</div>
             </div>
           </Link>
@@ -134,9 +164,11 @@ export default function AdminPage() {
                 <span style={{ fontSize: '0.78rem', color: '#2a4fa6', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Programas de Aceleração</span>
                 <Layers size={22} color="#2a4fa6" />
               </div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
-                {stats.totalPrograms}
-              </div>
+              {loading ? <Spinner color="#2a4fa6" /> : (
+                <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                  {stats.totalPrograms}
+                </div>
+              )}
               <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Programas criados na plataforma</div>
             </div>
           </Link>
@@ -147,9 +179,11 @@ export default function AdminPage() {
                 <span style={{ fontSize: '0.78rem', color: '#9333ea', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Eventos & Workshops</span>
                 <Calendar size={22} color="#9333ea" />
               </div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
-                {stats.totalEvents}
-              </div>
+              {loading ? <Spinner color="#9333ea" /> : (
+                <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                  {stats.totalEvents}
+                </div>
+              )}
               <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Eventos e meetups agendados</div>
             </div>
           </Link>
@@ -160,9 +194,11 @@ export default function AdminPage() {
                 <span style={{ fontSize: '0.78rem', color: '#0284c7', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Notícias & Publicações</span>
                 <Newspaper size={22} color="#0284c7" />
               </div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
-                {stats.totalNews}
-              </div>
+              {loading ? <Spinner color="#0284c7" /> : (
+                <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                  {stats.totalNews}
+                </div>
+              )}
               <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Artigos e comunicados publicados</div>
             </div>
           </Link>
@@ -183,9 +219,11 @@ export default function AdminPage() {
                 <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Inscrições em Cursos</span>
                 <GraduationCap size={22} color="#ff6b00" />
               </div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
-                {stats.totalEnrollments}
-              </div>
+              {loading ? <Spinner color="#ff6b00" /> : (
+                <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                  {stats.totalEnrollments}
+                </div>
+              )}
               <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Alunos inscritos nos cursos</div>
             </div>
           </Link>
@@ -196,9 +234,11 @@ export default function AdminPage() {
                 <span style={{ fontSize: '0.78rem', color: '#2563eb', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Certificados por Aprovar</span>
                 <Award size={22} color="#2563eb" />
               </div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: stats.pendingCertificates > 0 ? '#2563eb' : '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
-                {stats.pendingCertificates}
-              </div>
+              {loading ? <Spinner color="#2563eb" /> : (
+                <div style={{ fontSize: '2.2rem', fontWeight: 800, color: stats.pendingCertificates > 0 ? '#2563eb' : '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                  {stats.pendingCertificates}
+                </div>
+              )}
               <div style={{ fontSize: '0.82rem', color: stats.pendingCertificates > 0 ? '#2563eb' : '#64748b', marginTop: '4px', fontWeight: 700 }}>
                 {stats.pendingCertificates > 0 ? '⚠️ Pedidos pendentes de aprovação' : 'Todos os certificados aprovados'}
               </div>
@@ -211,9 +251,11 @@ export default function AdminPage() {
                 <span style={{ fontSize: '0.78rem', color: '#16a34a', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Faturação Aprovada</span>
                 <DollarSign size={22} color="#16a34a" />
               </div>
-              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#16a34a', fontFamily: 'Outfit', marginTop: '8px' }}>
-                {stats.revenue}
-              </div>
+              {loading ? <Spinner color="#16a34a" /> : (
+                <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#16a34a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                  {stats.revenue}
+                </div>
+              )}
               <div style={{ fontSize: '0.82rem', color: '#16a34a', marginTop: '4px', fontWeight: 600 }}>Receita total de cursos pagos</div>
             </div>
           </Link>
@@ -226,7 +268,11 @@ export default function AdminPage() {
         <div className={styles.chartCard}>
           <h3>Crescimento de Usuários</h3>
           <div className={styles.barChart}>
-            {userGrowth.length > 0 ? (
+            {loading ? (
+              <div style={{ fontSize: '0.85rem', color: '#ff6b00', fontWeight: 700, textAlign: 'center', width: '100%', paddingTop: '2.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+                <Spinner color="#ff6b00" /> A carregar métricas...
+              </div>
+            ) : userGrowth.length > 0 ? (
               userGrowth.map((g, idx) => {
                 const heightPct = Math.max(15, Math.round((g.count / maxGrowthCount) * 100));
                 return (
@@ -237,7 +283,7 @@ export default function AdminPage() {
               })
             ) : (
               <div style={{ fontSize: '0.82rem', color: '#64748b', textAlign: 'center', width: '100%', paddingTop: '2rem' }}>
-                A calcular crescimento...
+                Sem dados de registos.
               </div>
             )}
           </div>
@@ -248,9 +294,9 @@ export default function AdminPage() {
           <div className={styles.donutChartBox}>
             <div className={styles.donutChart}></div>
             <div className={styles.donutLegend}>
-              <div className={styles.legendItem}><span style={{background: '#ff6b00'}}></span> Empreendedores ({distribution.empreendedores})</div>
-              <div className={styles.legendItem}><span style={{background: '#2563eb'}}></span> Startups ({distribution.startups})</div>
-              <div className={styles.legendItem}><span style={{background: '#16a34a'}}></span> Investidores ({distribution.investidores})</div>
+              <div className={styles.legendItem}><span style={{background: '#ff6b00'}}></span> Empreendedores ({loading ? '...' : distribution.empreendedores})</div>
+              <div className={styles.legendItem}><span style={{background: '#2563eb'}}></span> Startups ({loading ? '...' : distribution.startups})</div>
+              <div className={styles.legendItem}><span style={{background: '#16a34a'}}></span> Investidores ({loading ? '...' : distribution.investidores})</div>
             </div>
           </div>
         </div>
@@ -268,7 +314,11 @@ export default function AdminPage() {
         </div>
 
         <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1.25rem', boxShadow: '0 4px 20px rgba(15,23,42,0.03)' }}>
-          {recentActivities.length === 0 ? (
+          {loading ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#ff6b00', fontWeight: 700, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+              <Spinner color="#ff6b00" /> A carregar log de atividade em tempo real...
+            </div>
+          ) : recentActivities.length === 0 ? (
             <div style={{ padding: '1.5rem', textAlign: 'center', color: '#64748b', fontSize: '0.9rem', fontWeight: 500 }}>
               🟢 Sistema a operar com 100% de integridade. Nenhuma atividade recente registada.
             </div>
