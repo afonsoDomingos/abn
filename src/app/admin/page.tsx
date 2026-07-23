@@ -2,8 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import styles from './Admin.module.css';
-import { Users, GraduationCap, Award, DollarSign, Building2, Briefcase, Calendar, Newspaper, Layers } from 'lucide-react';
+import { Users, GraduationCap, Award, DollarSign, Building2, Briefcase, Calendar, Newspaper, Layers, Clock, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
+
+interface ActivityItem {
+  id: string;
+  icon: string;
+  title: string;
+  desc: string;
+  createdAt: string;
+  type: string;
+  badge: string;
+}
 
 export default function AdminPage() {
   const [stats, setStats] = useState({
@@ -23,6 +33,7 @@ export default function AdminPage() {
     investidores: 0
   });
   const [userGrowth, setUserGrowth] = useState<Array<{ month: string; count: number }>>([]);
+  const [recentActivities, setRecentActivities] = useState<ActivityItem[]>([]);
 
   useEffect(() => {
     fetch('/api/admin/stats')
@@ -31,9 +42,22 @@ export default function AdminPage() {
         if (data.stats) setStats(data.stats);
         if (data.distribution) setDistribution(data.distribution);
         if (data.userGrowth) setUserGrowth(data.userGrowth);
+        if (data.recentActivities) setRecentActivities(data.recentActivities);
       })
       .catch(err => console.error(err));
   }, []);
+
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return 'Recente';
+    try {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' }) + 
+             ' às ' + 
+             d.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+    } catch (e) {
+      return dateStr;
+    }
+  };
 
   const maxGrowthCount = Math.max(...userGrowth.map(g => g.count), 1);
 
@@ -200,7 +224,7 @@ export default function AdminPage() {
       {/* Real Dynamic Charts Section */}
       <div className={styles.chartsGrid}>
         <div className={styles.chartCard}>
-          <h3>Crescimento de Usuários (Real MongoDB)</h3>
+          <h3>Crescimento de Usuários</h3>
           <div className={styles.barChart}>
             {userGrowth.length > 0 ? (
               userGrowth.map((g, idx) => {
@@ -220,7 +244,7 @@ export default function AdminPage() {
         </div>
 
         <div className={styles.chartCard}>
-          <h3>Distribuição por Perfil (Real MongoDB)</h3>
+          <h3>Distribuição por Perfil</h3>
           <div className={styles.donutChartBox}>
             <div className={styles.donutChart}></div>
             <div className={styles.donutLegend}>
@@ -232,12 +256,71 @@ export default function AdminPage() {
         </div>
       </div>
 
+      {/* Real Dynamic Activity & Audit Log Section with Timestamps */}
       <div className={styles.recentActivity}>
-        <h3 style={{ marginBottom: '1rem', fontFamily: 'Outfit', color: '#0f172a', fontWeight: 800 }}>Atividade Recente & Segurança</h3>
-        <div style={{ padding: '1.5rem', borderRadius: '16px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.03)' }}>
-          <p style={{ color: '#475569', fontSize: '0.9rem', margin: 0, fontWeight: 500 }}>
-            🟢 Sistema a operar com 100% de integridade. Nenhuma atividade suspeita detetada no servidor.
-          </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <h3 style={{ fontFamily: 'Outfit', color: '#0f172a', fontWeight: 800, margin: 0 }}>
+            Atividade Recente & Log de Auditoria
+          </h3>
+          <span style={{ fontSize: '0.78rem', color: '#16a34a', fontWeight: 700, background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '4px 12px', borderRadius: '50px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <ShieldCheck size={14} /> Sistema Seguro & Ativo
+          </span>
+        </div>
+
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1.25rem', boxShadow: '0 4px 20px rgba(15,23,42,0.03)' }}>
+          {recentActivities.length === 0 ? (
+            <div style={{ padding: '1.5rem', textAlign: 'center', color: '#64748b', fontSize: '0.9rem', fontWeight: 500 }}>
+              🟢 Sistema a operar com 100% de integridade. Nenhuma atividade recente registada.
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+              {recentActivities.map(act => (
+                <div 
+                  key={act.id} 
+                  style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    padding: '12px 16px', 
+                    background: '#f8fafc', 
+                    borderRadius: '12px', 
+                    border: '1px solid #e2e8f0', 
+                    flexWrap: 'wrap', 
+                    gap: '0.8rem' 
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: '260px' }}>
+                    <span style={{ fontSize: '1.3rem' }}>{act.icon}</span>
+                    <div>
+                      <div style={{ fontWeight: 800, color: '#0f172a', fontSize: '0.92rem' }}>{act.title}</div>
+                      <div style={{ fontSize: '0.83rem', color: '#475569', marginTop: '2px' }}>{act.desc}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                    {/* Timestamp Badge */}
+                    <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600, background: '#ffffff', padding: '4px 10px', borderRadius: '50px', border: '1px solid #cbd5e1', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <Clock size={13} color="#64748b" /> {formatDate(act.createdAt)}
+                    </span>
+
+                    {/* Status Badge */}
+                    <span style={{
+                      fontSize: '0.72rem',
+                      fontWeight: 800,
+                      textTransform: 'uppercase',
+                      padding: '3px 10px',
+                      borderRadius: '50px',
+                      background: act.badge === 'aprovado' || act.badge === 'Aprovado' ? '#f0fdf4' : act.badge === 'Novo' ? '#eff6ff' : '#fefce8',
+                      color: act.badge === 'aprovado' || act.badge === 'Aprovado' ? '#16a34a' : act.badge === 'Novo' ? '#2563eb' : '#ca8a04',
+                      border: `1px solid ${act.badge === 'aprovado' || act.badge === 'Aprovado' ? '#bbf7d0' : act.badge === 'Novo' ? '#bfdbfe' : '#fef08a'}`
+                    }}>
+                      {act.badge}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -63,6 +63,51 @@ export async function GET() {
 
     const formattedRevenue = totalRevenue.toLocaleString('pt-PT') + ' MT';
 
+    // Fetch real activity log events (Enrollments, Certificate Requests, User Signups)
+    const recentPayments = await Payment.find().sort({ createdAt: -1 }).limit(6).populate('user', 'name email');
+    const recentUsersList = await User.find().sort({ createdAt: -1 }).limit(6);
+
+    const activities: any[] = [];
+
+    recentPayments.forEach((p: any) => {
+      const userName = p.user?.name || p.user?.email || 'Aluno';
+      if (p.certificateRequested) {
+        activities.push({
+          id: `cert-${p._id}`,
+          icon: '📜',
+          title: 'Solicitação de Certificado',
+          desc: `${userName} solicitou emissão de certificado para o curso "${p.itemName}"`,
+          createdAt: p.createdAt,
+          type: 'certificate',
+          badge: p.certificateApproved ? 'Aprovado' : 'Pendente'
+        });
+      }
+      activities.push({
+        id: `pay-${p._id}`,
+        icon: '🎓',
+        title: `Inscrição em Curso (${p.price})`,
+        desc: `${userName} inscreveu-se no curso "${p.itemName}"`,
+        createdAt: p.createdAt,
+        type: 'enrollment',
+        badge: p.status
+      });
+    });
+
+    recentUsersList.forEach((u: any) => {
+      activities.push({
+        id: `user-${u._id}`,
+        icon: '👤',
+        title: 'Novo Membro Registado',
+        desc: `${u.name || u.email} registou-se na plataforma como ${u.role || 'membro'}`,
+        createdAt: u.createdAt,
+        type: 'user',
+        badge: 'Novo'
+      });
+    });
+
+    activities.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const recentActivities = activities.slice(0, 6);
+
     return NextResponse.json({
       success: true,
       stats: {
@@ -81,7 +126,8 @@ export async function GET() {
         startups,
         investidores
       },
-      userGrowth
+      userGrowth,
+      recentActivities
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
