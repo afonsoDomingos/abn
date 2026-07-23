@@ -436,6 +436,34 @@ export default function AdminPagamentosPage() {
                     </div>
                   )}
 
+                  {pay.status === 'aprovado' && (
+                    <button
+                      onClick={() => {
+                        if (confirm(`Bloquear o acesso de ${pay.user?.name || 'aluno'} a este curso?`)) {
+                          handleUpdateStatus(pay._id, 'rejeitado');
+                        }
+                      }}
+                      title="Bloquear temporariamente o acesso do aluno às aulas deste curso"
+                      style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', padding: '10px 16px', borderRadius: '10px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      <XCircle size={16} /> Bloquear Acesso
+                    </button>
+                  )}
+
+                  {pay.status === 'rejeitado' && (
+                    <button
+                      onClick={() => {
+                        if (confirm(`Desbloquear e aprovar o acesso de ${pay.user?.name || 'aluno'} a este curso?`)) {
+                          handleUpdateStatus(pay._id, 'aprovado');
+                        }
+                      }}
+                      title="Restabelecer acesso do aluno às aulas deste curso"
+                      style={{ background: '#16a34a', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '10px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(22,163,74,0.2)' }}
+                    >
+                      <CheckCircle size={16} /> Desbloquear Acesso
+                    </button>
+                  )}
+
                   {/* Certificate Approval Button for Admin */}
                   {pay.certificateRequested && !pay.certificateApproved && (
                     <button

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { BookOpen, Plus, Edit, Trash2, Users, Eye, EyeOff, Video, Award, CheckCircle, FileText, X, FileUp, Check } from 'lucide-react';
+import { BookOpen, Plus, Edit, Trash2, Users, Eye, EyeOff, Video, Award, CheckCircle, FileText, X, FileUp, Check, ShieldAlert, Lock, Unlock } from 'lucide-react';
 
 interface Lesson {
   title: string;
@@ -91,6 +91,30 @@ export default function AdminCursosPage() {
       console.error(err);
     } finally {
       setLoadingParticipants(false);
+    }
+  };
+
+  const handleToggleStudentAccess = async (paymentId: string, currentStatus: string) => {
+    const newStatus = currentStatus === 'aprovado' ? 'rejeitado' : 'aprovado';
+    const actionText = newStatus === 'rejeitado' ? 'BLOQUEAR o acesso' : 'DESBLOQUEAR / RE-APROVAR o acesso';
+    if (!confirm(`Tem a certeza que deseja ${actionText} deste aluno ao curso?`)) return;
+
+    try {
+      const res = await fetch('/api/payments', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentId, status: newStatus })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setParticipants(prev =>
+          prev.map(p => p._id === paymentId ? { ...p, status: newStatus } : p)
+        );
+      } else {
+        alert(data.error || 'Erro ao alterar permissão de acesso.');
+      }
+    } catch (err) {
+      alert('Erro de conexão ao alterar acesso.');
     }
   };
 
@@ -296,7 +320,7 @@ export default function AdminCursosPage() {
             Gestão da Academia ABN
           </h1>
           <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
-            Edite os links das aulas, atualize vídeos, anexe PDFs de apoio aos conteúdos e defina os certificados.
+            Edite os links das aulas, atualize vídeos, anexe PDFs de apoio aos conteúdos e controle os acessos dos alunos inscritos.
           </p>
         </div>
         <button 
@@ -392,7 +416,7 @@ export default function AdminCursosPage() {
                     onClick={() => handleViewParticipants(course)}
                     style={{ flex: 1, padding: '10px 0', border: '1px solid #cbd5e1', background: '#f8fafc', color: '#0f172a', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}
                   >
-                    <Users size={15} color="#ff6b00" /> Inscritos
+                    <Users size={15} color="#ff6b00" /> Inscritos & Acessos
                   </button>
                   <button
                     onClick={() => handleEditClick(course)}
@@ -1070,10 +1094,10 @@ export default function AdminCursosPage() {
         </div>
       )}
 
-      {/* Participants Modal */}
+      {/* Participants Modal with Student Access Block/Unblock Controls */}
       {showParticipantsModal && selectedCourseForParticipants && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
-          <div style={{ maxWidth: '750px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 20px 40px rgba(15, 23, 42, 0.15)', display: 'flex', flexDirection: 'column', maxHeight: '85vh', overflow: 'hidden' }}>
+          <div style={{ maxWidth: '800px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 20px 40px rgba(15, 23, 42, 0.15)', display: 'flex', flexDirection: 'column', maxHeight: '85vh', overflow: 'hidden' }}>
             <button 
               style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: '#f1f5f9', border: 'none', color: '#64748b', fontSize: '1.4rem', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               onClick={() => { setShowParticipantsModal(false); setSelectedCourseForParticipants(null); setParticipants([]); }}
@@ -1081,12 +1105,12 @@ export default function AdminCursosPage() {
               &times;
             </button>
             
-            <h2 style={{ color: '#0f172a', fontSize: '1.5rem', fontFamily: 'Outfit', fontWeight: 800, margin: '0 0 0.2rem 0' }}>Alunos Inscritos no Curso</h2>
+            <h2 style={{ color: '#0f172a', fontSize: '1.5rem', fontFamily: 'Outfit', fontWeight: 800, margin: '0 0 0.2rem 0' }}>Alunos Inscritos & Controlo de Acesso</h2>
             <p style={{ color: '#ff6b00', fontWeight: 800, margin: '0 0 1.5rem 0', fontSize: '0.95rem' }}>{selectedCourseForParticipants.title}</p>
 
             <div style={{ flex: 1, overflowY: 'auto', paddingRight: '4px' }}>
               {loadingParticipants ? (
-                <p style={{ color: '#64748b', fontStyle: 'italic', textAlign: 'center', padding: '2rem 0' }}>A carregar alunos...</p>
+                <p style={{ color: '#64748b', fontStyle: 'italic', textAlign: 'center', padding: '2rem 0' }}>A carregar alunos inscritos...</p>
               ) : participants.length === 0 ? (
                 <div style={{ color: '#64748b', textAlign: 'center', padding: '2.5rem 1rem', background: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
                   Nenhum aluno inscrito neste curso até ao momento.
@@ -1095,14 +1119,19 @@ export default function AdminCursosPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                   {participants.map(p => {
                     const completedCount = p.completedLessons?.length || (p.completed ? 1 : 0);
+                    const isApproved = p.status === 'aprovado';
 
                     return (
-                      <div key={p._id} style={{ padding: '1rem 1.25rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.8rem' }}>
-                        <div>
-                          <div style={{ fontWeight: 800, color: '#0f172a', fontSize: '0.95rem' }}>{p.user?.name || 'Aluno'}</div>
-                          <div style={{ fontSize: '0.82rem', color: '#64748b' }}>{p.user?.email} | {p.phone || 'Sem telefone'}</div>
+                      <div key={p._id} style={{ padding: '1.1rem 1.4rem', background: isApproved ? '#ffffff' : '#fef2f2', border: `1px solid ${isApproved ? '#e2e8f0' : '#fecaca'}`, borderRadius: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', boxShadow: '0 2px 8px rgba(15,23,42,0.03)' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                          <div style={{ fontWeight: 800, color: '#0f172a', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            {p.user?.name || 'Aluno'}
+                            {!isApproved && <span style={{ fontSize: '0.72rem', background: '#fef2f2', color: '#dc2626', padding: '2px 8px', borderRadius: '50px', fontWeight: 800, border: '1px solid #fecaca' }}>🚫 Acesso Bloqueado</span>}
+                          </div>
+                          <div style={{ fontSize: '0.84rem', color: '#64748b' }}>{p.user?.email} | 📞 {p.phone || 'Sem telefone'}</div>
                         </div>
-                        <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
+
+                        <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
                           <span style={{
                             fontSize: '0.75rem',
                             fontWeight: 800,
@@ -1114,18 +1143,28 @@ export default function AdminCursosPage() {
                           }}>
                             📊 {p.completed ? '100% Concluído' : `${completedCount} Aulas Vistas`}
                           </span>
-                          <span style={{
-                            fontSize: '0.75rem',
-                            fontWeight: 800,
-                            textTransform: 'uppercase',
-                            padding: '4px 12px',
-                            borderRadius: '50px',
-                            background: p.status === 'aprovado' ? '#f0fdf4' : '#fefce8',
-                            color: p.status === 'aprovado' ? '#16a34a' : '#ca8a04',
-                            border: `1px solid ${p.status === 'aprovado' ? '#bbf7d0' : '#fef08a'}`
-                          }}>
-                            {p.status}
-                          </span>
+
+                          {/* 1-Click Access Toggle Button for Admin */}
+                          <button
+                            onClick={() => handleToggleStudentAccess(p._id, p.status)}
+                            style={{
+                              padding: '8px 14px',
+                              borderRadius: '10px',
+                              border: 'none',
+                              fontWeight: 800,
+                              fontSize: '0.8rem',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              background: isApproved ? '#fef2f2' : '#16a34a',
+                              color: '#ffffff',
+                              boxShadow: isApproved ? '0 4px 12px rgba(220,38,38,0.2)' : '0 4px 12px rgba(22,163,74,0.2)'
+                            }}
+                          >
+                            {isApproved ? <Lock size={14} /> : <Unlock size={14} />}
+                            {isApproved ? 'Bloquear Acesso' : 'Desbloquear Acesso'}
+                          </button>
                         </div>
                       </div>
                     );
