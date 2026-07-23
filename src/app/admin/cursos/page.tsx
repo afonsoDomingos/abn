@@ -1037,26 +1037,43 @@ export default function AdminCursosPage() {
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-                  {participants.map(p => (
-                    <div key={p._id} style={{ padding: '1rem 1.25rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.8rem' }}>
-                      <div>
-                        <div style={{ fontWeight: 800, color: '#0f172a', fontSize: '0.95rem' }}>{p.user?.name || 'Aluno'}</div>
-                        <div style={{ fontSize: '0.82rem', color: '#64748b' }}>{p.user?.email} | {p.phone || 'Sem telefone'}</div>
+                  {participants.map(p => {
+                    const completedCount = p.completedLessons?.length || (p.completed ? 1 : 0);
+
+                    return (
+                      <div key={p._id} style={{ padding: '1rem 1.25rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.8rem' }}>
+                        <div>
+                          <div style={{ fontWeight: 800, color: '#0f172a', fontSize: '0.95rem' }}>{p.user?.name || 'Aluno'}</div>
+                          <div style={{ fontSize: '0.82rem', color: '#64748b' }}>{p.user?.email} | {p.phone || 'Sem telefone'}</div>
+                        </div>
+                        <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
+                          <span style={{
+                            fontSize: '0.75rem',
+                            fontWeight: 800,
+                            padding: '4px 12px',
+                            borderRadius: '50px',
+                            background: p.completed ? '#f0fdf4' : '#fff7ed',
+                            color: p.completed ? '#16a34a' : '#ff6b00',
+                            border: `1px solid ${p.completed ? '#bbf7d0' : '#ffedd5'}`
+                          }}>
+                            📊 {p.completed ? '100% Concluído' : `${completedCount} Aulas Vistas`}
+                          </span>
+                          <span style={{
+                            fontSize: '0.75rem',
+                            fontWeight: 800,
+                            textTransform: 'uppercase',
+                            padding: '4px 12px',
+                            borderRadius: '50px',
+                            background: p.status === 'aprovado' ? '#f0fdf4' : '#fefce8',
+                            color: p.status === 'aprovado' ? '#16a34a' : '#ca8a04',
+                            border: `1px solid ${p.status === 'aprovado' ? '#bbf7d0' : '#fef08a'}`
+                          }}>
+                            {p.status}
+                          </span>
+                        </div>
                       </div>
-                      <span style={{
-                        fontSize: '0.75rem',
-                        fontWeight: 800,
-                        textTransform: 'uppercase',
-                        padding: '4px 12px',
-                        borderRadius: '50px',
-                        background: p.status === 'aprovado' ? '#f0fdf4' : '#fefce8',
-                        color: p.status === 'aprovado' ? '#16a34a' : '#ca8a04',
-                        border: `1px solid ${p.status === 'aprovado' ? '#bbf7d0' : '#fef08a'}`
-                      }}>
-                        {p.status}
-                      </span>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

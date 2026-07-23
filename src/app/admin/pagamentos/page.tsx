@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { CreditCard, CheckCircle, XCircle, FileText, Search, User, Mail, Phone, Building2, Award, Calendar, DollarSign } from 'lucide-react';
+import { CreditCard, CheckCircle, XCircle, FileText, Search, User, Mail, Phone, Building2, Award, Calendar, DollarSign, BarChart2 } from 'lucide-react';
 
 interface PaymentLog {
   _id: string;
@@ -14,6 +14,7 @@ interface PaymentLog {
   proofUrl: string;
   status: 'pendente' | 'aprovado' | 'rejeitado';
   completed?: boolean;
+  completedLessons?: number[];
   certificateRequested?: boolean;
   certificateApproved?: boolean;
   createdAt: string;
@@ -140,7 +141,7 @@ export default function AdminPagamentosPage() {
           Validação de Inscrições & Certificados
         </h1>
         <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
-          Verifique pagamentos, consulte datas de inscrição e aprove os pedidos de emissão de certificados assinados.
+          Verifique pagamentos, consulte o progresso dos alunos em tempo real e aprove os pedidos de emissão de certificados.
         </p>
       </header>
 
@@ -228,136 +229,157 @@ export default function AdminPagamentosPage() {
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          {filtered.map(pay => (
-            <div 
-              key={pay._id} 
-              style={{ 
-                padding: '1.8rem 2rem', 
-                borderRadius: '20px', 
-                background: '#ffffff', 
-                border: '1px solid #e2e8f0', 
-                boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)', 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center', 
-                flexWrap: 'wrap', 
-                gap: '1.5rem' 
-              }}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1, minWidth: '280px' }}>
-                <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: '#ff6b00', letterSpacing: '0.06em' }}>Inscrição</span>
-                  <span style={{
-                    fontSize: '0.75rem',
-                    fontWeight: 800,
-                    textTransform: 'uppercase',
-                    padding: '3px 10px',
-                    borderRadius: '50px',
-                    background: pay.status === 'pendente' ? '#fefce8' : pay.status === 'aprovado' ? '#f0fdf4' : '#fef2f2',
-                    color: pay.status === 'pendente' ? '#ca8a04' : pay.status === 'aprovado' ? '#16a34a' : '#dc2626',
-                    border: `1px solid ${pay.status === 'pendente' ? '#fef08a' : pay.status === 'aprovado' ? '#bbf7d0' : '#fecaca'}`
-                  }}>
-                    {pay.status}
-                  </span>
+          {filtered.map(pay => {
+            const completedCount = pay.completedLessons?.length || (pay.completed ? 1 : 0);
+            const isFinished = pay.completed || (pay.completedLessons && pay.completedLessons.length > 0);
 
-                  {/* 📅 Date Badge */}
-                  <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600, background: '#f8fafc', padding: '3px 10px', borderRadius: '50px', border: '1px solid #e2e8f0', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    <Calendar size={13} color="#64748b" /> {formatDate(pay.createdAt)}
-                  </span>
-
-                  {pay.certificateRequested && (
+            return (
+              <div 
+                key={pay._id} 
+                style={{ 
+                  padding: '1.8rem 2rem', 
+                  borderRadius: '20px', 
+                  background: '#ffffff', 
+                  border: '1px solid #e2e8f0', 
+                  boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)', 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center', 
+                  flexWrap: 'wrap', 
+                  gap: '1.5rem' 
+                }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1, minWidth: '280px' }}>
+                  <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: '#ff6b00', letterSpacing: '0.06em' }}>Inscrição</span>
                     <span style={{
-                      fontSize: '0.72rem',
+                      fontSize: '0.75rem',
+                      fontWeight: 800,
+                      textTransform: 'uppercase',
+                      padding: '3px 10px',
+                      borderRadius: '50px',
+                      background: pay.status === 'pendente' ? '#fefce8' : pay.status === 'aprovado' ? '#f0fdf4' : '#fef2f2',
+                      color: pay.status === 'pendente' ? '#ca8a04' : pay.status === 'aprovado' ? '#16a34a' : '#dc2626',
+                      border: `1px solid ${pay.status === 'pendente' ? '#fef08a' : pay.status === 'aprovado' ? '#bbf7d0' : '#fecaca'}`
+                    }}>
+                      {pay.status}
+                    </span>
+
+                    {/* 📅 Date Badge */}
+                    <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600, background: '#f8fafc', padding: '3px 10px', borderRadius: '50px', border: '1px solid #e2e8f0', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <Calendar size={13} color="#64748b" /> {formatDate(pay.createdAt)}
+                    </span>
+
+                    {/* 📊 Student Real-Time Progress Badge */}
+                    <span style={{
+                      fontSize: '0.75rem',
                       fontWeight: 800,
                       padding: '3px 10px',
                       borderRadius: '50px',
-                      background: pay.certificateApproved ? '#eff6ff' : '#fff7ed',
-                      color: pay.certificateApproved ? '#2563eb' : '#d97706',
-                      border: `1px solid ${pay.certificateApproved ? '#bfdbfe' : '#fde68a'}`
+                      background: pay.completed ? '#f0fdf4' : '#fff7ed',
+                      color: pay.completed ? '#16a34a' : '#ff6b00',
+                      border: `1px solid ${pay.completed ? '#bbf7d0' : '#ffedd5'}`,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px'
                     }}>
-                      🎓 Certificado: {pay.certificateApproved ? 'Aprovado' : 'Aguardar Aprovação Admin'}
+                      <BarChart2 size={13} /> {pay.completed ? '100% Concluído (Formação Finalizada)' : `Progresso: ${completedCount} Aulas Vistas`}
+                    </span>
+
+                    {pay.certificateRequested && (
+                      <span style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 800,
+                        padding: '3px 10px',
+                        borderRadius: '50px',
+                        background: pay.certificateApproved ? '#eff6ff' : '#fff7ed',
+                        color: pay.certificateApproved ? '#2563eb' : '#d97706',
+                        border: `1px solid ${pay.certificateApproved ? '#bfdbfe' : '#fde68a'}`
+                      }}>
+                        🎓 Certificado: {pay.certificateApproved ? 'Aprovado' : 'Aguardar Aprovação Admin'}
+                      </span>
+                    )}
+                  </div>
+                  
+                  <h3 style={{ color: '#0f172a', fontSize: '1.3rem', fontFamily: 'Outfit', fontWeight: 800, margin: 0 }}>
+                    {pay.itemName}
+                  </h3>
+                  
+                  {/* User information */}
+                  <div style={{ fontSize: '0.88rem', color: '#475569', display: 'flex', gap: '1.4rem', flexWrap: 'wrap', marginTop: '4px' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><User size={15} color="#64748b" /> <strong>{pay.user?.name || 'Aluno'}</strong></span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Mail size={15} color="#64748b" /> {pay.user?.email}</span>
+                    {pay.phone && <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Phone size={15} color="#64748b" /> {pay.phone}</span>}
+                    {pay.company && <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Building2 size={15} color="#64748b" /> {pay.company}</span>}
+                    <span style={{ fontWeight: 800, color: '#16a34a' }}>💰 {pay.price}</span>
+                  </div>
+                </div>
+
+                {/* Actions & Certificate Approval Link */}
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                  {pay.proofUrl !== 'gratuito' ? (
+                    <a
+                      href={pay.proofUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        padding: '10px 18px',
+                        fontSize: '0.85rem',
+                        background: '#fff7ed',
+                        border: '1.5px solid #ff6b00',
+                        color: '#ff6b00',
+                        borderRadius: '10px',
+                        fontWeight: 700,
+                        textDecoration: 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <FileText size={16} /> Ver Comprovativo
+                    </a>
+                  ) : (
+                    <span style={{ fontSize: '0.82rem', color: '#16a34a', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '6px 14px', borderRadius: '50px', fontWeight: 700 }}>
+                      Inscrição Gratuita
+                    </span>
+                  )}
+
+                  {pay.status === 'pendente' && (
+                    <div style={{ display: 'flex', gap: '0.6rem' }}>
+                      <button
+                        onClick={() => handleUpdateStatus(pay._id, 'aprovado')}
+                        style={{ background: '#16a34a', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '10px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(22,163,74,0.2)' }}
+                      >
+                        <CheckCircle size={16} /> Aprovar Inscrição
+                      </button>
+                      <button
+                        onClick={() => handleUpdateStatus(pay._id, 'rejeitado')}
+                        style={{ background: '#dc2626', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '10px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(220,38,38,0.2)' }}
+                      >
+                        <XCircle size={16} /> Rejeitar
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Certificate Approval Button for Admin */}
+                  {pay.certificateRequested && !pay.certificateApproved && (
+                    <button
+                      onClick={() => handleApproveCertificate(pay._id)}
+                      style={{ background: '#2563eb', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '10px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(37,99,235,0.25)' }}
+                    >
+                      <Award size={16} /> Aprovar Certificado
+                    </button>
+                  )}
+
+                  {pay.certificateApproved && (
+                    <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#2563eb', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '6px 14px', borderRadius: '50px' }}>
+                      ✓ Certificado Emitido
                     </span>
                   )}
                 </div>
-                
-                <h3 style={{ color: '#0f172a', fontSize: '1.3rem', fontFamily: 'Outfit', fontWeight: 800, margin: 0 }}>
-                  {pay.itemName}
-                </h3>
-                
-                {/* User information */}
-                <div style={{ fontSize: '0.88rem', color: '#475569', display: 'flex', gap: '1.4rem', flexWrap: 'wrap', marginTop: '4px' }}>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><User size={15} color="#64748b" /> <strong>{pay.user?.name || 'Aluno'}</strong></span>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Mail size={15} color="#64748b" /> {pay.user?.email}</span>
-                  {pay.phone && <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Phone size={15} color="#64748b" /> {pay.phone}</span>}
-                  {pay.company && <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Building2 size={15} color="#64748b" /> {pay.company}</span>}
-                  <span style={{ fontWeight: 800, color: '#16a34a' }}>💰 {pay.price}</span>
-                </div>
               </div>
-
-              {/* Actions & Certificate Approval Link */}
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                {pay.proofUrl !== 'gratuito' ? (
-                  <a
-                    href={pay.proofUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      padding: '10px 18px',
-                      fontSize: '0.85rem',
-                      background: '#fff7ed',
-                      border: '1.5px solid #ff6b00',
-                      color: '#ff6b00',
-                      borderRadius: '10px',
-                      fontWeight: 700,
-                      textDecoration: 'none',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px'
-                    }}
-                  >
-                    <FileText size={16} /> Ver Comprovativo
-                  </a>
-                ) : (
-                  <span style={{ fontSize: '0.82rem', color: '#16a34a', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '6px 14px', borderRadius: '50px', fontWeight: 700 }}>
-                    Inscrição Gratuita
-                  </span>
-                )}
-
-                {pay.status === 'pendente' && (
-                  <div style={{ display: 'flex', gap: '0.6rem' }}>
-                    <button
-                      onClick={() => handleUpdateStatus(pay._id, 'aprovado')}
-                      style={{ background: '#16a34a', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '10px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(22,163,74,0.2)' }}
-                    >
-                      <CheckCircle size={16} /> Aprovar Inscrição
-                    </button>
-                    <button
-                      onClick={() => handleUpdateStatus(pay._id, 'rejeitado')}
-                      style={{ background: '#dc2626', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '10px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(220,38,38,0.2)' }}
-                    >
-                      <XCircle size={16} /> Rejeitar
-                    </button>
-                  </div>
-                )}
-
-                {/* Certificate Approval Button for Admin */}
-                {pay.certificateRequested && !pay.certificateApproved && (
-                  <button
-                    onClick={() => handleApproveCertificate(pay._id)}
-                    style={{ background: '#2563eb', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '10px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(37,99,235,0.25)' }}
-                  >
-                    <Award size={16} /> Aprovar Certificado
-                  </button>
-                )}
-
-                {pay.certificateApproved && (
-                  <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#2563eb', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '6px 14px', borderRadius: '50px' }}>
-                    ✓ Certificado Emitido
-                  </span>
-                )}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
