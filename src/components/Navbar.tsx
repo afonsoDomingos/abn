@@ -10,8 +10,9 @@ export default function Navbar() {
   const { t, language } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [hubs, setHubs] = useState<Array<{ name: string; slug: string }>>([]);
+  const [currentUser, setCurrentUser] = useState<any | null>(null);
 
-  // Fetch Hubs on mount
+  // Fetch Hubs & check user session on mount
   useEffect(() => {
     fetch('/api/hubs')
       .then(res => res.json())
@@ -21,6 +22,13 @@ export default function Navbar() {
         }
       })
       .catch(() => {});
+
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setCurrentUser(JSON.parse(storedUser));
+      } catch (e) {}
+    }
   }, []);
 
   // Close menu on route changes / scroll
@@ -34,6 +42,9 @@ export default function Navbar() {
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
+
+  const dashboardPath = currentUser?.role === 'admin' ? '/admin' : '/dashboard';
+  const dashboardLabel = currentUser?.role === 'admin' ? '👑 Painel Admin' : '📊 Ir para o Meu Painel';
 
   return (
     <>
@@ -98,8 +109,37 @@ export default function Navbar() {
 
           <div className={styles.actions}>
             <LanguageSelector />
-            <Link href="/login" className={styles.login}>{t.nav.login}</Link>
-            <Link href="/registro" className={`btn-primary ${styles.navbarBtn}`}>{t.nav.join}</Link>
+            
+            {currentUser ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#0f172a' }}>
+                  👋 Olá, {currentUser.name ? currentUser.name.split(' ')[0] : 'Membro'}
+                </span>
+                <Link 
+                  href={dashboardPath} 
+                  style={{
+                    background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)',
+                    color: '#ffffff',
+                    padding: '8px 18px',
+                    borderRadius: '10px',
+                    fontWeight: 800,
+                    fontSize: '0.82rem',
+                    textDecoration: 'none',
+                    boxShadow: '0 4px 12px rgba(255, 107, 0, 0.25)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  {dashboardLabel}
+                </Link>
+              </div>
+            ) : (
+              <>
+                <Link href="/login" className={styles.login}>{t.nav.login}</Link>
+                <Link href="/registro" className={`btn-primary ${styles.navbarBtn}`}>{t.nav.join}</Link>
+              </>
+            )}
           </div>
 
           {/* Hamburger button — mobile only */}
@@ -132,6 +172,31 @@ export default function Navbar() {
         </div>
 
         <nav className={styles.drawerNav}>
+          {currentUser && (
+            <div style={{ background: '#fff7ed', border: '1px solid #ffedd5', padding: '12px 14px', borderRadius: '12px', marginBottom: '0.5rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0f172a' }}>
+                👋 Olá, {currentUser.name || 'Membro'}
+              </span>
+              <Link 
+                href={dashboardPath} 
+                onClick={closeMenu}
+                style={{
+                  background: '#ff6b00',
+                  color: '#ffffff',
+                  padding: '10px 14px',
+                  borderRadius: '8px',
+                  fontWeight: 800,
+                  fontSize: '0.85rem',
+                  textDecoration: 'none',
+                  textAlign: 'center',
+                  display: 'block'
+                }}
+              >
+                {dashboardLabel}
+              </Link>
+            </div>
+          )}
+
           <Link href="/impacto" onClick={closeMenu}>{t.nav.impact}</Link>
           <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
           <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
@@ -169,12 +234,16 @@ export default function Navbar() {
 
         <div className={styles.drawerActions}>
           <LanguageSelector />
-          <Link href="/login" className={styles.drawerLogin} onClick={closeMenu}>
-            {t.nav.login}
-          </Link>
-          <Link href="/registro" className="btn-primary" onClick={closeMenu} style={{ textAlign: 'center' }}>
-            {t.nav.join}
-          </Link>
+          {!currentUser && (
+            <>
+              <Link href="/login" className={styles.drawerLogin} onClick={closeMenu}>
+                {t.nav.login}
+              </Link>
+              <Link href="/registro" className="btn-primary" onClick={closeMenu} style={{ textAlign: 'center' }}>
+                {t.nav.join}
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </>
