@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import styles from './Admin.module.css';
-import { Users, GraduationCap, Award, DollarSign, Building2, Briefcase } from 'lucide-react';
+import { Users, GraduationCap, Award, DollarSign, Building2, Briefcase, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminPage() {
@@ -37,87 +37,108 @@ export default function AdminPage() {
           Painel de Gestão Geral ABN
         </h1>
         <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
-          Resumo geral da plataforma, inscrições em cursos, certificados por aprovar e receita acumulada.
+          Indicadores do ecossistema, inscrições na academia, validação de certificados e faturação.
         </p>
       </header>
 
-      {/* KPI Cards Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
-        
-        <Link href="/admin/pagamentos" style={{ textDecoration: 'none' }}>
-          <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', transition: 'transform 0.2s', cursor: 'pointer' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Inscrições em Cursos</span>
-              <GraduationCap size={22} color="#ff6b00" />
+      {/* SECÇÃO 1: ECOSSISTEMA & MEMBROS (3 Cartões) */}
+      <div style={{ marginBottom: '2rem' }}>
+        <h2 style={{ fontSize: '0.85rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          🏢 Ecossistema & Comunidade ABN
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
+          
+          <Link href="/admin/usuarios" style={{ textDecoration: 'none' }}>
+            <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.78rem', color: '#475569', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Usuários</span>
+                <Users size={22} color="#475569" />
+              </div>
+              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                {stats.totalUsers}
+              </div>
+              <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Membros registados na plataforma</div>
             </div>
-            <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '6px' }}>
-              {stats.totalEnrollments}
-            </div>
-            <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Alunos registados nos cursos</div>
-          </div>
-        </Link>
+          </Link>
 
-        <Link href="/admin/pagamentos" style={{ textDecoration: 'none' }}>
-          <div style={{ background: '#ffffff', border: stats.pendingCertificates > 0 ? '1.5px solid #bfdbfe' : '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', transition: 'transform 0.2s', cursor: 'pointer' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.78rem', color: '#2563eb', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Certificados por Aprovar</span>
-              <Award size={22} color="#2563eb" />
+          <Link href="/admin/perfil" style={{ textDecoration: 'none' }}>
+            <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Startups Incubadas</span>
+                <Building2 size={22} color="#ff6b00" />
+              </div>
+              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                {stats.totalStartups}
+              </div>
+              <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Empresas em aceleração ABN</div>
             </div>
-            <div style={{ fontSize: '2rem', fontWeight: 800, color: stats.pendingCertificates > 0 ? '#2563eb' : '#0f172a', fontFamily: 'Outfit', marginTop: '6px' }}>
-              {stats.pendingCertificates}
-            </div>
-            <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>
-              {stats.pendingCertificates > 0 ? '⚠️ Pedidos pendentes de validação' : 'Todos os certificados validados'}
-            </div>
-          </div>
-        </Link>
+          </Link>
 
-        <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.78rem', color: '#16a34a', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Faturação Aprovada</span>
-            <DollarSign size={22} color="#16a34a" />
-          </div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#16a34a', fontFamily: 'Outfit', marginTop: '6px' }}>
-            {stats.revenue}
-          </div>
-          <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Receita total de cursos pagos</div>
+          <Link href="/admin/servicos" style={{ textDecoration: 'none' }}>
+            <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.78rem', color: '#2563eb', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Serviços Ativos</span>
+                <Briefcase size={22} color="#2563eb" />
+              </div>
+              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                {stats.activeServices}
+              </div>
+              <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Programas de aceleração ativos</div>
+            </div>
+          </Link>
+
         </div>
+      </div>
 
-        <Link href="/admin/usuarios" style={{ textDecoration: 'none' }}>
-          <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', cursor: 'pointer' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Usuários</span>
-              <Users size={22} color="#64748b" />
+      {/* SECÇÃO 2: ACADEMIA, CERTIFICADOS & FINANCEIRO (3 Cartões) */}
+      <div style={{ marginBottom: '2.5rem' }}>
+        <h2 style={{ fontSize: '0.85rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          🎓 Academia, Certificados & Faturação
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
+          
+          <Link href="/admin/pagamentos" style={{ textDecoration: 'none' }}>
+            <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Inscrições em Cursos</span>
+                <GraduationCap size={22} color="#ff6b00" />
+              </div>
+              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                {stats.totalEnrollments}
+              </div>
+              <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Alunos inscritos nos cursos</div>
             </div>
-            <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '6px' }}>
-              {stats.totalUsers}
+          </Link>
+
+          <Link href="/admin/pagamentos" style={{ textDecoration: 'none' }}>
+            <div style={{ background: '#ffffff', border: stats.pendingCertificates > 0 ? '1.5px solid #bfdbfe' : '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.78rem', color: '#2563eb', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Certificados por Aprovar</span>
+                <Award size={22} color="#2563eb" />
+              </div>
+              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: stats.pendingCertificates > 0 ? '#2563eb' : '#0f172a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                {stats.pendingCertificates}
+              </div>
+              <div style={{ fontSize: '0.82rem', color: stats.pendingCertificates > 0 ? '#2563eb' : '#64748b', marginTop: '4px', fontWeight: 700 }}>
+                {stats.pendingCertificates > 0 ? '⚠️ Pedidos pendentes de aprovação' : 'Todos os certificados aprovados'}
+              </div>
             </div>
-            <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Membros na plataforma</div>
-          </div>
-        </Link>
+          </Link>
 
-        <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Startups Incubadas</span>
-            <Building2 size={22} color="#64748b" />
-          </div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '6px' }}>
-            {stats.totalStartups}
-          </div>
-          <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Empresas aceleradas ABN</div>
+          <Link href="/admin/pagamentos" style={{ textDecoration: 'none' }}>
+            <div style={{ background: '#ffffff', border: '1.5px solid #bbf7d0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(22,163,74,0.04)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.78rem', color: '#16a34a', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Faturação Aprovada</span>
+                <DollarSign size={22} color="#16a34a" />
+              </div>
+              <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#16a34a', fontFamily: 'Outfit', marginTop: '8px' }}>
+                {stats.revenue}
+              </div>
+              <div style={{ fontSize: '0.82rem', color: '#16a34a', marginTop: '4px', fontWeight: 600 }}>Receita total de cursos pagos</div>
+            </div>
+          </Link>
+
         </div>
-
-        <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.5rem', borderRadius: '18px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Serviços Ativos</span>
-            <Briefcase size={22} color="#64748b" />
-          </div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '6px' }}>
-            {stats.activeServices}
-          </div>
-          <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Serviços de aceleração</div>
-        </div>
-
       </div>
 
       <div className={styles.chartsGrid}>
