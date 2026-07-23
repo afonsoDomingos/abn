@@ -197,6 +197,8 @@ export default function AdminCursosPage() {
         setShowForm(false);
         fetchCourses();
         setTimeout(() => setMsg(''), 3000);
+      } else {
+        alert(data.error || 'Erro ao guardar curso.');
       }
     } catch (err) {
       alert('Erro de conexão ao salvar curso.');
@@ -357,7 +359,7 @@ export default function AdminCursosPage() {
       {showForm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
           <div style={{ 
-            maxWidth: '650px', 
+            maxWidth: '680px', 
             width: '100%', 
             margin: 'auto', 
             padding: '2.5rem', 
@@ -383,7 +385,7 @@ export default function AdminCursosPage() {
                 {editingId ? 'Gerir Conteúdos do Curso' : 'Adicionar Novo Curso'}
               </h2>
               
-              {/* Progress indicator */}
+              {/* Interactive Step Circles */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem', marginTop: '1.5rem', position: 'relative' }}>
                 <div style={{ position: 'absolute', top: '16px', left: '0', right: '0', height: '2px', background: '#e2e8f0', zIndex: 0 }} />
                 <div style={{ 
@@ -401,10 +403,25 @@ export default function AdminCursosPage() {
                   const stepNames = ["Geral", "Preço & Dados", "Aulas & Vídeos", "Certificado"];
                   const isActive = step <= currentStep;
                   return (
-                    <div key={step} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 1, position: 'relative' }}>
+                    <button
+                      key={step}
+                      type="button"
+                      onClick={() => setCurrentStep(step)}
+                      style={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        alignItems: 'center', 
+                        zIndex: 1, 
+                        position: 'relative',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: 0
+                      }}
+                    >
                       <div style={{
-                        width: '32px',
-                        height: '32px',
+                        width: '34px',
+                        height: '34px',
                         borderRadius: '50%',
                         background: isActive ? '#ff6b00' : '#ffffff',
                         border: `2px solid ${isActive ? '#ff6b00' : '#cbd5e1'}`,
@@ -413,7 +430,7 @@ export default function AdminCursosPage() {
                         justifyContent: 'center',
                         color: isActive ? '#ffffff' : '#64748b',
                         fontWeight: 'bold',
-                        fontSize: '0.85rem',
+                        fontSize: '0.88rem',
                         transition: 'all 0.3s ease',
                         boxShadow: isActive ? '0 4px 12px rgba(255, 107, 0, 0.3)' : 'none'
                       }}>
@@ -428,13 +445,25 @@ export default function AdminCursosPage() {
                       }}>
                         {stepNames[step - 1]}
                       </span>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+            <form 
+              onSubmit={e => {
+                e.preventDefault();
+                handleSubmit(e);
+              }}
+              onKeyDown={e => {
+                // Prevent pressing Enter inside inputs from submitting form early
+                if (e.key === 'Enter' && (e.target as HTMLElement).tagName === 'INPUT') {
+                  e.preventDefault();
+                }
+              }}
+              style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}
+            >
               
               {/* Form Content Area */}
               <div style={{ overflowY: 'auto', paddingRight: '4px', flex: 1, display: 'flex', flexDirection: 'column', gap: '1.2rem', marginBottom: '1.5rem' }}>
