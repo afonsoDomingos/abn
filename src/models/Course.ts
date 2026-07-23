@@ -13,7 +13,8 @@ const CourseSchema = new mongoose.Schema({
   lessonsList: [
     {
       title: { type: String, required: true },
-      videoUrl: { type: String, required: true }
+      videoUrl: { type: String, required: true },
+      pdfUrl: { type: String, default: '' }
     }
   ],
   certBgColor: { type: String, default: '#ff6b00' },

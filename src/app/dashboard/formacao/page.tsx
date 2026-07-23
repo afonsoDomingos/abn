@@ -694,18 +694,45 @@ export default function FormacaoPage() {
                               {lesson.title}
                             </button>
 
-                            {/* Checkbox Concluir Aula Individual */}
-                            {isApproved ? (
-                              <input
-                                type="checkbox"
-                                checked={isChecked}
-                                title={isChecked ? "Aula Concluída" : "Marcar como Concluída"}
-                                onChange={() => courseEnrollment && handleToggleLessonComplete(courseEnrollment, idx, list.length)}
-                                style={{ width: '18px', height: '18px', accentColor: '#16a34a', cursor: 'pointer', flexShrink: 0 }}
-                              />
-                            ) : isLocked && (
-                              <span style={{ fontSize: '0.8rem' }}>🔒</span>
-                            )}
+                            {/* Checkbox Concluir Aula Individual & PDF Download */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              {lesson.pdfUrl && (
+                                <a
+                                  href={lesson.pdfUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  title="Baixar Ficheiro PDF de Apoio"
+                                  style={{
+                                    fontSize: '0.72rem',
+                                    fontWeight: 800,
+                                    background: '#eff6ff',
+                                    color: '#2563eb',
+                                    border: '1px solid #bfdbfe',
+                                    padding: '4px 8px',
+                                    borderRadius: '6px',
+                                    textDecoration: 'none',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '4px'
+                                  }}
+                                  onClick={e => e.stopPropagation()}
+                                >
+                                  📄 PDF
+                                </a>
+                              )}
+
+                              {isApproved ? (
+                                <input
+                                  type="checkbox"
+                                  checked={isChecked}
+                                  title={isChecked ? "Aula Concluída" : "Marcar como Concluída"}
+                                  onChange={() => courseEnrollment && handleToggleLessonComplete(courseEnrollment, idx, list.length)}
+                                  style={{ width: '18px', height: '18px', accentColor: '#16a34a', cursor: 'pointer', flexShrink: 0 }}
+                                />
+                              ) : isLocked && (
+                                <span style={{ fontSize: '0.8rem' }}>🔒</span>
+                              )}
+                            </div>
                           </div>
                         );
                       })}

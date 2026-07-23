@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { BookOpen, Plus, Edit, Trash2, Users, Eye, EyeOff, Video, Award, CheckCircle, FileText, X } from 'lucide-react';
+import { BookOpen, Plus, Edit, Trash2, Users, Eye, EyeOff, Video, Award, CheckCircle, FileText, X, FileUp, Check } from 'lucide-react';
 
 interface Lesson {
   title: string;
   videoUrl: string;
+  pdfUrl?: string;
   _id?: string;
 }
 
@@ -54,9 +55,15 @@ export default function AdminCursosPage() {
   const [certUsePartnerLogos, setCertUsePartnerLogos] = useState(false);
   const [certPartnerLogoUrl, setCertPartnerLogoUrl] = useState('');
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  
+  // Lesson management states (Add & Edit lessons)
   const [lessonsList, setLessonsList] = useState<Lesson[]>([]);
   const [newLessonTitle, setNewLessonTitle] = useState('');
   const [newLessonUrl, setNewLessonUrl] = useState('');
+  const [newLessonPdfUrl, setNewLessonPdfUrl] = useState('');
+  const [uploadingPdf, setUploadingPdf] = useState(false);
+  const [editingLessonIdx, setEditingLessonIdx] = useState<number | null>(null);
+
   const [paymentInstructions, setPaymentInstructions] = useState(
     '🏦 Dados Bancários ABN para Transferência:\nBanco: Millennium BIM\nConta (NIB): 0001-0000-0012-3456-1\nTitular: AfroBiz Network Lda.\n\n📱 M-Pesa: 84 123 4567\n\n* Por favor, realize a transferência e faça upload do comprovativo.'
   );
@@ -129,6 +136,8 @@ export default function AdminCursosPage() {
     setPaymentInstructions(course.paymentInstructions || '🏦 Dados Bancários ABN para Transferência:\nBanco: Millennium BIM\nConta (NIB): 0001-0000-0012-3456-1\nTitular: AfroBiz Network Lda.\n\n📱 M-Pesa: 84 123 4567\n\n* Por favor, realize a transferência e faça upload do comprovativo.');
     setNewLessonTitle('');
     setNewLessonUrl('');
+    setNewLessonPdfUrl('');
+    setEditingLessonIdx(null);
     setCurrentStep(1);
     setShowForm(true);
   };
@@ -151,8 +160,52 @@ export default function AdminCursosPage() {
     setCertPartnerLogoUrl('');
     setNewLessonTitle('');
     setNewLessonUrl('');
+    setNewLessonPdfUrl('');
+    setEditingLessonIdx(null);
     setCurrentStep(1);
     setShowForm(true);
+  };
+
+  const handleSaveLesson = () => {
+    if (!newLessonTitle.trim() || !newLessonUrl.trim()) {
+      alert('Por favor preencha pelo menos o Título e a URL do Vídeo da aula.');
+      return;
+    }
+
+    const lessonObj: Lesson = {
+      title: newLessonTitle.trim(),
+      videoUrl: newLessonUrl.trim(),
+      pdfUrl: newLessonPdfUrl.trim() || undefined
+    };
+
+    if (editingLessonIdx !== null) {
+      // Update existing lesson
+      setLessonsList(prev => prev.map((l, i) => i === editingLessonIdx ? lessonObj : l));
+      setEditingLessonIdx(null);
+    } else {
+      // Add new lesson
+      setLessonsList(prev => [...prev, lessonObj]);
+    }
+
+    setNewLessonTitle('');
+    setNewLessonUrl('');
+    setNewLessonPdfUrl('');
+  };
+
+  const handleEditLessonStart = (idx: number) => {
+    const target = lessonsList[idx];
+    if (!target) return;
+    setEditingLessonIdx(idx);
+    setNewLessonTitle(target.title);
+    setNewLessonUrl(target.videoUrl);
+    setNewLessonPdfUrl(target.pdfUrl || '');
+  };
+
+  const handleCancelLessonEdit = () => {
+    setEditingLessonIdx(null);
+    setNewLessonTitle('');
+    setNewLessonUrl('');
+    setNewLessonPdfUrl('');
   };
 
   const handleSubmit = async (e?: React.FormEvent) => {
@@ -193,7 +246,7 @@ export default function AdminCursosPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setMsg(editingId ? 'Curso atualizado com sucesso!' : 'Curso criado com sucesso!');
+        setMsg(editingId ? 'Curso e conteúdos atualizados com sucesso!' : 'Curso criado com sucesso!');
         setShowForm(false);
         fetchCourses();
         setTimeout(() => setMsg(''), 3000);
@@ -237,7 +290,7 @@ export default function AdminCursosPage() {
             Gestão da Academia ABN
           </h1>
           <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
-            Adicione aulas, gerencie vídeos, defina preços e personalize os certificados emitidos.
+            Edite os links das aulas, atualize vídeos, anexe PDFs de apoio aos conteúdos e defina os certificados.
           </p>
         </div>
         <button 
@@ -276,6 +329,7 @@ export default function AdminCursosPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '1.5rem' }}>
           {courses.map(course => {
             const lessonCount = course.lessonsList && course.lessonsList.length > 0 ? course.lessonsList.length : (course.lessons || 1);
+            const pdfCount = (course.lessonsList || []).filter(l => !!l.pdfUrl).length;
 
             return (
               <div 
@@ -319,7 +373,7 @@ export default function AdminCursosPage() {
                     <span>⏱️ <strong>Duração:</strong> {course.duration}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontWeight: 700, color: '#ff6b00' }}>📚 <strong>{lessonCount} Aulas Conteúdo</strong></span>
+                    <span style={{ fontWeight: 700, color: '#ff6b00' }}>📚 <strong>{lessonCount} Aulas</strong> {pdfCount > 0 && <span style={{ color: '#2563eb', marginLeft: '4px' }}>({pdfCount} PDFs 📄)</span>}</span>
                     <span style={{ fontSize: '0.75rem', color: course.videoVisible !== false ? '#16a34a' : '#dc2626', fontWeight: 700 }}>
                       {course.videoVisible !== false ? '👁️ Vídeos Visíveis' : '🔒 Vídeos Ocultos'}
                     </span>
@@ -338,7 +392,7 @@ export default function AdminCursosPage() {
                     onClick={() => handleEditClick(course)}
                     style={{ flex: 1, padding: '10px 0', border: '1px solid #ff6b00', background: '#fff7ed', color: '#ff6b00', borderRadius: '10px', cursor: 'pointer', fontWeight: 800, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}
                   >
-                    <Edit size={15} /> Gerir Aulas
+                    <Edit size={15} /> Gerir Aulas & PDFs
                   </button>
                   <button
                     onClick={() => handleDelete(course._id)}
@@ -400,7 +454,7 @@ export default function AdminCursosPage() {
                 }} />
                 
                 {[1, 2, 3, 4].map((step) => {
-                  const stepNames = ["Geral", "Preço & Dados", "Aulas & Vídeos", "Certificado"];
+                  const stepNames = ["Geral", "Preço & Dados", "Aulas & PDFs", "Certificado"];
                   const isActive = step <= currentStep;
                   return (
                     <button
@@ -457,7 +511,6 @@ export default function AdminCursosPage() {
                 handleSubmit(e);
               }}
               onKeyDown={e => {
-                // Prevent pressing Enter inside inputs from submitting form early
                 if (e.key === 'Enter' && (e.target as HTMLElement).tagName === 'INPUT') {
                   e.preventDefault();
                 }
@@ -574,41 +627,69 @@ export default function AdminCursosPage() {
                     <div style={{ border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.4rem', background: '#f8fafc', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                          📚 Adicionar Conteúdos / Aulas ({lessonsList.length})
+                          📚 Aulas & Ficheiros PDF ({lessonsList.length})
                         </label>
-                        <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 700 }}>Vídeos do YouTube (Embed)</span>
+                        <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 700 }}>Vídeos Embed & Apoio PDF</span>
                       </div>
                       
                       {/* Current lessons list */}
                       {lessonsList.length === 0 ? (
                         <p style={{ fontSize: '0.85rem', color: '#64748b', fontStyle: 'italic', margin: 0 }}>
-                          Nenhuma aula específica adicionada ainda. Adicione abaixo cada vídeo da formação.
+                          Nenhuma aula específica adicionada ainda. Adicione abaixo cada vídeo e PDF da formação.
                         </p>
                       ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', maxHeight: '180px', overflowY: 'auto', paddingRight: '4px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', maxHeight: '190px', overflowY: 'auto', paddingRight: '4px' }}>
                           {lessonsList.map((lesson, idx) => (
-                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '10px', padding: '10px 14px' }}>
+                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ffffff', border: editingLessonIdx === idx ? '2px solid #ff6b00' : '1px solid #cbd5e1', borderRadius: '10px', padding: '10px 14px' }}>
                               <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', overflow: 'hidden', flex: 1, marginRight: '10px' }}>
-                                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0f172a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{idx + 1}. {lesson.title}</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                  <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0f172a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{idx + 1}. {lesson.title}</span>
+                                  {lesson.pdfUrl && <span style={{ fontSize: '0.72rem', background: '#eff6ff', color: '#2563eb', padding: '1px 7px', borderRadius: '50px', fontWeight: 800, border: '1px solid #bfdbfe' }}>📄 PDF</span>}
+                                </div>
                                 <span style={{ fontSize: '0.75rem', color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{lesson.videoUrl}</span>
                               </div>
-                              <button
-                                type="button"
-                                onClick={() => setLessonsList(prev => prev.filter((_, i) => i !== idx))}
-                                style={{ background: '#fef2f2', border: 'none', color: '#dc2626', cursor: 'pointer', padding: '6px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 700 }}
-                                title="Remover aula"
-                              >
-                                Remover
-                              </button>
+                              
+                              <div style={{ display: 'flex', gap: '6px' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => handleEditLessonStart(idx)}
+                                  style={{ background: '#fff7ed', border: '1px solid #ff6b00', color: '#ff6b00', cursor: 'pointer', padding: '6px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                                >
+                                  <Edit size={13} /> Editar
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setLessonsList(prev => prev.filter((_, i) => i !== idx))}
+                                  style={{ background: '#fef2f2', border: 'none', color: '#dc2626', cursor: 'pointer', padding: '6px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700 }}
+                                  title="Remover aula"
+                                >
+                                  Remover
+                                </button>
+                              </div>
                             </div>
                           ))}
                         </div>
                       )}
 
-                      {/* Add new lesson fields */}
+                      {/* Add or Edit lesson fields */}
                       <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 800, color: editingLessonIdx !== null ? '#ff6b00' : '#475569' }}>
+                            {editingLessonIdx !== null ? `✏️ Editar Aula #${editingLessonIdx + 1}` : '➕ Adicionar Nova Aula ao Curso'}
+                          </span>
+                          {editingLessonIdx !== null && (
+                            <button
+                              type="button"
+                              onClick={handleCancelLessonEdit}
+                              style={{ background: 'none', border: 'none', color: '#dc2626', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                            >
+                              Cancelar Edição
+                            </button>
+                          )}
+                        </div>
+
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                          <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>Título da Aula</label>
+                          <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>Título da Aula *</label>
                           <input 
                             value={newLessonTitle}
                             onChange={e => setNewLessonTitle(e.target.value)}
@@ -618,7 +699,7 @@ export default function AdminCursosPage() {
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                          <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>URL do Vídeo (YouTube Embed Link)</label>
+                          <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>URL do Vídeo (YouTube Embed Link) *</label>
                           <input 
                             value={newLessonUrl}
                             onChange={e => setNewLessonUrl(e.target.value)}
@@ -627,18 +708,68 @@ export default function AdminCursosPage() {
                           />
                         </div>
 
+                        {/* PDF Attachment Field */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', background: '#ffffff', border: '1px dashed #cbd5e1', borderRadius: '10px', padding: '10px 14px' }}>
+                          <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#2563eb', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            📄 Anexar Ficheiro PDF de Apoio / Manual (Opcional)
+                          </label>
+                          
+                          <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                            <input 
+                              type="file" 
+                              accept="application/pdf,image/*"
+                              onChange={async (e) => {
+                                const selectedFile = e.target.files?.[0];
+                                if (!selectedFile) return;
+                                setUploadingPdf(true);
+                                
+                                const formData = new FormData();
+                                formData.append('file', selectedFile);
+                                
+                                try {
+                                  const res = await fetch('/api/upload', {
+                                    method: 'POST',
+                                    body: formData
+                                  });
+                                  const data = await res.json();
+                                  if (data.success && data.url) {
+                                    setNewLessonPdfUrl(data.url);
+                                  } else {
+                                    alert(data.error || 'Erro no envio do PDF.');
+                                  }
+                                } catch (err) {
+                                  alert('Erro de ligação ao servidor.');
+                                } finally {
+                                  setUploadingPdf(false);
+                                }
+                              }}
+                              style={{ display: 'block', fontSize: '0.82rem', flex: 1 }}
+                            />
+
+                            {uploadingPdf && <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 700 }}>A carregar PDF...</span>}
+                          </div>
+
+                          {newLessonPdfUrl && (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '8px', padding: '6px 10px', fontSize: '0.78rem', color: '#2563eb', fontWeight: 700 }}>
+                              <span>📄 Ficheiro PDF Anexado!</span>
+                              <button
+                                type="button"
+                                onClick={() => setNewLessonPdfUrl('')}
+                                style={{ background: 'none', border: 'none', color: '#dc2626', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 800 }}
+                              >
+                                Remover PDF
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
                         <button
                           type="button"
-                          onClick={() => {
-                            if (!newLessonTitle.trim() || !newLessonUrl.trim()) return;
-                            setLessonsList(prev => [...prev, { title: newLessonTitle.trim(), videoUrl: newLessonUrl.trim() }]);
-                            setNewLessonTitle('');
-                            setNewLessonUrl('');
-                          }}
+                          onClick={handleSaveLesson}
                           style={{
-                            background: '#fff7ed',
-                            border: '1.5px solid #ff6b00',
-                            color: '#ff6b00',
+                            background: editingLessonIdx !== null ? '#16a34a' : '#fff7ed',
+                            border: `1.5px solid ${editingLessonIdx !== null ? '#16a34a' : '#ff6b00'}`,
+                            color: editingLessonIdx !== null ? '#ffffff' : '#ff6b00',
                             padding: '10px 16px',
                             borderRadius: '8px',
                             cursor: 'pointer',
@@ -651,7 +782,8 @@ export default function AdminCursosPage() {
                             gap: '6px'
                           }}
                         >
-                          <Plus size={16} /> Adicionar Aula à Formação
+                          {editingLessonIdx !== null ? <Check size={16} /> : <Plus size={16} />}
+                          {editingLessonIdx !== null ? 'Atualizar Dados da Aula' : 'Adicionar Aula à Formação'}
                         </button>
                       </div>
                     </div>
