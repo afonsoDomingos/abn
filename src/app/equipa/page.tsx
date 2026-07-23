@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -21,37 +21,32 @@ interface TeamMember {
   status: string;
 }
 
-const FLAGS: Record<string, string> = {
-  'Angola': '\uD83C\uDDE6\uD83C\uDDF4',
-  'Cabo Verde': '\uD83C\uDDE8\uD83C\uDDFB',
-  'Guine-Bissau': '\uD83C\uDDEC\uD83C\uDDFC',
-  'Mocambique': '\uD83C\uDDF2\uD83C\uDDFF',
-  'Portugal': '\uD83C\uDDF5\uD83C\uDDF9',
-  'Sao Tome e Principe': '\uD83C\uDDF8\uD83C\uDDF9',
-  'Brasil': '\uD83C\uDDE7\uD83C\uDDF7',
-  'Franca': '\uD83C\uDDEB\uD83C\uDDF7',
-  'Espanha': '\uD83C\uDDEA\uD83C\uDDF8',
-  'Nigeria': '\uD83C\uDDF3\uD83C\uDDEC',
-  'Senegal': '\uD83C\uDDF8\uD83C\uDDF3',
-  'Africa do Sul': '\uD83C\uDDFF\uD83C\uDDE6',
-  'Quenia': '\uD83C\uDDF0\uD83C\uDDEA',
-  'Gana': '\uD83C\uDDEC\uD83C\uDDED',
-  'Ruanda': '\uD83C\uDDF7\uD83C\uDDFC',
-};
-
 function getRoleMeta(role: string): { color: string; bg: string } {
   const r = role.toLowerCase();
   if (r.includes('ceo') || r.includes('director') || r.includes('directora') || r.includes('presidente') || r.includes('fundador') || r.includes('co-fundador'))
-    return { color: '#f1c40f', bg: 'rgba(241,196,15,0.12)' };
-  if (r.includes('tech') || r.includes('desenvolv') || r.includes('developer') || r.includes('cto'))
-    return { color: '#3498db', bg: 'rgba(52,152,219,0.12)' };
-  if (r.includes('rh') || r.includes('recursos') || r.includes('humanos') || r.includes('people'))
-    return { color: '#2ecc71', bg: 'rgba(46,204,113,0.12)' };
-  if (r.includes('market') || r.includes('comunic') || r.includes('design'))
-    return { color: '#e67e22', bg: 'rgba(230,126,34,0.12)' };
-  if (r.includes('financ') || r.includes('cfo') || r.includes('contab'))
-    return { color: '#9b59b6', bg: 'rgba(155,89,182,0.12)' };
-  return { color: 'var(--primary)', bg: 'rgba(212,175,55,0.1)' };
+    return { color: '#c2410c', bg: 'rgba(194,65,12,0.08)' };
+  if (r.includes('tech') || r.includes('desenvolv') || r.includes('developer') || r.includes('cto') || r.includes('inovação') || r.includes('tecnologia'))
+    return { color: '#1d4ed8', bg: 'rgba(29,78,216,0.08)' };
+  if (r.includes('rh') || r.includes('recursos') || r.includes('humanos') || r.includes('people') || r.includes('adjunto') || r.includes('adjunta'))
+    return { color: '#15803d', bg: 'rgba(21,128,61,0.08)' };
+  if (r.includes('market') || r.includes('comunic') || r.includes('design') || r.includes('assistente'))
+    return { color: '#b45309', bg: 'rgba(180,83,9,0.08)' };
+  if (r.includes('financ') || r.includes('cfo') || r.includes('contab') || r.includes('administra'))
+    return { color: '#7c3aed', bg: 'rgba(124,58,237,0.08)' };
+  if (r.includes('meal') || r.includes('monitoria') || r.includes('avalia'))
+    return { color: '#0e7490', bg: 'rgba(14,116,144,0.08)' };
+  if (r.includes('invest') || r.includes('parceria'))
+    return { color: '#be185d', bg: 'rgba(190,24,93,0.08)' };
+  return { color: '#ff6b00', bg: 'rgba(255,107,0,0.08)' };
+}
+
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(n => n[0].toUpperCase())
+    .join('');
 }
 
 const DEFAULT_TEAM: TeamMember[] = [
@@ -174,6 +169,7 @@ export default function TeamPage() {
   const [loading, setLoading] = useState(true);
   const [expandedBio, setExpandedBio] = useState<number | null>(null);
   const [bannerUrl, setBannerUrl] = useState('/abn-cover.jpg');
+  const [activeFilter, setActiveFilter] = useState('Todos');
 
   useEffect(() => {
     fetch('/api/team')
@@ -181,80 +177,150 @@ export default function TeamPage() {
       .then(data => {
         if (data.team && data.team.length > 0) {
           const activeMembers = data.team.filter((m: TeamMember) => m.status === 'ativo');
-          if (activeMembers.length > 0) {
-            setTeam(activeMembers);
-          }
+          if (activeMembers.length > 0) setTeam(activeMembers);
         }
         setLoading(false);
       })
-      .catch(() => {
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
 
     fetch('/api/config')
       .then(res => res.json())
       .then(data => {
-        if (data.configs?.page_banners?.equipa) {
-          setBannerUrl(data.configs.page_banners.equipa);
-        }
+        if (data.configs?.page_banners?.equipa) setBannerUrl(data.configs.page_banners.equipa);
       })
       .catch(() => {});
   }, []);
+
+  /* dept filter */
+  const departments = useMemo(() => {
+    const depts = Array.from(new Set(team.map(m => m.department).filter(Boolean)));
+    return ['Todos', ...depts];
+  }, [team]);
+
+  const filtered = useMemo(() =>
+    activeFilter === 'Todos' ? team : team.filter(m => m.department === activeFilter),
+    [team, activeFilter]
+  );
+
+  /* short dept label for filter button */
+  const shortDept = (d: string) => {
+    if (d === 'Todos') return 'Todos';
+    // extract first meaningful word after "Direcção de "
+    return d.replace(/Direcção de /i, '').split(',')[0].split('(')[0].trim();
+  };
 
   return (
     <>
       <Navbar />
       <main className={styles.main}>
+        {/* ── HERO ── */}
         <div className={styles.hero} style={{ backgroundImage: `url('${bannerUrl}')` }}>
           <div className={styles.heroOverlay} />
           <div className={styles.heroContent}>
             <span className={styles.heroBadge}>A Nossa Equipa</span>
-            <h1>As pessoas por tras da ABN</h1>
-            <p>Conheca os profissionais que trabalham todos os dias para impulsionar o ecossistema empresarial africano.</p>
+            <h1>As pessoas por trás da ABN</h1>
+            <p>Conheça os profissionais que trabalham todos os dias para impulsionar o ecossistema empresarial africano.</p>
           </div>
         </div>
 
+        {/* ── WAVE transition ── */}
+        <svg className={styles.wave} viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,32 C360,60 1080,0 1440,32 L1440,48 L0,48 Z" fill="#ffffff"/>
+        </svg>
+
+        {/* ── CONTENT ── */}
         <div className={styles.container}>
+
+          {/* Section intro */}
+          <div className={styles.sectionIntro}>
+            <div className={styles.sectionLabel}>Equipa ABN</div>
+            <h2>Conheça quem nos move</h2>
+            <p>Uma equipa multidisciplinar unida pelo propósito de transformar o ecossistema empresarial em África.</p>
+          </div>
+
+          {/* Stats */}
+          {!loading && (
+            <div className={styles.statsBar}>
+              <div className={styles.statItem}>
+                <div className={styles.statNum}>{team.length}</div>
+                <div className={styles.statLabel}>Membros</div>
+              </div>
+              <div className={styles.statItem}>
+                <div className={styles.statNum}>{Array.from(new Set(team.map(m => m.department).filter(Boolean))).length}</div>
+                <div className={styles.statLabel}>Departamentos</div>
+              </div>
+              <div className={styles.statItem}>
+                <div className={styles.statNum}>{team.reduce((s, m) => s + (m.expertise?.length ?? 0), 0)}</div>
+                <div className={styles.statLabel}>Competências</div>
+              </div>
+            </div>
+          )}
+
+          {/* Dept filter */}
+          {!loading && departments.length > 2 && (
+            <div className={styles.filterBar}>
+              {departments.map(d => (
+                <button
+                  key={d}
+                  className={`${styles.filterBtn} ${activeFilter === d ? styles.filterBtnActive : ''}`}
+                  onClick={() => { setActiveFilter(d); setExpandedBio(null); }}
+                >
+                  {shortDept(d)}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Cards */}
           {loading ? (
             <div className={styles.loading}>
               <div className={styles.spinner} />
-              <p>A carregar equipa...</p>
+              <p>A carregar equipa…</p>
             </div>
-          ) : team.length === 0 ? (
+          ) : filtered.length === 0 ? (
             <div className={styles.empty}>
               <span style={{ fontSize: '3rem' }}>&#x1F465;</span>
-              <p>Nenhum membro da equipa registado ainda.</p>
+              <p>Nenhum membro encontrado.</p>
             </div>
           ) : (
             <div className={styles.grid}>
-              {team.map((member, idx) => {
+              {filtered.map((member, idx) => {
                 const { color, bg } = getRoleMeta(member.role);
                 const isExpanded = expandedBio === idx;
                 return (
-                  <div key={member._id} className={styles.card}>
+                  <div key={member._id} className={styles.card} style={{ animationDelay: `${idx * 60}ms` }}>
+                    {/* Image */}
                     <div className={styles.imageWrapper}>
                       {member.image ? (
                         <img src={member.image} alt={member.name} className={styles.image} />
                       ) : (
                         <div className={styles.placeholderImage}>
-                          <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5">
-                            <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
-                          </svg>
+                          <div className={styles.placeholderInitials}>
+                            {getInitials(member.name)}
+                          </div>
                         </div>
                       )}
                       <div className={styles.imageGradient} />
                     </div>
 
+                    {/* Content */}
                     <div className={styles.cardContent}>
-                      <span className={styles.roleBadge} style={{ color, background: bg }}>
+                      <span
+                        className={styles.roleBadge}
+                        style={{ color, background: bg, borderColor: `${color}33` }}
+                      >
                         {member.role}
                       </span>
+
                       <div className={styles.nameRow}>
                         <h3 className={styles.name}>{member.name}</h3>
                       </div>
+
                       {member.department && (
                         <p className={styles.department}>{member.department}</p>
                       )}
+
+                      <div className={styles.divider} />
 
                       {member.bio && (
                         <div className={styles.bioSection}>
@@ -266,7 +332,7 @@ export default function TeamPage() {
                               className={styles.bioToggle}
                               onClick={() => setExpandedBio(isExpanded ? null : idx)}
                             >
-                              {isExpanded ? 'Ver menos' : 'Ler mais'}
+                              {isExpanded ? '↑ Ver menos' : '↓ Ler mais'}
                             </button>
                           )}
                         </div>
@@ -287,9 +353,14 @@ export default function TeamPage() {
                       )}
 
                       {member.linkedin && (
-                        <a href={member.linkedin} target="_blank" rel="noopener noreferrer"
-                          className={styles.linkedinBtn} title={`LinkedIn de ${member.name}`}>
-                          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                        <a
+                          href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.linkedinBtn}
+                          title={`LinkedIn de ${member.name}`}
+                        >
+                          <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
                             <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                           </svg>
                           LinkedIn

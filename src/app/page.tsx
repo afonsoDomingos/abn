@@ -8,6 +8,7 @@ import Services from "@/components/Services";
 import HomeOpportunities from "@/components/HomeOpportunities";
 import HomeEvents from "@/components/HomeEvents";
 import Articles from "@/components/Articles";
+import HomeTeam from "@/components/HomeTeam";
 import Courses from "@/components/Courses";
 import Stats from "@/components/Stats";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
@@ -31,6 +32,7 @@ export default function Home() {
         <HomeEvents />
         <Courses />
         <Articles />
+        <HomeTeam />
         <Stats />
         
         {/* Footer in style of Orange Corners */}

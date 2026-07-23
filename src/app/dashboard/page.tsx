@@ -51,7 +51,6 @@ export default function DashboardPage() {
         setBusiness(data.business);
         hasBiz = true;
         hasWeb = !!data.business.website;
-        // Pitch deck is simulated by business details descriptions length
         hasDeck = data.business.description && data.business.description.length >= 30;
       }
 
@@ -89,31 +88,31 @@ export default function DashboardPage() {
       {role === 'investidor' && (
         <>
           <div className={styles.welcome}>
-            <h1>Olá, <span className="text-gradient-gold">{userName}</span>!</h1>
-            <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Bem-vindo ao seu painel de investimento. Acompanhe a evolução de startups incubadas no ABN Hub.</p>
+            <h1>Olá, <span className="text-gradient-gold">{userName}</span> 👋</h1>
+            <p>Bem-vindo ao seu painel de investimento. Acompanhe a evolução de startups incubadas no ABN Hub.</p>
           </div>
 
           <div className={styles.progressGrid}>
-            <div className={`${styles.progressCard} glass`}>
-              <h3 style={{ color: '#ffffff' }}>Portfólio de Análise</h3>
+            <div className={styles.progressCard}>
+              <h3>Portfólio de Análise</h3>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
-                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>
-                  14<span style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.5)' }}> startups</span>
+                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
+                  14<span style={{ fontSize: '1rem', color: '#64748b' }}> startups</span>
                 </div>
                 <div style={{ flex: 1 }}>
-                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
                     Startups em aceleração ativa elegíveis para investimento imediato.
                   </p>
                 </div>
               </div>
             </div>
             
-            <div className={`${styles.progressCard} glass`}>
-              <h3 style={{ color: '#ffffff' }}>Progresso de Credenciação</h3>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', fontWeight: 600 }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#2ecc71" /> Registo de Perfil de Investidor</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#2ecc71" /> Setores de Preferência Indicados</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><XCircle size={18} color="rgba(255,255,255,0.2)" /> Primeiro Compromisso de Financiamento</li>
+            <div className={styles.progressCard}>
+              <h3>Progresso de Credenciação</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Registo de Perfil de Investidor</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Setores de Preferência Indicados</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><XCircle size={18} color="#cbd5e1" /> Primeiro Compromisso de Financiamento</li>
               </ul>
             </div>
           </div>
@@ -142,16 +141,16 @@ export default function DashboardPage() {
           </div>
 
           <div className={styles.resources}>
-            <div className={`${styles.resourceCard} glass`}>
-              <div className={styles.resourceIcon} style={{ background: 'rgba(212, 175, 55, 0.1)', width: '60px', height: '60px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-                <BarChart3 size={32} color="var(--primary)" />
+            <div className={styles.resourceCard}>
+              <div className={styles.resourceIcon} style={{ background: 'rgba(255, 107, 0, 0.08)', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+                <BarChart3 size={28} color="var(--primary, #ff6b00)" />
               </div>
               <h4>VC Trends em África</h4>
               <p style={{ fontSize: '0.85rem' }}>Relatório Semestral - PDF</p>
             </div>
-            <div className={`${styles.resourceCard} glass`}>
-              <div className={styles.resourceIcon} style={{ background: 'rgba(212, 175, 55, 0.1)', width: '60px', height: '60px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-                <Users size={32} color="var(--primary)" />
+            <div className={styles.resourceCard}>
+              <div className={styles.resourceIcon} style={{ background: 'rgba(255, 107, 0, 0.08)', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+                <Users size={28} color="var(--primary, #ff6b00)" />
               </div>
               <h4>Guia de Co-Investimento</h4>
               <p style={{ fontSize: '0.85rem' }}>Boas Práticas & Compliance</p>
@@ -164,31 +163,31 @@ export default function DashboardPage() {
       {role === 'mentor' && (
         <>
           <div className={styles.welcome}>
-            <h1>Olá, <span className="text-gradient-gold">{userName}</span>!</h1>
-            <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Bem-vindo ao seu painel de mentoria. Acompanhe o progresso de startups e guie os fundadores do ecossistema.</p>
+            <h1>Olá, <span className="text-gradient-gold">{userName}</span> 👋</h1>
+            <p>Bem-vindo ao seu painel de mentoria. Acompanhe o progresso de startups e guie os fundadores do ecossistema.</p>
           </div>
 
           <div className={styles.progressGrid}>
-            <div className={`${styles.progressCard} glass`}>
-              <h3 style={{ color: '#ffffff' }}>Atividade de Mentoria</h3>
+            <div className={styles.progressCard}>
+              <h3>Atividade de Mentoria</h3>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
-                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>
-                  6<span style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.5)' }}> startups</span>
+                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
+                  6<span style={{ fontSize: '1rem', color: '#64748b' }}> startups</span>
                 </div>
                 <div style={{ flex: 1 }}>
-                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
                     Acompanhando ativamente ideias inovadoras de Guiné-Bissau e CPLP.
                   </p>
                 </div>
               </div>
             </div>
             
-            <div className={`${styles.progressCard} glass`}>
-              <h3 style={{ color: '#ffffff' }}>Métricas do Mentor</h3>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', fontWeight: 600 }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Star size={18} color="var(--primary)" /> Avaliação Média: <strong>{analytics?.stats?.averageRating ? analytics.stats.averageRating.toFixed(1) : '4.9'} / 5.0</strong></li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Clock size={18} color="var(--primary)" /> Horas Doadas: <strong>{analytics?.stats?.mentorshipHours || 0} Horas</strong></li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Calendar size={18} color="var(--primary)" /> Próxima Sessão: <strong>{analytics?.stats?.nextSession ? new Date(analytics.stats.nextSession).toLocaleDateString() : 'A Agendar'}</strong></li>
+            <div className={styles.progressCard}>
+              <h3>Métricas do Mentor</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Star size={18} color="var(--primary, #ff6b00)" /> Avaliação Média: <strong>{analytics?.stats?.averageRating ? analytics.stats.averageRating.toFixed(1) : '4.9'} / 5.0</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Clock size={18} color="var(--primary, #ff6b00)" /> Horas Doadas: <strong>{analytics?.stats?.mentorshipHours || 0} Horas</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Calendar size={18} color="var(--primary, #ff6b00)" /> Próxima Sessão: <strong>{analytics?.stats?.nextSession ? new Date(analytics.stats.nextSession).toLocaleDateString() : 'A Agendar'}</strong></li>
               </ul>
             </div>
           </div>
@@ -217,16 +216,16 @@ export default function DashboardPage() {
           </div>
 
           <div className={styles.resources}>
-            <div className={`${styles.resourceCard} glass`}>
-              <div className={styles.resourceIcon} style={{ background: 'rgba(212, 175, 55, 0.1)', width: '60px', height: '60px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-                <FileText size={32} color="var(--primary)" />
+            <div className={styles.resourceCard}>
+              <div className={styles.resourceIcon} style={{ background: 'rgba(255, 107, 0, 0.08)', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+                <FileText size={28} color="var(--primary, #ff6b00)" />
               </div>
               <h4>Manual do Mentor ABN</h4>
               <p style={{ fontSize: '0.85rem' }}>Metodologias & Práticas - PDF</p>
             </div>
-            <div className={`${styles.resourceCard} glass`}>
-              <div className={styles.resourceIcon} style={{ background: 'rgba(212, 175, 55, 0.1)', width: '60px', height: '60px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-                <Rocket size={32} color="var(--primary)" />
+            <div className={styles.resourceCard}>
+              <div className={styles.resourceIcon} style={{ background: 'rgba(255, 107, 0, 0.08)', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+                <Rocket size={28} color="var(--primary, #ff6b00)" />
               </div>
               <h4>Lean Startup Guia</h4>
               <p style={{ fontSize: '0.85rem' }}>Ferramenta de Validação de Ideias</p>
@@ -239,83 +238,83 @@ export default function DashboardPage() {
       {role !== 'investidor' && role !== 'mentor' && (
         <>
           <div className={styles.welcome}>
-            <h1>Olá, <span className="text-gradient-gold">{userName}</span>!</h1>
-            <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Bem-vindo ao seu painel de crescimento. Aqui está o progresso do seu projeto.</p>
+            <h1>Olá, <span className="text-gradient-gold">{userName}</span> 👋</h1>
+            <p>Bem-vindo ao seu painel de crescimento. Aqui está o progresso do seu projeto.</p>
           </div>
 
           <div className={styles.progressGrid}>
-            <div className={`${styles.progressCard} glass`}>
-              <h3 style={{ color: '#ffffff' }}>ABN Score</h3>
+            <div className={styles.progressCard}>
+              <h3>ABN Score</h3>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
-                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>
-                  {score}<span style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.5)' }}>/100</span>
+                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
+                  {score}<span style={{ fontSize: '1rem', color: '#64748b' }}>/100</span>
                 </div>
                 <div style={{ flex: 1 }}>
                   <div className={styles.progressBar}>
                     <div className={styles.progressFill} style={{ width: `${score}%` }}></div>
                   </div>
-                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
                     {score < 50 ? 'Fase Inicial de Configuração' : score < 100 ? 'Projeto Estruturado' : 'Pronto para Investimento! 🚀'}
                   </p>
                 </div>
               </div>
             </div>
             
-            <div className={`${styles.progressCard} glass`}>
-              <h3 style={{ color: '#ffffff' }}>Progresso do Perfil</h3>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', fontWeight: 600 }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>{checklist.profile ? <CheckCircle2 size={18} color="#2ecc71" /> : <XCircle size={18} color="rgba(255,255,255,0.2)" />} Registo de Perfil Completo</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>{checklist.business ? <CheckCircle2 size={18} color="#2ecc71" /> : <XCircle size={18} color="rgba(255,255,255,0.2)" />} Startup Registada</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>{checklist.pitchDeck ? <CheckCircle2 size={18} color="#2ecc71" /> : <XCircle size={18} color="rgba(255,255,255,0.2)" />} Modelo de Negócio Descrito</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>{checklist.website ? <CheckCircle2 size={18} color="#2ecc71" /> : <XCircle size={18} color="rgba(255,255,255,0.2)" />} Website Indicado</li>
+            <div className={styles.progressCard}>
+              <h3>Progresso do Perfil</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>{checklist.profile ? <CheckCircle2 size={18} color="#16a34a" /> : <XCircle size={18} color="#cbd5e1" />} Registo de Perfil Completo</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>{checklist.business ? <CheckCircle2 size={18} color="#16a34a" /> : <XCircle size={18} color="#cbd5e1" />} Startup Registada</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>{checklist.pitchDeck ? <CheckCircle2 size={18} color="#16a34a" /> : <XCircle size={18} color="#cbd5e1" />} Modelo de Negócio Descrito</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>{checklist.website ? <CheckCircle2 size={18} color="#16a34a" /> : <XCircle size={18} color="#cbd5e1" />} Website Indicado</li>
               </ul>
             </div>
           </div>
 
           <div className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <BarChart3 size={24} color="var(--primary)" />
+            <BarChart3 size={24} color="var(--primary, #ff6b00)" />
             <h2 style={{ margin: 0 }}>Analytics & Desempenho</h2>
           </div>
 
-          <div className="glass" style={{ padding: '2rem', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '2.5rem' }}>
+          <div style={{ padding: '1.75rem 2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', marginBottom: '2.5rem' }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '2rem' }}>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px' }}>Visitas</h4>
+                <h4 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>Visitas</h4>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                  <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.profileViews || 0}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700, background: 'rgba(46, 204, 113, 0.1)', padding: '2px 6px', borderRadius: '12px' }}>+12%</span>
+                  <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.profileViews || 0}</span>
+                  <span style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 700, background: '#f0fdf4', padding: '2px 6px', borderRadius: '12px' }}>+12%</span>
                 </div>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px' }}>Cliques</h4>
+                <h4 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>Cliques</h4>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                  <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.projectViews || 0}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 700, background: 'rgba(46, 204, 113, 0.1)', padding: '2px 6px', borderRadius: '12px' }}>+8%</span>
+                  <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.projectViews || 0}</span>
+                  <span style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight 700, background: '#f0fdf4', padding: '2px 6px', borderRadius: '12px' }}>+8%</span>
                 </div>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px' }}>Interesse</h4>
+                <h4 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>Interesse</h4>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                  <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.interestedCount || 0}</span>
+                  <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.interestedCount || 0}</span>
                 </div>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px' }}>Pitch</h4>
+                <h4 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>Pitch</h4>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                  <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.pitchDownloads || 0}</span>
-                  <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>Downloads</span>
+                  <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.pitchDownloads || 0}</span>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>Downloads</span>
                 </div>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px' }}>Leads</h4>
+                <h4 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>Leads</h4>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                  <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.messagesCount || 0}</span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700, background: 'rgba(212, 175, 55, 0.1)', padding: '2px 6px', borderRadius: '12px' }}>Novos</span>
+                  <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.messagesCount || 0}</span>
+                  <span style={{ fontSize: '0.75rem', color: '#ff6b00', fontWeight: 700, background: '#fff7ed', padding: '2px 6px', borderRadius: '12px' }}>Novos</span>
                 </div>
               </div>
 
@@ -323,14 +322,14 @@ export default function DashboardPage() {
           </div>
 
           {/* Growth & Evolution Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', marginBottom: '2.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
             {/* 1. Crescimento Mensal (Bar Chart) */}
-            <div className="glass" style={{ padding: '2rem', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <h3 style={{ color: '#ffffff', fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <TrendingUp size={20} color="var(--primary)" />
+            <div style={{ padding: '1.75rem 2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)' }}>
+              <h3 style={{ color: '#0f172a', fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}>
+                <TrendingUp size={20} color="var(--primary, #ff6b00)" />
                 Crescimento Mensal (Visualizações)
               </h3>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: '140px', padding: '0 10px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: '140px', padding: '0 10px', borderBottom: '1px solid #f1f5f9' }}>
                 {(analytics?.monthlyGrowth || [
                   { month: 'Jan', height: '30%', views: '0' },
                   { month: 'Fev', height: '45%', views: '0' },
@@ -339,21 +338,21 @@ export default function DashboardPage() {
                   { month: 'Mai', height: '95%', views: '0' }
                 ]).map((item: any, idx: number) => (
                   <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, gap: '0.5rem' }}>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)' }}>{item.views}</div>
-                    <div style={{ width: '24px', height: item.height || '5%', background: 'linear-gradient(to top, var(--secondary) 0%, var(--primary) 100%)', borderRadius: '6px 6px 0 0' }}></div>
-                    <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>{item.month}</span>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary, #ff6b00)' }}>{item.views}</div>
+                    <div style={{ width: '24px', height: item.height || '5%', background: 'linear-gradient(to top, #2a4fa6 0%, #ff6b00 100%)', borderRadius: '6px 6px 0 0' }}></div>
+                    <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>{item.month}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* 2. Evolução do Negócio (Pipeline) */}
-            <div className="glass" style={{ padding: '2rem', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <h3 style={{ color: '#ffffff', fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Target size={20} color="var(--primary)" />
+            <div style={{ padding: '1.75rem 2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)' }}>
+              <h3 style={{ color: '#0f172a', fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}>
+                <Target size={20} color="var(--primary, #ff6b00)" />
                 Evolução do Negócio
               </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                 {[
                   { label: 'Ideação', desc: 'Conceito da ideia e equipa inicial' },
                   { label: 'Validação', desc: 'Entrevistas de problemas e estudo de mercado' },
@@ -372,8 +371,8 @@ export default function DashboardPage() {
                       width: '24px', 
                       height: '24px', 
                       borderRadius: '50%', 
-                      background: status === 'done' ? '#2ecc71' : status === 'current' ? 'var(--primary)' : 'rgba(255,255,255,0.08)',
-                      color: status === 'pending' ? 'rgba(255,255,255,0.4)' : '#fff',
+                      background: status === 'done' ? '#16a34a' : status === 'current' ? '#ff6b00' : '#f1f5f9',
+                      color: status === 'pending' ? '#94a3b8' : '#ffffff',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -384,10 +383,10 @@ export default function DashboardPage() {
                       {status === 'done' ? '✓' : idx + 1}
                     </div>
                     <div>
-                      <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#ffffff', fontWeight: 700 }}>
-                        {step.label} {status === 'current' && <span style={{ fontSize: '0.7rem', color: 'var(--primary)', background: 'rgba(255,107,0,0.1)', padding: '2px 6px', borderRadius: '4px', marginLeft: '6px' }}>Atual</span>}
+                      <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#0f172a', fontWeight: 700 }}>
+                        {step.label} {status === 'current' && <span style={{ fontSize: '0.7rem', color: '#ff6b00', background: '#fff7ed', padding: '2px 6px', borderRadius: '4px', marginLeft: '6px' }}>Atual</span>}
                       </h4>
-                      <p style={{ margin: '2px 0 0 0', fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.3 }}>{step.desc}</p>
+                      <p style={{ margin: '2px 0 0 0', fontSize: '0.78rem', color: '#64748b', lineHeight: 1.35 }}>{step.desc}</p>
                     </div>
                   </div>
                   );
@@ -420,16 +419,16 @@ export default function DashboardPage() {
           </div>
 
           <div className={styles.resources}>
-            <div className={`${styles.resourceCard} glass`}>
-              <div className={styles.resourceIcon} style={{ background: 'rgba(212, 175, 55, 0.1)', width: '60px', height: '60px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-                <Video size={32} color="var(--primary)" />
+            <div className={styles.resourceCard}>
+              <div className={styles.resourceIcon} style={{ background: 'rgba(255, 107, 0, 0.08)', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+                <Video size={28} color="var(--primary, #ff6b00)" />
               </div>
               <h4>Como Atrair Investidores</h4>
               <p style={{ fontSize: '0.85rem' }}>Workshop em vídeo - 45 min</p>
             </div>
-            <div className={`${styles.resourceCard} glass`}>
-              <div className={styles.resourceIcon} style={{ background: 'rgba(212, 175, 55, 0.1)', width: '60px', height: '60px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-                <FileText size={32} color="var(--primary)" />
+            <div className={styles.resourceCard}>
+              <div className={styles.resourceIcon} style={{ background: 'rgba(255, 107, 0, 0.08)', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+                <FileText size={28} color="var(--primary, #ff6b00)" />
               </div>
               <h4>Template de Business Plan</h4>
               <p style={{ fontSize: '0.85rem' }}>Documento Estruturado</p>

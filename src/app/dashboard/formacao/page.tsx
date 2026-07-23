@@ -1,17 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import styles from '../Dashboard.module.css';
-
-interface Course {
-  id: string;
-  title: string;
-  instructor: string;
-  duration: string;
-  lessons: number;
-  price: string;
-  isPaid: boolean;
-}
 
 export default function FormacaoPage() {
   const isCoursePaid = (course: any) => {
@@ -38,7 +27,6 @@ export default function FormacaoPage() {
   const [uploadedUrl, setUploadedUrl] = useState('');
   const [msg, setMsg] = useState({ type: '', text: '' });
   const [showVideoModal, setShowVideoModal] = useState(false);
-  const [videoModalUrl, setVideoModalUrl] = useState('');
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'disponiveis' | 'minhas'>('disponiveis');
   const [videoCourse, setVideoCourse] = useState<any | null>(null);
@@ -64,14 +52,12 @@ export default function FormacaoPage() {
 
   const fetchEnrollments = async () => {
     try {
-      // 1. Fetch courses
       const cRes = await fetch('/api/courses');
       const cData = await cRes.json();
       if (cData.success) {
         setCourses(cData.courses || []);
       }
 
-      // 2. Fetch payments
       const res = await fetch('/api/payments');
       const data = await res.json();
       if (data.success) {
@@ -101,7 +87,6 @@ export default function FormacaoPage() {
       const data = await res.json();
       if (data.success) {
         setMsg({ type: 'success', text: `Inscrição no curso "${course.title}" concluída com sucesso!` });
-        // Instantly approve free course locally and update status
         await fetch('/api/payments', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -205,39 +190,46 @@ export default function FormacaoPage() {
     return payments.find(p => p.itemName.trim().toLowerCase() === courseTitle.trim().toLowerCase());
   };
 
-  if (loading) return <div style={{ padding: '3rem', color: '#fff' }}>A carregar academia...</div>;
+  if (loading) return <div style={{ padding: '3rem', color: '#0f172a', fontWeight: 600 }}>A carregar academia...</div>;
 
   return (
-    <div style={{ maxWidth: '850px' }}>
+    <div style={{ maxWidth: '920px' }}>
       <header style={{ marginBottom: '2.5rem' }}>
-        <h1 className="text-gradient-gold">Academia & Formação</h1>
-        <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Aceda a bootcamps, workshops e cursos certificados para acelerar o seu crescimento profissional.</p>
+        <h1 style={{ fontSize: '2.2rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', marginBottom: '0.4rem' }}>
+          Academia & Formação
+        </h1>
+        <p style={{ color: '#64748b', fontSize: '1rem' }}>
+          Aceda a bootcamps, workshops e cursos certificados para acelerar o seu crescimento profissional.
+        </p>
       </header>
 
       {msg.text && (
         <div style={{
-          color: msg.type === 'success' ? '#2ecc71' : '#ff4d4d',
-          background: msg.type === 'success' ? 'rgba(46, 204, 113, 0.1)' : 'rgba(255, 77, 77, 0.1)',
-          padding: '1rem',
-          borderRadius: '12px',
-          border: `1px solid ${msg.type === 'success' ? 'rgba(46, 204, 113, 0.2)' : 'rgba(255, 77, 77, 0.2)'}`,
-          marginBottom: '2rem'
+          color: msg.type === 'success' ? '#16a34a' : '#dc2626',
+          background: msg.type === 'success' ? '#f0fdf4' : '#fef2f2',
+          padding: '1rem 1.25rem',
+          borderRadius: '14px',
+          border: `1px solid ${msg.type === 'success' ? '#bbf7d0' : '#fecaca'}`,
+          marginBottom: '2rem',
+          fontWeight: 600,
+          fontSize: '0.92rem'
         }}>
           {msg.text}
         </div>
       )}
 
       {/* Tabs */}
-      <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.08)', marginBottom: '2rem', gap: '2rem' }}>
+      <div style={{ display: 'flex', borderBottom: '2px solid #e2e8f0', marginBottom: '2rem', gap: '2.5rem' }}>
         <button
           onClick={() => setActiveTab('disponiveis')}
           style={{
             background: 'none',
             border: 'none',
-            paddingBottom: '12px',
-            color: activeTab === 'disponiveis' ? 'var(--primary)' : 'rgba(255,255,255,0.5)',
-            fontSize: '1rem',
-            fontWeight: 700,
+            paddingBottom: '14px',
+            color: activeTab === 'disponiveis' ? '#ff6b00' : '#64748b',
+            fontSize: '1.02rem',
+            fontFamily: 'Outfit',
+            fontWeight: 800,
             cursor: 'pointer',
             position: 'relative',
             transition: 'color 0.2s'
@@ -245,7 +237,7 @@ export default function FormacaoPage() {
         >
           Formações Disponíveis
           {activeTab === 'disponiveis' && (
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: 'var(--primary)' }} />
+            <div style={{ position: 'absolute', bottom: '-2px', left: 0, right: 0, height: '3px', background: '#ff6b00', borderRadius: '3px 3px 0 0' }} />
           )}
         </button>
         <button
@@ -253,10 +245,11 @@ export default function FormacaoPage() {
           style={{
             background: 'none',
             border: 'none',
-            paddingBottom: '12px',
-            color: activeTab === 'minhas' ? 'var(--primary)' : 'rgba(255,255,255,0.5)',
-            fontSize: '1rem',
-            fontWeight: 700,
+            paddingBottom: '14px',
+            color: activeTab === 'minhas' ? '#ff6b00' : '#64748b',
+            fontSize: '1.02rem',
+            fontFamily: 'Outfit',
+            fontWeight: 800,
             cursor: 'pointer',
             position: 'relative',
             transition: 'color 0.2s'
@@ -264,7 +257,7 @@ export default function FormacaoPage() {
         >
           Minhas Formações
           {activeTab === 'minhas' && (
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: 'var(--primary)' }} />
+            <div style={{ position: 'absolute', bottom: '-2px', left: 0, right: 0, height: '3px', background: '#ff6b00', borderRadius: '3px 3px 0 0' }} />
           )}
         </button>
       </div>
@@ -282,7 +275,7 @@ export default function FormacaoPage() {
 
           if (displayCourses.length === 0) {
             return (
-              <div className="glass" style={{ padding: '3rem', borderRadius: '20px', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic' }}>
+              <div style={{ padding: '3.5rem 2rem', borderRadius: '20px', textAlign: 'center', color: '#64748b', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.03)', fontWeight: 500 }}>
                 {activeTab === 'disponiveis' 
                   ? 'De momento não existem novas formações disponíveis.' 
                   : 'Ainda não se inscreveu em nenhuma formação. Explore as formações disponíveis para começar!'}
@@ -294,45 +287,44 @@ export default function FormacaoPage() {
             const enrollment = getEnrollment(course.title);
             const status = enrollment ? enrollment.status : 'none';
             return (
-              <div key={course.id} className="glass" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid rgba(255,255,255,0.05)', flexWrap: 'wrap', gap: '1.5rem' }}>
+              <div key={course.id} style={{ padding: '2rem', borderRadius: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', flexWrap: 'wrap', gap: '1.5rem' }}>
                 <div>
                   <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: 700 }}>Curso Certificado</span>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 800, color: isCoursePaid(course) ? 'var(--secondary)' : '#2ecc71', background: isCoursePaid(course) ? 'rgba(42,79,166,0.1)' : 'rgba(46,204,113,0.1)', padding: '2px 8px', borderRadius: '10px' }}>
+                    <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#ff6b00', fontWeight: 800, letterSpacing: '0.08em' }}>Curso Certificado</span>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 800, color: isCoursePaid(course) ? '#2a4fa6' : '#16a34a', background: isCoursePaid(course) ? '#eff6ff' : '#f0fdf4', padding: '3px 10px', borderRadius: '50px', border: `1px solid ${isCoursePaid(course) ? '#bfdbfe' : '#bbf7d0'}` }}>
                       {course.price}
                     </span>
                     {status === 'aprovado' && (
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: 'rgba(46,204,113,0.15)', color: '#2ecc71', padding: '2px 8px', borderRadius: '10px', textTransform: 'uppercase' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#f0fdf4', color: '#16a34a', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #bbf7d0' }}>
                         ✓ Inscrito
                       </span>
                     )}
                     {status === 'pendente' && (
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: 'rgba(241,196,15,0.15)', color: '#f1c40f', padding: '2px 8px', borderRadius: '10px', textTransform: 'uppercase' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#fefce8', color: '#ca8a04', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #fef08a' }}>
                         ⏳ Pendente
                       </span>
                     )}
                     {status === 'rejeitado' && (
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: 'rgba(231,76,60,0.15)', color: '#e74c3c', padding: '2px 8px', borderRadius: '10px', textTransform: 'uppercase' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#fef2f2', color: '#dc2626', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #fecaca' }}>
                         ✕ Rejeitado
                       </span>
                     )}
                   </div>
-                  <h3 style={{ color: '#fff', margin: '6px 0 8px 0', fontSize: '1.25rem', fontFamily: 'Outfit' }}>{course.title}</h3>
-                  <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>
+                  <h3 style={{ color: '#0f172a', margin: '8px 0', fontSize: '1.3rem', fontFamily: 'Outfit', fontWeight: 800 }}>{course.title}</h3>
+                  <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.88rem', color: '#64748b', fontWeight: 500 }}>
                     <span>👨‍🏫 {course.instructor}</span>
                     <span>⏱️ {course.duration}</span>
                     <span>📚 {course.lessons} Aulas</span>
                   </div>
                 </div>
 
-                {/* Status Action buttons */}
+                {/* Action buttons */}
                 <div>
                   {status === 'aprovado' && (
                     <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
                       {(((course.videoUrl && course.videoUrl.trim() !== '') || (course.lessonsList && course.lessonsList.length > 0)) && course.videoVisible !== false) && (
                         <button
-                          className="btn-primary"
-                          style={{ padding: '8px 16px', fontSize: '0.85rem', background: 'linear-gradient(135deg, #e74c3c, #c0392b)' }}
+                          style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#dc2626', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(220,38,38,0.2)' }}
                           onClick={() => {
                             const lessons = course.lessonsList && course.lessonsList.length > 0
                               ? course.lessonsList
@@ -349,12 +341,11 @@ export default function FormacaoPage() {
 
                       {!enrollment.completed ? (
                         <>
-                          <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(46,204,113,0.15)', color: '#2ecc71', border: '1px solid #2ecc71', padding: '8px 20px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 700, background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0', padding: '8px 18px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
                             ✅ Inscrito
                           </span>
                           <button
-                            className="btn-primary"
-                            style={{ padding: '8px 16px', fontSize: '0.85rem', background: 'var(--primary)' }}
+                            style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#ff6b00', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', boxShadow: '0 4px 14px rgba(255,107,0,0.25)' }}
                             disabled={processingId === enrollment._id}
                             onClick={() => handleUpdateProgress(enrollment._id, { completed: true })}
                           >
@@ -363,14 +354,13 @@ export default function FormacaoPage() {
                         </>
                       ) : (
                         <>
-                          <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(255,107,0,0.15)', color: 'var(--primary)', border: '1px solid var(--primary)', padding: '8px 20px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 700, background: '#fff7ed', color: '#ff6b00', border: '1px solid #ffedd5', padding: '8px 18px', borderRadius: '40px', display: 'inline-flex', alignItems: 'center' }}>
                             🎉 Concluído
                           </span>
 
                           {!enrollment.certificateRequested ? (
                             <button
-                              className="btn-primary"
-                              style={{ padding: '8px 16px', fontSize: '0.85rem', background: '#27ae60' }}
+                              style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#16a34a', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
                               disabled={processingId === enrollment._id}
                               onClick={() => handleUpdateProgress(enrollment._id, { certificateRequested: true })}
                             >
@@ -378,8 +368,7 @@ export default function FormacaoPage() {
                             </button>
                           ) : (
                             <button
-                              className="btn-primary"
-                              style={{ padding: '8px 16px', fontSize: '0.85rem', background: '#2980b9' }}
+                              style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#2563eb', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
                               onClick={() => {
                                 setSelectedCourse(course);
                                 setShowCert(true);
@@ -392,11 +381,11 @@ export default function FormacaoPage() {
                       )}
                     </div>
                   )}
+
                   <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
                     {status !== 'aprovado' && (((course.videoUrl && course.videoUrl.trim() !== '') || (course.lessonsList && course.lessonsList.length > 0)) && course.videoVisible !== false) && (
                       <button
-                        className="btn-outline"
-                        style={{ padding: '8px 16px', fontSize: '0.85rem', color: 'var(--primary)', borderColor: 'var(--primary)', borderRadius: '8px', cursor: 'pointer', background: 'transparent' }}
+                        style={{ padding: '10px 18px', fontSize: '0.85rem', fontWeight: 700, color: '#ff6b00', border: '1.5px solid #ff6b00', borderRadius: '10px', cursor: 'pointer', background: '#fff7ed' }}
                         onClick={() => {
                           const lessons = course.lessonsList && course.lessonsList.length > 0
                             ? course.lessonsList
@@ -412,14 +401,13 @@ export default function FormacaoPage() {
                     )}
 
                     {status === 'pendente' && (
-                      <span style={{ fontSize: '0.85rem', fontWeight: 700, background: 'rgba(241,196,15,0.15)', color: '#f1c40f', border: '1px solid #f1c40f', padding: '8px 20px', borderRadius: '40px' }}>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 700, background: '#fefce8', color: '#ca8a04', border: '1px solid #fef08a', padding: '8px 18px', borderRadius: '40px' }}>
                         ⏳ Pagamento em Verificação
                       </span>
                     )}
                     {status === 'rejeitado' && (
                       <button
-                        className="btn-primary"
-                        style={{ background: '#e74c3c', borderRadius: '8px' }}
+                        style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#dc2626', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
                         onClick={() => {
                           setCourseToEnroll(course);
                           setShowEnrollConfirmModal(true);
@@ -430,8 +418,22 @@ export default function FormacaoPage() {
                     )}
                     {status === 'none' && (
                       <button
-                        className="btn-primary"
-                        style={{ borderRadius: '8px' }}
+                        style={{
+                          padding: '12px 24px',
+                          fontSize: '0.88rem',
+                          fontWeight: 800,
+                          background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)',
+                          color: '#ffffff',
+                          border: 'none',
+                          borderRadius: '12px',
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 14px rgba(255, 107, 0, 0.3)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.04em',
+                          transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                        }}
+                        onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
+                        onMouseLeave={e => (e.currentTarget.style.transform = 'translateY(0)')}
                         onClick={() => {
                           const enrollment = getEnrollment(course.title);
                           if (enrollment && (enrollment.status === 'aprovado' || enrollment.status === 'pendente')) {
@@ -466,27 +468,26 @@ export default function FormacaoPage() {
 
       {/* Video Player Modal */}
       {showVideoModal && videoCourse && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.92)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
-          <div style={{ maxWidth: '1000px', width: '100%', position: 'relative', background: '#1c1917', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '24px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', maxHeight: '90vh', overflow: 'hidden' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.75)', backdropFilter: 'blur(6px)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+          <div style={{ maxWidth: '1000px', width: '100%', position: 'relative', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', maxHeight: '90vh', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.2)' }}>
             <button
-              style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#ff4d4d', fontSize: '2rem', cursor: 'pointer', fontWeight: 700, zIndex: 10 }}
+              style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: '#f1f5f9', border: 'none', color: '#64748b', fontSize: '1.5rem', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', fontWeight: 700, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               onClick={() => { setShowVideoModal(false); setVideoCourse(null); setActiveVideoUrl(''); setActiveVideoTitle(''); }}
             >
               &times;
             </button>
             
             <div style={{ flexShrink: 0 }}>
-              <h3 style={{ color: '#fff', fontFamily: 'Outfit', margin: 0, fontSize: '1.4rem' }}>🎥 {videoCourse.title}</h3>
-              <p style={{ color: 'rgba(255,255,255,0.5)', margin: '4px 0 0 0', fontSize: '0.85rem' }}>Assistir a aulas: {activeVideoTitle}</p>
+              <h3 style={{ color: '#0f172a', fontFamily: 'Outfit', margin: 0, fontSize: '1.4rem', fontWeight: 800 }}>🎥 {videoCourse.title}</h3>
+              <p style={{ color: '#64748b', margin: '4px 0 0 0', fontSize: '0.88rem' }}>Aula atual: {activeVideoTitle}</p>
             </div>
             
             {/* Split layout: sidebar and player */}
             <div style={{ display: 'flex', gap: '1.5rem', flex: 1, minHeight: 0, flexWrap: 'wrap' }}>
-              {/* Sidebar with lessons list */}
               <div style={{ 
-                flex: '1 1 250px', 
-                background: 'rgba(255,255,255,0.02)', 
-                border: '1px solid rgba(255,255,255,0.05)', 
+                flex: '1 1 260px', 
+                background: '#f8fafc', 
+                border: '1px solid #e2e8f0', 
                 borderRadius: '16px', 
                 padding: '1rem', 
                 maxHeight: '100%', 
@@ -504,36 +505,15 @@ export default function FormacaoPage() {
 
                   return (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', width: '100%' }}>
-                      
-                      {/* Course & Instructor details card */}
-                      <div style={{ padding: '0.8rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        <div>👨‍🏫 <strong>Formador:</strong> <span style={{ color: '#fff' }}>{videoCourse.instructor}</span></div>
-                        <div>⏱️ <strong>Duração:</strong> <span style={{ color: '#fff' }}>{videoCourse.duration}</span></div>
-                        <div><strong>Descrição:</strong> <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.75rem', display: 'block', marginTop: '2px' }}>{videoCourse.desc}</span></div>
-                        
-                        <div style={{ paddingTop: '0.5rem', borderTop: '1px dashed rgba(255,255,255,0.1)' }}>
-                          <strong>Inscrição:</strong>
-                          <div style={{ marginTop: '4px' }}>
-                            {(() => {
-                              const status = courseEnrollment?.status || 'none';
-                              if (status === 'aprovado') {
-                                return <span style={{ background: 'rgba(46,204,113,0.15)', color: '#2ecc71', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>✔️ Aprovada</span>;
-                              }
-                              if (status === 'pendente') {
-                                return <span style={{ background: 'rgba(241,196,15,0.15)', color: '#f1c40f', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>⏳ Em Verificação</span>;
-                              }
-                              if (status === 'rejeitado') {
-                                return <span style={{ background: 'rgba(231,76,60,0.15)', color: '#e74c3c', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>❌ Rejeitada</span>;
-                              }
-                              return <span style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>Não Inscrito</span>;
-                            })()}
-                          </div>
-                        </div>
+                      <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', color: '#475569' }}>
+                        <div>👨‍🏫 <strong>Formador:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.instructor}</span></div>
+                        <div>⏱️ <strong>Duração:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.duration}</span></div>
+                        <div><strong>Descrição:</strong> <span style={{ color: '#64748b', fontSize: '0.78rem', display: 'block', marginTop: '2px' }}>{videoCourse.desc}</span></div>
                       </div>
 
-                      <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '4px', display: 'block' }}>Lista de Aulas</span>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '4px', display: 'block' }}>Lista de Aulas</span>
                       
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', width: '100%' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', width: '100%' }}>
                       {list.map((lesson: any, idx: number) => {
                         const isSelected = lesson.videoUrl === activeVideoUrl;
                         const isLocked = idx > 0 && !isApproved;
@@ -548,13 +528,13 @@ export default function FormacaoPage() {
                             }}
                             style={{
                               textAlign: 'left',
-                              background: isSelected ? 'rgba(255,107,0,0.1)' : 'transparent',
-                              border: `1px solid ${isSelected ? 'var(--primary)' : 'rgba(255,255,255,0.05)'}`,
+                              background: isSelected ? '#fff7ed' : '#ffffff',
+                              border: `1.5px solid ${isSelected ? '#ff6b00' : '#e2e8f0'}`,
                               borderRadius: '10px',
                               padding: '10px 14px',
-                              color: isLocked ? 'rgba(255,255,255,0.3)' : isSelected ? '#fff' : 'rgba(255,255,255,0.7)',
+                              color: isLocked ? '#94a3b8' : isSelected ? '#ff6b00' : '#334155',
                               fontSize: '0.85rem',
-                              fontWeight: isSelected ? 600 : 400,
+                              fontWeight: isSelected ? 700 : 500,
                               cursor: isLocked ? 'not-allowed' : 'pointer',
                               transition: 'all 0.2s',
                               display: 'block',
@@ -563,36 +543,27 @@ export default function FormacaoPage() {
                           >
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                               <div style={{ display: 'flex', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                <span style={{ color: isSelected ? 'var(--primary)' : 'rgba(255,255,255,0.3)', fontWeight: 700 }}>{idx + 1}.</span>
+                                <span style={{ color: isSelected ? '#ff6b00' : '#94a3b8', fontWeight: 700 }}>{idx + 1}.</span>
                                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{lesson.title}</span>
                               </div>
-                              {isLocked && (
-                                <span style={{ fontSize: '0.8rem', marginLeft: '6px' }}>🔒</span>
-                              )}
+                              {isLocked && <span style={{ fontSize: '0.8rem', marginLeft: '6px' }}>🔒</span>}
                             </div>
                           </button>
                         );
                       })}
                       </div>
-
-                      {!isApproved && (
-                        <div style={{ marginTop: '1rem', background: 'rgba(255,107,0,0.08)', border: '1px solid rgba(255,107,0,0.2)', borderRadius: '10px', padding: '10px 12px', fontSize: '0.75rem', color: '#ff8c3a', lineHeight: 1.4 }}>
-                          🔒 Inscreva-se ou aguarde a aprovação do seu pagamento para desbloquear todas as aulas deste curso.
-                        </div>
-                      )}
                     </div>
                   );
                 })()}
               </div>
               
-              {/* Player area */}
               <div style={{ 
                 flex: '3 1 450px', 
                 borderRadius: '16px', 
                 overflow: 'hidden', 
                 aspectRatio: '16/9', 
-                background: '#000',
-                border: '1px solid rgba(255,255,255,0.05)'
+                background: '#0f172a',
+                border: '1px solid #cbd5e1'
               }}>
                 <iframe
                   src={activeVideoUrl}
@@ -609,18 +580,18 @@ export default function FormacaoPage() {
         </div>
       )}
 
-      {/* Confirm Registration Details Modal */}
+      {/* Confirm Registration Details Modal (Ficha de Inscrição) */}
       {showEnrollConfirmModal && courseToEnroll && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
-          <div className="glass" style={{ maxWidth: '500px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+          <div style={{ maxWidth: '520px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 20px 40px rgba(15, 23, 42, 0.15)' }}>
             <button 
-              style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#ff4d4d', fontSize: '1.5rem', cursor: 'pointer' }}
+              style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: '#f1f5f9', border: 'none', color: '#64748b', fontSize: '1.4rem', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}
               onClick={() => { setShowEnrollConfirmModal(false); setCourseToEnroll(null); }}
             >
               &times;
             </button>
-            <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', marginBottom: '0.2rem' }}>Ficha de Inscrição</h2>
-            <p style={{ color: 'var(--primary)', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Curso: {courseToEnroll.title}</p>
+            <h2 style={{ color: '#0f172a', fontSize: '1.6rem', fontFamily: 'Outfit', fontWeight: 800, marginBottom: '0.2rem' }}>Ficha de Inscrição</h2>
+            <p style={{ color: '#ff6b00', fontWeight: 700, margin: '0 0 1.5rem 0', fontSize: '0.95rem' }}>Curso: {courseToEnroll.title}</p>
 
             <form 
               onSubmit={(e) => {
@@ -637,40 +608,56 @@ export default function FormacaoPage() {
               style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Nome do Aluno</label>
+                <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Nome do Aluno</label>
                 <input 
                   value={userName} 
                   disabled
-                  style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', padding: '10px', borderRadius: '8px', color: 'rgba(255,255,255,0.4)', cursor: 'not-allowed' }}
+                  style={{ background: '#f1f5f9', border: '1px solid #e2e8f0', padding: '12px 14px', borderRadius: '10px', color: '#475569', cursor: 'not-allowed', fontWeight: 600, fontSize: '0.92rem' }}
                 />
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Telefone / WhatsApp *</label>
+                <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Telefone / WhatsApp *</label>
                 <input 
                   value={enrollPhone}
                   onChange={e => setEnrollPhone(e.target.value)}
                   placeholder="Ex: +258 84 123 4567"
                   required
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
+                  style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
+                  onFocus={e => (e.currentTarget.style.borderColor = '#ff6b00')}
+                  onBlur={e => (e.currentTarget.style.borderColor = '#cbd5e1')}
                 />
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Empresa / Startup *</label>
+                <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Empresa / Startup *</label>
                 <input 
                   value={enrollCompany}
                   onChange={e => setEnrollCompany(e.target.value)}
                   placeholder="Nome da sua empresa ou projeto"
                   required
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
+                  style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
+                  onFocus={e => (e.currentTarget.style.borderColor = '#ff6b00')}
+                  onBlur={e => (e.currentTarget.style.borderColor = '#cbd5e1')}
                 />
               </div>
 
               <button 
                 type="submit" 
-                className="btn-primary" 
-                style={{ borderRadius: '8px', marginTop: '0.5rem' }}
+                style={{
+                  borderRadius: '12px',
+                  marginTop: '0.75rem',
+                  padding: '14px 24px',
+                  fontSize: '0.95rem',
+                  fontWeight: 800,
+                  background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)',
+                  color: '#ffffff',
+                  border: 'none',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 16px rgba(255, 107, 0, 0.3)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}
               >
                 {isCoursePaid(courseToEnroll) ? 'Avançar para Pagamento 💳' : 'Confirmar e Inscrever Grátis 🚀'}
               </button>
@@ -681,29 +668,28 @@ export default function FormacaoPage() {
 
       {/* Proof Upload Modal */}
       {showModal && selectedCourse && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
-          <div className="glass" style={{ maxWidth: '500px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+          <div style={{ maxWidth: '520px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 20px 40px rgba(15, 23, 42, 0.15)' }}>
             <button 
-              style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#ff4d4d', fontSize: '1.5rem', cursor: 'pointer' }}
+              style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: '#f1f5f9', border: 'none', color: '#64748b', fontSize: '1.4rem', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}
               onClick={() => { setShowModal(false); setFile(null); setUploadedUrl(''); }}
             >
               &times;
             </button>
-            <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', marginBottom: '0.2rem' }}>Submeter Comprovativo</h2>
-            <p style={{ color: 'var(--primary)', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Curso: {selectedCourse.title} ({selectedCourse.price})</p>
+            <h2 style={{ color: '#0f172a', fontSize: '1.6rem', fontFamily: 'Outfit', fontWeight: 800, marginBottom: '0.2rem' }}>Submeter Comprovativo</h2>
+            <p style={{ color: '#ff6b00', fontWeight: 700, margin: '0 0 1.5rem 0', fontSize: '0.95rem' }}>Curso: {selectedCourse.title} ({selectedCourse.price})</p>
 
-            {/* ABN Bank Account details */}
-            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', padding: '1.2rem', borderRadius: '12px', fontSize: '0.85rem', color: '#e5e5e5', display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '1.5rem', whiteSpace: 'pre-line', lineHeight: '1.5' }}>
+            <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '1.2rem', borderRadius: '14px', fontSize: '0.88rem', color: '#334155', display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '1.5rem', lineHeight: '1.5' }}>
               {selectedCourse.paymentInstructions ? (
                 selectedCourse.paymentInstructions
               ) : (
                 <>
-                  <strong>🏦 Dados Bancários ABN para Transferência:</strong>
-                  <strong>Banco:</strong> Banco da África Ocidental (BAO)
-                  <strong>Conta (NIB):</strong> 0012-9876-0026-NIB-ABN
-                  <strong>Titular:</strong> AfroBiz Network Lda.
-                  <span style={{ fontSize: '0.75rem', color: 'var(--primary)', display: 'block', marginTop: '0.3rem' }}>
-                    * Por favor, realize a transferência e faça upload do comprovativo abaixo.
+                  <strong style={{ color: '#0f172a' }}>🏦 Dados Bancários ABN para Transferência:</strong>
+                  <span><strong>Banco:</strong> Banco da África Ocidental (BAO)</span>
+                  <span><strong>Conta (NIB):</strong> 0012-9876-0026-NIB-ABN</span>
+                  <span><strong>Titular:</strong> AfroBiz Network Lda.</span>
+                  <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 600, display: 'block', marginTop: '0.3rem' }}>
+                    * Realize a transferência e submeta o comprovativo abaixo.
                   </span>
                 </>
               )}
@@ -711,7 +697,7 @@ export default function FormacaoPage() {
 
             <form onSubmit={handlePaySubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Ficheiro do Comprovativo *</label>
+                <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Ficheiro do Comprovativo *</label>
                 <label 
                   style={{ 
                     display: 'flex', 
@@ -719,27 +705,27 @@ export default function FormacaoPage() {
                     alignItems: 'center', 
                     justifyContent: 'center', 
                     padding: '2rem 1rem', 
-                    border: '2px dashed rgba(212, 175, 55, 0.3)', 
+                    border: '2px dashed #cbd5e1', 
                     borderRadius: '16px', 
                     cursor: 'pointer', 
-                    background: 'rgba(255,255,255,0.02)',
+                    background: '#f8fafc',
                     transition: 'all 0.2s',
                     textAlign: 'center'
                   }}
                   onMouseEnter={e => {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--primary)';
-                    (e.currentTarget as HTMLElement).style.background = 'rgba(212, 175, 55, 0.03)';
+                    (e.currentTarget as HTMLElement).style.borderColor = '#ff6b00';
+                    (e.currentTarget as HTMLElement).style.background = '#fff7ed';
                   }}
                   onMouseLeave={e => {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(212, 175, 55, 0.3)';
-                    (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)';
+                    (e.currentTarget as HTMLElement).style.borderColor = '#cbd5e1';
+                    (e.currentTarget as HTMLElement).style.background = '#f8fafc';
                   }}
                 >
                   <span style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📤</span>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff' }}>
+                  <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0f172a' }}>
                     {file ? file.name : 'Selecionar Comprovativo'}
                   </span>
-                  <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px' }}>
                     Formatos suportados: PNG, JPG ou PDF (Máx. 5MB)
                   </span>
                   <input 
@@ -750,10 +736,27 @@ export default function FormacaoPage() {
                     style={{ display: 'none' }} 
                   />
                 </label>
-                {uploading && <div style={{ fontSize: '0.8rem', color: 'var(--primary)', textAlign: 'center', marginTop: '0.5rem' }}>⏳ A enviar ficheiro para o servidor...</div>}
+                {uploading && <div style={{ fontSize: '0.82rem', color: '#ff6b00', textAlign: 'center', marginTop: '0.5rem', fontWeight: 600 }}>⏳ A enviar ficheiro para o servidor...</div>}
               </div>
 
-              <button type="submit" className="btn-primary" disabled={submitting || uploading || !uploadedUrl} style={{ marginTop: '0.5rem' }}>
+              <button 
+                type="submit" 
+                disabled={submitting || uploading || !uploadedUrl} 
+                style={{
+                  borderRadius: '12px',
+                  marginTop: '0.5rem',
+                  padding: '14px 24px',
+                  fontSize: '0.95rem',
+                  fontWeight: 800,
+                  background: submitting || uploading || !uploadedUrl ? '#cbd5e1' : 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)',
+                  color: '#ffffff',
+                  border: 'none',
+                  cursor: submitting || uploading || !uploadedUrl ? 'not-allowed' : 'pointer',
+                  boxShadow: submitting || uploading || !uploadedUrl ? 'none' : '0 4px 16px rgba(255, 107, 0, 0.3)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}
+              >
                 {submitting ? 'A submeter...' : 'Submeter Comprovativo'}
               </button>
             </form>
@@ -763,19 +766,17 @@ export default function FormacaoPage() {
 
       {/* Certificate Modal */}
       {showCert && selectedCourse && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.95)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.9)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
           <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', display: 'flex', gap: '1rem', zIndex: 2010 }}>
             <button 
-              className="btn-primary"
               onClick={() => window.print()}
-              style={{ padding: '8px 20px', fontSize: '0.9rem' }}
+              style={{ padding: '10px 20px', fontSize: '0.9rem', fontWeight: 700, background: '#ff6b00', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
             >
               🖨️ Imprimir / Guardar PDF
             </button>
             <button 
-              className="btn-outline" 
               onClick={() => { setShowCert(false); setSelectedCourse(null); }}
-              style={{ padding: '8px 20px', fontSize: '0.9rem', color: '#fff', borderColor: '#fff' }}
+              style={{ padding: '10px 20px', fontSize: '0.9rem', fontWeight: 700, background: 'transparent', color: '#fff', border: '1.5px solid #fff', borderRadius: '10px', cursor: 'pointer' }}
             >
               Fechar
             </button>
@@ -800,7 +801,6 @@ export default function FormacaoPage() {
             position: 'relative',
             fontFamily: "'Outfit', sans-serif"
           }}>
-            {/* Header branding */}
             <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', justifyContent: 'center' }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <img src="/abn-logo.png" alt="ABN Logo" style={{ height: '50px', marginBottom: '0.5rem' }} />
@@ -812,7 +812,7 @@ export default function FormacaoPage() {
               {selectedCourse.certUsePartnerLogos && selectedCourse.certPartnerLogoUrl && (
                 <>
                   <div style={{ width: '1px', height: '40px', background: 'rgba(0,0,0,0.1)' }} />
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', label: '', alignItems: 'center' }}>
                     <img src={selectedCourse.certPartnerLogoUrl} alt="Partner Logo" style={{ height: '50px', maxWidth: '140px', objectFit: 'contain', marginBottom: '0.5rem' }} />
                     <span style={{ fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#888' }}>
                       Parceiro Certificador
@@ -822,7 +822,6 @@ export default function FormacaoPage() {
               )}
             </div>
 
-            {/* Main title */}
             <div>
               <h1 style={{ fontSize: '2.8rem', color: selectedCourse.certBgColor || '#ff6b00', margin: '0.5rem 0', fontFamily: 'Outfit', fontWeight: 800 }}>
                 CERTIFICADO
@@ -832,7 +831,6 @@ export default function FormacaoPage() {
               </span>
             </div>
 
-            {/* Recipient body */}
             <div style={{ maxWidth: '650px' }}>
               <p style={{ fontSize: '1rem', margin: '0 0 1rem 0', color: '#555' }}>Certificamos que, para os devidos efeitos de mérito,</p>
               <h2 style={{ fontSize: '2.2rem', color: selectedCourse.certTextColor || '#1c1917', textDecoration: 'underline', margin: '0.5rem 0', fontFamily: 'Outfit', fontWeight: 700 }}>
@@ -843,7 +841,6 @@ export default function FormacaoPage() {
               </p>
             </div>
 
-            {/* Footer with date and signatures */}
             <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: '1.5rem', fontSize: '0.8rem', color: '#666' }}>
               <div style={{ textAlign: 'left' }}>
                 📍 Bissau, Guiné-Bissau
@@ -852,7 +849,6 @@ export default function FormacaoPage() {
                 </div>
               </div>
 
-              {/* CEO Signature */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ fontStyle: 'italic', fontFamily: 'serif', fontSize: '1.2rem', color: '#2a4fa6', marginBottom: '0.2rem' }}>
                   Afonso Domingos
@@ -862,7 +858,6 @@ export default function FormacaoPage() {
                 </div>
               </div>
 
-              {/* Co-founder Signature */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ fontStyle: 'italic', fontFamily: 'serif', fontSize: '1.2rem', color: '#2a4fa6', marginBottom: '0.2rem' }}>
                   Moisés Nhantumbo
@@ -874,7 +869,6 @@ export default function FormacaoPage() {
             </div>
           </div>
 
-          {/* Inline styles specifically for printing */}
           <style>{`
             @media print {
               body * {
