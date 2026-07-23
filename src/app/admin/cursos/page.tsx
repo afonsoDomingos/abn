@@ -128,7 +128,13 @@ export default function AdminCursosPage() {
     setDesc(course.desc);
     setVideoUrl(course.videoUrl || '');
     setVideoVisible(course.videoVisible !== false);
-    setLessonsList(course.lessonsList || []);
+
+    // Guarantee that existing saved lessons or single video url are loaded
+    const initialLessons = (course.lessonsList && course.lessonsList.length > 0)
+      ? course.lessonsList
+      : (course.videoUrl ? [{ title: 'Aula 1: Introdução ao Curso', videoUrl: course.videoUrl }] : []);
+    setLessonsList(initialLessons);
+
     setCertBgColor(course.certBgColor || '#ff6b00');
     setCertTextColor(course.certTextColor || '#1c1917');
     setCertUsePartnerLogos(course.certUsePartnerLogos === true);
@@ -221,11 +227,11 @@ export default function AdminCursosPage() {
       title,
       instructor,
       duration,
-      lessons: Number(lessons),
+      lessons: Math.max(lessonsList.length, Number(lessons)),
       price,
       isPaid,
       desc,
-      videoUrl,
+      videoUrl: lessonsList.length > 0 ? lessonsList[0].videoUrl : videoUrl,
       videoVisible,
       lessonsList,
       certBgColor,
@@ -624,64 +630,113 @@ export default function AdminCursosPage() {
                 {currentStep === 3 && (
                   <>
                     {/* Lesson builder section */}
-                    <div style={{ border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.4rem', background: '#f8fafc', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ border: '1.5px solid #e2e8f0', borderRadius: '16px', padding: '1.4rem', background: '#f8fafc', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                          📚 Aulas & Ficheiros PDF ({lessonsList.length})
+                        <label style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                          📚 Lista de Aulas Registadas ({lessonsList.length} {lessonsList.length === 1 ? 'Aula' : 'Aulas'})
                         </label>
-                        <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 700 }}>Vídeos Embed & Apoio PDF</span>
+                        <span style={{ fontSize: '0.75rem', background: '#eff6ff', color: '#2563eb', padding: '4px 10px', borderRadius: '50px', fontWeight: 800, border: '1px solid #bfdbfe' }}>
+                          Suporta 10+ Aulas por Curso
+                        </span>
                       </div>
                       
-                      {/* Current lessons list */}
+                      {/* Current saved lessons list with expanded scroll container for 10+ lessons */}
                       {lessonsList.length === 0 ? (
-                        <p style={{ fontSize: '0.85rem', color: '#64748b', fontStyle: 'italic', margin: 0 }}>
-                          Nenhuma aula específica adicionada ainda. Adicione abaixo cada vídeo e PDF da formação.
-                        </p>
+                        <div style={{ padding: '1.2rem', background: '#ffffff', borderRadius: '12px', border: '1px dashed #cbd5e1', textAlign: 'center', color: '#64748b', fontSize: '0.85rem' }}>
+                          Nenhuma aula registada ainda. Utilize o formulário abaixo para adicionar as aulas (1, 2, 3... 10+) com vídeo e PDF de apoio.
+                        </div>
                       ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', maxHeight: '190px', overflowY: 'auto', paddingRight: '4px' }}>
-                          {lessonsList.map((lesson, idx) => (
-                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ffffff', border: editingLessonIdx === idx ? '2px solid #ff6b00' : '1px solid #cbd5e1', borderRadius: '10px', padding: '10px 14px' }}>
-                              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', overflow: 'hidden', flex: 1, marginRight: '10px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                  <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0f172a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{idx + 1}. {lesson.title}</span>
-                                  {lesson.pdfUrl && <span style={{ fontSize: '0.72rem', background: '#eff6ff', color: '#2563eb', padding: '1px 7px', borderRadius: '50px', fontWeight: 800, border: '1px solid #bfdbfe' }}>📄 PDF</span>}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', maxHeight: '250px', overflowY: 'auto', paddingRight: '6px' }}>
+                          {lessonsList.map((lesson, idx) => {
+                            const isBeingEdited = editingLessonIdx === idx;
+
+                            return (
+                              <div 
+                                key={idx} 
+                                style={{ 
+                                  display: 'flex', 
+                                  justifyContent: 'space-between', 
+                                  alignItems: 'center', 
+                                  background: isBeingEdited ? '#fff7ed' : '#ffffff', 
+                                  border: isBeingEdited ? '2px solid #ff6b00' : '1px solid #cbd5e1', 
+                                  borderRadius: '12px', 
+                                  padding: '12px 14px',
+                                  boxShadow: isBeingEdited ? '0 4px 12px rgba(255, 107, 0, 0.15)' : '0 2px 6px rgba(15,23,42,0.02)',
+                                  transition: 'all 0.2s'
+                                }}
+                              >
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', overflow: 'hidden', flex: 1, marginRight: '10px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                                    <span style={{ fontSize: '0.9rem', fontWeight: 800, color: isBeingEdited ? '#ff6b00' : '#0f172a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                      {idx + 1}. {lesson.title}
+                                    </span>
+                                    {isBeingEdited && (
+                                      <span style={{ fontSize: '0.7rem', background: '#ff6b00', color: '#ffffff', padding: '2px 8px', borderRadius: '50px', fontWeight: 800 }}>
+                                        ✏️ Em Edição
+                                      </span>
+                                    )}
+                                    {lesson.pdfUrl && (
+                                      <span style={{ fontSize: '0.72rem', background: '#eff6ff', color: '#2563eb', padding: '2px 8px', borderRadius: '50px', fontWeight: 800, border: '1px solid #bfdbfe' }}>
+                                        📄 PDF Anexado
+                                      </span>
+                                    )}
+                                  </div>
+                                  <span style={{ fontSize: '0.78rem', color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                    🎥 {lesson.videoUrl}
+                                  </span>
                                 </div>
-                                <span style={{ fontSize: '0.75rem', color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{lesson.videoUrl}</span>
+                                
+                                <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEditLessonStart(idx)}
+                                    style={{ 
+                                      background: isBeingEdited ? '#ff6b00' : '#fff7ed', 
+                                      border: '1px solid #ff6b00', 
+                                      color: isBeingEdited ? '#ffffff' : '#ff6b00', 
+                                      cursor: 'pointer', 
+                                      padding: '6px 12px', 
+                                      borderRadius: '8px', 
+                                      fontSize: '0.78rem', 
+                                      fontWeight: 800, 
+                                      display: 'inline-flex', 
+                                      alignItems: 'center', 
+                                      gap: '4px' 
+                                    }}
+                                  >
+                                    <Edit size={13} /> {isBeingEdited ? 'A Editar...' : 'Editar'}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      if (confirm(`Remover a aula #${idx + 1} (${lesson.title})?`)) {
+                                        setLessonsList(prev => prev.filter((_, i) => i !== idx));
+                                        if (editingLessonIdx === idx) handleCancelLessonEdit();
+                                      }
+                                    }}
+                                    style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626', cursor: 'pointer', padding: '6px 12px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 700 }}
+                                    title="Remover esta aula"
+                                  >
+                                    Remover
+                                  </button>
+                                </div>
                               </div>
-                              
-                              <div style={{ display: 'flex', gap: '6px' }}>
-                                <button
-                                  type="button"
-                                  onClick={() => handleEditLessonStart(idx)}
-                                  style={{ background: '#fff7ed', border: '1px solid #ff6b00', color: '#ff6b00', cursor: 'pointer', padding: '6px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-                                >
-                                  <Edit size={13} /> Editar
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => setLessonsList(prev => prev.filter((_, i) => i !== idx))}
-                                  style={{ background: '#fef2f2', border: 'none', color: '#dc2626', cursor: 'pointer', padding: '6px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700 }}
-                                  title="Remover aula"
-                                >
-                                  Remover
-                                </button>
-                              </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       )}
 
                       {/* Add or Edit lesson fields */}
-                      <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                      <div style={{ borderTop: '1.5px solid #e2e8f0', paddingTop: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ fontSize: '0.8rem', fontWeight: 800, color: editingLessonIdx !== null ? '#ff6b00' : '#475569' }}>
-                            {editingLessonIdx !== null ? `✏️ Editar Aula #${editingLessonIdx + 1}` : '➕ Adicionar Nova Aula ao Curso'}
+                          <span style={{ fontSize: '0.85rem', fontWeight: 800, color: editingLessonIdx !== null ? '#ff6b00' : '#475569' }}>
+                            {editingLessonIdx !== null ? `✏️ Editar Dados da Aula #${editingLessonIdx + 1}` : '➕ Adicionar Nova Aula ao Curso'}
                           </span>
                           {editingLessonIdx !== null && (
                             <button
                               type="button"
                               onClick={handleCancelLessonEdit}
-                              style={{ background: 'none', border: 'none', color: '#dc2626', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                              style={{ background: '#f1f5f9', border: 'none', color: '#dc2626', fontSize: '0.75rem', fontWeight: 800, cursor: 'pointer', padding: '4px 10px', borderRadius: '6px' }}
                             >
                               Cancelar Edição
                             </button>
@@ -709,7 +764,7 @@ export default function AdminCursosPage() {
                         </div>
 
                         {/* PDF Attachment Field */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', background: '#ffffff', border: '1px dashed #cbd5e1', borderRadius: '10px', padding: '10px 14px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', background: '#ffffff', border: '1.5px dashed #cbd5e1', borderRadius: '10px', padding: '10px 14px' }}>
                           <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#2563eb', display: 'flex', alignItems: 'center', gap: '4px' }}>
                             📄 Anexar Ficheiro PDF de Apoio / Manual (Opcional)
                           </label>
@@ -767,23 +822,24 @@ export default function AdminCursosPage() {
                           type="button"
                           onClick={handleSaveLesson}
                           style={{
-                            background: editingLessonIdx !== null ? '#16a34a' : '#fff7ed',
-                            border: `1.5px solid ${editingLessonIdx !== null ? '#16a34a' : '#ff6b00'}`,
-                            color: editingLessonIdx !== null ? '#ffffff' : '#ff6b00',
-                            padding: '10px 16px',
-                            borderRadius: '8px',
+                            background: editingLessonIdx !== null ? '#16a34a' : 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)',
+                            border: 'none',
+                            color: '#ffffff',
+                            padding: '12px 18px',
+                            borderRadius: '10px',
                             cursor: 'pointer',
-                            fontSize: '0.85rem',
+                            fontSize: '0.88rem',
                             fontWeight: 800,
                             textAlign: 'center',
                             display: 'inline-flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            gap: '6px'
+                            gap: '6px',
+                            boxShadow: '0 4px 14px rgba(255, 107, 0, 0.25)'
                           }}
                         >
                           {editingLessonIdx !== null ? <Check size={16} /> : <Plus size={16} />}
-                          {editingLessonIdx !== null ? 'Atualizar Dados da Aula' : 'Adicionar Aula à Formação'}
+                          {editingLessonIdx !== null ? `Guardar Alterações da Aula #${editingLessonIdx + 1}` : 'Adicionar Aula à Lista'}
                         </button>
                       </div>
                     </div>
