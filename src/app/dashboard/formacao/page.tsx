@@ -568,7 +568,7 @@ export default function FormacaoPage() {
         })()}
       </div>
 
-      {/* Video Player Modal */}
+      {/* Video Player Modal with Intelligent Real-Time Progress Bar */}
       {showVideoModal && videoCourse && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.75)', backdropFilter: 'blur(6px)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
           <div style={{ maxWidth: '1050px', width: '100%', position: 'relative', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', maxHeight: '90vh', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.2)' }}>
@@ -587,7 +587,7 @@ export default function FormacaoPage() {
             {/* Split layout: sidebar and player */}
             <div style={{ display: 'flex', gap: '1.5rem', flex: 1, minHeight: 0, flexWrap: 'wrap' }}>
               <div style={{ 
-                flex: '1 1 280px', 
+                flex: '1 1 300px', 
                 background: '#f8fafc', 
                 border: '1px solid #e2e8f0', 
                 borderRadius: '16px', 
@@ -596,7 +596,7 @@ export default function FormacaoPage() {
                 overflowY: 'auto',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '0.6rem'
+                gap: '0.8rem'
               }}>
                 {(() => {
                   const courseEnrollment = getEnrollment(videoCourse.title);
@@ -605,15 +605,41 @@ export default function FormacaoPage() {
                     ? videoCourse.lessonsList
                     : [{ title: 'Aula 1: Apresentação e Módulos', videoUrl: videoCourse.videoUrl || 'https://www.youtube.com/embed/dQw4w9WgXcQ' }];
                   const completedLessonsArr = courseEnrollment?.completedLessons || [];
+                  const modalDoneCount = completedLessonsArr.length;
+                  const modalProgressPercent = Math.min(100, Math.round((modalDoneCount / list.length) * 100));
 
                   return (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', width: '100%' }}>
-                      <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', color: '#475569' }}>
+                      
+                      {/* Intelligent Real-Time Progress Bar inside Player Modal */}
+                      {isApproved && (
+                        <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '12px', border: '1.5px solid #ff6b00', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.78rem', fontWeight: 800 }}>
+                            <span style={{ color: '#0f172a' }}>Progresso Inteligente:</span>
+                            <span style={{ color: modalProgressPercent === 100 ? '#16a34a' : '#ff6b00' }}>
+                              {modalDoneCount} de {list.length} ({modalProgressPercent}%)
+                            </span>
+                          </div>
+                          <div style={{ height: '7px', background: '#f1f5f9', borderRadius: '10px', overflow: 'hidden' }}>
+                            <div style={{ height: '100%', width: `${modalProgressPercent}%`, background: modalProgressPercent === 100 ? '#16a34a' : 'linear-gradient(90deg, #ff6b00 0%, #ff8c3a 100%)', borderRadius: '10px', transition: 'width 0.3s ease' }} />
+                          </div>
+                          {modalProgressPercent === 100 && (
+                            <div style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 800, marginTop: '2px', textAlign: 'center' }}>
+                              🎉 Parabéns! Formação 100% Concluída!
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', color: '#475569' }}>
                         <div>👨‍🏫 <strong>Formador:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.instructor}</span></div>
                         <div>⏱️ <strong>Duração:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.duration}</span></div>
                       </div>
 
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '4px', display: 'block' }}>Lista de Aulas</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Lista de Aulas</span>
+                        <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Marque `✓` ao concluir</span>
+                      </div>
                       
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', width: '100%' }}>
                       {list.map((lesson: any, idx: number) => {
@@ -643,6 +669,11 @@ export default function FormacaoPage() {
                                 if (isLocked) return;
                                 setActiveVideoUrl(lesson.videoUrl);
                                 setActiveVideoTitle(lesson.title);
+
+                                // Auto-mark lesson when student clicks to watch it
+                                if (isApproved && courseEnrollment && !isChecked) {
+                                  handleToggleLessonComplete(courseEnrollment, idx, list.length);
+                                }
                               }}
                               style={{
                                 textAlign: 'left',
@@ -663,7 +694,7 @@ export default function FormacaoPage() {
                               {lesson.title}
                             </button>
 
-                            {/* 2. Checkbox Concluir Aula Individual */}
+                            {/* Checkbox Concluir Aula Individual */}
                             {isApproved ? (
                               <input
                                 type="checkbox"
