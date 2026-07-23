@@ -197,8 +197,12 @@ export default function AdminCursosPage() {
   };
 
   const handleSaveLesson = () => {
-    if (!newLessonTitle.trim() || !newLessonUrl.trim()) {
-      alert('Por favor preencha pelo menos o Título e a URL do Vídeo da aula.');
+    if (!newLessonTitle.trim()) {
+      alert('Por favor preencha o Título da aula.');
+      return;
+    }
+    if (!newLessonUrl.trim() && !newLessonPdfUrl.trim()) {
+      alert('Por favor adicione pelo menos uma URL de Vídeo ou um ficheiro PDF para a aula.');
       return;
     }
 
@@ -778,13 +782,21 @@ export default function AdminCursosPage() {
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                          <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>URL do Vídeo (YouTube Embed Link) *</label>
+                          <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>
+                            URL do Vídeo (YouTube)
+                            {newLessonPdfUrl ? (
+                              <span style={{ fontWeight: 400, color: '#16a34a', marginLeft: '6px' }}>(Opcional — tem PDF anexado)</span>
+                            ) : (
+                              <span style={{ color: '#dc2626', marginLeft: '2px' }}>*</span>
+                            )}
+                          </label>
                           <input 
                             value={newLessonUrl}
                             onChange={e => setNewLessonUrl(e.target.value)}
-                            placeholder="Ex: https://www.youtube.com/embed/VIDEO_ID"
+                            placeholder="Ex: https://youtu.be/VIDEO_ID  ou  https://www.youtube.com/watch?v=VIDEO_ID"
                             style={{ background: '#ffffff', border: '1.5px solid #cbd5e1', padding: '10px 12px', borderRadius: '8px', color: '#0f172a', fontSize: '0.88rem', outline: 'none' }}
                           />
+                          <span style={{ fontSize: '0.7rem', color: '#64748b' }}>✅ Aceita qualquer formato: youtu.be, watch?v=, /embed/ ou /shorts/</span>
                         </div>
 
                         {/* PDF Attachment Field */}

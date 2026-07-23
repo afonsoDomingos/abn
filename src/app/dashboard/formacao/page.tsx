@@ -12,6 +12,25 @@ export default function FormacaoPage() {
     return !!course.isPaid;
   };
 
+  // Converts any YouTube URL format to embed URL
+  const toYoutubeEmbed = (url?: string): string => {
+    if (!url || url.trim() === '') return '';
+    const u = url.trim();
+    // Already an embed URL
+    if (u.includes('youtube.com/embed/')) return u;
+    // youtu.be short link
+    const shortMatch = u.match(/youtu\.be\/([\w-]+)/);
+    if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`;
+    // youtube.com/watch?v=
+    const watchMatch = u.match(/[?&]v=([\w-]+)/);
+    if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}`;
+    // youtube.com/shorts/
+    const shortsMatch = u.match(/youtube\.com\/shorts\/([\w-]+)/);
+    if (shortsMatch) return `https://www.youtube.com/embed/${shortsMatch[1]}`;
+    // Return as-is if nothing matched (may be another platform)
+    return u;
+  };
+
   const [payments, setPayments] = useState<any[]>([]);
   const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -412,7 +431,7 @@ export default function FormacaoPage() {
                               ? course.lessonsList
                               : [{ title: 'Aula 1: Introdução ao Curso', videoUrl: course.videoUrl || 'https://www.youtube.com/embed/dQw4w9WgXcQ' }];
                             setVideoCourse(course);
-                            setActiveVideoUrl(lessons[0].videoUrl);
+                            setActiveVideoUrl(toYoutubeEmbed(lessons[0].videoUrl));
                             setActiveVideoTitle(lessons[0].title);
                             setShowVideoModal(true);
                           }}
@@ -467,7 +486,7 @@ export default function FormacaoPage() {
                               ? course.lessonsList
                               : [{ title: 'Aula de Introdução', videoUrl: course.videoUrl }];
                             setVideoCourse(course);
-                            setActiveVideoUrl(lessons[0].videoUrl);
+                            setActiveVideoUrl(toYoutubeEmbed(lessons[0].videoUrl));
                             setActiveVideoTitle(lessons[0].title);
                             setShowVideoModal(true);
                           }}
@@ -603,7 +622,7 @@ export default function FormacaoPage() {
                   const isApproved = courseEnrollment && courseEnrollment.status === 'aprovado';
                   const list = videoCourse.lessonsList && videoCourse.lessonsList.length > 0
                     ? videoCourse.lessonsList
-                    : [{ title: 'Aula 1: Apresentação e Módulos', videoUrl: videoCourse.videoUrl || 'https://www.youtube.com/embed/dQw4w9WgXcQ' }];
+                    : [{ title: 'Aula 1: Apresentação e Módulos', videoUrl: toYoutubeEmbed(videoCourse.videoUrl) || 'https://www.youtube.com/embed/dQw4w9WgXcQ' }];
                   const completedLessonsArr = courseEnrollment?.completedLessons || [];
                   const modalDoneCount = completedLessonsArr.length;
                   const modalProgressPercent = Math.min(100, Math.round((modalDoneCount / list.length) * 100));
@@ -667,7 +686,7 @@ export default function FormacaoPage() {
                               disabled={isLocked}
                               onClick={() => {
                                 if (isLocked) return;
-                                setActiveVideoUrl(lesson.videoUrl);
+                                setActiveVideoUrl(toYoutubeEmbed(lesson.videoUrl));
                                 setActiveVideoTitle(lesson.title);
 
                                 // Auto-mark lesson when student clicks to watch it
@@ -748,17 +767,28 @@ export default function FormacaoPage() {
                 overflow: 'hidden', 
                 aspectRatio: '16/9', 
                 background: '#0f172a',
-                border: '1px solid #cbd5e1'
+                border: '1px solid #cbd5e1',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}>
-                <iframe
-                  src={activeVideoUrl}
-                  width="100%"
-                  height="100%"
-                  style={{ border: 'none', display: 'block' }}
-                  allowFullScreen
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  title="Player de Vídeo da Aula"
-                />
+                {activeVideoUrl ? (
+                  <iframe
+                    src={activeVideoUrl}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 'none', display: 'block' }}
+                    allowFullScreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    title="Player de Vídeo da Aula"
+                  />
+                ) : (
+                  <div style={{ textAlign: 'center', color: '#94a3b8', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                    <span style={{ fontSize: '3rem' }}>📄</span>
+                    <p style={{ fontSize: '0.95rem', fontWeight: 600, color: '#cbd5e1', margin: 0 }}>Esta aula é apenas em PDF</p>
+                    <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0 }}>Consulte o material de apoio na lista ao lado</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
