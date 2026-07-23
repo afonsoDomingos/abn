@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { BookOpen, Plus, Edit, Trash2, Users, Eye, EyeOff, Video, Award, CheckCircle, FileText, X } from 'lucide-react';
 
 interface Lesson {
   title: string;
@@ -75,7 +76,7 @@ export default function AdminCursosPage() {
       const data = await res.json();
       if (data.success) {
         const courseEnrollments = (data.payments || []).filter(
-          (p: any) => p.itemName.toLowerCase() === course.title.toLowerCase()
+          (p: any) => p.itemName?.toLowerCase().trim() === course.title?.toLowerCase().trim()
         );
         setParticipants(courseEnrollments);
       }
@@ -89,7 +90,6 @@ export default function AdminCursosPage() {
   // Step validations
   const isStep1Valid = title.trim() !== '' && desc.trim() !== '';
   const isStep2Valid = instructor.trim() !== '' && duration.trim() !== '' && Number(lessons) >= 1 && price.trim() !== '';
-
 
   useEffect(() => {
     fetchCourses();
@@ -225,133 +225,180 @@ export default function AdminCursosPage() {
     }
   };
 
-  if (loading) return <div style={{ padding: '3rem', color: '#fff' }}>A carregar cursos...</div>;
+  if (loading) return <div style={{ padding: '3rem', color: '#0f172a', fontWeight: 600 }}>A carregar gestão de cursos...</div>;
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '1200px' }}>
-      <header style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div style={{ padding: '2rem', maxWidth: '1240px', fontFamily: 'Inter, sans-serif' }}>
+      <header style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
         <div>
-          <h1 className="text-gradient-gold" style={{ fontSize: '2.2rem', fontFamily: 'Outfit' }}>Gestão da Academia ABN</h1>
-          <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Crie, edite e remova cursos certificados e preços (Meticais/USD) exibidos aos empreendedores.</p>
+          <h1 style={{ fontSize: '2.2rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', marginBottom: '0.4rem' }}>
+            Gestão da Academia ABN
+          </h1>
+          <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
+            Adicione aulas, gerencie vídeos, defina preços e personalize os certificados emitidos.
+          </p>
         </div>
-        <button className="btn-primary" onClick={handleCreateClick}>
-          ➕ Adicionar Novo Curso
+        <button 
+          onClick={handleCreateClick}
+          style={{
+            padding: '12px 24px',
+            fontSize: '0.9rem',
+            fontWeight: 800,
+            background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)',
+            color: '#ffffff',
+            border: 'none',
+            borderRadius: '12px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 14px rgba(255, 107, 0, 0.3)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          <Plus size={18} /> Adicionar Novo Curso
         </button>
       </header>
 
       {msg && (
-        <div style={{ background: 'rgba(46, 204, 113, 0.1)', color: '#2ecc71', border: '1px solid rgba(46, 204, 113, 0.3)', padding: '1rem', borderRadius: '12px', marginBottom: '2rem' }}>
+        <div style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0', padding: '1rem 1.25rem', borderRadius: '14px', marginBottom: '2rem', fontWeight: 700, fontSize: '0.9rem' }}>
           {msg}
         </div>
       )}
 
       {/* Grid of Courses */}
       {courses.length === 0 ? (
-        <div className="glass" style={{ padding: '3rem', borderRadius: '20px', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic' }}>
+        <div style={{ padding: '3.5rem 2rem', borderRadius: '20px', textAlign: 'center', color: '#64748b', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.03)', fontWeight: 500 }}>
           Nenhum curso registado na academia. Crie um novo curso clicando no botão acima.
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
-          {courses.map(course => (
-            <div key={course._id} className="glass" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1.2rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-              
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700, textTransform: 'uppercase' }}>Curso Certificado</span>
-                  <h3 style={{ color: '#fff', fontSize: '1.25rem', fontFamily: 'Outfit', margin: '4px 0 0 0' }}>{course.title}</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '1.5rem' }}>
+          {courses.map(course => {
+            const lessonCount = course.lessonsList && course.lessonsList.length > 0 ? course.lessonsList.length : (course.lessons || 1);
+
+            return (
+              <div 
+                key={course._id} 
+                style={{ 
+                  padding: '1.8rem', 
+                  borderRadius: '20px', 
+                  background: '#ffffff', 
+                  border: '1px solid #e2e8f0', 
+                  boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  gap: '1.2rem' 
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div>
+                    <span style={{ fontSize: '0.72rem', color: '#ff6b00', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Curso Certificado</span>
+                    <h3 style={{ color: '#0f172a', fontSize: '1.25rem', fontFamily: 'Outfit', fontWeight: 800, margin: '4px 0 0 0' }}>{course.title}</h3>
+                  </div>
+                  <span style={{
+                    fontSize: '0.78rem',
+                    fontWeight: 800,
+                    padding: '4px 12px',
+                    borderRadius: '50px',
+                    background: course.isPaid ? '#eff6ff' : '#f0fdf4',
+                    color: course.isPaid ? '#2563eb' : '#16a34a',
+                    border: `1px solid ${course.isPaid ? '#bfdbfe' : '#bbf7d0'}`
+                  }}>
+                    {course.price}
+                  </span>
                 </div>
-                <span style={{
-                  fontSize: '0.75rem',
-                  fontWeight: 800,
-                  padding: '2px 8px',
-                  borderRadius: '10px',
-                  background: course.isPaid ? 'rgba(255,107,0,0.15)' : 'rgba(46,204,113,0.15)',
-                  color: course.isPaid ? 'var(--primary)' : '#2ecc71'
-                }}>
-                  {course.price}
-                </span>
+
+                <p style={{ color: '#64748b', fontSize: '0.88rem', lineHeight: 1.5, margin: 0, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  {course.desc}
+                </p>
+
+                <div style={{ fontSize: '0.82rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '0.4rem', borderTop: '1px solid #f1f5f9', paddingTop: '1rem', marginTop: 'auto' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>👨‍🏫 <strong>Formador:</strong> {course.instructor}</span>
+                    <span>⏱️ <strong>Duração:</strong> {course.duration}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontWeight: 700, color: '#ff6b00' }}>📚 <strong>{lessonCount} Aulas Conteúdo</strong></span>
+                    <span style={{ fontSize: '0.75rem', color: course.videoVisible !== false ? '#16a34a' : '#dc2626', fontWeight: 700 }}>
+                      {course.videoVisible !== false ? '👁️ Vídeos Visíveis' : '🔒 Vídeos Ocultos'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Actions: View participants, Edit, Delete */}
+                <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.5rem' }}>
+                  <button
+                    onClick={() => handleViewParticipants(course)}
+                    style={{ flex: 1, padding: '10px 0', border: '1px solid #cbd5e1', background: '#f8fafc', color: '#0f172a', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}
+                  >
+                    <Users size={15} color="#ff6b00" /> Inscritos
+                  </button>
+                  <button
+                    onClick={() => handleEditClick(course)}
+                    style={{ flex: 1, padding: '10px 0', border: '1px solid #ff6b00', background: '#fff7ed', color: '#ff6b00', borderRadius: '10px', cursor: 'pointer', fontWeight: 800, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}
+                  >
+                    <Edit size={15} /> Gerir Aulas
+                  </button>
+                  <button
+                    onClick={() => handleDelete(course._id)}
+                    style={{ padding: '10px 14px', border: 'none', background: '#fef2f2', color: '#dc2626', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem' }}
+                    title="Excluir Curso"
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </div>
+
               </div>
-
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', lineHeight: 1.5, margin: 0 }}>
-                {course.desc}
-              </p>
-
-              <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)', display: 'flex', flexDirection: 'column', gap: '0.3rem', borderTop: '1px dashed rgba(255,255,255,0.08)', paddingTop: '1rem', marginTop: 'auto' }}>
-                <div>👨‍🏫 Instrutor: <span style={{ color: '#fff' }}>{course.instructor}</span></div>
-                <div>⏱️ Duração: <span style={{ color: '#fff' }}>{course.duration}</span></div>
-                <div>📚 Aulas: <span style={{ color: '#fff' }}>{course.lessons}</span></div>
-              </div>
-
-              {/* Actions: View participants, Edit, Delete */}
-              <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1rem' }}>
-                <button
-                  onClick={() => handleViewParticipants(course)}
-                  style={{ flex: 1, padding: '8px 0', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'var(--primary)', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' }}
-                >
-                  👥 Inscritos
-                </button>
-                <button
-                  onClick={() => handleEditClick(course)}
-                  style={{ flex: 1, padding: '8px 0', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.03)', color: '#fff', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' }}
-                >
-                  ✏️ Editar
-                </button>
-                <button
-                  onClick={() => handleDelete(course._id)}
-                  style={{ flex: 1, padding: '8px 0', border: 'none', background: '#e74c3c', color: '#fff', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' }}
-                >
-                  🗑️ Excluir
-                </button>
-              </div>
-
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
       {/* Editor Modal */}
       {showForm && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
-          <div className="glass" style={{ 
-            maxWidth: '550px', 
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+          <div style={{ 
+            maxWidth: '650px', 
             width: '100%', 
             margin: 'auto', 
             padding: '2.5rem', 
             borderRadius: '24px', 
             position: 'relative',
+            background: '#ffffff',
+            border: '1px solid #e2e8f0',
+            boxShadow: '0 20px 40px rgba(15, 23, 42, 0.15)',
             maxHeight: '90vh',
             display: 'flex',
             flexDirection: 'column',
             overflow: 'hidden'
           }}>
             <button 
-              style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#ff4d4d', fontSize: '1.5rem', cursor: 'pointer', zIndex: 10 }}
+              style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: '#f1f5f9', border: 'none', color: '#64748b', fontSize: '1.4rem', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}
               onClick={() => setShowForm(false)}
             >
               &times;
             </button>
             
             <div style={{ flexShrink: 0, marginBottom: '1.5rem' }}>
-              <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', margin: 0 }}>
-                {editingId ? 'Editar Curso' : 'Adicionar Novo Curso'}
+              <h2 style={{ color: '#0f172a', fontSize: '1.5rem', fontFamily: 'Outfit', fontWeight: 800, margin: 0 }}>
+                {editingId ? 'Gerir Conteúdos do Curso' : 'Adicionar Novo Curso'}
               </h2>
               
               {/* Progress indicator */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem', marginTop: '1.5rem', position: 'relative' }}>
-                <div style={{ position: 'absolute', top: '16px', left: '0', right: '0', height: '2px', background: 'rgba(255,255,255,0.1)', zIndex: 0 }} />
+                <div style={{ position: 'absolute', top: '16px', left: '0', right: '0', height: '2px', background: '#e2e8f0', zIndex: 0 }} />
                 <div style={{ 
                   position: 'absolute', 
                   top: '16px', 
                   left: '0', 
                   width: `${((currentStep - 1) / 3) * 100}%`, 
                   height: '2px', 
-                  background: 'var(--primary)', 
+                  background: '#ff6b00', 
                   zIndex: 0, 
                   transition: 'width 0.3s ease-in-out' 
                 }} />
                 
                 {[1, 2, 3, 4].map((step) => {
-                  const stepNames = ["Geral", "Detalhes", "Mídia", "Certificado"];
+                  const stepNames = ["Geral", "Preço & Dados", "Aulas & Vídeos", "Certificado"];
                   const isActive = step <= currentStep;
                   return (
                     <div key={step} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 1, position: 'relative' }}>
@@ -359,24 +406,24 @@ export default function AdminCursosPage() {
                         width: '32px',
                         height: '32px',
                         borderRadius: '50%',
-                        background: isActive ? 'var(--primary)' : '#1e1e1e',
-                        border: `2px solid ${isActive ? 'var(--primary)' : 'rgba(255,255,255,0.2)'}`,
+                        background: isActive ? '#ff6b00' : '#ffffff',
+                        border: `2px solid ${isActive ? '#ff6b00' : '#cbd5e1'}`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: '#fff',
+                        color: isActive ? '#ffffff' : '#64748b',
                         fontWeight: 'bold',
                         fontSize: '0.85rem',
                         transition: 'all 0.3s ease',
-                        boxShadow: isActive ? '0 0 12px rgba(255, 107, 0, 0.4)' : 'none'
+                        boxShadow: isActive ? '0 4px 12px rgba(255, 107, 0, 0.3)' : 'none'
                       }}>
                         {step}
                       </div>
                       <span style={{ 
-                        fontSize: '0.7rem', 
-                        color: isActive ? '#fff' : 'rgba(255,255,255,0.4)', 
+                        fontSize: '0.72rem', 
+                        color: isActive ? '#0f172a' : '#94a3b8', 
                         marginTop: '6px', 
-                        fontWeight: 600,
+                        fontWeight: 700,
                         transition: 'color 0.3s ease'
                       }}>
                         {stepNames[step - 1]}
@@ -389,28 +436,30 @@ export default function AdminCursosPage() {
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
               
-              {/* Form Content Area: Scrollable if too long, to ensure Save button is never cut off */}
+              {/* Form Content Area */}
               <div style={{ overflowY: 'auto', paddingRight: '4px', flex: 1, display: 'flex', flexDirection: 'column', gap: '1.2rem', marginBottom: '1.5rem' }}>
                 {currentStep === 1 && (
                   <>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                      <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Título do Curso *</label>
+                      <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>Título do Curso *</label>
                       <input 
                         value={title} 
                         onChange={e => setTitle(e.target.value)} 
                         required 
-                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
+                        placeholder="Ex: Gestão Financeira para Startups"
+                        style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
                       />
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                      <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Descrição *</label>
+                      <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>Descrição Completa *</label>
                       <textarea 
                         value={desc} 
                         onChange={e => setDesc(e.target.value)} 
                         required 
                         rows={5}
-                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff', resize: 'vertical' }}
+                        placeholder="Escreva a apresentação e os objetivos deste curso..."
+                        style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none', resize: 'vertical' }}
                       />
                     </div>
                   </>
@@ -420,44 +469,47 @@ export default function AdminCursosPage() {
                   <>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Instrutor *</label>
+                        <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>Formador / Instrutor *</label>
                         <input 
                           value={instructor} 
                           onChange={e => setInstructor(e.target.value)} 
                           required 
-                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
+                          placeholder="Ex: Dr. Afonso Domingos"
+                          style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
                         />
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Duração (ex: 12h) *</label>
+                        <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>Duração (ex: 12h) *</label>
                         <input 
                           value={duration} 
                           onChange={e => setDuration(e.target.value)} 
                           required 
-                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
+                          placeholder="Ex: 12h ou 4 Semanas"
+                          style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
                         />
                       </div>
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', alignItems: 'center' }}>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Aulas *</label>
+                        <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>Total Aulas *</label>
                         <input 
                           type="number"
                           value={lessons} 
                           onChange={e => setLessons(Number(e.target.value))} 
                           required 
                           min={1}
-                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
+                          style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
                         />
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Preço (ex: 5.000 MT) *</label>
+                        <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>Preço (ex: 5.000 MT) *</label>
                         <input 
                           value={price} 
                           onChange={e => setPrice(e.target.value)} 
                           required 
-                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff' }}
+                          placeholder="Gratuito ou 5.000 MT"
+                          style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
                         />
                       </div>
                       <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginTop: '1.2rem' }}>
@@ -466,25 +518,22 @@ export default function AdminCursosPage() {
                           checked={isPaid} 
                           onChange={e => setIsPaid(e.target.checked)} 
                           id="isPaidCheck"
-                          style={{ width: '18px', height: '18px', accentColor: 'var(--primary)' }}
+                          style={{ width: '18px', height: '18px', accentColor: '#ff6b00', cursor: 'pointer' }}
                         />
-                        <label htmlFor="isPaidCheck" style={{ fontSize: '0.75rem', color: '#fff', cursor: 'pointer' }}>Curso Pago</label>
+                        <label htmlFor="isPaidCheck" style={{ fontSize: '0.85rem', color: '#0f172a', cursor: 'pointer', fontWeight: 700 }}>Curso Pago</label>
                       </div>
                     </div>
 
                     {isPaid && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', gridColumn: '1 / -1' }}>
-                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>💳 Instruções de Pagamento (Dados Bancários / M-Pesa)</label>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                        <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>💳 Instruções de Pagamento Bancário & M-Pesa</label>
                         <textarea
                           value={paymentInstructions}
                           onChange={e => setPaymentInstructions(e.target.value)}
-                          rows={6}
-                          placeholder={'🏦 Dados Bancários ABN:\nBanco: ...\nConta: ...\nTitular: ...\n\n📱 M-Pesa: ...'}
-                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff', resize: 'vertical', fontSize: '0.85rem', lineHeight: '1.6' }}
+                          rows={5}
+                          placeholder={'🏦 Dados Bancários ABN:\nBanco: Millennium BIM\nConta: ...\n\n📱 M-Pesa: ...'}
+                          style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.88rem', outline: 'none', lineHeight: '1.6' }}
                         />
-                        <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', margin: 0 }}>
-                          Estas instruções serão exibidas ao aluno quando ele se inscrever no curso pago.
-                        </p>
                       </div>
                     )}
                   </>
@@ -493,27 +542,34 @@ export default function AdminCursosPage() {
                 {currentStep === 3 && (
                   <>
                     {/* Lesson builder section */}
-                    <div style={{ border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '1.2rem', background: 'rgba(255,255,255,0.02)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>📚 Aulas do Curso ({lessonsList.length})</label>
+                    <div style={{ border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.4rem', background: '#f8fafc', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                          📚 Adicionar Conteúdos / Aulas ({lessonsList.length})
+                        </label>
+                        <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 700 }}>Vídeos do YouTube (Embed)</span>
+                      </div>
                       
                       {/* Current lessons list */}
                       {lessonsList.length === 0 ? (
-                        <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', margin: 0 }}>Nenhuma aula adicionada a este curso de momento.</p>
+                        <p style={{ fontSize: '0.85rem', color: '#64748b', fontStyle: 'italic', margin: 0 }}>
+                          Nenhuma aula específica adicionada ainda. Adicione abaixo cada vídeo da formação.
+                        </p>
                       ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', maxHeight: '160px', overflowY: 'auto', paddingRight: '4px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', maxHeight: '180px', overflowY: 'auto', paddingRight: '4px' }}>
                           {lessonsList.map((lesson, idx) => (
-                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', padding: '8px 12px' }}>
+                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '10px', padding: '10px 14px' }}>
                               <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', overflow: 'hidden', flex: 1, marginRight: '10px' }}>
-                                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{idx + 1}. {lesson.title}</span>
-                                <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{lesson.videoUrl}</span>
+                                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0f172a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{idx + 1}. {lesson.title}</span>
+                                <span style={{ fontSize: '0.75rem', color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{lesson.videoUrl}</span>
                               </div>
                               <button
                                 type="button"
                                 onClick={() => setLessonsList(prev => prev.filter((_, i) => i !== idx))}
-                                style={{ background: 'none', border: 'none', color: '#ff4d4d', cursor: 'pointer', padding: '4px 8px', fontSize: '0.9rem' }}
+                                style={{ background: '#fef2f2', border: 'none', color: '#dc2626', cursor: 'pointer', padding: '6px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 700 }}
                                 title="Remover aula"
                               >
-                                🗑️
+                                Remover
                               </button>
                             </div>
                           ))}
@@ -521,24 +577,24 @@ export default function AdminCursosPage() {
                       )}
 
                       {/* Add new lesson fields */}
-                      <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                      <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                          <label style={{ fontSize: '0.7rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)' }}>Título da Aula</label>
+                          <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>Título da Aula</label>
                           <input 
                             value={newLessonTitle}
                             onChange={e => setNewLessonTitle(e.target.value)}
-                            placeholder="Ex: Aula 1: Introdução ao Curso"
-                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '8px 10px', borderRadius: '6px', color: '#fff', fontSize: '0.8rem' }}
+                            placeholder="Ex: Aula 1: Introdução à Estratégia de Vendas"
+                            style={{ background: '#ffffff', border: '1.5px solid #cbd5e1', padding: '10px 12px', borderRadius: '8px', color: '#0f172a', fontSize: '0.88rem', outline: 'none' }}
                           />
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                          <label style={{ fontSize: '0.7rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)' }}>URL do Vídeo (YouTube Embed)</label>
+                          <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>URL do Vídeo (YouTube Embed Link)</label>
                           <input 
                             value={newLessonUrl}
                             onChange={e => setNewLessonUrl(e.target.value)}
                             placeholder="Ex: https://www.youtube.com/embed/VIDEO_ID"
-                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '8px 10px', borderRadius: '6px', color: '#fff', fontSize: '0.8rem' }}
+                            style={{ background: '#ffffff', border: '1.5px solid #cbd5e1', padding: '10px 12px', borderRadius: '8px', color: '#0f172a', fontSize: '0.88rem', outline: 'none' }}
                           />
                         </div>
 
@@ -551,31 +607,34 @@ export default function AdminCursosPage() {
                             setNewLessonUrl('');
                           }}
                           style={{
-                            background: 'rgba(255,255,255,0.08)',
-                            border: '1px solid rgba(255,255,255,0.15)',
-                            color: '#fff',
-                            padding: '8px 16px',
-                            borderRadius: '6px',
+                            background: '#fff7ed',
+                            border: '1.5px solid #ff6b00',
+                            color: '#ff6b00',
+                            padding: '10px 16px',
+                            borderRadius: '8px',
                             cursor: 'pointer',
-                            fontSize: '0.8rem',
-                            fontWeight: 600,
-                            transition: 'background 0.2s',
-                            textAlign: 'center'
+                            fontSize: '0.85rem',
+                            fontWeight: 800,
+                            textAlign: 'center',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '6px'
                           }}
                         >
-                          ➕ Adicionar Aula à Lista
+                          <Plus size={16} /> Adicionar Aula à Formação
                         </button>
                       </div>
                     </div>
 
                     {/* Video Visibility Toggle */}
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '14px 18px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '14px 18px' }}>
                       <div>
-                        <p style={{ color: '#fff', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>
-                          👁️ Visibilidade das Aulas
+                        <p style={{ color: '#0f172a', fontWeight: 800, margin: 0, fontSize: '0.92rem' }}>
+                          👁️ Visibilidade dos Vídeos aos Alunos
                         </p>
-                        <p style={{ color: 'rgba(255,255,255,0.45)', margin: '2px 0 0 0', fontSize: '0.75rem' }}>
-                          {videoVisible ? 'Os vídeos estão visíveis para os alunos inscritos' : 'Os vídeos estão ocultos para todos os alunos'}
+                        <p style={{ color: '#64748b', margin: '2px 0 0 0', fontSize: '0.78rem' }}>
+                          {videoVisible ? 'Os vídeos estão visíveis para os alunos inscritos' : 'Os vídeos estão ocultos para revisão do admin'}
                         </p>
                       </div>
                       <label style={{ position: 'relative', display: 'inline-block', width: '52px', height: '28px', cursor: 'pointer', flexShrink: 0 }}>
@@ -587,7 +646,7 @@ export default function AdminCursosPage() {
                         />
                         <span style={{
                           position: 'absolute', inset: 0, borderRadius: '28px', transition: '0.3s',
-                          background: videoVisible ? 'var(--primary)' : 'rgba(255,255,255,0.15)'
+                          background: videoVisible ? '#ff6b00' : '#cbd5e1'
                         }} />
                         <span style={{
                           position: 'absolute', top: '4px', left: videoVisible ? '28px' : '4px',
@@ -597,13 +656,16 @@ export default function AdminCursosPage() {
                     </div>
                   </>
                 )}
+
                 {currentStep === 4 && (
                   <>
-                    <h3 style={{ color: '#fff', fontSize: '1rem', fontWeight: 600, margin: '0 0 0.5rem 0' }}>Personalização do Certificado</h3>
+                    <h3 style={{ color: '#0f172a', fontSize: '1rem', fontWeight: 800, margin: '0 0 0.5rem 0', fontFamily: 'Outfit' }}>
+                      Personalização do Certificado Emitido aos Alunos
+                    </h3>
                     
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Cor do Destaque (Borda/Títulos)</label>
+                        <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>Cor do Destaque (Borda)</label>
                         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                           <input 
                             type="color" 
@@ -616,13 +678,13 @@ export default function AdminCursosPage() {
                             value={certBgColor} 
                             onChange={e => setCertBgColor(e.target.value)}
                             placeholder="#ff6b00"
-                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff', flex: 1, fontFamily: 'monospace' }}
+                            style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '10px', borderRadius: '8px', color: '#0f172a', flex: 1, fontFamily: 'monospace', fontSize: '0.88rem' }}
                           />
                         </div>
                       </div>
 
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Cor do Texto do Aluno</label>
+                        <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>Cor do Texto do Nome</label>
                         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                           <input 
                             type="color" 
@@ -635,19 +697,19 @@ export default function AdminCursosPage() {
                             value={certTextColor} 
                             onChange={e => setCertTextColor(e.target.value)}
                             placeholder="#1c1917"
-                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', color: '#fff', flex: 1, fontFamily: 'monospace' }}
+                            style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '10px', borderRadius: '8px', color: '#0f172a', flex: 1, fontFamily: 'monospace', fontSize: '0.88rem' }}
                           />
                         </div>
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '14px 18px', marginTop: '0.5rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '14px 18px', marginTop: '0.5rem' }}>
                       <div>
-                        <p style={{ color: '#fff', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>
-                          🤝 Logótipo de Parceiro
+                        <p style={{ color: '#0f172a', fontWeight: 800, margin: 0, fontSize: '0.92rem' }}>
+                          🤝 Logótipo de Parceiro no Certificado
                         </p>
-                        <p style={{ color: 'rgba(255,255,255,0.45)', margin: '2px 0 0 0', fontSize: '0.75rem' }}>
-                          Ative para exibir o logótipo de um parceiro oficial no certificado
+                        <p style={{ color: '#64748b', margin: '2px 0 0 0', fontSize: '0.78rem' }}>
+                          Exibir logótipo oficial da empresa parceira no documento final
                         </p>
                       </div>
                       <label style={{ position: 'relative', display: 'inline-block', width: '52px', height: '28px', cursor: 'pointer', flexShrink: 0 }}>
@@ -659,7 +721,7 @@ export default function AdminCursosPage() {
                         />
                         <span style={{
                           position: 'absolute', inset: 0, borderRadius: '28px', transition: '0.3s',
-                          background: certUsePartnerLogos ? 'var(--primary)' : 'rgba(255,255,255,0.15)'
+                          background: certUsePartnerLogos ? '#ff6b00' : '#cbd5e1'
                         }} />
                         <span style={{
                           position: 'absolute', top: '4px', left: certUsePartnerLogos ? '28px' : '4px',
@@ -669,8 +731,8 @@ export default function AdminCursosPage() {
                     </div>
 
                     {certUsePartnerLogos && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: '12px', padding: '1.2rem' }}>
-                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Logótipo do Parceiro (Ficheiro de Imagem)</label>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', background: '#ffffff', border: '1.5px dashed #cbd5e1', borderRadius: '14px', padding: '1.2rem' }}>
+                        <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>Logótipo do Parceiro (Upload de Ficheiro)</label>
                         
                         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
                           <input 
@@ -704,15 +766,15 @@ export default function AdminCursosPage() {
                             style={{ display: 'block', fontSize: '0.85rem' }}
                           />
 
-                          {uploadingLogo && <span style={{ fontSize: '0.8rem', color: 'var(--primary)' }}>A carregar...</span>}
+                          {uploadingLogo && <span style={{ fontSize: '0.8rem', color: '#ff6b00', fontWeight: 700 }}>A carregar...</span>}
                           
                           {certPartnerLogoUrl && (
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#fff', padding: '8px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#f8fafc', padding: '8px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
                               <img src={certPartnerLogoUrl} alt="Preview Partner Logo" style={{ height: '40px', maxWidth: '120px', objectFit: 'contain' }} />
                               <button 
                                 type="button" 
                                 onClick={() => setCertPartnerLogoUrl('')}
-                                style={{ background: 'none', border: 'none', color: '#ff4d4d', fontSize: '0.7rem', cursor: 'pointer', marginTop: '4px', fontWeight: 700 }}
+                                style={{ background: 'none', border: 'none', color: '#dc2626', fontSize: '0.72rem', cursor: 'pointer', marginTop: '4px', fontWeight: 800 }}
                               >
                                 Remover
                               </button>
@@ -725,21 +787,21 @@ export default function AdminCursosPage() {
                 )}
               </div>
 
-              {/* Navigation Footer: Sticky to bottom, never hidden */}
-              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '1.2rem', flexShrink: 0 }}>
+              {/* Navigation Footer */}
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', borderTop: '1px solid #e2e8f0', paddingTop: '1.2rem', flexShrink: 0 }}>
                 {currentStep > 1 && (
                   <button 
                     type="button" 
                     onClick={() => setCurrentStep(prev => prev - 1)}
                     style={{ 
                       padding: '12px 24px', 
-                      background: 'rgba(0, 0, 0, 0.05)', 
-                      border: '1px solid rgba(0, 0, 0, 0.1)', 
-                      color: '#1c1917', 
-                      borderRadius: '8px', 
+                      background: '#ffffff', 
+                      border: '1.5px solid #cbd5e1', 
+                      color: '#475569', 
+                      borderRadius: '10px', 
                       cursor: 'pointer', 
-                      fontWeight: 600,
-                      transition: 'background 0.2s'
+                      fontWeight: 700,
+                      fontSize: '0.88rem'
                     }}
                   >
                     Voltar
@@ -751,11 +813,17 @@ export default function AdminCursosPage() {
                     type="button" 
                     disabled={currentStep === 1 ? !isStep1Valid : currentStep === 2 ? !isStep2Valid : false}
                     onClick={() => setCurrentStep(prev => prev + 1)}
-                    className="btn-primary"
                     style={{ 
-                      borderRadius: '8px',
+                      padding: '12px 24px',
+                      fontSize: '0.88rem',
+                      fontWeight: 800,
+                      background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '10px',
+                      cursor: (currentStep === 1 ? !isStep1Valid : currentStep === 2 ? !isStep2Valid : false) ? 'not-allowed' : 'pointer',
                       opacity: (currentStep === 1 ? !isStep1Valid : currentStep === 2 ? !isStep2Valid : false) ? 0.5 : 1,
-                      cursor: (currentStep === 1 ? !isStep1Valid : currentStep === 2 ? !isStep2Valid : false) ? 'not-allowed' : 'pointer'
+                      boxShadow: '0 4px 14px rgba(255, 107, 0, 0.3)'
                     }}
                   >
                     Seguinte
@@ -763,11 +831,20 @@ export default function AdminCursosPage() {
                 ) : (
                   <button 
                     type="submit" 
-                    className="btn-primary" 
                     disabled={saving} 
-                    style={{ borderRadius: '8px' }}
+                    style={{ 
+                      padding: '12px 24px',
+                      fontSize: '0.88rem',
+                      fontWeight: 800,
+                      background: '#16a34a',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '10px',
+                      cursor: saving ? 'not-allowed' : 'pointer',
+                      boxShadow: '0 4px 14px rgba(22, 163, 74, 0.3)'
+                    }}
                   >
-                    {saving ? 'A guardar...' : 'Guardar Curso'}
+                    {saving ? 'A guardar...' : 'Guardar Curso & Conteúdos'}
                   </button>
                 )}
               </div>
@@ -778,114 +855,49 @@ export default function AdminCursosPage() {
 
       {/* Participants Modal */}
       {showParticipantsModal && selectedCourseForParticipants && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
-          <div className="glass" style={{ maxWidth: '750px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative', display: 'flex', flexDirection: 'column', maxHeight: '85vh', overflow: 'hidden' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+          <div style={{ maxWidth: '750px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 20px 40px rgba(15, 23, 42, 0.15)', display: 'flex', flexDirection: 'column', maxHeight: '85vh', overflow: 'hidden' }}>
             <button 
-              style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#ff4d4d', fontSize: '1.8rem', cursor: 'pointer', fontWeight: 700 }}
+              style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: '#f1f5f9', border: 'none', color: '#64748b', fontSize: '1.4rem', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               onClick={() => { setShowParticipantsModal(false); setSelectedCourseForParticipants(null); setParticipants([]); }}
             >
               &times;
             </button>
             
-            <h2 style={{ color: '#fff', fontSize: '1.4rem', fontFamily: 'Outfit', margin: '0 0 0.2rem 0' }}>Alunos Inscritos</h2>
-            <p style={{ color: 'var(--primary)', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Curso: {selectedCourseForParticipants.title}</p>
+            <h2 style={{ color: '#0f172a', fontSize: '1.5rem', fontFamily: 'Outfit', fontWeight: 800, margin: '0 0 0.2rem 0' }}>Alunos Inscritos no Curso</h2>
+            <p style={{ color: '#ff6b00', fontWeight: 800, margin: '0 0 1.5rem 0', fontSize: '0.95rem' }}>{selectedCourseForParticipants.title}</p>
 
             <div style={{ flex: 1, overflowY: 'auto', paddingRight: '4px' }}>
               {loadingParticipants ? (
-                <p style={{ color: 'rgba(255,255,255,0.6)', fontStyle: 'italic', textAlign: 'center', padding: '2rem 0' }}>A carregar alunos...</p>
+                <p style={{ color: '#64748b', fontStyle: 'italic', textAlign: 'center', padding: '2rem 0' }}>A carregar alunos...</p>
               ) : participants.length === 0 ? (
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', textAlign: 'center', padding: '2rem 0' }}>Nenhum aluno registado ou aprovado neste curso ainda.</p>
+                <div style={{ color: '#64748b', textAlign: 'center', padding: '2.5rem 1rem', background: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+                  Nenhum aluno inscrito neste curso até ao momento.
+                </div>
               ) : (
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
-                  <thead>
-                    <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
-                      <th style={{ padding: '10px 8px' }}>Aluno</th>
-                      <th style={{ padding: '10px 8px' }}>Contacto / Telefone</th>
-                      <th style={{ padding: '10px 8px' }}>Empresa / Startup</th>
-                      <th style={{ padding: '10px 8px' }}>Estado</th>
-                      <th style={{ padding: '10px 8px' }}>Progresso</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {participants.map((p, idx) => {
-                      let progressText = 'Iniciado';
-                      let progressColor = '#3498db';
-                      if (p.completed) {
-                        progressText = 'Concluído 🎉';
-                        progressColor = '#2ecc71';
-                      }
-                      if (p.certificateRequested) {
-                        progressText = 'Certificado Solicitado 🎓';
-                        progressColor = '#f1c40f';
-                      }
-
-                      return (
-                        <tr key={p._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: '#fff' }}>
-                          <td style={{ padding: '12px 8px' }}>
-                            <div style={{ fontWeight: 600 }}>{p.user?.name || 'Utilizador Desconhecido'}</div>
-                            <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>{p.user?.email}</div>
-                          </td>
-                          <td style={{ padding: '12px 8px', color: 'rgba(255,255,255,0.8)' }}>
-                            {p.phone || <span style={{ color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>N/A</span>}
-                          </td>
-                          <td style={{ padding: '12px 8px', color: 'rgba(255,255,255,0.8)' }}>
-                            {p.company || <span style={{ color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>N/A</span>}
-                          </td>
-                          <td style={{ padding: '12px 8px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
-                              <span style={{ 
-                                fontSize: '0.75rem', 
-                                fontWeight: 700, 
-                                textTransform: 'uppercase',
-                                padding: '2px 6px',
-                                borderRadius: '4px',
-                                background: p.status === 'aprovado' ? 'rgba(46,204,113,0.15)' : p.status === 'pendente' ? 'rgba(241,196,15,0.15)' : 'rgba(231,76,60,0.15)',
-                                color: p.status === 'aprovado' ? '#2ecc71' : p.status === 'pendente' ? '#f1c40f' : '#e74c3c'
-                              }}>
-                                {p.status}
-                              </span>
-                              {p.status === 'pendente' && (
-                                <>
-                                  <button
-                                    onClick={async () => {
-                                      await fetch('/api/payments', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ paymentId: p._id, status: 'aprovado' }) });
-                                      setParticipants(prev => prev.map(x => x._id === p._id ? { ...x, status: 'aprovado' } : x));
-                                    }}
-                                    style={{ background: 'rgba(46,204,113,0.15)', border: '1px solid rgba(46,204,113,0.3)', color: '#2ecc71', padding: '2px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 700 }}
-                                  >✓ Aprovar</button>
-                                  <button
-                                    onClick={async () => {
-                                      await fetch('/api/payments', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ paymentId: p._id, status: 'rejeitado' }) });
-                                      setParticipants(prev => prev.map(x => x._id === p._id ? { ...x, status: 'rejeitado' } : x));
-                                    }}
-                                    style={{ background: 'rgba(231,76,60,0.15)', border: '1px solid rgba(231,76,60,0.3)', color: '#e74c3c', padding: '2px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 700 }}
-                                  >✕ Rejeitar</button>
-                                </>
-                              )}
-                              {p.proofUrl && p.proofUrl !== 'gratuito' && (
-                                <a href={p.proofUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.7rem', color: '#3498db', fontWeight: 600 }}>📎 Ver Comprovativo</a>
-                              )}
-                            </div>
-                          </td>
-                          <td style={{ padding: '12px 8px', color: progressColor, fontWeight: 600 }}>
-                            {progressText}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                  {participants.map(p => (
+                    <div key={p._id} style={{ padding: '1rem 1.25rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.8rem' }}>
+                      <div>
+                        <div style={{ fontWeight: 800, color: '#0f172a', fontSize: '0.95rem' }}>{p.user?.name || 'Aluno'}</div>
+                        <div style={{ fontSize: '0.82rem', color: '#64748b' }}>{p.user?.email} | {p.phone || 'Sem telefone'}</div>
+                      </div>
+                      <span style={{
+                        fontSize: '0.75rem',
+                        fontWeight: 800,
+                        textTransform: 'uppercase',
+                        padding: '4px 12px',
+                        borderRadius: '50px',
+                        background: p.status === 'aprovado' ? '#f0fdf4' : '#fefce8',
+                        color: p.status === 'aprovado' ? '#16a34a' : '#ca8a04',
+                        border: `1px solid ${p.status === 'aprovado' ? '#bbf7d0' : '#fef08a'}`
+                      }}>
+                        {p.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               )}
-            </div>
-            
-            <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'flex-end' }}>
-              <button 
-                className="btn-primary" 
-                style={{ borderRadius: '8px', padding: '10px 20px', fontSize: '0.85rem' }} 
-                onClick={() => { setShowParticipantsModal(false); setSelectedCourseForParticipants(null); setParticipants([]); }}
-              >
-                Fechar
-              </button>
             </div>
           </div>
         </div>
