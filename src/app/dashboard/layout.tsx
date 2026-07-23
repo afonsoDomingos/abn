@@ -268,7 +268,7 @@ export default function DashboardLayout({
                   onClick={(e) => e.stopPropagation()}
                   style={{ width: '320px', right: 0, padding: '1rem' }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem', borderBottom: '1px solid #f1f5f9', pb: '0.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
                     <span style={{ fontWeight: 800, fontSize: '0.9rem', color: '#0f172a', fontFamily: 'Outfit' }}>
                       Notificações {unreadCount > 0 && `(${unreadCount})`}
                     </span>

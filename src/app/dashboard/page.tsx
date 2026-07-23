@@ -291,7 +291,7 @@ export default function DashboardPage() {
                 <h4 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>Cliques</h4>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
                   <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.projectViews || 0}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight 700, background: '#f0fdf4', padding: '2px 6px', borderRadius: '12px' }}>+8%</span>
+                  <span style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 700, background: '#f0fdf4', padding: '2px 6px', borderRadius: '12px' }}>+8%</span>
                 </div>
               </div>
 
