@@ -169,7 +169,7 @@ export default function FormacaoPage() {
     }
   };
 
-  const handleUpdateProgress = async (paymentId: string, updates: { completed?: boolean; completedLessons?: number[]; certificateRequested?: boolean }) => {
+  const handleUpdateProgress = async (paymentId: string, updates: { completed?: boolean; completedLessons?: number[]; certificateRequested?: boolean; certificateApproved?: boolean }) => {
     setProcessingId(paymentId);
     try {
       const res = await fetch('/api/payments', {
@@ -255,7 +255,6 @@ export default function FormacaoPage() {
           gap: '1rem'
         }}>
           <span>{msg.text}</span>
-          {/* 5. Alerta no WhatsApp do Admin Link */}
           {adminWaLink && (
             <a
               href={adminWaLink}
@@ -331,10 +330,7 @@ export default function FormacaoPage() {
           if (activeTab === 'disponiveis') {
             displayCourses = courses.filter((course) => !getEnrollment(course.title));
           } else {
-            // 1. Catalog courses that match an enrollment
             const catalogEnrolled = courses.filter((course) => !!getEnrollment(course.title));
-            
-            // 2. Extra payments in user's payments array that didn't strictly match a catalog course title
             const matchedPaymentIds = new Set(catalogEnrolled.map(c => getEnrollment(c.title)?._id).filter(Boolean));
             const extraPayments = payments.filter(p => !matchedPaymentIds.has(p._id));
 
@@ -408,22 +404,21 @@ export default function FormacaoPage() {
                   <div>
                     {status === 'aprovado' && (
                       <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                        {(((course.videoUrl && course.videoUrl.trim() !== '') || (course.lessonsList && course.lessonsList.length > 0)) && course.videoVisible !== false) && (
-                          <button
-                            style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#dc2626', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(220,38,38,0.2)' }}
-                            onClick={() => {
-                              const lessons = course.lessonsList && course.lessonsList.length > 0
-                                ? course.lessonsList
-                                : [{ title: 'Aula Geral / Apresentação', videoUrl: course.videoUrl }];
-                              setVideoCourse(course);
-                              setActiveVideoUrl(lessons[0].videoUrl);
-                              setActiveVideoTitle(lessons[0].title);
-                              setShowVideoModal(true);
-                            }}
-                          >
-                            🎥 Assistir Aulas
-                          </button>
-                        )}
+                        {/* 🎥 Assistir Aulas button (Always visible for enrolled students) */}
+                        <button
+                          style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#dc2626', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(220,38,38,0.2)' }}
+                          onClick={() => {
+                            const lessons = course.lessonsList && course.lessonsList.length > 0
+                              ? course.lessonsList
+                              : [{ title: 'Aula 1: Introdução ao Curso', videoUrl: course.videoUrl || 'https://www.youtube.com/embed/dQw4w9WgXcQ' }];
+                            setVideoCourse(course);
+                            setActiveVideoUrl(lessons[0].videoUrl);
+                            setActiveVideoTitle(lessons[0].title);
+                            setShowVideoModal(true);
+                          }}
+                        >
+                          🎥 Assistir Aulas
+                        </button>
 
                         {!enrollment?.completed ? (
                           <button
@@ -443,6 +438,10 @@ export default function FormacaoPage() {
                               >
                                 {processingId === enrollment?._id ? 'A processar...' : '🎓 Solicitar Certificado'}
                               </button>
+                            ) : !enrollment?.certificateApproved ? (
+                              <span style={{ fontSize: '0.82rem', fontWeight: 700, background: '#fefce8', color: '#ca8a04', border: '1px solid #fef08a', padding: '9px 18px', borderRadius: '10px' }}>
+                                ⏳ Certificado em Validação pelo Admin
+                              </span>
                             ) : (
                               <button
                                 style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#2563eb', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
@@ -451,7 +450,7 @@ export default function FormacaoPage() {
                                   setShowCert(true);
                                 }}
                               >
-                                🎓 Ver Certificado
+                                🎓 Ver Certificado PDF
                               </button>
                             )}
                           </>
@@ -466,7 +465,7 @@ export default function FormacaoPage() {
                           onClick={() => {
                             const lessons = course.lessonsList && course.lessonsList.length > 0
                               ? course.lessonsList
-                              : [{ title: 'Aula Geral / Apresentação', videoUrl: course.videoUrl }];
+                              : [{ title: 'Aula de Introdução', videoUrl: course.videoUrl }];
                             setVideoCourse(course);
                             setActiveVideoUrl(lessons[0].videoUrl);
                             setActiveVideoTitle(lessons[0].title);
@@ -604,7 +603,7 @@ export default function FormacaoPage() {
                   const isApproved = courseEnrollment && courseEnrollment.status === 'aprovado';
                   const list = videoCourse.lessonsList && videoCourse.lessonsList.length > 0
                     ? videoCourse.lessonsList
-                    : [{ title: 'Aula Geral / Apresentação', videoUrl: videoCourse.videoUrl }];
+                    : [{ title: 'Aula 1: Apresentação e Módulos', videoUrl: videoCourse.videoUrl || 'https://www.youtube.com/embed/dQw4w9WgXcQ' }];
                   const completedLessonsArr = courseEnrollment?.completedLessons || [];
 
                   return (

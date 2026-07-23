@@ -15,6 +15,7 @@ const PaymentSchema = new mongoose.Schema({
   completed: { type: Boolean, default: false },
   completedLessons: { type: [Number], default: [] },
   certificateRequested: { type: Boolean, default: false },
+  certificateApproved: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now }
 });
 

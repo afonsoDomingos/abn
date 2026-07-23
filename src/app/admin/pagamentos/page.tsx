@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { CreditCard, CheckCircle, XCircle, FileText, Search, User, Mail, Phone, Building2 } from 'lucide-react';
+import { CreditCard, CheckCircle, XCircle, FileText, Search, User, Mail, Phone, Building2, Award } from 'lucide-react';
 
 interface PaymentLog {
   _id: string;
@@ -13,6 +13,9 @@ interface PaymentLog {
   price: string;
   proofUrl: string;
   status: 'pendente' | 'aprovado' | 'rejeitado';
+  completed?: boolean;
+  certificateRequested?: boolean;
+  certificateApproved?: boolean;
   createdAt: string;
   phone?: string;
   company?: string;
@@ -21,7 +24,7 @@ interface PaymentLog {
 export default function AdminPagamentosPage() {
   const [payments, setPayments] = useState<PaymentLog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<'todos' | 'pendente' | 'aprovado' | 'rejeitado'>('todos');
+  const [filter, setFilter] = useState<'todos' | 'pendente' | 'aprovado' | 'rejeitado' | 'certificados'>('todos');
   const [searchTerm, setSearchTerm] = useState('');
   const [msg, setMsg] = useState('');
 
@@ -66,8 +69,36 @@ export default function AdminPagamentosPage() {
     }
   };
 
+  const handleApproveCertificate = async (id: string) => {
+    try {
+      const res = await fetch('/api/payments', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentId: id, certificateApproved: true })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setMsg('Certificado APROVADO com sucesso! O aluno já pode descarregá-lo em PDF.');
+        setPayments(prev =>
+          prev.map(p => p._id === id ? { ...p, certificateApproved: true } : p)
+        );
+        setTimeout(() => setMsg(''), 4000);
+      } else {
+        alert(data.error || 'Erro ao aprovar certificado.');
+      }
+    } catch (e) {
+      setMsg('Erro de conexão.');
+    }
+  };
+
   const filtered = payments.filter(p => {
-    const matchesFilter = filter === 'todos' ? true : p.status === filter;
+    let matchesFilter = true;
+    if (filter === 'certificados') {
+      matchesFilter = !!p.certificateRequested;
+    } else if (filter !== 'todos') {
+      matchesFilter = p.status === filter;
+    }
+
     const s = searchTerm.toLowerCase();
     const matchesSearch = !searchTerm ||
       p.itemName?.toLowerCase().includes(s) ||
@@ -78,16 +109,18 @@ export default function AdminPagamentosPage() {
     return matchesFilter && matchesSearch;
   });
 
-  if (loading) return <div style={{ padding: '3rem', color: '#0f172a', fontWeight: 600 }}>A carregar validações de pagamentos...</div>;
+  const certCount = payments.filter(p => p.certificateRequested && !p.certificateApproved).length;
+
+  if (loading) return <div style={{ padding: '3rem', color: '#0f172a', fontWeight: 600 }}>A carregar validações de pagamentos e certificados...</div>;
 
   return (
     <div style={{ padding: '2rem', maxWidth: '1240px', fontFamily: 'Inter, sans-serif' }}>
       <header style={{ marginBottom: '2.5rem' }}>
         <h1 style={{ fontSize: '2.2rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', marginBottom: '0.4rem' }}>
-          Validação de Pagamentos & Inscrições
+          Validação de Inscrições & Certificados
         </h1>
         <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
-          Verifique e aprove os comprovativos de pagamento submetidos pelos empreendedores para libertar o acesso aos cursos.
+          Verifique pagamentos e aprove os pedidos de emissão de certificados assinados pelos formadores ABN.
         </p>
       </header>
 
@@ -100,7 +133,7 @@ export default function AdminPagamentosPage() {
       {/* Filter and Search Bar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem', marginBottom: '2rem' }}>
         <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
-          {(['todos', 'pendente', 'aprovado', 'rejeitado'] as const).map(f => (
+          {(['todos', 'pendente', 'aprovado', 'rejeitado', 'certificados'] as const).map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}
@@ -115,10 +148,13 @@ export default function AdminPagamentosPage() {
                 color: filter === f ? '#ffffff' : '#64748b',
                 border: filter === f ? 'none' : '1px solid #cbd5e1',
                 boxShadow: filter === f ? '0 4px 12px rgba(255, 107, 0, 0.25)' : 'none',
-                transition: 'all 0.2s'
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px'
               }}
             >
-              {f === 'todos' ? `Ver Todos (${payments.length})` : `${f.toUpperCase()} (${payments.filter(p => p.status === f).length})`}
+              {f === 'certificados' ? `🎓 Certificados (${certCount})` : f === 'todos' ? `Ver Todos (${payments.length})` : `${f.toUpperCase()} (${payments.filter(p => p.status === f).length})`}
             </button>
           ))}
         </div>
@@ -137,7 +173,7 @@ export default function AdminPagamentosPage() {
 
       {filtered.length === 0 ? (
         <div style={{ padding: '3.5rem 2rem', borderRadius: '20px', textAlign: 'center', color: '#64748b', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.03)', fontWeight: 500 }}>
-          Nenhum comprovativo ou inscrição registada nesta categoria.
+          Nenhum registo ou pedido de certificado nesta categoria.
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -158,7 +194,7 @@ export default function AdminPagamentosPage() {
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1, minWidth: '280px' }}>
-                <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: '#ff6b00', letterSpacing: '0.06em' }}>Inscrição</span>
                   <span style={{
                     fontSize: '0.75rem',
@@ -172,6 +208,20 @@ export default function AdminPagamentosPage() {
                   }}>
                     {pay.status}
                   </span>
+
+                  {pay.certificateRequested && (
+                    <span style={{
+                      fontSize: '0.72rem',
+                      fontWeight: 800,
+                      padding: '3px 10px',
+                      borderRadius: '50px',
+                      background: pay.certificateApproved ? '#eff6ff' : '#fff7ed',
+                      color: pay.certificateApproved ? '#2563eb' : '#d97706',
+                      border: `1px solid ${pay.certificateApproved ? '#bfdbfe' : '#fde68a'}`
+                    }}>
+                      🎓 Certificado: {pay.certificateApproved ? 'Aprovado' : 'Aguardar Aprovação Admin'}
+                    </span>
+                  )}
                 </div>
                 
                 <h3 style={{ color: '#0f172a', fontSize: '1.3rem', fontFamily: 'Outfit', fontWeight: 800, margin: 0 }}>
@@ -188,7 +238,7 @@ export default function AdminPagamentosPage() {
                 </div>
               </div>
 
-              {/* Actions & Proof Link */}
+              {/* Actions & Certificate Approval Link */}
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
                 {pay.proofUrl !== 'gratuito' ? (
                   <a
@@ -223,7 +273,7 @@ export default function AdminPagamentosPage() {
                       onClick={() => handleUpdateStatus(pay._id, 'aprovado')}
                       style={{ background: '#16a34a', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '10px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(22,163,74,0.2)' }}
                     >
-                      <CheckCircle size={16} /> Aprovar
+                      <CheckCircle size={16} /> Aprovar Inscrição
                     </button>
                     <button
                       onClick={() => handleUpdateStatus(pay._id, 'rejeitado')}
@@ -234,13 +284,20 @@ export default function AdminPagamentosPage() {
                   </div>
                 )}
 
-                {pay.status === 'aprovado' && (
+                {/* Certificate Approval Button for Admin */}
+                {pay.certificateRequested && !pay.certificateApproved && (
                   <button
-                    onClick={() => handleUpdateStatus(pay._id, 'rejeitado')}
-                    style={{ background: 'none', border: '1px solid #fecaca', color: '#dc2626', padding: '8px 14px', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.8rem' }}
+                    onClick={() => handleApproveCertificate(pay._id)}
+                    style={{ background: '#2563eb', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '10px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(37,99,235,0.25)' }}
                   >
-                    Anular Aprovação
+                    <Award size={16} /> Aprovar Certificado
                   </button>
+                )}
+
+                {pay.certificateApproved && (
+                  <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#2563eb', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '6px 14px', borderRadius: '50px' }}>
+                    ✓ Certificado Emitido
+                  </span>
                 )}
               </div>
             </div>

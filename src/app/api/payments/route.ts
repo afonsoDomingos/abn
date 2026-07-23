@@ -257,6 +257,24 @@ export async function PUT(request: Request) {
     if (completed !== undefined) updates.completed = completed;
     if (completedLessons !== undefined) updates.completedLessons = completedLessons;
     if (certificateRequested !== undefined) updates.certificateRequested = certificateRequested;
+    
+    if (body.certificateApproved !== undefined) {
+      if (session.role !== 'admin') {
+        return NextResponse.json({ error: 'Apenas administradores podem aprovar emissão de certificados.' }, { status: 403 });
+      }
+      updates.certificateApproved = body.certificateApproved;
+
+      if (body.certificateApproved === true) {
+        try {
+          await Notification.create({
+            user: payment.user,
+            title: 'Certificado Emitido com Sucesso! 🎓',
+            message: `O seu certificado para o curso "${payment.itemName}" foi aprovado pela direção da ABN. Já pode descarregá-lo em PDF!`,
+            link: '/dashboard/formacao'
+          });
+        } catch (notifErr) {}
+      }
+    }
 
     const updatedPayment = await Payment.findByIdAndUpdate(paymentId, updates, { new: true });
     return NextResponse.json({ success: true, payment: updatedPayment });
