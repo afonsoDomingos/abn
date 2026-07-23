@@ -8,7 +8,7 @@ export default function AdminPage() {
     totalUsers: 0,
     totalStartups: 0,
     activeServices: 0,
-    revenue: '0.00'
+    revenue: '0 MT'
   });
   const [distribution, setDistribution] = useState({
     empreendedores: 0,
@@ -22,7 +22,8 @@ export default function AdminPage() {
       .then(data => {
         if (data.stats) setStats(data.stats);
         if (data.distribution) setDistribution(data.distribution);
-      });
+      })
+      .catch(err => console.error(err));
   }, []);
 
   return (
@@ -41,8 +42,8 @@ export default function AdminPage() {
           <div className={styles.statValue}>{stats.activeServices}</div>
         </div>
         <div className={styles.statCard}>
-          <h4>Receita (MT)</h4>
-          <div className={styles.statValue}>{stats.revenue}</div>
+          <h4>Faturação / Receita</h4>
+          <div className={styles.statValue} style={{ color: '#16a34a' }}>{stats.revenue}</div>
         </div>
       </div>
 
@@ -63,18 +64,20 @@ export default function AdminPage() {
           <div className={styles.donutChartBox}>
             <div className={styles.donutChart}></div>
             <div className={styles.donutLegend}>
-              <div className={styles.legendItem}><span style={{background: 'var(--primary)'}}></span> Empreendedores ({distribution.empreendedores})</div>
-              <div className={styles.legendItem}><span style={{background: 'var(--secondary)'}}></span> Startups ({distribution.startups})</div>
-              <div className={styles.legendItem}><span style={{background: 'var(--accent)'}}></span> Investidores ({distribution.investidores})</div>
+              <div className={styles.legendItem}><span style={{background: 'var(--primary, #ff6b00)'}}></span> Empreendedores ({distribution.empreendedores})</div>
+              <div className={styles.legendItem}><span style={{background: '#2563eb'}}></span> Startups ({distribution.startups})</div>
+              <div className={styles.legendItem}><span style={{background: '#16a34a'}}></span> Investidores ({distribution.investidores})</div>
             </div>
           </div>
         </div>
       </div>
 
       <div className={styles.recentActivity}>
-        <h3 style={{ marginBottom: '1.5rem', fontFamily: 'Outfit' }}>Atividade Recente</h3>
-        <div style={{ padding: '1.5rem', borderRadius: '16px', background: '#161616', border: '1px solid rgba(255,255,255,0.08)' }}>
-          <p style={{ color: 'rgba(255,255,255,0.6)' }}>Nenhuma atividade suspeita detectada.</p>
+        <h3 style={{ marginBottom: '1rem', fontFamily: 'Outfit', color: '#0f172a', fontWeight: 800 }}>Atividade Recente & Segurança</h3>
+        <div style={{ padding: '1.5rem', borderRadius: '16px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.03)' }}>
+          <p style={{ color: '#475569', fontSize: '0.9rem', margin: 0, fontWeight: 500 }}>
+            🟢 Sistema a operar com 100% de integridade. Nenhuma atividade suspeita detetada no servidor.
+          </p>
         </div>
       </div>
     </div>

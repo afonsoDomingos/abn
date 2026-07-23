@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { CreditCard, CheckCircle, XCircle, FileText, Search, User, Mail, Phone, Building2, Award } from 'lucide-react';
+import { CreditCard, CheckCircle, XCircle, FileText, Search, User, Mail, Phone, Building2, Award, Calendar, DollarSign } from 'lucide-react';
 
 interface PaymentLog {
   _id: string;
@@ -91,6 +91,26 @@ export default function AdminPagamentosPage() {
     }
   };
 
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return 'N/A';
+    try {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' }) + 
+             ' às ' + 
+             d.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+    } catch (e) {
+      return dateStr;
+    }
+  };
+
+  // Calculate total approved revenue
+  const totalApprovedRevenue = payments
+    .filter(p => p.status === 'aprovado' && p.price && p.price !== 'Gratuito')
+    .reduce((acc, p) => {
+      const val = parseInt(p.price.replace(/[^\d]/g, ''), 10);
+      return acc + (isNaN(val) ? 0 : val);
+    }, 0);
+
   const filtered = payments.filter(p => {
     let matchesFilter = true;
     if (filter === 'certificados') {
@@ -115,14 +135,45 @@ export default function AdminPagamentosPage() {
 
   return (
     <div style={{ padding: '2rem', maxWidth: '1240px', fontFamily: 'Inter, sans-serif' }}>
-      <header style={{ marginBottom: '2.5rem' }}>
+      <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2.2rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', marginBottom: '0.4rem' }}>
           Validação de Inscrições & Certificados
         </h1>
         <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
-          Verifique pagamentos e aprove os pedidos de emissão de certificados assinados pelos formadores ABN.
+          Verifique pagamentos, consulte datas de inscrição e aprove os pedidos de emissão de certificados assinados.
         </p>
       </header>
+
+      {/* Summary KPI Bar */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', padding: '1.4rem 1.6rem', borderRadius: '16px', boxShadow: '0 2px 10px rgba(15,23,42,0.03)' }}>
+          <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Faturação Aprovada</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#16a34a', fontFamily: 'Outfit', marginTop: '4px' }}>
+            {totalApprovedRevenue.toLocaleString('pt-PT')} MT
+          </div>
+        </div>
+
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', padding: '1.4rem 1.6rem', borderRadius: '16px', boxShadow: '0 2px 10px rgba(15,23,42,0.03)' }}>
+          <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Inscrições</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', marginTop: '4px' }}>
+            {payments.length}
+          </div>
+        </div>
+
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', padding: '1.4rem 1.6rem', borderRadius: '16px', boxShadow: '0 2px 10px rgba(15,23,42,0.03)' }}>
+          <div style={{ fontSize: '0.75rem', color: '#ca8a04', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Pagamentos Pendentes</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#ca8a04', fontFamily: 'Outfit', marginTop: '4px' }}>
+            {payments.filter(p => p.status === 'pendente').length}
+          </div>
+        </div>
+
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', padding: '1.4rem 1.6rem', borderRadius: '16px', boxShadow: '0 2px 10px rgba(15,23,42,0.03)' }}>
+          <div style={{ fontSize: '0.75rem', color: '#2563eb', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Certificados por Aprovar</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#2563eb', fontFamily: 'Outfit', marginTop: '4px' }}>
+            {certCount}
+          </div>
+        </div>
+      </div>
 
       {msg && (
         <div style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0', padding: '1rem 1.25rem', borderRadius: '14px', marginBottom: '2rem', fontWeight: 700, fontSize: '0.9rem' }}>
@@ -207,6 +258,11 @@ export default function AdminPagamentosPage() {
                     border: `1px solid ${pay.status === 'pendente' ? '#fef08a' : pay.status === 'aprovado' ? '#bbf7d0' : '#fecaca'}`
                   }}>
                     {pay.status}
+                  </span>
+
+                  {/* 📅 Date Badge */}
+                  <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600, background: '#f8fafc', padding: '3px 10px', borderRadius: '50px', border: '1px solid #e2e8f0', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    <Calendar size={13} color="#64748b" /> {formatDate(pay.createdAt)}
                   </span>
 
                   {pay.certificateRequested && (
