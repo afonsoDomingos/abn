@@ -73,6 +73,7 @@ export default function FormacaoPage() {
 
   const handleEnrollFree = async (course: any, phoneVal: string, companyVal: string) => {
     setLoading(true);
+    setMsg({ type: '', text: '' });
     try {
       const res = await fetch('/api/payments', {
         method: 'POST',
@@ -88,6 +89,7 @@ export default function FormacaoPage() {
       const data = await res.json();
       if (data.success) {
         setMsg({ type: 'success', text: `Inscrição no curso "${course.title}" concluída com sucesso!` });
+        setActiveTab('minhas');
         fetchEnrollments();
       } else {
         setMsg({ type: 'error', text: data.error || 'Erro ao processar inscrição gratuita.' });
@@ -155,6 +157,7 @@ export default function FormacaoPage() {
         setShowModal(false);
         setFile(null);
         setUploadedUrl('');
+        setActiveTab('minhas');
         fetchEnrollments();
       } else {
         setMsg({ type: 'error', text: data.error || 'Erro ao submeter comprovativo.' });
@@ -203,8 +206,23 @@ export default function FormacaoPage() {
     });
   };
 
+  // Robust accent-insensitive, case-insensitive string matching
+  const normalizeStr = (str: string) => {
+    return (str || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\w\s]/gi, '')
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' ');
+  };
+
   const getEnrollment = (courseTitle: string) => {
-    return payments.find(p => p.itemName.trim().toLowerCase() === courseTitle.trim().toLowerCase());
+    const normTitle = normalizeStr(courseTitle);
+    return payments.find(p => {
+      const normItemName = normalizeStr(p.itemName);
+      return normItemName === normTitle || normItemName.includes(normTitle) || normTitle.includes(normItemName);
+    });
   };
 
   if (loading) return <div style={{ padding: '3rem', color: '#0f172a', fontWeight: 600 }}>A carregar academia...</div>;
@@ -299,7 +317,7 @@ export default function FormacaoPage() {
             transition: 'color 0.2s'
           }}
         >
-          Minhas Formações
+          Minhas Formações ({payments.length})
           {activeTab === 'minhas' && (
             <div style={{ position: 'absolute', bottom: '-2px', left: 0, right: 0, height: '3px', background: '#ff6b00', borderRadius: '3px 3px 0 0' }} />
           )}
@@ -308,14 +326,33 @@ export default function FormacaoPage() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {(() => {
-          const displayCourses = courses.filter((course) => {
-            const enrollment = getEnrollment(course.title);
-            if (activeTab === 'disponiveis') {
-              return !enrollment;
-            } else {
-              return !!enrollment;
-            }
-          });
+          let displayCourses: any[] = [];
+
+          if (activeTab === 'disponiveis') {
+            displayCourses = courses.filter((course) => !getEnrollment(course.title));
+          } else {
+            // 1. Catalog courses that match an enrollment
+            const catalogEnrolled = courses.filter((course) => !!getEnrollment(course.title));
+            
+            // 2. Extra payments in user's payments array that didn't strictly match a catalog course title
+            const matchedPaymentIds = new Set(catalogEnrolled.map(c => getEnrollment(c.title)?._id).filter(Boolean));
+            const extraPayments = payments.filter(p => !matchedPaymentIds.has(p._id));
+
+            const extraCourses = extraPayments.map(p => ({
+              id: p._id,
+              _id: p._id,
+              title: p.itemName,
+              price: p.price,
+              instructor: 'Equipa ABN',
+              duration: 'Em progresso',
+              lessons: 1,
+              lessonsList: [],
+              videoUrl: '',
+              isPaid: p.price !== 'Gratuito'
+            }));
+
+            displayCourses = [...catalogEnrolled, ...extraCourses];
+          }
 
           if (displayCourses.length === 0) {
             return (
@@ -335,7 +372,7 @@ export default function FormacaoPage() {
             const progressPercent = Math.min(100, Math.round((doneCount / totalLessons) * 100));
 
             return (
-              <div key={course.id} style={{ padding: '2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div key={course.id || course._id} style={{ padding: '2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
                   <div>
                     <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -388,23 +425,23 @@ export default function FormacaoPage() {
                           </button>
                         )}
 
-                        {!enrollment.completed ? (
+                        {!enrollment?.completed ? (
                           <button
                             style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#ff6b00', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', boxShadow: '0 4px 14px rgba(255,107,0,0.25)' }}
-                            disabled={processingId === enrollment._id}
-                            onClick={() => handleUpdateProgress(enrollment._id, { completed: true })}
+                            disabled={processingId === enrollment?._id}
+                            onClick={() => enrollment && handleUpdateProgress(enrollment._id, { completed: true })}
                           >
-                            {processingId === enrollment._id ? 'A processar...' : '✔️ Concluir Curso'}
+                            {processingId === enrollment?._id ? 'A processar...' : '✔️ Concluir Curso'}
                           </button>
                         ) : (
                           <>
-                            {!enrollment.certificateRequested ? (
+                            {!enrollment?.certificateRequested ? (
                               <button
                                 style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#16a34a', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
-                                disabled={processingId === enrollment._id}
-                                onClick={() => handleUpdateProgress(enrollment._id, { certificateRequested: true })}
+                                disabled={processingId === enrollment?._id}
+                                onClick={() => enrollment && handleUpdateProgress(enrollment._id, { certificateRequested: true })}
                               >
-                                {processingId === enrollment._id ? 'A processar...' : '🎓 Solicitar Certificado'}
+                                {processingId === enrollment?._id ? 'A processar...' : '🎓 Solicitar Certificado'}
                               </button>
                             ) : (
                               <button
@@ -633,7 +670,7 @@ export default function FormacaoPage() {
                                 type="checkbox"
                                 checked={isChecked}
                                 title={isChecked ? "Aula Concluída" : "Marcar como Concluída"}
-                                onChange={() => handleToggleLessonComplete(courseEnrollment, idx, list.length)}
+                                onChange={() => courseEnrollment && handleToggleLessonComplete(courseEnrollment, idx, list.length)}
                                 style={{ width: '18px', height: '18px', accentColor: '#16a34a', cursor: 'pointer', flexShrink: 0 }}
                               />
                             ) : isLocked && (
