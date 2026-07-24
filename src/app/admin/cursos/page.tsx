@@ -40,6 +40,8 @@ export default function AdminCursosPage() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
   const [currentStep, setCurrentStep] = useState(1);
+  const [inlineParticipants, setInlineParticipants] = useState<any[]>([]);
+  const [loadingInlineParticipants, setLoadingInlineParticipants] = useState(false);
 
   // Form Fields
   const [title, setTitle] = useState('');
@@ -143,7 +145,7 @@ export default function AdminCursosPage() {
     }
   };
 
-  const handleEditClick = (course: Course) => {
+  const handleEditClick = async (course: Course) => {
     setEditingId(course._id);
     setTitle(course.title);
     setInstructor(course.instructor);
@@ -177,7 +179,25 @@ export default function AdminCursosPage() {
     setNewLessonPdfUrl('');
     setEditingLessonIdx(null);
     setCurrentStep(1);
+    setInlineParticipants([]);
     setShowForm(true);
+
+    // Pre-load participants
+    setLoadingInlineParticipants(true);
+    try {
+      const res = await fetch('/api/payments');
+      const data = await res.json();
+      if (data.success) {
+        const enrolled = (data.payments || []).filter(
+          (p: any) => p.itemName?.toLowerCase().trim() === course.title?.toLowerCase().trim()
+        );
+        setInlineParticipants(enrolled);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingInlineParticipants(false);
+    }
   };
 
   const handleCreateClick = () => {
@@ -490,16 +510,19 @@ export default function AdminCursosPage() {
                   position: 'absolute', 
                   top: '16px', 
                   left: '0', 
-                  width: `${((currentStep - 1) / 3) * 100}%`, 
+                  width: `${((currentStep - 1) / (editingId ? 4 : 3)) * 100}%`, 
                   height: '2px', 
                   background: '#ff6b00', 
                   zIndex: 0, 
                   transition: 'width 0.3s ease-in-out' 
                 }} />
                 
-                {[1, 2, 3, 4].map((step) => {
-                  const stepNames = ["Geral", "Preço & Dados", "Aulas & PDFs", "Certificado"];
+                {(editingId ? [1, 2, 3, 4, 5] : [1, 2, 3, 4]).map((step) => {
+                  const stepNames = editingId
+                    ? ["Geral", "Preço & Dados", "Aulas & PDFs", "Certificado", "Inscritos"]
+                    : ["Geral", "Preço & Dados", "Aulas & PDFs", "Certificado"];
                   const isActive = step <= currentStep;
+                  const isInscritos = editingId && step === 5;
                   return (
                     <button
                       key={step}
@@ -521,8 +544,8 @@ export default function AdminCursosPage() {
                         width: '34px',
                         height: '34px',
                         borderRadius: '50%',
-                        background: isActive ? '#ff6b00' : '#ffffff',
-                        border: `2px solid ${isActive ? '#ff6b00' : '#cbd5e1'}`,
+                        background: isActive ? (isInscritos ? '#0ea5e9' : '#ff6b00') : '#ffffff',
+                        border: `2px solid ${isActive ? (isInscritos ? '#0ea5e9' : '#ff6b00') : '#cbd5e1'}`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -530,13 +553,13 @@ export default function AdminCursosPage() {
                         fontWeight: 'bold',
                         fontSize: '0.88rem',
                         transition: 'all 0.3s ease',
-                        boxShadow: isActive ? '0 4px 12px rgba(255, 107, 0, 0.3)' : 'none'
+                        boxShadow: isActive ? (isInscritos ? '0 4px 12px rgba(14,165,233,0.3)' : '0 4px 12px rgba(255, 107, 0, 0.3)') : 'none'
                       }}>
-                        {step}
+                        {isInscritos ? <Users size={14} /> : step}
                       </div>
                       <span style={{ 
                         fontSize: '0.72rem', 
-                        color: isActive ? '#0f172a' : '#94a3b8', 
+                        color: isActive ? (isInscritos ? '#0ea5e9' : '#0f172a') : '#94a3b8', 
                         marginTop: '6px', 
                         fontWeight: 700,
                         transition: 'color 0.3s ease'
@@ -1065,6 +1088,139 @@ export default function AdminCursosPage() {
                     )}
                   </>
                 )}
+
+                {/* STEP 5: Inscritos (editing mode only) */}
+                {currentStep === 5 && editingId && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <h3 style={{ margin: 0, color: '#0f172a', fontWeight: 800, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <Users size={18} color="#0ea5e9" />
+                          Alunos Inscritos
+                        </h3>
+                        <p style={{ margin: '3px 0 0 0', color: '#64748b', fontSize: '0.82rem' }}>Lista de todos os alunos matriculados neste curso</p>
+                      </div>
+                      <span style={{
+                        background: '#eff6ff',
+                        color: '#2563eb',
+                        fontWeight: 800,
+                        fontSize: '0.78rem',
+                        padding: '4px 12px',
+                        borderRadius: '50px',
+                        border: '1px solid #bfdbfe'
+                      }}>
+                        {inlineParticipants.length} inscritos
+                      </span>
+                    </div>
+
+                    {loadingInlineParticipants ? (
+                      <div style={{ textAlign: 'center', padding: '2.5rem 0', color: '#64748b' }}>
+                        <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '0.5rem' }}>⏳</span>
+                        A carregar alunos...
+                      </div>
+                    ) : inlineParticipants.length === 0 ? (
+                      <div style={{ textAlign: 'center', padding: '2.5rem 1rem', background: '#f8fafc', borderRadius: '14px', border: '1px dashed #e2e8f0', color: '#64748b' }}>
+                        <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.5rem' }}>👥</span>
+                        Nenhum aluno inscrito neste curso ainda.
+                      </div>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
+                        {inlineParticipants.map((p: any) => {
+                          const isApproved = p.status === 'aprovado';
+                          const completedCount = p.completedLessons?.length || (p.completed ? 1 : 0);
+                          return (
+                            <div key={p._id} style={{
+                              padding: '0.9rem 1.1rem',
+                              background: isApproved ? '#ffffff' : '#fef2f2',
+                              border: `1.5px solid ${isApproved ? '#e2e8f0' : '#fecaca'}`,
+                              borderRadius: '12px',
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              flexWrap: 'wrap',
+                              gap: '0.75rem'
+                            }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: '160px' }}>
+                                <div style={{
+                                  width: '38px',
+                                  height: '38px',
+                                  borderRadius: '50%',
+                                  background: isApproved ? 'linear-gradient(135deg, #0ea5e9, #38bdf8)' : '#fecaca',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  fontSize: '1rem',
+                                  fontWeight: 800,
+                                  color: '#ffffff',
+                                  flexShrink: 0
+                                }}>
+                                  {(p.user?.name || p.user?.email || '?')[0].toUpperCase()}
+                                </div>
+                                <div>
+                                  <div style={{ fontWeight: 800, color: '#0f172a', fontSize: '0.9rem' }}>
+                                    {p.user?.name || 'Aluno'}
+                                    {!isApproved && <span style={{ fontSize: '0.7rem', background: '#fef2f2', color: '#dc2626', padding: '1px 7px', borderRadius: '20px', fontWeight: 800, border: '1px solid #fecaca', marginLeft: '6px' }}>🚫 Bloqueado</span>}
+                                  </div>
+                                  <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '1px' }}>
+                                    {p.user?.email} {p.phone && `| 📞 ${p.phone}`}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+                                <span style={{
+                                  fontSize: '0.72rem',
+                                  fontWeight: 800,
+                                  padding: '4px 10px',
+                                  borderRadius: '50px',
+                                  background: p.completed ? '#f0fdf4' : '#fff7ed',
+                                  color: p.completed ? '#16a34a' : '#ff6b00',
+                                  border: `1px solid ${p.completed ? '#bbf7d0' : '#ffedd5'}`
+                                }}>
+                                  📊 {p.completed ? '100% Concluído' : `${completedCount} Aulas`}
+                                </span>
+                                <span style={{
+                                  fontSize: '0.72rem',
+                                  fontWeight: 800,
+                                  padding: '4px 10px',
+                                  borderRadius: '50px',
+                                  background: '#f8fafc',
+                                  color: '#475569',
+                                  border: '1px solid #e2e8f0'
+                                }}>
+                                  💳 {p.price || 'Gratuito'}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleToggleStudentAccess(p._id, p.status).then(() => {
+                                    setInlineParticipants(prev =>
+                                      prev.map(x => x._id === p._id ? { ...x, status: isApproved ? 'rejeitado' : 'aprovado' } : x)
+                                    );
+                                  })}
+                                  style={{
+                                    padding: '6px 12px',
+                                    borderRadius: '8px',
+                                    border: 'none',
+                                    fontWeight: 800,
+                                    fontSize: '0.76rem',
+                                    cursor: 'pointer',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '4px',
+                                    background: isApproved ? '#fef2f2' : '#f0fdf4',
+                                    color: isApproved ? '#dc2626' : '#16a34a'
+                                  }}
+                                >
+                                  {isApproved ? <><Lock size={12} /> Bloquear</> : <><Unlock size={12} /> Desbloquear</>}
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Navigation Footer */}
@@ -1107,6 +1263,23 @@ export default function AdminCursosPage() {
                     }}
                   >
                     Seguinte
+                  </button>
+                ) : currentStep === 5 ? (
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(4)}
+                    style={{
+                      padding: '12px 24px',
+                      fontSize: '0.88rem',
+                      fontWeight: 800,
+                      background: '#f1f5f9',
+                      color: '#475569',
+                      border: '1.5px solid #e2e8f0',
+                      borderRadius: '10px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    ← Voltar ao Certificado
                   </button>
                 ) : (
                   <button 
