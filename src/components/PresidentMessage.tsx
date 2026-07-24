@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { translations } from '@/lib/translations';
 import Link from 'next/link';
@@ -11,9 +12,21 @@ interface PresidentMessageProps {
 
 export default function PresidentMessage({ showFullPageLayout = false }: PresidentMessageProps) {
   const { language } = useLanguage();
+  const [dynamicPm, setDynamicPm] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs && data.configs.president_message_content) {
+          setDynamicPm(data.configs.president_message_content);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const langKey = (language === 'pt' || language === 'en' || language === 'fr') ? language : 'pt';
-  const pm = (translations[langKey] as any)?.presidentMessage || {
+  const staticPm = (translations[langKey] as any)?.presidentMessage || {
     badge: "MENSAGEM DO PRESIDENTE",
     title: "Seja muito bem-vindo(a) à AfroBiz Network (ABN)",
     paragraph1: "Seja muito bem-vindo(a) à AfroBiz Network (ABN).",
@@ -25,9 +38,19 @@ export default function PresidentMessage({ showFullPageLayout = false }: Preside
     authorName: "Culpa Francisco Xavier Lissamo",
     authorRole: "Presidente e Fundador",
     authorOrg: "AfroBiz Network (ABN)",
+    authorPhoto: "",
     quote: '"Conectando mentes, impulsionando negócios e transformando África e o Mundo."',
     joinCta: "Junte-se à Rede",
     exploreTeam: "Conhecer a Equipa"
+  };
+
+  const pm = { ...staticPm, ...(dynamicPm || {}) };
+
+  const getInitials = (name: string) => {
+    if (!name) return 'CL';
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+    return name.slice(0, 2).toUpperCase();
   };
 
   return (
@@ -38,7 +61,7 @@ export default function PresidentMessage({ showFullPageLayout = false }: Preside
         <div className={styles.header}>
           <span className={styles.badge}>
             <span className={styles.badgeDot}></span>
-            {pm.badge}
+            {pm.badge || "MENSAGEM DO PRESIDENTE"}
           </span>
           <h2 className={styles.mainTitle}>{pm.title}</h2>
           <div className={styles.titleUnderline}></div>
@@ -55,7 +78,11 @@ export default function PresidentMessage({ showFullPageLayout = false }: Preside
             
             <div className={styles.avatarWrapper}>
               <div className={styles.avatarCircle}>
-                <span className={styles.avatarInitials}>CL</span>
+                {pm.authorPhoto ? (
+                  <img src={pm.authorPhoto} alt={pm.authorName} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                ) : (
+                  <span className={styles.avatarInitials}>{getInitials(pm.authorName)}</span>
+                )}
               </div>
               <div className={styles.verifiedBadge} title="Presidente & Fundador">
                 ✓
@@ -74,10 +101,10 @@ export default function PresidentMessage({ showFullPageLayout = false }: Preside
 
               <div className={styles.cardActions}>
                 <Link href="/registro" className={styles.btnPrimary}>
-                  {pm.joinCta} →
+                  {pm.joinCta || "Junte-se à Rede"} →
                 </Link>
                 <Link href="/equipa" className={styles.btnOutline}>
-                  {pm.exploreTeam}
+                  {pm.exploreTeam || "Conhecer a Equipa"}
                 </Link>
               </div>
             </div>
@@ -88,32 +115,44 @@ export default function PresidentMessage({ showFullPageLayout = false }: Preside
             <div className={styles.decorativeQuoteMark}>”</div>
             
             <div className={styles.letterContent}>
-              <p className={styles.greeting}>
-                <strong>{pm.paragraph1}</strong>
-              </p>
-
-              <p className={styles.paragraph}>
-                {pm.paragraph2}
-              </p>
-
-              <div className={styles.highlightBox}>
-                <p>
-                  {pm.paragraph3}
+              {pm.paragraph1 && (
+                <p className={styles.greeting}>
+                  <strong>{pm.paragraph1}</strong>
                 </p>
-              </div>
+              )}
 
-              <p className={styles.paragraph}>
-                {pm.paragraph4}
-              </p>
+              {pm.paragraph2 && (
+                <p className={styles.paragraph}>
+                  {pm.paragraph2}
+                </p>
+              )}
 
-              <p className={styles.paragraph}>
-                {pm.paragraph5}
-              </p>
+              {pm.paragraph3 && (
+                <div className={styles.highlightBox}>
+                  <p>
+                    {pm.paragraph3}
+                  </p>
+                </div>
+              )}
+
+              {pm.paragraph4 && (
+                <p className={styles.paragraph}>
+                  {pm.paragraph4}
+                </p>
+              )}
+
+              {pm.paragraph5 && (
+                <p className={styles.paragraph}>
+                  {pm.paragraph5}
+                </p>
+              )}
 
               <div className={styles.closingBox}>
-                <p className={styles.closingText}>
-                  {pm.paragraph6}
-                </p>
+                {pm.paragraph6 && (
+                  <p className={styles.closingText}>
+                    {pm.paragraph6}
+                  </p>
+                )}
                 <div className={styles.signatureBlock}>
                   <div className={styles.signatureName}>{pm.authorName}</div>
                   <div className={styles.signatureTitle}>{pm.authorRole}</div>

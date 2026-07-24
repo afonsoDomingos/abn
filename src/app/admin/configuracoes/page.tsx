@@ -56,6 +56,21 @@ export default function AdminConfigPage() {
     marketplace: '/partners_hero.png',
     programas: '/hero_entrepreneurs.png'
   });
+
+  const [presidentMsg, setPresidentMsg] = useState({
+    title: 'Seja muito bem-vindo(a) à AfroBiz Network (ABN)',
+    authorName: 'Culpa Francisco Xavier Lissamo',
+    authorRole: 'Presidente e Fundador',
+    authorOrg: 'AfroBiz Network (ABN)',
+    authorPhoto: '',
+    quote: '"Conectando mentes, impulsionando negócios e transformando África e o Mundo."',
+    paragraph1: 'Seja muito bem-vindo(a) à AfroBiz Network (ABN).',
+    paragraph2: 'É com grande satisfação que o recebemos nesta plataforma, criada para ligar empreendedores, inovadores, investidores, profissionais e instituições que acreditam no potencial transformador de África.',
+    paragraph3: 'Na ABN, acreditamos que o empreendedorismo é uma das maiores ferramentas para gerar oportunidades, criar riqueza, impulsionar a inovação e promover um desenvolvimento económico sustentável. A nossa missão é construir uma rede sólida de colaboração, onde ideias se transformam em negócios, talentos encontram oportunidades e parcerias geram impacto real.',
+    paragraph4: 'Convidamo-lo a fazer parte desta comunidade dinâmica e visionária. Independentemente da fase em que o seu projecto ou negócio se encontre, encontrará na ABN um espaço de aprendizagem, networking, incubação, aceleração e crescimento.',
+    paragraph5: 'Juntos, estamos a construir um ecossistema empresarial mais forte, inclusivo e competitivo, capaz de posicionar África como um continente de inovação, oportunidades e prosperidade.',
+    paragraph6: 'Obrigado pela sua visita. Esperamos caminhar consigo nesta jornada de transformação.'
+  });
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -78,6 +93,9 @@ export default function AdminConfigPage() {
           if (data.configs.faq_content) setFaq(data.configs.faq_content);
           if (data.configs.articles_content) setArticles(data.configs.articles_content);
           if (data.configs.team_content) setTeam(data.configs.team_content);
+          if (data.configs.president_message_content) {
+            setPresidentMsg(prev => ({ ...prev, ...data.configs.president_message_content }));
+          }
           if (data.configs.page_banners) {
             setPageBanners(prev => ({
               ...prev,
@@ -151,6 +169,159 @@ export default function AdminConfigPage() {
             </div>
             <button className="btn-primary" onClick={() => saveConfig('platform_logo', logo)} disabled={saving}>
               {saving ? 'A guardar...' : 'Atualizar Logo'}
+            </button>
+          </div>
+        </section>
+
+        {/* Mensagem do Presidente Config */}
+        <section className={`glass ${styles.section}`}>
+          <h3>📜 Mensagem do Presidente</h3>
+          <p style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '1.5rem' }}>
+            Edite o nome, cargo, foto, citação e texto completo da Mensagem do Presidente exibida no site.
+          </p>
+          <div className={styles.form}>
+            <div className={styles.row} style={{ gap: '1rem' }}>
+              <div className={styles.field} style={{ flex: 1 }}>
+                <label>Nome do Autor / Presidente</label>
+                <input 
+                  value={presidentMsg.authorName} 
+                  onChange={e => setPresidentMsg({ ...presidentMsg, authorName: e.target.value })}
+                  placeholder="Ex: Culpa Francisco Xavier Lissamo"
+                />
+              </div>
+              <div className={styles.field} style={{ flex: 1 }}>
+                <label>Cargo / Título</label>
+                <input 
+                  value={presidentMsg.authorRole} 
+                  onChange={e => setPresidentMsg({ ...presidentMsg, authorRole: e.target.value })}
+                  placeholder="Ex: Presidente e Fundador"
+                />
+              </div>
+            </div>
+
+            <div className={styles.row} style={{ gap: '1rem', marginTop: '0.5rem' }}>
+              <div className={styles.field} style={{ flex: 1 }}>
+                <label>Organização</label>
+                <input 
+                  value={presidentMsg.authorOrg} 
+                  onChange={e => setPresidentMsg({ ...presidentMsg, authorOrg: e.target.value })}
+                  placeholder="Ex: AfroBiz Network (ABN)"
+                />
+              </div>
+              <div className={styles.field} style={{ flex: 1 }}>
+                <label>Foto Oficial (URL ou Upload)</label>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <input 
+                    value={presidentMsg.authorPhoto} 
+                    onChange={e => setPresidentMsg({ ...presidentMsg, authorPhoto: e.target.value })}
+                    placeholder="URL ou selecione ficheiro"
+                    style={{ flex: 1 }}
+                  />
+                  <label className={styles.uploadLabel} title="Carregar Foto" style={{ cursor: 'pointer', fontSize: '1.2rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    📁
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        setMsg('⏳ A carregar foto do presidente...');
+                        try {
+                          const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                          const data = await res.json();
+                          if (data.success && data.url) {
+                            setPresidentMsg({ ...presidentMsg, authorPhoto: data.url });
+                            setMsg('✅ Foto do presidente enviada!');
+                          } else {
+                            alert(data.error || 'Erro no upload.');
+                          }
+                        } catch (err) {
+                          alert('Erro de conexão no upload.');
+                        }
+                      }}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.field} style={{ marginTop: '0.5rem' }}>
+              <label>Citação em Destaque (Frase Curta)</label>
+              <input 
+                value={presidentMsg.quote} 
+                onChange={e => setPresidentMsg({ ...presidentMsg, quote: e.target.value })}
+                placeholder='"Conectando mentes, impulsionando negócios..."'
+              />
+            </div>
+
+            <div className={styles.field} style={{ marginTop: '0.5rem' }}>
+              <label>Título da Mensagem</label>
+              <input 
+                value={presidentMsg.title} 
+                onChange={e => setPresidentMsg({ ...presidentMsg, title: e.target.value })}
+                placeholder="Ex: Seja muito bem-vindo(a) à AfroBiz Network..."
+              />
+            </div>
+
+            <div className={styles.field} style={{ marginTop: '0.5rem' }}>
+              <label>Parágrafo 1 (Boas-vindas)</label>
+              <textarea 
+                rows={2}
+                value={presidentMsg.paragraph1} 
+                onChange={e => setPresidentMsg({ ...presidentMsg, paragraph1: e.target.value })}
+              />
+            </div>
+
+            <div className={styles.field} style={{ marginTop: '0.5rem' }}>
+              <label>Parágrafo 2 (Introdução)</label>
+              <textarea 
+                rows={3}
+                value={presidentMsg.paragraph2} 
+                onChange={e => setPresidentMsg({ ...presidentMsg, paragraph2: e.target.value })}
+              />
+            </div>
+
+            <div className={styles.field} style={{ marginTop: '0.5rem' }}>
+              <label>Parágrafo 3 (Visão & Missão em Destaque)</label>
+              <textarea 
+                rows={4}
+                value={presidentMsg.paragraph3} 
+                onChange={e => setPresidentMsg({ ...presidentMsg, paragraph3: e.target.value })}
+              />
+            </div>
+
+            <div className={styles.field} style={{ marginTop: '0.5rem' }}>
+              <label>Parágrafo 4 (Convite à Comunidade)</label>
+              <textarea 
+                rows={3}
+                value={presidentMsg.paragraph4} 
+                onChange={e => setPresidentMsg({ ...presidentMsg, paragraph4: e.target.value })}
+              />
+            </div>
+
+            <div className={styles.field} style={{ marginTop: '0.5rem' }}>
+              <label>Parágrafo 5 (Impacto & África)</label>
+              <textarea 
+                rows={3}
+                value={presidentMsg.paragraph5} 
+                onChange={e => setPresidentMsg({ ...presidentMsg, paragraph5: e.target.value })}
+              />
+            </div>
+
+            <div className={styles.field} style={{ marginTop: '0.5rem' }}>
+              <label>Parágrafo 6 (Encerramento)</label>
+              <textarea 
+                rows={2}
+                value={presidentMsg.paragraph6} 
+                onChange={e => setPresidentMsg({ ...presidentMsg, paragraph6: e.target.value })}
+              />
+            </div>
+
+            <button className="btn-primary" onClick={() => saveConfig('president_message_content', presidentMsg)} disabled={saving} style={{ marginTop: '1rem' }}>
+              {saving ? 'A guardar...' : 'Atualizar Mensagem do Presidente'}
             </button>
           </div>
         </section>
