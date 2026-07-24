@@ -35,6 +35,7 @@ export default function AdminPage() {
   });
   const [userGrowth, setUserGrowth] = useState<Array<{ month: string; count: number }>>([]);
   const [recentActivities, setRecentActivities] = useState<ActivityItem[]>([]);
+  const [showActivityCard, setShowActivityCard] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -85,16 +86,149 @@ export default function AdminPage() {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
+        @keyframes pulse {
+          0% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.1); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fadeInDown {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
       `}</style>
 
-      <header style={{ marginBottom: '2rem' }}>
+      <header style={{ marginBottom: '1.5rem' }}>
         <h1 style={{ fontSize: '2.2rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', marginBottom: '0.4rem' }}>
           Painel de Gestão Geral ABN
         </h1>
-        <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
+        <p style={{ color: '#64748b', fontSize: '0.95rem', margin: 0 }}>
           Resumo geral da plataforma, programas de aceleração, eventos, notícias, academia e receita acumulada.
         </p>
       </header>
+
+      {/* CARD COMPACTO DE DESTAQUE: ÚLTIMA AÇÃO IMPORTANTE NA PLATAFORMA */}
+      {!loading && recentActivities.length > 0 && showActivityCard && (() => {
+        const top = recentActivities[0];
+        let actionLink = '/admin/usuarios';
+        let actionLabel = 'Ver Usuários 👤';
+        
+        if (top.type === 'certificate') {
+          actionLink = '/admin/pagamentos?filter=certificados';
+          actionLabel = 'Ver Certificados 📜';
+        } else if (top.type === 'enrollment') {
+          actionLink = '/admin/pagamentos';
+          actionLabel = 'Ver Inscrições 💳';
+        }
+
+        return (
+          <div style={{
+            background: 'linear-gradient(135deg, #ffffff 0%, #fff7ed 100%)',
+            border: '1.5px solid #ffedd5',
+            borderRadius: '16px',
+            padding: '1.1rem 1.4rem',
+            marginBottom: '2rem',
+            boxShadow: '0 8px 24px rgba(255, 107, 0, 0.08)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem',
+            flexWrap: 'wrap',
+            position: 'relative',
+            animation: 'fadeInDown 0.35s ease-out'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1, minWidth: '280px' }}>
+              <div style={{ 
+                width: '46px', 
+                height: '46px', 
+                borderRadius: '12px', 
+                background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)', 
+                color: '#ffffff', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                fontSize: '1.4rem',
+                flexShrink: 0,
+                boxShadow: '0 4px 12px rgba(255, 107, 0, 0.25)'
+              }}>
+                {top.icon || '🔔'}
+              </div>
+
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                  <span style={{ 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    gap: '4px', 
+                    background: '#16a34a', 
+                    color: '#ffffff', 
+                    fontSize: '0.68rem', 
+                    fontWeight: 800, 
+                    padding: '3px 10px', 
+                    borderRadius: '20px', 
+                    textTransform: 'uppercase', 
+                    letterSpacing: '0.06em' 
+                  }}>
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ffffff', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+                    ÚLTIMA AÇÃO RECENTE
+                  </span>
+                  <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>
+                    ⏱️ {formatDate(top.createdAt)}
+                  </span>
+                </div>
+                
+                <h4 style={{ margin: 0, color: '#0f172a', fontSize: '0.98rem', fontWeight: 800 }}>
+                  {top.title}
+                </h4>
+                <p style={{ margin: '3px 0 0 0', color: '#475569', fontSize: '0.86rem', fontWeight: 500 }}>
+                  {top.desc}
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Link 
+                href={actionLink}
+                style={{
+                  background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)',
+                  color: '#ffffff',
+                  padding: '9px 18px',
+                  borderRadius: '10px',
+                  fontSize: '0.82rem',
+                  fontWeight: 800,
+                  textDecoration: 'none',
+                  whiteSpace: 'nowrap',
+                  boxShadow: '0 4px 12px rgba(255, 107, 0, 0.22)',
+                  transition: 'all 0.2s'
+                }}
+              >
+                {actionLabel}
+              </Link>
+              <button
+                type="button"
+                onClick={() => setShowActivityCard(false)}
+                title="Fechar destaque"
+                style={{
+                  background: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  color: '#64748b',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  fontWeight: 700,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.2s'
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* SECÇÃO 1: ECOSSISTEMA & MEMBROS (3 Cartões) */}
       <div style={{ marginBottom: '2rem' }}>
