@@ -604,65 +604,81 @@ export default function FormacaoPage() {
             </div>
             
             {/* Split layout: sidebar and player */}
-            <div style={{ display: 'flex', gap: '1.5rem', flex: 1, minHeight: 0, flexWrap: 'wrap' }}>
-              <div style={{ 
-                flex: '1 1 300px', 
-                background: '#f8fafc', 
-                border: '1px solid #e2e8f0', 
-                borderRadius: '16px', 
-                padding: '1rem', 
-                maxHeight: '100%', 
-                overflowY: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.8rem'
-              }}>
-                {(() => {
-                  const courseEnrollment = getEnrollment(videoCourse.title);
-                  const isApproved = courseEnrollment && courseEnrollment.status === 'aprovado';
-                  const list = videoCourse.lessonsList && videoCourse.lessonsList.length > 0
-                    ? videoCourse.lessonsList
-                    : [{ title: 'Aula 1: Apresentação e Módulos', videoUrl: toYoutubeEmbed(videoCourse.videoUrl) || 'https://www.youtube.com/embed/dQw4w9WgXcQ' }];
-                  const completedLessonsArr = courseEnrollment?.completedLessons || [];
-                  const modalDoneCount = completedLessonsArr.length;
-                  const modalProgressPercent = Math.min(100, Math.round((modalDoneCount / list.length) * 100));
+            {(() => {
+              const courseEnrollment = getEnrollment(videoCourse.title);
+              const isApproved = courseEnrollment && courseEnrollment.status === 'aprovado';
+              const list = videoCourse.lessonsList && videoCourse.lessonsList.length > 0
+                ? videoCourse.lessonsList
+                : [{ title: 'Aula 1: Apresentação e Módulos', videoUrl: toYoutubeEmbed(videoCourse.videoUrl) || 'https://www.youtube.com/embed/dQw4w9WgXcQ' }];
+              const completedLessonsArr = courseEnrollment?.completedLessons || [];
+              const modalDoneCount = completedLessonsArr.length;
+              const modalProgressPercent = Math.min(100, Math.round((modalDoneCount / list.length) * 100));
 
-                  return (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', width: '100%' }}>
-                      
-                      {/* Intelligent Real-Time Progress Bar inside Player Modal */}
-                      {isApproved && (
-                        <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '12px', border: '1.5px solid #ff6b00', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.78rem', fontWeight: 800 }}>
-                            <span style={{ color: '#0f172a' }}>Progresso Inteligente:</span>
-                            <span style={{ color: modalProgressPercent === 100 ? '#16a34a' : '#ff6b00' }}>
-                              {modalDoneCount} de {list.length} ({modalProgressPercent}%)
-                            </span>
-                          </div>
-                          <div style={{ height: '7px', background: '#f1f5f9', borderRadius: '10px', overflow: 'hidden' }}>
-                            <div style={{ height: '100%', width: `${modalProgressPercent}%`, background: modalProgressPercent === 100 ? '#16a34a' : 'linear-gradient(90deg, #ff6b00 0%, #ff8c3a 100%)', borderRadius: '10px', transition: 'width 0.3s ease' }} />
-                          </div>
-                          {modalProgressPercent === 100 && (
-                            <div style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 800, marginTop: '2px', textAlign: 'center' }}>
-                              🎉 Parabéns! Formação 100% Concluída!
-                            </div>
-                          )}
+              const currentIdx = list.findIndex((l: any) => toYoutubeEmbed(l.videoUrl) === activeVideoUrl || l.title === activeVideoTitle);
+              const validIdx = currentIdx >= 0 ? currentIdx : 0;
+              const hasPrev = validIdx > 0;
+              const hasNext = validIdx < list.length - 1;
+              const isCurrentChecked = completedLessonsArr.includes(validIdx);
+
+              const goToLesson = (idx: number) => {
+                const target = list[idx];
+                if (!target) return;
+                setActiveVideoUrl(toYoutubeEmbed(target.videoUrl));
+                setActiveVideoTitle(target.title);
+
+                if (isApproved && courseEnrollment && !completedLessonsArr.includes(idx)) {
+                  handleToggleLessonComplete(courseEnrollment, idx, list.length);
+                }
+              };
+
+              return (
+                <div style={{ display: 'flex', gap: '1.5rem', flex: 1, minHeight: 0, flexWrap: 'wrap' }}>
+                  {/* Left Column: Lesson List */}
+                  <div style={{ 
+                    flex: '1 1 300px', 
+                    background: '#f8fafc', 
+                    border: '1px solid #e2e8f0', 
+                    borderRadius: '16px', 
+                    padding: '1rem', 
+                    maxHeight: '100%', 
+                    overflowY: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.8rem'
+                  }}>
+                    {/* Intelligent Real-Time Progress Bar inside Player Modal */}
+                    {isApproved && (
+                      <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '12px', border: '1.5px solid #ff6b00', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.78rem', fontWeight: 800 }}>
+                          <span style={{ color: '#0f172a' }}>Progresso Inteligente:</span>
+                          <span style={{ color: modalProgressPercent === 100 ? '#16a34a' : '#ff6b00' }}>
+                            {modalDoneCount} de {list.length} ({modalProgressPercent}%)
+                          </span>
                         </div>
-                      )}
-
-                      <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', color: '#475569' }}>
-                        <div>👨‍🏫 <strong>Formador:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.instructor}</span></div>
-                        <div>⏱️ <strong>Duração:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.duration}</span></div>
+                        <div style={{ height: '7px', background: '#f1f5f9', borderRadius: '10px', overflow: 'hidden' }}>
+                          <div style={{ height: '100%', width: `${modalProgressPercent}%`, background: modalProgressPercent === 100 ? '#16a34a' : 'linear-gradient(90deg, #ff6b00 0%, #ff8c3a 100%)', borderRadius: '10px', transition: 'width 0.3s ease' }} />
+                        </div>
+                        {modalProgressPercent === 100 && (
+                          <div style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 800, marginTop: '2px', textAlign: 'center' }}>
+                            🎉 Parabéns! Formação 100% Concluída!
+                          </div>
+                        )}
                       </div>
+                    )}
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
-                        <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Lista de Aulas</span>
-                        <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Marque `✓` ao concluir</span>
-                      </div>
-                      
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', width: '100%' }}>
+                    <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', color: '#475569' }}>
+                      <div>👨‍🏫 <strong>Formador:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.instructor}</span></div>
+                      <div>⏱️ <strong>Duração:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.duration}</span></div>
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Lista de Aulas</span>
+                      <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Marque `✓` ao concluir</span>
+                    </div>
+                    
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', width: '100%' }}>
                       {list.map((lesson: any, idx: number) => {
-                        const isSelected = lesson.videoUrl === activeVideoUrl;
+                        const isSelected = lesson.videoUrl === activeVideoUrl || lesson.title === activeVideoTitle;
                         const isLocked = idx > 0 && !isApproved;
                         const isChecked = completedLessonsArr.includes(idx);
 
@@ -686,13 +702,7 @@ export default function FormacaoPage() {
                               disabled={isLocked}
                               onClick={() => {
                                 if (isLocked) return;
-                                setActiveVideoUrl(toYoutubeEmbed(lesson.videoUrl));
-                                setActiveVideoTitle(lesson.title);
-
-                                // Auto-mark lesson when student clicks to watch it
-                                if (isApproved && courseEnrollment && !isChecked) {
-                                  handleToggleLessonComplete(courseEnrollment, idx, list.length);
-                                }
+                                goToLesson(idx);
                               }}
                               style={{
                                 textAlign: 'left',
@@ -755,42 +765,123 @@ export default function FormacaoPage() {
                           </div>
                         );
                       })}
-                      </div>
                     </div>
-                  );
-                })()}
-              </div>
-              
-              <div style={{ 
-                flex: '3 1 450px', 
-                borderRadius: '16px', 
-                overflow: 'hidden', 
-                aspectRatio: '16/9', 
-                background: '#0f172a',
-                border: '1px solid #cbd5e1',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                {activeVideoUrl ? (
-                  <iframe
-                    src={activeVideoUrl}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 'none', display: 'block' }}
-                    allowFullScreen
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    title="Player de Vídeo da Aula"
-                  />
-                ) : (
-                  <div style={{ textAlign: 'center', color: '#94a3b8', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-                    <span style={{ fontSize: '3rem' }}>📄</span>
-                    <p style={{ fontSize: '0.95rem', fontWeight: 600, color: '#cbd5e1', margin: 0 }}>Esta aula é apenas em PDF</p>
-                    <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0 }}>Consulte o material de apoio na lista ao lado</p>
                   </div>
-                )}
-              </div>
-            </div>
+
+                  {/* Right Column: Player & Quick Navigation Bar */}
+                  <div style={{ flex: '3 1 450px', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                    <div style={{ 
+                      width: '100%', 
+                      borderRadius: '16px', 
+                      overflow: 'hidden', 
+                      aspectRatio: '16/9', 
+                      background: '#0f172a',
+                      border: '1px solid #cbd5e1',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      {activeVideoUrl ? (
+                        <iframe
+                          src={activeVideoUrl}
+                          width="100%"
+                          height="100%"
+                          style={{ border: 'none', display: 'block' }}
+                          allowFullScreen
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          title="Player de Vídeo da Aula"
+                        />
+                      ) : (
+                        <div style={{ textAlign: 'center', color: '#94a3b8', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                          <span style={{ fontSize: '3rem' }}>📄</span>
+                          <p style={{ fontSize: '0.95rem', fontWeight: 600, color: '#cbd5e1', margin: 0 }}>Esta aula é apenas em PDF</p>
+                          <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0 }}>Consulte o material de apoio na lista ao lado</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Lesson Navigation Controls Toolbar */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', background: '#f8fafc', padding: '12px 16px', borderRadius: '14px', border: '1px solid #e2e8f0' }}>
+                      <button
+                        type="button"
+                        disabled={!hasPrev}
+                        onClick={() => goToLesson(validIdx - 1)}
+                        style={{
+                          padding: '8px 16px',
+                          borderRadius: '10px',
+                          border: '1.5px solid #cbd5e1',
+                          background: hasPrev ? '#ffffff' : '#f1f5f9',
+                          color: hasPrev ? '#0f172a' : '#94a3b8',
+                          fontSize: '0.85rem',
+                          fontWeight: 700,
+                          cursor: hasPrev ? 'pointer' : 'not-allowed',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          transition: 'all 0.2s'
+                        }}
+                      >
+                        ⬅️ Aula Anterior
+                      </button>
+
+                      {isApproved && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (courseEnrollment && !isCurrentChecked) {
+                              handleToggleLessonComplete(courseEnrollment, validIdx, list.length);
+                            }
+                            if (hasNext) {
+                              goToLesson(validIdx + 1);
+                            }
+                          }}
+                          style={{
+                            padding: '8px 18px',
+                            borderRadius: '10px',
+                            border: 'none',
+                            background: 'linear-gradient(135deg, #16a34a 0%, #22c55e 100%)',
+                            color: '#ffffff',
+                            fontSize: '0.85rem',
+                            fontWeight: 800,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            boxShadow: '0 4px 12px rgba(22, 163, 74, 0.25)',
+                            transition: 'all 0.2s'
+                          }}
+                        >
+                          ✓ {hasNext ? 'Concluir & Próxima ➡️' : 'Concluir Formação 🎉'}
+                        </button>
+                      )}
+
+                      <button
+                        type="button"
+                        disabled={!hasNext || (!isApproved && validIdx + 1 > 0)}
+                        onClick={() => goToLesson(validIdx + 1)}
+                        style={{
+                          padding: '8px 16px',
+                          borderRadius: '10px',
+                          border: 'none',
+                          background: hasNext ? 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)' : '#cbd5e1',
+                          color: hasNext ? '#ffffff' : '#64748b',
+                          fontSize: '0.85rem',
+                          fontWeight: 800,
+                          cursor: hasNext ? 'pointer' : 'not-allowed',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          boxShadow: hasNext ? '0 4px 12px rgba(255, 107, 0, 0.25)' : 'none',
+                          transition: 'all 0.2s'
+                        }}
+                      >
+                        Próxima Aula ➡️
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
       )}
