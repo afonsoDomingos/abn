@@ -120,7 +120,40 @@
 .actions {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
+}
+
+.userBadgeInline {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.userGreeting {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.dashboardBtn {
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%);
+  color: #ffffff;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.78rem;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.dashboardBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(255, 107, 0, 0.3);
 }
 
 .login {
@@ -337,14 +370,27 @@
   background: rgba(212, 175, 55, 0.05);
 }
 
-/* ===================== Mobile Breakpoints ===================== */
-@media (max-width: 768px) {
+/* ===================== Responsive Breakpoints ===================== */
+@media (max-width: 1200px) {
+  .links {
+    gap: 1rem;
+  }
+  .links a, .dropdownTrigger {
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 992px) {
   .links {
     display: none;
   }
 
   .whatsapp {
     display: none;
+  }
+
+  .dashboardBtn {
+    display: none !important;
   }
 
   .login {

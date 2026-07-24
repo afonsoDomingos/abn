@@ -26,6 +26,7 @@ interface Course {
   certTextColor?: string;
   certUsePartnerLogos?: boolean;
   certPartnerLogoUrl?: string;
+  certPartnerLogos?: string[];
   paymentInstructions?: string;
 }
 
@@ -54,6 +55,7 @@ export default function AdminCursosPage() {
   const [certTextColor, setCertTextColor] = useState('#1c1917');
   const [certUsePartnerLogos, setCertUsePartnerLogos] = useState(false);
   const [certPartnerLogoUrl, setCertPartnerLogoUrl] = useState('');
+  const [certPartnerLogos, setCertPartnerLogos] = useState<string[]>([]);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   
   // Lesson management states (Add & Edit lessons)
@@ -162,7 +164,13 @@ export default function AdminCursosPage() {
     setCertBgColor(course.certBgColor || '#ff6b00');
     setCertTextColor(course.certTextColor || '#1c1917');
     setCertUsePartnerLogos(course.certUsePartnerLogos === true);
-    setCertPartnerLogoUrl(course.certPartnerLogoUrl || '');
+    
+    const initialLogos = course.certPartnerLogos && course.certPartnerLogos.length > 0
+      ? course.certPartnerLogos
+      : (course.certPartnerLogoUrl ? [course.certPartnerLogoUrl] : []);
+    setCertPartnerLogos(initialLogos);
+    setCertPartnerLogoUrl(initialLogos[0] || '');
+
     setPaymentInstructions(course.paymentInstructions || '🏦 Dados Bancários ABN para Transferência:\nBanco: Millennium BIM\nConta (NIB): 0001-0000-0012-3456-1\nTitular: AfroBiz Network Lda.\n\n📱 M-Pesa: 84 123 4567\n\n* Por favor, realize a transferência e faça upload do comprovativo.');
     setNewLessonTitle('');
     setNewLessonUrl('');
@@ -188,6 +196,7 @@ export default function AdminCursosPage() {
     setCertTextColor('#1c1917');
     setCertUsePartnerLogos(false);
     setCertPartnerLogoUrl('');
+    setCertPartnerLogos([]);
     setNewLessonTitle('');
     setNewLessonUrl('');
     setNewLessonPdfUrl('');
@@ -265,7 +274,8 @@ export default function AdminCursosPage() {
       certBgColor,
       certTextColor,
       certUsePartnerLogos,
-      certPartnerLogoUrl,
+      certPartnerLogoUrl: certPartnerLogos.length > 0 ? certPartnerLogos[0] : certPartnerLogoUrl,
+      certPartnerLogos,
       paymentInstructions
     };
 
@@ -984,8 +994,15 @@ export default function AdminCursosPage() {
                     </div>
 
                     {certUsePartnerLogos && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', background: '#ffffff', border: '1.5px dashed #cbd5e1', borderRadius: '14px', padding: '1.2rem' }}>
-                        <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>Logótipo do Parceiro (Upload de Ficheiro)</label>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: '#ffffff', border: '1.5px dashed #cbd5e1', borderRadius: '14px', padding: '1.2rem' }}>
+                        <div>
+                          <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>
+                            🤝 Logótipos dos Parceiros Certificadores (Multi-parceiros)
+                          </label>
+                          <p style={{ fontSize: '0.78rem', color: '#64748b', margin: '2px 0 0 0' }}>
+                            Pode carregar múltiplos logótipos de empresas ou instituições parceiras que serão exibidos lado a lado no certificado final.
+                          </p>
+                        </div>
                         
                         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
                           <input 
@@ -1006,7 +1023,8 @@ export default function AdminCursosPage() {
                                 });
                                 const data = await res.json();
                                 if (data.success && data.url) {
-                                  setCertPartnerLogoUrl(data.url);
+                                  setCertPartnerLogos(prev => [...prev, data.url]);
+                                  if (!certPartnerLogoUrl) setCertPartnerLogoUrl(data.url);
                                 } else {
                                   alert(data.error || 'Erro no envio da imagem.');
                                 }
@@ -1014,26 +1032,35 @@ export default function AdminCursosPage() {
                                 alert('Erro de ligação ao servidor.');
                               } finally {
                                 setUploadingLogo(false);
+                                e.target.value = '';
                               }
                             }}
                             style={{ display: 'block', fontSize: '0.85rem' }}
                           />
 
-                          {uploadingLogo && <span style={{ fontSize: '0.8rem', color: '#ff6b00', fontWeight: 700 }}>A carregar...</span>}
-                          
-                          {certPartnerLogoUrl && (
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#f8fafc', padding: '8px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-                              <img src={certPartnerLogoUrl} alt="Preview Partner Logo" style={{ height: '40px', maxWidth: '120px', objectFit: 'contain' }} />
-                              <button 
-                                type="button" 
-                                onClick={() => setCertPartnerLogoUrl('')}
-                                style={{ background: 'none', border: 'none', color: '#dc2626', fontSize: '0.72rem', cursor: 'pointer', marginTop: '4px', fontWeight: 800 }}
-                              >
-                                Remover
-                              </button>
-                            </div>
-                          )}
+                          {uploadingLogo && <span style={{ fontSize: '0.8rem', color: '#ff6b00', fontWeight: 700 }}>A carregar logótipo...</span>}
                         </div>
+
+                        {certPartnerLogos.length > 0 && (
+                          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
+                            {certPartnerLogos.map((url, idx) => (
+                              <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#f8fafc', padding: '10px', borderRadius: '10px', border: '1px solid #cbd5e1' }}>
+                                <img src={url} alt={`Preview Partner Logo ${idx + 1}`} style={{ height: '45px', maxWidth: '120px', objectFit: 'contain' }} />
+                                <button 
+                                  type="button" 
+                                  onClick={() => {
+                                    const next = certPartnerLogos.filter((_, i) => i !== idx);
+                                    setCertPartnerLogos(next);
+                                    setCertPartnerLogoUrl(next[0] || '');
+                                  }}
+                                  style={{ background: '#fee2e2', border: 'none', color: '#dc2626', fontSize: '0.72rem', cursor: 'pointer', marginTop: '6px', fontWeight: 800, padding: '3px 8px', borderRadius: '4px' }}
+                                >
+                                  🗑️ Remover
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     )}
                   </>

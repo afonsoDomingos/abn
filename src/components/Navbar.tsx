@@ -5,6 +5,7 @@ import Link from 'next/link';
 import styles from './Navbar.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 import LanguageSelector from './LanguageSelector';
+import UserMenu from './UserMenu';
 
 export default function Navbar() {
   const { t, language } = useLanguage();
@@ -84,6 +85,7 @@ export default function Navbar() {
                 Sobre Nós <span className={styles.arrow}>▼</span>
               </span>
               <div className={styles.dropdownMenu}>
+                <Link href="/mensagem-do-presidente" onClick={closeMenu}>Mensagem do Presidente</Link>
                 <Link href="/equipa" onClick={closeMenu}>Equipa</Link>
                 <Link href="/parceiros" onClick={closeMenu}>{t.nav.connections}</Link>
                 <div className={styles.divider}></div>
@@ -111,29 +113,7 @@ export default function Navbar() {
             <LanguageSelector />
             
             {currentUser ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#0f172a' }}>
-                  👋 Olá, {currentUser.name ? currentUser.name.split(' ')[0] : 'Membro'}
-                </span>
-                <Link 
-                  href={dashboardPath} 
-                  style={{
-                    background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%)',
-                    color: '#ffffff',
-                    padding: '8px 18px',
-                    borderRadius: '10px',
-                    fontWeight: 800,
-                    fontSize: '0.82rem',
-                    textDecoration: 'none',
-                    boxShadow: '0 4px 12px rgba(255, 107, 0, 0.25)',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px'
-                  }}
-                >
-                  {dashboardLabel}
-                </Link>
-              </div>
+              <UserMenu />
             ) : (
               <>
                 <Link href="/login" className={styles.login}>{t.nav.login}</Link>
@@ -211,6 +191,7 @@ export default function Navbar() {
           <Link href="/programas" onClick={closeMenu}>🚀 Programas</Link>
 
           <div className={styles.drawerSectionTitle}>Sobre Nós</div>
+          <Link href="/mensagem-do-presidente" onClick={closeMenu}>📜 Mensagem do Presidente</Link>
           <Link href="/equipa" onClick={closeMenu}>👥 Equipa</Link>
           <Link href="/parceiros" onClick={closeMenu}>🤝 Parceiros</Link>
 

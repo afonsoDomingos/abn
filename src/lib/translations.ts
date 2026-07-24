@@ -7,7 +7,8 @@ export const translations = {
       connections: "Parceiros",
       support: "Suporte",
       login: "Entrar",
-      join: "Junte-se à ABN"
+      join: "Junte-se à ABN",
+      presidentMessage: "Mensagem do Presidente"
     },
     footer: {
       brandDesc: "Impulsionando o ecossistema de empreendedorismo em África através de tecnologia e conexões estratégicas.",

@@ -7,39 +7,11 @@ import { useLanguage } from '@/lib/LanguageContext';
 export default function Articles() {
   const { t, language } = useLanguage();
   const [selectedArticle, setSelectedArticle] = useState<any>(null);
-  const [articles, setArticles] = useState([
-    {
-      type: 'news',
-      location: 'Moçambique',
-      title: 'Orange Corners Moçambique: Dia do Embaixador',
-      date: '02/06/2026',
-      desc: 'Nossos embaixadores estudantis desempenham um papel fundamental na conexão do Orange Corners com estudantes universitários, inspirando curiosidade...',
-      img: '/articles/ambassador-day.png'
-    },
-    {
-      type: 'photos',
-      location: 'Moçambique',
-      title: 'Fotos do Orange Corners Moçambique: Gala do Empreendedorismo',
-      date: '28/11/2025',
-      desc: 'No início deste mês, o Orange Corners Entrepreneurship Gala, em Moçambique, reuniu ex-alunos de todo o país...',
-      img: '/articles/gala.png'
-    },
-    {
-      type: 'article',
-      location: 'Moçambique',
-      title: 'Nilza Mazive e Xiphefu: energia inteligente para impulsionar o futuro de Moçambique',
-      date: '25/08/2025',
-      desc: 'Num país onde apenas cerca de 40% da população tem acesso à eletricidade, poupar energia...',
-      img: '/articles/nilza.png'
-    }
-  ]);
+  const [articles, setArticles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [viewsMap, setViewsMap] = useState<Record<string, number>>({});
-  const [commentsMap, setCommentsMap] = useState<Record<string, Array<{ name: string; text: string; date: string }>>>({
-    'Orange Corners Moçambique: Dia do Embaixador': [
-      { name: 'Afonso Domingos', text: 'Excelente iniciativa! Os embaixadores fazem a diferença.', date: '02/06/2026' }
-    ]
-  });
+  const [commentsMap, setCommentsMap] = useState<Record<string, Array<{ name: string; text: string; date: string }>>>({});
 
   const [newCommentName, setNewCommentName] = useState('');
   const [newCommentText, setNewCommentText] = useState('');
@@ -53,38 +25,58 @@ export default function Articles() {
       } catch (e) {}
     }
 
-    fetch('/api/config')
+    // Fetch posts directly from the database API
+    fetch('/api/posts?section=news')
       .then(res => res.json())
       .then(data => {
-        if (data.configs && data.configs.articles_content) {
-          const list = data.configs.articles_content;
-          setArticles(list);
-          
-          // Seed initial random views and comments for realism
+        if (data.success && data.posts && data.posts.length > 0) {
+          const formattedPosts = data.posts.map((p: any) => ({
+            _id: p._id,
+            type: p.type || 'news',
+            location: p.location || 'Moçambique',
+            title: p.title,
+            date: p.date ? (typeof p.date === 'string' ? p.date.split('T')[0] : p.date) : 'Recente',
+            desc: p.content || '',
+            img: p.imageUrl || '/articles/ambassador-day.png',
+            views: p.views || 0,
+            comments: p.comments || []
+          }));
+
+          setArticles(formattedPosts);
+
           const vMap: Record<string, number> = {};
-          const cMap: Record<string, any[]> = { ...commentsMap };
-          list.forEach((item: any) => {
-            if (!vMap[item.title]) {
-              vMap[item.title] = Math.floor(Math.random() * 200) + 45;
-            }
-            if (!cMap[item.title]) {
-              cMap[item.title] = [
-                { name: 'Lucas Maputo', text: 'Incrível ver este ecossistema a crescer!', date: item.date },
-                { name: 'Amélia Santos', text: 'Grande orgulho de fazer parte deste impacto.', date: item.date }
-              ];
-            }
+          const cMap: Record<string, any[]> = {};
+
+          formattedPosts.forEach((item: any) => {
+            vMap[item.title] = item.views || Math.floor(Math.random() * 50) + 10;
+            cMap[item.title] = item.comments || [];
           });
+
           setViewsMap(vMap);
           setCommentsMap(cMap);
+        } else {
+          // Check config fallback if needed
+          fetch('/api/config')
+            .then(res => res.json())
+            .then(configData => {
+              if (configData.configs && configData.configs.articles_content) {
+                setArticles(configData.configs.articles_content);
+              }
+            })
+            .catch(() => {});
         }
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
       });
   }, []);
 
   const handleOpenArticle = (item: any, title: string, desc: string, location: string) => {
-    // Increment view count when clicked
+    // Increment view count
     setViewsMap(prev => ({
       ...prev,
-      [title]: (prev[title] || 1) + 1
+      [title]: (prev[title] || 0) + 1
     }));
     setSelectedArticle({ ...item, translatedTitle: title, translatedDesc: desc, translatedLocation: location });
   };
@@ -93,7 +85,9 @@ export default function Articles() {
   const badgeStyleMap: Record<string, string> = {
     news: styles.badgeNews,
     photos: styles.badgePhotos, 
-    article: styles.badgeArticle
+    article: styles.badgeArticle,
+    sucesso: styles.badgeArticle,
+    comunicado: styles.badgeNews
   };
 
   return (
@@ -103,64 +97,74 @@ export default function Articles() {
           <h2 className={styles.sectionTitle}>
             {language === 'pt' ? 'Mais recentes' : 'The latest'}
           </h2>
-          <a href="/marketplace" className={`btn-outline ${styles.headerBtn}`}>
+          <a href="/noticias" className={`btn-outline ${styles.headerBtn}`}>
             {language === 'pt' ? 'Ver todas as novidades' : 'View all of the latest'}
           </a>
         </div>
 
-        <div className={`${styles.grid} ${articles.length >= 6 ? styles.scrollableGrid : ''}`}>
-          {articles.map((item: any, index: number) => {
-            const translated = language !== 'pt' && t.articles?.items?.[index] ? t.articles.items[index] : null;
-            const title = translated ? translated.title : item.title;
-            const desc = translated ? translated.desc : item.desc;
-            const location = translated ? translated.location : item.location;
-            
-            const imgPath = item.img || '/articles/ambassador-day.png';
-            const badgeClass = badgeStyleMap[item.type] || styles.badgeNews;
-            
-            // Adjust label for research/photos to look professional
-            let typeLabel = t.articles?.types?.[item.type] || item.type;
-            if (item.type === 'photos') {
-              typeLabel = language === 'pt' ? 'Pesquisa' : 'Research';
-            }
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-muted)' }}>
+            <p>A carregar notícias do banco de dados…</p>
+          </div>
+        ) : articles.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-muted)' }}>
+            <p>Nenhuma notícia publicada no momento.</p>
+          </div>
+        ) : (
+          <div className={`${styles.grid} ${articles.length >= 6 ? styles.scrollableGrid : ''}`}>
+            {articles.map((item: any, index: number) => {
+              const title = item.title;
+              const desc = item.desc;
+              const location = item.location || 'África';
+              
+              const imgPath = item.img || '/articles/ambassador-day.png';
+              const badgeClass = badgeStyleMap[item.type] || styles.badgeNews;
+              
+              let typeLabel = item.type;
+              if (item.type === 'news') typeLabel = language === 'pt' ? 'Notícia' : 'News';
+              else if (item.type === 'sucesso') typeLabel = language === 'pt' ? 'História de Sucesso' : 'Success Story';
+              else if (item.type === 'comunicado') typeLabel = language === 'pt' ? 'Comunicado' : 'Announcement';
+              else if (item.type === 'photos') typeLabel = language === 'pt' ? 'Galeria' : 'Photos';
+              else if (item.type === 'article') typeLabel = language === 'pt' ? 'Artigo' : 'Article';
 
-            return (
-              <article key={index} className={styles.card}>
-                <div className={styles.imageWrapper}>
-                  <span className={`${styles.typeBadge} ${badgeClass}`}>
-                    {typeLabel}
-                  </span>
-                  <img 
-                    src={imgPath} 
-                    alt={title} 
-                    className={styles.image} 
-                    loading="lazy"
-                  />
-                </div>
-                <div className={styles.content}>
-                  <div className={styles.locationWrapper}>
-                    <span className={styles.location}>{location}</span>
+              return (
+                <article key={item._id || index} className={styles.card}>
+                  <div className={styles.imageWrapper}>
+                    <span className={`${styles.typeBadge} ${badgeClass}`}>
+                      {typeLabel}
+                    </span>
+                    <img 
+                      src={imgPath} 
+                      alt={title} 
+                      className={styles.image} 
+                      loading="lazy"
+                    />
                   </div>
-                  <h3 className={styles.articleTitle}>{title}</h3>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                    <span className={styles.date} style={{ margin: 0 }}>{item.date}</span>
-                    <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                      <span title="Visualizações" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>👁️ {viewsMap[item.title] || 0}</span>
-                      <span title="Comentários" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>💬 {commentsMap[item.title]?.length || 0}</span>
+                  <div className={styles.content}>
+                    <div className={styles.locationWrapper}>
+                      <span className={styles.location}>{location}</span>
                     </div>
+                    <h3 className={styles.articleTitle}>{title}</h3>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                      <span className={styles.date} style={{ margin: 0 }}>{item.date}</span>
+                      <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+                        <span title="Visualizações" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>👁️ {viewsMap[item.title] || 0}</span>
+                        <span title="Comentários" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>💬 {(commentsMap[item.title] || []).length}</span>
+                      </div>
+                    </div>
+                    <p className={styles.desc}>{desc}</p>
+                    <button 
+                      className={styles.readMoreBtn} 
+                      onClick={() => handleOpenArticle(item, title, desc, location)}
+                    >
+                      {language === 'pt' ? 'Ler mais' : 'Read more'}
+                    </button>
                   </div>
-                  <p className={styles.desc}>{desc}</p>
-                  <button 
-                    className={styles.readMoreBtn} 
-                    onClick={() => handleOpenArticle(item, title, desc, location)}
-                  >
-                    {language === 'pt' ? 'Ler mais' : 'Read more'}
-                  </button>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {selectedArticle && (
@@ -178,10 +182,9 @@ export default function Articles() {
               <span className={styles.date}>{selectedArticle.date}</span>
               <div className={styles.modalText}>{selectedArticle.translatedDesc || selectedArticle.desc}</div>
               
-              {/* Dynamic Comments Section inside Article modal */}
-              <div style={{ marginTop: '3rem', borderTop: '1px solid #eee', paddingTop: '2rem' }}>
-                <h4 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '8px', color: '#111' }}>
-                  💬 Comentários ({commentsMap[selectedArticle.title]?.length || 0})
+              <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #eee' }}>
+                <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--foreground)' }}>
+                  Comentários ({(commentsMap[selectedArticle.title] || []).length})
                 </h4>
                 
                 {/* List Comments */}

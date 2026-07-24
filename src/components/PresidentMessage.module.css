@@ -1,0 +1,403 @@
+.section {
+  padding: 90px 2rem;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.sectionFullPage {
+  padding-top: 130px;
+  min-height: 80vh;
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  max-width: 750px;
+  margin: 0 auto 3.5rem auto;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 107, 0, 0.08);
+  border: 1px solid rgba(255, 107, 0, 0.2);
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 6px 16px;
+  border-radius: 30px;
+  margin-bottom: 1.25rem;
+}
+
+.badgeDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: inline-block;
+  box-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+}
+
+.mainTitle {
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  color: #0f172a;
+  font-weight: 800;
+  line-height: 1.25;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.titleUnderline {
+  width: 70px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+  margin: 1.25rem auto 0 auto;
+  border-radius: 2px;
+}
+
+/* Layout Grid */
+.grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+/* Profile Card (Left Column) */
+.profileCard {
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid rgba(42, 79, 166, 0.12);
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.07);
+  overflow: hidden;
+  position: sticky;
+  top: 100px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profileCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 50px -15px rgba(15, 23, 42, 0.12);
+}
+
+.profileHeaderBg {
+  height: 120px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #2a4fa6 100%);
+  position: relative;
+}
+
+.patternOverlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.15;
+  background-image: radial-gradient(#ffffff 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.avatarWrapper {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin: -55px auto 0 auto;
+  z-index: 3;
+}
+
+.avatarCircle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6b00 0%, #e05e00 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #ffffff;
+  box-shadow: 0 10px 25px rgba(255, 107, 0, 0.3);
+}
+
+.avatarInitials {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.verifiedBadge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: #2a4fa6;
+  color: #ffffff;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 900;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.profileBody {
+  padding: 1.5rem 1.75rem 2rem 1.75rem;
+  text-align: center;
+}
+
+.authorName {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  font-family: 'Outfit', sans-serif;
+  margin-bottom: 0.25rem;
+}
+
+.authorRole {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.15rem;
+}
+
+.authorOrg {
+  font-size: 0.82rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.quoteCard {
+  background: #fff7ed;
+  border: 1px solid #ffedd5;
+  border-radius: 16px;
+  padding: 1.25rem 1rem;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.quoteIcon {
+  font-family: 'Georgia', serif;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--primary);
+  opacity: 0.3;
+  position: absolute;
+  top: 4px;
+  left: 10px;
+}
+
+.quoteText {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: #9a3412;
+  font-weight: 600;
+  line-height: 1.5;
+  position: relative;
+  z-index: 2;
+}
+
+.cardActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%);
+  color: #ffffff;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(255, 107, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(255, 107, 0, 0.35);
+}
+
+.btnOutline {
+  background: transparent;
+  border: 1.5px solid #cbd5e1;
+  color: #334155;
+  padding: 11px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.btnOutline:hover {
+  border-color: #0f172a;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+/* Letter Container (Right Column) */
+.letterContainer {
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 3.5rem 3.5rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 20px 50px -20px rgba(15, 23, 42, 0.08);
+  position: relative;
+}
+
+.decorativeQuoteMark {
+  position: absolute;
+  top: 1rem;
+  right: 2.5rem;
+  font-family: 'Georgia', serif;
+  font-size: 10rem;
+  line-height: 1;
+  color: rgba(42, 79, 166, 0.04);
+  user-select: none;
+  pointer-events: none;
+}
+
+.letterContent {
+  position: relative;
+  z-index: 2;
+}
+
+.greeting {
+  font-size: 1.35rem;
+  color: #0f172a;
+  line-height: 1.6;
+  margin-bottom: 1.75rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+.paragraph {
+  font-size: 1.08rem;
+  color: #334155;
+  line-height: 1.8;
+  margin-bottom: 1.75rem;
+  letter-spacing: -0.01em;
+}
+
+.highlightBox {
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.04) 0%, rgba(42, 79, 166, 0.04) 100%);
+  border-left: 4px solid var(--primary);
+  border-radius: 0 16px 16px 0;
+  padding: 1.75rem 2rem;
+  margin: 2rem 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #0f172a;
+  line-height: 1.75;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.closingBox {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px dashed #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.closingText {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  max-width: 450px;
+  line-height: 1.6;
+}
+
+.signatureBlock {
+  text-align: right;
+}
+
+.signatureName {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.signatureTitle {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.signatureCompany {
+  font-size: 0.82rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .profileCard {
+    position: static;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 1.25rem;
+  }
+
+  .letterContainer {
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+  }
+
+  .greeting {
+    font-size: 1.2rem;
+  }
+
+  .paragraph {
+    font-size: 1rem;
+  }
+
+  .highlightBox {
+    padding: 1.25rem 1.25rem;
+    font-size: 1rem;
+  }
+
+  .closingBox {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .signatureBlock {
+    text-align: left;
+  }
+}

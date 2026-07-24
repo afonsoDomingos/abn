@@ -1,0 +1,176 @@
+.main {
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+.heroBanner {
+  position: relative;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #2a4fa6 100%);
+  padding: 140px 2rem 80px 2rem;
+  color: #ffffff;
+  text-align: center;
+  overflow: hidden;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(255, 107, 0, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroBadge {
+  display: inline-block;
+  background: rgba(255, 107, 0, 0.18);
+  border: 1px solid rgba(255, 107, 0, 0.4);
+  color: #ff8c3a;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 6px 16px;
+  border-radius: 30px;
+  margin-bottom: 1.25rem;
+}
+
+.heroTitle {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.heroSub {
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.wave {
+  display: block;
+  width: 100%;
+  height: 48px;
+  margin-top: -1px;
+  background: transparent;
+}
+
+/* Footer styles matching page.module.css */
+.footer {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.footerTop {
+  padding: 60px 2rem 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footerGrid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.footerBrand {
+  display: flex;
+  align-items: center;
+}
+
+.footerLogo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.footerLogoImg {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.footerLogoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.footerAbn {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.footerNetwork {
+  font-size: 0.72rem;
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footerLinksGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2rem;
+}
+
+.footerLinkCol a {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: color 0.2s ease;
+}
+
+.footerLinkCol a:hover {
+  color: var(--primary);
+}
+
+.footerMiddle {
+  padding: 24px 2rem;
+  background: #090d16;
+}
+
+.footerBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.socials {
+  display: flex;
+  gap: 1rem;
+}
+
+.socials a {
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease;
+}
+
+.socials a:hover {
+  color: var(--primary);
+}

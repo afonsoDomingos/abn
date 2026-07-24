@@ -1020,17 +1020,29 @@ export default function FormacaoPage() {
                 </span>
               </div>
               
-              {selectedCourse.certUsePartnerLogos && selectedCourse.certPartnerLogoUrl && (
-                <>
-                  <div style={{ width: '1px', height: '40px', background: 'rgba(0,0,0,0.1)' }} />
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <img src={selectedCourse.certPartnerLogoUrl} alt="Partner Logo" style={{ height: '50px', maxWidth: '140px', objectFit: 'contain', marginBottom: '0.5rem' }} />
-                    <span style={{ fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#888' }}>
-                      Parceiro Certificador
-                    </span>
-                  </div>
-                </>
-              )}
+              {selectedCourse.certUsePartnerLogos && (() => {
+                const logos = selectedCourse.certPartnerLogos && selectedCourse.certPartnerLogos.length > 0
+                  ? selectedCourse.certPartnerLogos
+                  : (selectedCourse.certPartnerLogoUrl ? [selectedCourse.certPartnerLogoUrl] : []);
+                
+                if (logos.length === 0) return null;
+
+                return (
+                  <>
+                    <div style={{ width: '1px', height: '40px', background: 'rgba(0,0,0,0.1)' }} />
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+                        {logos.map((logoUrl: string, idx: number) => (
+                          <img key={idx} src={logoUrl} alt={`Partner Logo ${idx + 1}`} style={{ height: '48px', maxWidth: '120px', objectFit: 'contain', marginBottom: '0.25rem' }} />
+                        ))}
+                      </div>
+                      <span style={{ fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#888' }}>
+                        {logos.length > 1 ? 'Parceiros Certificadores' : 'Parceiro Certificador'}
+                      </span>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
 
             <div>
