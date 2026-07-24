@@ -445,7 +445,16 @@ export default function AdminCursosPage() {
                 </div>
 
                 {/* Actions: View participants, Edit, Delete */}
-                <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.5rem' }}>
+                <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+                  <a
+                    href={`/dashboard/formacao?adminPreview=1`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Ver como um Aluno/Empreendedor veria este curso"
+                    style={{ flex: 1, padding: '10px 0', border: '1px solid #e2e8f0', background: '#f8fafc', color: '#475569', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '5px', textDecoration: 'none' }}
+                  >
+                    👁️ Ver como Aluno
+                  </a>
                   <button
                     onClick={() => handleViewParticipants(course)}
                     style={{ flex: 1, padding: '10px 0', border: '1px solid #cbd5e1', background: '#f8fafc', color: '#0f172a', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}

@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function FormacaoPage() {
+function FormacaoPageInner() {
   const isCoursePaid = (course: any) => {
     if (!course) return false;
     const priceStr = String(course.price || '').toLowerCase().trim();
@@ -30,6 +32,9 @@ export default function FormacaoPage() {
     // Return as-is if nothing matched (may be another platform)
     return u;
   };
+
+  const searchParams = useSearchParams();
+  const isAdminPreview = searchParams?.get('adminPreview') === '1';
 
   const [payments, setPayments] = useState<any[]>([]);
   const [courses, setCourses] = useState<any[]>([]);
@@ -248,6 +253,67 @@ export default function FormacaoPage() {
 
   return (
     <div style={{ maxWidth: '940px' }}>
+
+      {/* Admin Preview Mode Sticky Banner */}
+      {isAdminPreview && (
+        <div style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 9999,
+          background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+          borderBottom: '3px solid #ff6b00',
+          padding: '0.7rem 1.4rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '1rem',
+          flexWrap: 'wrap',
+          marginBottom: '1.5rem',
+          borderRadius: '12px',
+          boxShadow: '0 4px 20px rgba(255, 107, 0, 0.2)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span style={{
+              background: '#ff6b00',
+              color: '#ffffff',
+              fontSize: '0.7rem',
+              fontWeight: 800,
+              padding: '3px 10px',
+              borderRadius: '20px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px'
+            }}>
+              <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#ffffff', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+              Admin Preview
+            </span>
+            <span style={{ color: '#94a3b8', fontSize: '0.88rem', fontWeight: 600 }}>
+              👁️ Está a visualizar a plataforma <strong style={{ color: '#e2e8f0' }}>como um Aluno/Empreendedor</strong>
+            </span>
+          </div>
+          <a
+            href="/admin/cursos"
+            style={{
+              background: '#ff6b00',
+              color: '#ffffff',
+              padding: '7px 16px',
+              borderRadius: '8px',
+              fontSize: '0.8rem',
+              fontWeight: 800,
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            ← Voltar ao Painel Admin
+          </a>
+        </div>
+      )}
+
       <header style={{ marginBottom: '2.5rem' }}>
         <h1 style={{ fontSize: '2.2rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', marginBottom: '0.4rem' }}>
           Academia & Formação
@@ -1207,5 +1273,13 @@ export default function FormacaoPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function FormacaoPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: '3rem', color: '#0f172a', fontWeight: 600 }}>A carregar academia...</div>}>
+      <FormacaoPageInner />
+    </Suspense>
   );
 }
