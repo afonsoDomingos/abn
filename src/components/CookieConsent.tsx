@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -52,55 +52,54 @@ export default function CookieConsent() {
         aria-label="Aviso de cookies"
         style={{
           position: "fixed",
-          bottom: "1.5rem",
+          bottom: "1rem",
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 9999,
-          width: "min(700px, calc(100vw - 2rem))",
-          background: "rgba(10, 10, 20, 0.94)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          border: "1px solid rgba(255,255,255,0.1)",
-          borderRadius: "20px",
-          padding: "1.4rem 1.8rem",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05)",
+          width: "min(520px, calc(100vw - 2rem))",
+          background: "#ffffff",
+          border: "1px solid #e2e8f0",
+          borderRadius: "14px",
+          padding: "0.85rem 1.1rem",
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04)",
           display: "flex",
-          gap: "1.5rem",
+          gap: "0.9rem",
           alignItems: "center",
           flexWrap: "wrap",
         }}
       >
         <div style={{
-          width: "48px", height: "48px", flexShrink: 0,
-          background: "linear-gradient(135deg, var(--primary), var(--secondary))",
-          borderRadius: "14px", display: "flex", alignItems: "center",
-          justifyContent: "center", fontSize: "1.6rem"
+          width: "36px", height: "36px", flexShrink: 0,
+          background: "#fff5ed",
+          border: "1px solid #ffedd5",
+          borderRadius: "10px", display: "flex", alignItems: "center",
+          justifyContent: "center", fontSize: "1.2rem"
         }}>
           🍪
         </div>
 
-        <div style={{ flex: 1, minWidth: "220px" }}>
-          <p style={{ color: "#fff", fontWeight: 700, margin: "0 0 4px 0", fontFamily: "Outfit, sans-serif", fontSize: "0.95rem" }}>
+        <div style={{ flex: 1, minWidth: "180px" }}>
+          <p style={{ color: "#0f172a", fontWeight: 700, margin: "0 0 2px 0", fontFamily: "Outfit, sans-serif", fontSize: "0.88rem" }}>
             A ABN utiliza cookies
           </p>
-          <p style={{ color: "rgba(255,255,255,0.55)", margin: 0, fontSize: "0.8rem", lineHeight: 1.5 }}>
-            Usamos cookies essenciais para o funcionamento da plataforma e cookies analíticos para melhorar a sua experiência.{" "}
-            <Link href="/privacidade" style={{ color: "var(--primary)", fontWeight: 700, textDecoration: "underline" }}>
+          <p style={{ color: "#475569", margin: 0, fontSize: "0.76rem", lineHeight: 1.45 }}>
+            Usamos cookies para melhorar a sua experiência.{" "}
+            <Link href="/privacidade" style={{ color: "var(--primary)", fontWeight: 600, textDecoration: "underline" }}>
               Política de Privacidade
             </Link>
           </p>
         </div>
 
-        <div style={{ display: "flex", gap: "0.7rem", flexShrink: 0, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "0.5rem", flexShrink: 0, alignItems: "center" }}>
           <button
             onClick={() => dismiss(false)}
             style={{
-              background: "rgba(255,255,255,0.08)",
-              border: "1px solid rgba(255,255,255,0.15)",
-              color: "rgba(255,255,255,0.7)",
-              padding: "9px 18px",
-              borderRadius: "40px",
-              fontSize: "0.82rem",
+              background: "#f1f5f9",
+              border: "1px solid #cbd5e1",
+              color: "#475569",
+              padding: "6px 12px",
+              borderRadius: "30px",
+              fontSize: "0.76rem",
               fontWeight: 600,
               cursor: "pointer",
               fontFamily: "Outfit, sans-serif",
@@ -112,16 +111,16 @@ export default function CookieConsent() {
           <button
             onClick={() => dismiss(true)}
             style={{
-              background: "linear-gradient(135deg, var(--primary), var(--secondary))",
+              background: "var(--primary)",
               border: "none",
-              color: "#fff",
-              padding: "9px 22px",
-              borderRadius: "40px",
-              fontSize: "0.82rem",
+              color: "#ffffff",
+              padding: "6px 14px",
+              borderRadius: "30px",
+              fontSize: "0.76rem",
               fontWeight: 700,
               cursor: "pointer",
               fontFamily: "Outfit, sans-serif",
-              boxShadow: "0 4px 16px rgba(42,79,166,0.4)",
+              boxShadow: "0 2px 8px rgba(255, 107, 0, 0.25)",
               whiteSpace: "nowrap",
             }}
           >

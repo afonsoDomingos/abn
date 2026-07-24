@@ -38,7 +38,7 @@ const DEFAULT_STATS: StatItem[] = [
   { value: '...', label: 'Membros Registados',    iconKey: 'users'    },
   { value: '...', label: 'Negócios na Plataforma', iconKey: 'business' },
   { value: '...', label: 'Serviços Publicados',   iconKey: 'growth'   },
-  { value: '...', label: 'Receita Processada',    iconKey: 'partners' },
+  { value: '...', label: 'Programas & Eventos',   iconKey: 'courses'  },
 ];
 
 export default function Stats() {
@@ -52,6 +52,7 @@ export default function Stats() {
       .then(res => res.json())
       .then(data => {
         if (data.stats) {
+          const totalProgramsEvents = (data.stats.totalPrograms || 0) + (data.stats.totalEvents || 0);
           const real: StatItem[] = [
             {
               value: String(data.stats.totalUsers ?? '—'),
@@ -69,9 +70,9 @@ export default function Stats() {
               iconKey: 'growth',
             },
             {
-              value: data.stats.revenue ?? '—',
-              label: language === 'pt' ? 'Receita Processada'     : 'Revenue Processed',
-              iconKey: 'partners',
+              value: String(totalProgramsEvents),
+              label: language === 'pt' ? 'Programas & Eventos'    : 'Programs & Events',
+              iconKey: 'courses',
             },
           ];
           setStats(real);
