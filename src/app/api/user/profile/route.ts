@@ -74,7 +74,7 @@ export async function PUT(request: Request) {
 
     const response = NextResponse.json({ 
       success: true, 
-      user: userData 
+      user: user.toObject()
     });
 
     response.cookies.set('abn_session', encodeURIComponent(JSON.stringify(userData)), {
@@ -88,5 +88,33 @@ export async function PUT(request: Request) {
     return response;
   } catch (error: any) {
     return NextResponse.json({ error: 'Erro ao atualizar perfil.' }, { status: 500 });
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    await dbConnect();
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get('abn_session');
+
+    if (!sessionCookie) {
+      return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 });
+    }
+
+    let session;
+    try {
+      session = JSON.parse(decodeURIComponent(sessionCookie.value));
+    } catch {
+      return NextResponse.json({ error: 'Sessão inválida.' }, { status: 401 });
+    }
+
+    const user = await User.findById(session.id).select('-password');
+    if (!user) {
+      return NextResponse.json({ error: 'Usuário não encontrado.' }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, user });
+  } catch (error: any) {
+    return NextResponse.json({ error: 'Erro ao carregar perfil.' }, { status: 500 });
   }
 }
