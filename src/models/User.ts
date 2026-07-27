@@ -10,14 +10,23 @@ const UserSchema = new mongoose.Schema({
     default: 'empreendedor' 
   },
   profileImage: { type: String },
-  // Perfil profissional
+  // Perfil profissional & pessoal
   phone: { type: String, default: '' },
+  birthDate: { type: String, default: '' },
+  gender: { type: String, default: '' },
+  nationality: { type: String, default: '' },
   country: { type: String, default: '' },
   city: { type: String, default: '' },
   company: { type: String, default: '' },       // Nome da empresa/startup
   sector: { type: String, default: '' },         // Sector de actividade
   linkedin: { type: String, default: '' },       // URL do LinkedIn
   bio: { type: String, default: '' },            // Breve descrição
+  
+  // Documentos & Formação
+  passportBioPage: { type: String, default: '' }, // URL da página de dados do passaporte
+  passportPhoto: { type: String, default: '' },   // URL da foto do passaporte
+  educationLevel: { type: String, default: '' },  // Nível Máximo de Escolaridade
+  howHeardAboutUs: { type: String, default: '' }, // Como ficou a saber sobre a ABN
   // Recuperação de password
   resetToken: { type: String },
   resetTokenExpiry: { type: Date },

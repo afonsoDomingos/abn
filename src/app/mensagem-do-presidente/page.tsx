@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import PresidentMessage from '@/components/PresidentMessage';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
@@ -10,13 +11,28 @@ import styles from './page.module.css';
 
 export default function MensagemDoPresidentePage() {
   const { t, language } = useLanguage();
+  const [bannerUrl, setBannerUrl] = useState<string>('');
+
+  useEffect(() => {
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs?.page_banners?.mensagem_presidente) {
+          setBannerUrl(data.configs.page_banners.mensagem_presidente);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <>
       <Navbar />
       <main className={styles.main}>
         {/* Banner Section */}
-        <div className={styles.heroBanner}>
+        <div 
+          className={styles.heroBanner}
+          style={bannerUrl ? { backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), url(${bannerUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
+        >
           <div className={styles.heroOverlay} />
           <div className={styles.heroContent}>
             <span className={styles.heroBadge}>Mensagem Oficial</span>

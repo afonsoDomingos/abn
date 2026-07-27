@@ -39,6 +39,7 @@ export default function PresidentMessage({ showFullPageLayout = false }: Preside
     authorRole: "Presidente e Fundador",
     authorOrg: "AfroBiz Network (ABN)",
     authorPhoto: "",
+    cardBanner: "",
     quote: '"Conectando mentes, impulsionando negócios e transformando África e o Mundo."',
     joinCta: "Junte-se à Rede",
     exploreTeam: "Conhecer a Equipa"
@@ -72,7 +73,10 @@ export default function PresidentMessage({ showFullPageLayout = false }: Preside
           
           {/* Executive Profile Card */}
           <div className={styles.profileCard}>
-            <div className={styles.profileHeaderBg}>
+            <div 
+              className={styles.profileHeaderBg}
+              style={pm.cardBanner ? { backgroundImage: `url(${pm.cardBanner})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
+            >
               <div className={styles.patternOverlay}></div>
             </div>
             

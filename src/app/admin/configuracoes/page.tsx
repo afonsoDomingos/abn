@@ -54,7 +54,8 @@ export default function AdminConfigPage() {
     equipa: '/abn-cover.jpg',
     parceiros: '/partners_hero.png',
     marketplace: '/partners_hero.png',
-    programas: '/hero_entrepreneurs.png'
+    programas: '/hero_entrepreneurs.png',
+    mensagem_presidente: '/abn-cover.jpg'
   });
 
   const [presidentMsg, setPresidentMsg] = useState({
@@ -63,6 +64,7 @@ export default function AdminConfigPage() {
     authorRole: 'Presidente e Fundador',
     authorOrg: 'AfroBiz Network (ABN)',
     authorPhoto: '',
+    cardBanner: '',
     quote: '"Conectando mentes, impulsionando negócios e transformando África e o Mundo."',
     paragraph1: 'Seja muito bem-vindo(a) à AfroBiz Network (ABN).',
     paragraph2: 'É com grande satisfação que o recebemos nesta plataforma, criada para ligar empreendedores, inovadores, investidores, profissionais e instituições que acreditam no potencial transformador de África.',
@@ -245,6 +247,45 @@ export default function AdminConfigPage() {
                     />
                   </label>
                 </div>
+              </div>
+            </div>
+
+            <div className={styles.field} style={{ marginTop: '0.5rem' }}>
+              <label>Banner do Cartão (Capa de Fundo do Perfil - URL ou Upload)</label>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <input 
+                  value={presidentMsg.cardBanner || ''} 
+                  onChange={e => setPresidentMsg({ ...presidentMsg, cardBanner: e.target.value })}
+                  placeholder="URL do banner do cartão ou selecione ficheiro"
+                  style={{ flex: 1 }}
+                />
+                <label className={styles.uploadLabel} title="Carregar Banner do Cartão" style={{ cursor: 'pointer', fontSize: '1.2rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  📁
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const formData = new FormData();
+                      formData.append('file', file);
+                      setMsg('⏳ A carregar banner do cartão...');
+                      try {
+                        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                        const data = await res.json();
+                        if (data.success && data.url) {
+                          setPresidentMsg({ ...presidentMsg, cardBanner: data.url });
+                          setMsg('✅ Banner do cartão enviado!');
+                        } else {
+                          alert(data.error || 'Erro no upload.');
+                        }
+                      } catch (err) {
+                        alert('Erro de conexão no upload.');
+                      }
+                    }}
+                    style={{ display: 'none' }}
+                  />
+                </label>
               </div>
             </div>
 
@@ -1137,7 +1178,8 @@ export default function AdminConfigPage() {
               { id: 'equipa', label: 'Página de Equipa' },
               { id: 'parceiros', label: 'Página de Parceiros' },
               { id: 'marketplace', label: 'Página de Marketplace' },
-              { id: 'programas', label: 'Página de Programas' }
+              { id: 'programas', label: 'Página de Programas' },
+              { id: 'mensagem_presidente', label: 'Página da Mensagem do Presidente' }
             ].map(page => (
               <div key={page.id} className={styles.field} style={{ marginBottom: '1.25rem' }}>
                 <label>{page.label}</label>

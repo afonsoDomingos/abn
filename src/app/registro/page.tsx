@@ -17,7 +17,13 @@ import {
   FileText,
   ArrowLeft,
   ArrowRight,
-  CheckCircle2
+  CheckCircle2,
+  Calendar,
+  Flag,
+  GraduationCap,
+  Megaphone,
+  Upload,
+  FileCheck
 } from 'lucide-react';
 import styles from '../login/Auth.module.css';
 
@@ -31,6 +37,30 @@ const SECTORS = [
 const COUNTRIES = [
   'Angola', 'Cabo Verde', 'Guiné-Bissau', 'Moçambique', 'Portugal',
   'São Tomé e Príncipe', 'Brasil', 'França', 'Espanha', 'Outro'
+];
+
+const NATIONALITIES = [
+  'Angolana', 'Cabo-verdiana', 'Guineense', 'Moçambicana', 'Portuguesa',
+  'São-tomense', 'Brasileira', 'Francesa', 'Espanhola', 'Sul-africana', 'Outra'
+];
+
+const EDUCATION_LEVELS = [
+  'Ensino Secundário / Médio',
+  'Técnico / Profissional',
+  'Bacharelato / Licenciatura',
+  'Pós-Graduação / Especialização',
+  'Mestrado',
+  'Doutoramento',
+  'Outro'
+];
+
+const HEARD_ABOUT_SOURCES = [
+  'Redes Sociais (Instagram, LinkedIn, Facebook...)',
+  'Indicação / Recomendação (Amigo ou Colega)',
+  'Evento / Conferência',
+  'Pesquisa no Google / Web',
+  'Notícias / Imprensa',
+  'Outro'
 ];
 
 export default function RegisterPage() {
@@ -48,6 +78,18 @@ export default function RegisterPage() {
   const [sector, setSector] = useState('');
   const [linkedin, setLinkedin] = useState('');
   const [bio, setBio] = useState('');
+
+  // Novos campos opcionais
+  const [birthDate, setBirthDate] = useState('');
+  const [gender, setGender] = useState('');
+  const [nationality, setNationality] = useState('');
+  const [passportBioPage, setPassportBioPage] = useState('');
+  const [passportPhoto, setPassportPhoto] = useState('');
+  const [educationLevel, setEducationLevel] = useState('');
+  const [howHeardAboutUs, setHowHeardAboutUs] = useState('');
+  const [uploadingBio, setUploadingBio] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -80,6 +122,33 @@ export default function RegisterPage() {
     setCurrentStep(prev => Math.max(1, prev - 1));
   };
 
+  const handleFileUpload = async (file: File, type: 'bio' | 'photo') => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    if (type === 'bio') setUploadingBio(true);
+    else setUploadingPhoto(true);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        if (type === 'bio') setPassportBioPage(data.url);
+        else setPassportPhoto(data.url);
+      } else {
+        setError(data.error || 'Erro no upload do ficheiro.');
+      }
+    } catch {
+      setError('Erro de ligação ao enviar ficheiro.');
+    } finally {
+      if (type === 'bio') setUploadingBio(false);
+      else setUploadingPhoto(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -106,7 +175,14 @@ export default function RegisterPage() {
           company,
           sector,
           linkedin,
-          bio
+          bio,
+          birthDate,
+          gender,
+          nationality,
+          passportBioPage,
+          passportPhoto,
+          educationLevel,
+          howHeardAboutUs
         }),
       });
 
@@ -241,7 +317,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* ──────────────── PASSO 2: TIPO DE CONTA & PERFIL ──────────────── */}
+          {/* ──────────────── PASSO 2: TIPO DE CONTA & DADOS PESSOAIS ──────────────── */}
           {currentStep === 2 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div className={styles.inputGroup}>
@@ -314,6 +390,84 @@ export default function RegisterPage() {
                 </div>
               </div>
 
+              <div className={styles.grid2}>
+                <div className={styles.inputGroup}>
+                  <label>Data de Nascimento</label>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      type="date"
+                      value={birthDate}
+                      onChange={e => setBirthDate(e.target.value)}
+                    />
+                    <Calendar className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>Género</label>
+                  <div className={styles.inputWrapper}>
+                    <select
+                      value={gender}
+                      onChange={e => setGender(e.target.value)}
+                    >
+                      <option value="">Seleccionar género</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Feminino">Feminino</option>
+                      <option value="Outro">Outro</option>
+                      <option value="Prefiro não responder">Prefiro não responder</option>
+                    </select>
+                    <User className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.grid2}>
+                <div className={styles.inputGroup}>
+                  <label>Nacionalidade</label>
+                  <div className={styles.inputWrapper}>
+                    <select
+                      value={nationality}
+                      onChange={e => setNationality(e.target.value)}
+                    >
+                      <option value="">Seleccionar nacionalidade</option>
+                      {NATIONALITIES.map(n => (
+                        <option key={n} value={n}>{n}</option>
+                      ))}
+                    </select>
+                    <Flag className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>País de Residência</label>
+                  <div className={styles.inputWrapper}>
+                    <select
+                      value={country}
+                      onChange={e => setCountry(e.target.value)}
+                    >
+                      <option value="">Seleccionar país</option>
+                      {COUNTRIES.map(c => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                    <Globe2 className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label>Cidade de Residência</label>
+                <div className={styles.inputWrapper}>
+                  <input
+                    type="text"
+                    placeholder="Ex: Bissau, Maputo, Luanda..."
+                    value={city}
+                    onChange={e => setCity(e.target.value)}
+                  />
+                  <MapPin className={styles.inputIcon} size={18} />
+                </div>
+              </div>
+
               <div className={styles.stepActions}>
                 <button
                   type="button"
@@ -335,7 +489,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* ──────────────── PASSO 3: DETALHES & LOCALIZAÇÃO ──────────────── */}
+          {/* ──────────────── PASSO 3: FORMAÇÃO, DOCUMENTOS & DETALHES ──────────────── */}
           {currentStep === 3 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div className={styles.grid2}>
@@ -353,37 +507,6 @@ export default function RegisterPage() {
                 </div>
 
                 <div className={styles.inputGroup}>
-                  <label>País</label>
-                  <div className={styles.inputWrapper}>
-                    <select
-                      value={country}
-                      onChange={e => setCountry(e.target.value)}
-                    >
-                      <option value="">Seleccionar país</option>
-                      {COUNTRIES.map(c => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                    <Globe2 className={styles.inputIcon} size={18} />
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.grid2}>
-                <div className={styles.inputGroup}>
-                  <label>Cidade</label>
-                  <div className={styles.inputWrapper}>
-                    <input
-                      type="text"
-                      placeholder="Ex: Bissau, Maputo..."
-                      value={city}
-                      onChange={e => setCity(e.target.value)}
-                    />
-                    <MapPin className={styles.inputIcon} size={18} />
-                  </div>
-                </div>
-
-                <div className={styles.inputGroup}>
                   <label>LinkedIn</label>
                   <div className={styles.inputWrapper}>
                     <input
@@ -393,6 +516,135 @@ export default function RegisterPage() {
                       onChange={e => setLinkedin(e.target.value)}
                     />
                     <Link2 className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.grid2}>
+                <div className={styles.inputGroup}>
+                  <label>Nível Máximo de Escolaridade</label>
+                  <div className={styles.inputWrapper}>
+                    <select
+                      value={educationLevel}
+                      onChange={e => setEducationLevel(e.target.value)}
+                    >
+                      <option value="">Seleccionar escolaridade</option>
+                      {EDUCATION_LEVELS.map(l => (
+                        <option key={l} value={l}>{l}</option>
+                      ))}
+                    </select>
+                    <GraduationCap className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>Como ficou a saber sobre a ABN?</label>
+                  <div className={styles.inputWrapper}>
+                    <select
+                      value={howHeardAboutUs}
+                      onChange={e => setHowHeardAboutUs(e.target.value)}
+                    >
+                      <option value="">Seleccionar opção</option>
+                      {HEARD_ABOUT_SOURCES.map(src => (
+                        <option key={src} value={src}>{src}</option>
+                      ))}
+                    </select>
+                    <Megaphone className={styles.inputIcon} size={18} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Documentos do Passaporte */}
+              <div className={styles.grid2}>
+                <div className={styles.inputGroup}>
+                  <label>Página de Dados do Passaporte</label>
+                  <div className={styles.inputWrapper} style={{ position: 'relative' }}>
+                    <input
+                      type="file"
+                      accept="image/*,.pdf"
+                      onChange={e => {
+                        const file = e.target.files?.[0];
+                        if (file) handleFileUpload(file, 'bio');
+                      }}
+                      id="passport-bio-file"
+                      style={{ display: 'none' }}
+                    />
+                    <label
+                      htmlFor="passport-bio-file"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        width: '100%',
+                        padding: '12px 14px 12px 42px',
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.15)',
+                        borderRadius: '12px',
+                        cursor: 'pointer',
+                        fontSize: '0.85rem',
+                        color: passportBioPage ? '#4ade80' : 'rgba(255,255,255,0.7)',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      {uploadingBio ? (
+                        '⏳ A carregar...'
+                      ) : passportBioPage ? (
+                        <>
+                          <FileCheck size={16} color="#4ade80" /> Carregado com Sucesso!
+                        </>
+                      ) : (
+                        'Escolher ficheiro (PDF/Imagem)'
+                      )}
+                    </label>
+                    <Upload className={styles.inputIcon} size={18} style={{ pointerEvents: 'none' }} />
+                  </div>
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>Fotografia do Passaporte</label>
+                  <div className={styles.inputWrapper} style={{ position: 'relative' }}>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={e => {
+                        const file = e.target.files?.[0];
+                        if (file) handleFileUpload(file, 'photo');
+                      }}
+                      id="passport-photo-file"
+                      style={{ display: 'none' }}
+                    />
+                    <label
+                      htmlFor="passport-photo-file"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        width: '100%',
+                        padding: '12px 14px 12px 42px',
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.15)',
+                        borderRadius: '12px',
+                        cursor: 'pointer',
+                        fontSize: '0.85rem',
+                        color: passportPhoto ? '#4ade80' : 'rgba(255,255,255,0.7)',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      {uploadingPhoto ? (
+                        '⏳ A carregar...'
+                      ) : passportPhoto ? (
+                        <>
+                          <FileCheck size={16} color="#4ade80" /> Foto Carregada!
+                        </>
+                      ) : (
+                        'Escolher Foto (Imagem)'
+                      )}
+                    </label>
+                    <Upload className={styles.inputIcon} size={18} style={{ pointerEvents: 'none' }} />
                   </div>
                 </div>
               </div>

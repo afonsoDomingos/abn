@@ -6,7 +6,10 @@ import User from '@/models/User';
 export async function POST(request: Request) {
   try {
     await dbConnect();
-    const { name, email, password, role, phone, country, city, company, sector, linkedin, bio } = await request.json();
+    const { 
+      name, email, password, role, phone, country, city, company, sector, linkedin, bio,
+      birthDate, gender, nationality, passportBioPage, passportPhoto, educationLevel, howHeardAboutUs
+    } = await request.json();
 
     if (!name || !email || !password) {
       return NextResponse.json({ error: 'Nome, email e senha são obrigatórios.' }, { status: 400 });
@@ -35,6 +38,13 @@ export async function POST(request: Request) {
       sector: sector || '',
       linkedin: linkedin || '',
       bio: bio || '',
+      birthDate: birthDate || '',
+      gender: gender || '',
+      nationality: nationality || '',
+      passportBioPage: passportBioPage || '',
+      passportPhoto: passportPhoto || '',
+      educationLevel: educationLevel || '',
+      howHeardAboutUs: howHeardAboutUs || '',
     });
 
     const userData = { id: String(user._id), name: user.name, email: user.email, role: user.role };

@@ -7,7 +7,8 @@ import User from '@/models/User';
 export async function PUT(request: Request) {
   try {
     await dbConnect();
-    const { id, name, email, password, profileImage } = await request.json();
+    const body = await request.json();
+    const { id, name, email, password, profileImage, phone, country, city, company, sector, linkedin, bio, birthDate, gender, nationality, passportBioPage, passportPhoto, educationLevel, howHeardAboutUs } = body;
     
     if (!id) {
       return NextResponse.json({ error: 'ID do usuário é obrigatório.' }, { status: 400 });
@@ -30,11 +31,24 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Acesso negado. Apenas o próprio usuário ou administradores podem alterar este perfil.' }, { status: 403 });
     }
 
-    const updateData: any = { 
-      name, 
-      email: email.toLowerCase(),
-      profileImage: profileImage || undefined
-    };
+    const updateData: any = {};
+    if (name) updateData.name = name;
+    if (email) updateData.email = email.toLowerCase();
+    if (profileImage !== undefined) updateData.profileImage = profileImage;
+    if (phone !== undefined) updateData.phone = phone;
+    if (country !== undefined) updateData.country = country;
+    if (city !== undefined) updateData.city = city;
+    if (company !== undefined) updateData.company = company;
+    if (sector !== undefined) updateData.sector = sector;
+    if (linkedin !== undefined) updateData.linkedin = linkedin;
+    if (bio !== undefined) updateData.bio = bio;
+    if (birthDate !== undefined) updateData.birthDate = birthDate;
+    if (gender !== undefined) updateData.gender = gender;
+    if (nationality !== undefined) updateData.nationality = nationality;
+    if (passportBioPage !== undefined) updateData.passportBioPage = passportBioPage;
+    if (passportPhoto !== undefined) updateData.passportPhoto = passportPhoto;
+    if (educationLevel !== undefined) updateData.educationLevel = educationLevel;
+    if (howHeardAboutUs !== undefined) updateData.howHeardAboutUs = howHeardAboutUs;
     
     if (password && password.length >= 6) {
       updateData.password = await bcrypt.hash(password, 10);
