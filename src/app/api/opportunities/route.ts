@@ -83,7 +83,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Acesso negado. Apenas administradores.' }, { status: 403 });
     }
 
-    const { title, amount, deadline, category, description, applyLink, location, provider } = await request.json();
+    const { title, amount, deadline, category, description, applyLink, location, provider, imageUrl } = await request.json();
 
     if (!title || !amount || !deadline || !category || !description) {
       return NextResponse.json({ error: 'Campos obrigatórios em falta.' }, { status: 400 });
@@ -96,6 +96,7 @@ export async function POST(request: Request) {
       category,
       description,
       applyLink,
+      imageUrl: imageUrl || '',
       location: location || '',
       provider: provider || ''
     });
@@ -127,7 +128,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: false, error: 'Acesso negado. Apenas administradores.' }, { status: 403 });
     }
 
-    const { id, title, amount, deadline, category, description, applyLink, location, provider } = await request.json();
+    const { id, title, amount, deadline, category, description, applyLink, location, provider, imageUrl } = await request.json();
 
     if (!id) {
       return NextResponse.json({ error: 'ID da oportunidade é obrigatório.' }, { status: 400 });
@@ -139,6 +140,7 @@ export async function PUT(request: Request) {
       category,
       description,
       applyLink,
+      imageUrl: imageUrl || '',
       location,
       provider
     };

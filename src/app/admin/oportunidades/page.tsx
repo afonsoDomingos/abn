@@ -11,6 +11,7 @@ interface OpportunityItem {
   category: 'Edital' | 'Concurso' | 'Financiamento' | 'Bolsa' | 'Programa' | 'Vaga' | 'Parceiro' | 'Outro';
   description: string;
   applyLink: string;
+  imageUrl?: string;
   location?: string;
   provider?: string;
 }
@@ -33,6 +34,8 @@ export default function AdminOportunidadesPage() {
   const [applyLink, setApplyLink] = useState('');
   const [location, setLocation] = useState('');
   const [provider, setProvider] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   useEffect(() => {
     fetchOpportunities();
@@ -68,6 +71,7 @@ export default function AdminOportunidadesPage() {
     setApplyLink(opp.applyLink || '');
     setLocation(opp.location || '');
     setProvider(opp.provider || '');
+    setImageUrl(opp.imageUrl || '');
     setShowForm(true);
   };
 
@@ -81,7 +85,24 @@ export default function AdminOportunidadesPage() {
     setApplyLink('');
     setLocation('');
     setProvider('');
+    setImageUrl('');
     setShowForm(true);
+  };
+
+  const handleImageUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    setUploadingImage(true);
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.success && data.url) setImageUrl(data.url);
+      else alert(data.error || 'Erro no upload.');
+    } catch {
+      alert('Erro de conexão.');
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -100,7 +121,8 @@ export default function AdminOportunidadesPage() {
       description,
       applyLink,
       location,
-      provider
+      provider,
+      imageUrl
     };
 
     try {
@@ -252,6 +274,29 @@ export default function AdminOportunidadesPage() {
               />
             </div>
             <div className={`${styles.field} ${styles.fullWidth}`}>
+              <label>Foto de Capa (URL ou Upload)</label>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <input
+                  value={imageUrl}
+                  onChange={e => setImageUrl(e.target.value)}
+                  placeholder="URL da foto de capa"
+                  style={{ flex: 1 }}
+                />
+                <label style={{ cursor: 'pointer', padding: '10px 14px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontSize: '0.9rem' }}>
+                  {uploadingImage ? '⏳...' : '📁 Subir Capa'}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={e => {
+                      const file = e.target.files?.[0];
+                      if (file) handleImageUpload(file);
+                    }}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+              </div>
+            </div>
+            <div className={`${styles.field} ${styles.fullWidth}`}>
               <label>Link para Candidatura / Formulário (Opcional)</label>
               <input
                 value={applyLink}
@@ -307,6 +352,11 @@ export default function AdminOportunidadesPage() {
         <div className={styles.grid}>
           {filteredOpportunities.map(opp => (
             <div key={opp._id} className={styles.card}>
+              {opp.imageUrl && (
+                <div style={{ width: '100%', height: '140px', overflow: 'hidden', borderRadius: '16px 16px 0 0', margin: '-1.5rem -1.5rem 1rem -1.5rem', width: 'calc(100% + 3rem)' }}>
+                  <img src={opp.imageUrl} alt={opp.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              )}
               <div className={styles.cardHeader}>
                 <span className={styles.categoryBadge}>{opp.category}</span>
                 <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--primary)' }}>

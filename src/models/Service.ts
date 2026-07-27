@@ -5,6 +5,7 @@ const ServiceSchema = new Schema({
   description: { type: String, required: true },
   price: { type: String, required: true },
   category: { type: String, required: true },
+  image: { type: String, default: '' },
   status: { type: String, enum: ['ativo', 'inativo'], default: 'ativo' },
   createdAt: { type: Date, default: Date.now }
 });

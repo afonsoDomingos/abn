@@ -15,6 +15,7 @@ interface Program {
   criteriosSelecao?: string;
   phase?: string;
   duration?: string;
+  image?: string;
   status: string;
   order: number;
   createdAt: string;
@@ -38,6 +39,7 @@ export default function AdminProgramasPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [msg, setMsg] = useState('');
   const [activeTab, setActiveTab] = useState<'geral' | 'conteudo' | 'selecao' | 'clube'>('geral');
 
@@ -45,6 +47,7 @@ export default function AdminProgramasPage() {
   const [title, setTitle] = useState('');
   const [phase, setPhase] = useState('');
   const [duration, setDuration] = useState('');
+  const [image, setImage] = useState('');
   const [order, setOrder] = useState(0);
   const [status, setStatus] = useState('ativo');
   const [description, setDescription] = useState('');
@@ -90,6 +93,7 @@ export default function AdminProgramasPage() {
     setTitle(prog.title || '');
     setPhase(prog.phase || '');
     setDuration(prog.duration || '');
+    setImage(prog.image || '');
     setOrder(prog.order || 0);
     setStatus(prog.status || 'ativo');
     setDescription(prog.description || '');
@@ -119,6 +123,7 @@ export default function AdminProgramasPage() {
     setTitle('');
     setPhase('');
     setDuration('');
+    setImage('');
     setOrder(programs.length);
     setStatus('ativo');
     setDescription('');
@@ -143,6 +148,28 @@ export default function AdminProgramasPage() {
     setShowForm(true);
   };
 
+  const handleImageUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    setUploadingImage(true);
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setImage(data.url);
+      } else {
+        alert(data.error || 'Erro no upload da imagem.');
+      }
+    } catch {
+      alert('Erro de conexão ao carregar imagem.');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !description.trim()) {
@@ -155,6 +182,7 @@ export default function AdminProgramasPage() {
       title,
       phase,
       duration,
+      image,
       order,
       status,
       description,
@@ -340,6 +368,35 @@ export default function AdminProgramasPage() {
                   <option value="clube">Clube de Empreendedores</option>
                 </select>
               </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Foto de Capa do Programa (URL ou Upload)</label>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <input
+                    value={image}
+                    onChange={e => setImage(e.target.value)}
+                    placeholder="URL da foto de capa (ex: /hero_entrepreneurs.png)"
+                    style={{ flex: 1 }}
+                  />
+                  <label style={{ cursor: 'pointer', padding: '10px 14px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontSize: '0.9rem' }}>
+                    {uploadingImage ? '⏳...' : '📁 Subir Capa'}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={e => {
+                        const file = e.target.files?.[0];
+                        if (file) handleImageUpload(file);
+                      }}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                </div>
+                {image && (
+                  <div style={{ marginTop: '8px', width: '120px', height: '70px', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.2)' }}>
+                    <img src={image} alt="Preview Capa" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
+              </div>
+
               <div className={`${styles.field} ${styles.fullWidth}`}>
                 <label>Descrição / O que é? *</label>
                 <textarea
@@ -547,6 +604,11 @@ export default function AdminProgramasPage() {
         <div className={styles.grid}>
           {programs.map(prog => (
             <div key={prog._id} className={styles.card}>
+              {prog.image && (
+                <div style={{ width: '100%', height: '140px', overflow: 'hidden', borderRadius: '16px 16px 0 0', margin: '-1.5rem -1.5rem 1rem -1.5rem', width: 'calc(100% + 3rem)' }}>
+                  <img src={prog.image} alt={prog.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              )}
               <div className={styles.cardHeader}>
                 <div className={styles.badgeGroup}>
                   {prog.isClub && <span className={styles.phase}>🏛️ Clube</span>}

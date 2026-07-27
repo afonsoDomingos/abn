@@ -71,7 +71,7 @@ export async function POST(request: Request) {
     }
 
     const { 
-      title, instructor, duration, lessons, price, isPaid, desc, videoUrl, videoVisible, lessonsList,
+      title, instructor, duration, lessons, price, isPaid, desc, image, videoUrl, videoVisible, lessonsList,
       certBgColor, certTextColor, certUsePartnerLogos, certPartnerLogoUrl, certPartnerLogos, paymentInstructions
     } = await request.json();
 
@@ -89,6 +89,7 @@ export async function POST(request: Request) {
       price,
       isPaid,
       desc,
+      image: image || '',
       videoUrl: videoUrl || '',
       videoVisible: videoVisible !== false,
       lessonsList: lessonsList || [],
@@ -128,7 +129,7 @@ export async function PUT(request: Request) {
     }
 
     const { 
-      id, title, instructor, duration, lessons, price, isPaid, desc, videoUrl, videoVisible, lessonsList,
+      id, title, instructor, duration, lessons, price, isPaid, desc, image, videoUrl, videoVisible, lessonsList,
       certBgColor, certTextColor, certUsePartnerLogos, certPartnerLogoUrl, certPartnerLogos, paymentInstructions
     } = await request.json();
 
@@ -141,7 +142,7 @@ export async function PUT(request: Request) {
     const course = await Course.findByIdAndUpdate(
       id,
       { 
-        title, instructor, duration, lessons, price, isPaid, desc, 
+        title, instructor, duration, lessons, price, isPaid, desc, image: image || '',
         videoUrl: videoUrl || '', videoVisible: videoVisible !== false, lessonsList: lessonsList || [],
         certBgColor: certBgColor || '#ff6b00',
         certTextColor: certTextColor || '#1c1917',

@@ -11,6 +11,7 @@ const ProgramSchema = new Schema({
   criteriosSelecao: { type: String, default: '' },
   phase: { type: String, default: '' },
   duration: { type: String, default: '' },
+  image: { type: String, default: '' },
   status: { type: String, enum: ['ativo', 'inativo'], default: 'ativo' },
   order: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },

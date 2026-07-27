@@ -9,6 +9,7 @@ interface Service {
   description: string;
   price: string;
   category: string;
+  image?: string;
   status: string;
   createdAt: string;
 }
@@ -18,8 +19,9 @@ export default function AdminServicosPage() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
-  const [form, setForm] = useState({ name: '', description: '', price: '', category: 'Marketing Digital', status: 'ativo' });
+  const [form, setForm] = useState({ name: '', description: '', price: '', category: 'Marketing Digital', status: 'ativo', image: '' });
   const [saving, setSaving] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
@@ -42,9 +44,26 @@ export default function AdminServicosPage() {
       description: service.description,
       price: service.price,
       category: service.category,
-      status: service.status
+      status: service.status,
+      image: service.image || ''
     });
     setShowForm(true);
+  };
+
+  const handleImageUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    setUploadingImage(true);
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.success && data.url) setForm(prev => ({ ...prev, image: data.url }));
+      else alert(data.error || 'Erro no upload.');
+    } catch {
+      alert('Erro de conexão.');
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,7 +89,7 @@ export default function AdminServicosPage() {
         setServices(prev => [data.service, ...prev]);
         setMsg('✅ Serviço adicionado com sucesso!');
       }
-      setForm({ name: '', description: '', price: '', category: 'Marketing Digital', status: 'ativo' });
+      setForm({ name: '', description: '', price: '', category: 'Marketing Digital', status: 'ativo', image: '' });
       setEditingService(null);
       setShowForm(false);
       setTimeout(() => setMsg(''), 3000);
@@ -104,7 +123,7 @@ export default function AdminServicosPage() {
         <button className={`btn-primary ${styles.addBtn}`} onClick={() => {
           if (showForm) {
             setEditingService(null);
-            setForm({ name: '', description: '', price: '', category: 'Marketing Digital', status: 'ativo' });
+            setForm({ name: '', description: '', price: '', category: 'Marketing Digital', status: 'ativo', image: '' });
           }
           setShowForm(!showForm);
         }}>
@@ -145,6 +164,16 @@ export default function AdminServicosPage() {
               </select>
             </div>
             <div className={`${styles.field} ${styles.fullWidth}`}>
+              <label>Foto de Capa (URL ou Upload)</label>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <input value={form.image} onChange={e => setForm({ ...form, image: e.target.value })} placeholder="URL da foto de capa" style={{ flex: 1 }} />
+                <label style={{ cursor: 'pointer', padding: '10px 14px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontSize: '0.9rem' }}>
+                  {uploadingImage ? '⏳...' : '📁 Subir'}
+                  <input type="file" accept="image/*" onChange={e => { const f = e.target.files?.[0]; if (f) handleImageUpload(f); }} style={{ display: 'none' }} />
+                </label>
+              </div>
+            </div>
+            <div className={`${styles.field} ${styles.fullWidth}`}>
               <label>Descrição *</label>
               <textarea required rows={3} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Descreva o serviço..." />
             </div>
@@ -170,6 +199,11 @@ export default function AdminServicosPage() {
         <div className={styles.grid}>
           {services.map(service => (
             <div key={service._id} className={styles.card}>
+              {service.image && (
+                <div style={{ width: '100%', height: '140px', overflow: 'hidden', borderRadius: '16px 16px 0 0', margin: '-1.5rem -1.5rem 1rem -1.5rem', width: 'calc(100% + 3rem)' }}>
+                  <img src={service.image} alt={service.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              )}
               <div className={styles.cardHeader}>
                 <span className={styles.category}>{service.category}</span>
                 <span className={styles.statusBadge} style={{ background: statusColor[service.status] + '22', color: statusColor[service.status], border: `1px solid ${statusColor[service.status]}44` }}>

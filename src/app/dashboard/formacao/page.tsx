@@ -453,7 +453,12 @@ function FormacaoPageInner() {
             const progressPercent = Math.min(100, Math.round((doneCount / totalLessons) * 100));
 
             return (
-              <div key={course.id || course._id} style={{ padding: '2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div key={course.id || course._id} style={{ padding: '2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', display: 'flex', flexDirection: 'column', gap: '1.25rem', overflow: 'hidden' }}>
+                {course.image && (
+                  <div style={{ width: '100%', height: '180px', overflow: 'hidden', borderRadius: '14px', margin: '-0.5rem 0 0.5rem 0' }}>
+                    <img src={course.image} alt={course.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
                   <div>
                     <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>

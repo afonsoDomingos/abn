@@ -8,6 +8,7 @@ const CourseSchema = new mongoose.Schema({
   price: { type: String, required: true }, // e.g. "5.000 MT" or "100 USD"
   isPaid: { type: Boolean, default: false },
   desc: { type: String, required: true },
+  image: { type: String, default: '' },
   videoUrl: { type: String, default: '' },
   videoVisible: { type: Boolean, default: true },
   lessonsList: [

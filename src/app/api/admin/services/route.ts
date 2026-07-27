@@ -39,7 +39,7 @@ export async function DELETE(request: Request) {
 export async function PUT(request: Request) {
   try {
     await dbConnect();
-    const { id, name, description, price, category, status } = await request.json();
+    const { id, name, description, price, category, status, image } = await request.json();
 
     if (!id) {
       return NextResponse.json({ error: 'ID do serviço é obrigatório.' }, { status: 400 });
@@ -47,7 +47,7 @@ export async function PUT(request: Request) {
 
     const service = await Service.findByIdAndUpdate(
       id,
-      { name, description, price, category, status },
+      { name, description, price, category, status, image: image || '' },
       { new: true }
     );
 

@@ -167,6 +167,7 @@ export default async function Incubacao() {
     criteriosSelecao: p.criteriosSelecao || '',
     phase: p.phase || '',
     duration: p.duration || '',
+    image: p.image || '',
     status: p.status || 'ativo',
     order: p.order || 0
   }));

@@ -11,6 +11,7 @@ const OpportunitySchema = new mongoose.Schema({
   },
   description: { type: String, required: true },
   applyLink: { type: String, default: '' },
+  imageUrl: { type: String, default: '' },
   location: { type: String, default: '' }, // e.g. "Moçambique", "Online"
   provider: { type: String, default: '' }, // e.g. "ABN", "Tony Elumelu Foundation"
   createdAt: { type: Date, default: Date.now }

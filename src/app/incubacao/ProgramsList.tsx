@@ -15,6 +15,7 @@ interface Program {
   criteriosSelecao?: string;
   phase?: string;
   duration?: string;
+  image?: string;
   status: string;
   order: number;
 }
@@ -98,7 +99,7 @@ export default function ProgramsList({ initialPrograms }: ProgramsListProps) {
         {text.split('\n').map((line, idx) => {
           if (!line.trim()) return null;
           // Strip leading bullet characters if present
-          const cleanLine = line.replace(/^[-*•\s]+/, '');
+          const cleanLine = line.trim().replace(/^[-•*]\s*/, '');
           return <li key={idx}>{cleanLine}</li>;
         })}
       </ul>
@@ -106,31 +107,39 @@ export default function ProgramsList({ initialPrograms }: ProgramsListProps) {
   };
 
   return (
-    <>
+    <div className={styles.programsContainer}>
       <div className={styles.grid}>
         {activePrograms.map((p) => (
-          <div key={p._id} className={`${styles.programCard} glass`}>
-            <div className={styles.cardHeader}>
-              <h3>{p.title}</h3>
-              {p.phase && <span className={styles.phaseBadge}>{p.phase}</span>}
-            </div>
-            <p className={styles.desc}>
-              {p.description.length > 160 ? `${p.description.substring(0, 160)}...` : p.description}
-            </p>
-            <div className={styles.meta}>
-              <span>⏱ {p.duration || 'Contínuo'}</span>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <button className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.85rem' }} onClick={() => handleOpenDetails(p)}>
-                  Saber Mais
-                </button>
-                <button className="btn-primary" style={{ padding: '8px 16px', fontSize: '0.85rem' }} onClick={() => { handleOpenDetails(p); setShowApplyForm(true); }}>
-                  Candidatar-se
-                </button>
+          <div key={p._id} className={`${styles.programCard} glass`} style={{ overflow: 'hidden', padding: 0 }}>
+            {p.image && (
+              <div style={{ width: '100%', height: '180px', overflow: 'hidden' }}>
+                <img src={p.image} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+            )}
+            <div style={{ padding: '1.5rem' }}>
+              <div className={styles.cardHeader}>
+                <h3>{p.title}</h3>
+                {p.phase && <span className={styles.phaseBadge}>{p.phase}</span>}
+              </div>
+              <p className={styles.desc}>
+                {p.description.length > 160 ? `${p.description.substring(0, 160)}...` : p.description}
+              </p>
+              <div className={styles.meta}>
+                <span>⏱ {p.duration || 'Contínuo'}</span>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.85rem' }} onClick={() => handleOpenDetails(p)}>
+                    Saber Mais
+                  </button>
+                  <button className="btn-primary" style={{ padding: '8px 16px', fontSize: '0.85rem' }} onClick={() => { handleOpenDetails(p); setShowApplyForm(true); }}>
+                    Candidatar-se
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
+    </div>
 
       {/* Premium Details / Application Modal */}
       {selectedProgram && (

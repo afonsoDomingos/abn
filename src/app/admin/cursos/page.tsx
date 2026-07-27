@@ -19,6 +19,7 @@ interface Course {
   price: string;
   isPaid: boolean;
   desc: string;
+  image?: string;
   videoUrl?: string;
   videoVisible?: boolean;
   lessonsList?: Lesson[];
@@ -51,6 +52,8 @@ export default function AdminCursosPage() {
   const [price, setPrice] = useState('Gratuito');
   const [isPaid, setIsPaid] = useState(false);
   const [desc, setDesc] = useState('');
+  const [image, setImage] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [videoUrl, setVideoUrl] = useState('');
   const [videoVisible, setVideoVisible] = useState(true);
   const [certBgColor, setCertBgColor] = useState('#ff6b00');
@@ -154,6 +157,7 @@ export default function AdminCursosPage() {
     setPrice(course.price);
     setIsPaid(course.isPaid);
     setDesc(course.desc);
+    setImage(course.image || '');
     setVideoUrl(course.videoUrl || '');
     setVideoVisible(course.videoVisible !== false);
 
@@ -288,6 +292,7 @@ export default function AdminCursosPage() {
       price,
       isPaid,
       desc,
+      image,
       videoUrl: lessonsList.length > 0 ? lessonsList[0].videoUrl : videoUrl,
       videoVisible,
       lessonsList,
@@ -406,9 +411,15 @@ export default function AdminCursosPage() {
                   boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)', 
                   display: 'flex', 
                   flexDirection: 'column', 
-                  gap: '1.2rem' 
+                  gap: '1.2rem',
+                  overflow: 'hidden'
                 }}
               >
+                {course.image && (
+                  <div style={{ width: '100%', height: '150px', overflow: 'hidden', borderRadius: '14px', margin: '-0.5rem 0 0.5rem 0' }}>
+                    <img src={course.image} alt={course.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
                   <div>
                     <span style={{ fontSize: '0.72rem', color: '#ff6b00', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Curso Certificado</span>
@@ -607,6 +618,48 @@ export default function AdminCursosPage() {
                         placeholder="Ex: Gestão Financeira para Startups"
                         style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
                       />
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                      <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>Foto de Capa do Curso (URL ou Upload)</label>
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        <input 
+                          value={image} 
+                          onChange={e => setImage(e.target.value)} 
+                          placeholder="URL da foto de capa (ex: /articles/gala.png)"
+                          style={{ flex: 1, background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
+                        />
+                        <label style={{ cursor: 'pointer', padding: '12px 14px', background: '#fff7ed', border: '1px solid #ff6b00', color: '#ff6b00', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 800 }}>
+                          {uploadingImage ? '⏳...' : '📁 Subir Capa'}
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+                              const formData = new FormData();
+                              formData.append('file', file);
+                              setUploadingImage(true);
+                              try {
+                                const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                                const data = await res.json();
+                                if (data.success && data.url) setImage(data.url);
+                                else alert(data.error || 'Erro no upload.');
+                              } catch {
+                                alert('Erro de conexão no upload.');
+                              } finally {
+                                setUploadingImage(false);
+                              }
+                            }}
+                            style={{ display: 'none' }}
+                          />
+                        </label>
+                      </div>
+                      {image && (
+                        <div style={{ marginTop: '6px', width: '120px', height: '70px', borderRadius: '8px', overflow: 'hidden', border: '1px solid #cbd5e1' }}>
+                          <img src={image} alt="Preview Capa" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                      )}
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
