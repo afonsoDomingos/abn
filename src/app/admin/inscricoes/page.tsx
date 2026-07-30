@@ -323,7 +323,7 @@ export default function AdminInscricoesPage() {
             </thead>
             <tbody>
               {filtered.map(i => (
-                <tr key={i._id} style={{ borderBottom: '1px solid #f1f5f9', '&:hover': { background: '#f8fafc' } }}>
+                <tr key={i._id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                   <td style={{ padding: '1rem', fontWeight: 600, color: '#0f172a' }}>{i.nome}</td>
                   <td style={{ padding: '1rem', color: '#64748b', fontSize: '0.9rem' }}>{i.email}</td>
                   <td style={{ padding: '1rem' }}>
