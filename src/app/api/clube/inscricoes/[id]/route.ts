@@ -6,16 +6,17 @@ import InscricaoClube from '@/models/InscricaoClube';
 export const dynamic = 'force-dynamic';
 
 // PATCH — atualizar status ou notas de uma inscrição
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
     if (!token) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
 
+    const { id } = await params;
     const body = await req.json();
     await dbConnect();
     const updated = await InscricaoClube.findByIdAndUpdate(
-      params.id,
+      id,
       { $set: body },
       { new: true }
     );
@@ -27,14 +28,15 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 }
 
 // DELETE — remover uma inscrição
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
     if (!token) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
 
+    const { id } = await params;
     await dbConnect();
-    await InscricaoClube.findByIdAndDelete(params.id);
+    await InscricaoClube.findByIdAndDelete(id);
     return NextResponse.json({ success: true });
   } catch (e) {
     return NextResponse.json({ error: 'Erro ao eliminar' }, { status: 500 });
