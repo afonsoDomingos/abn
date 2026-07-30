@@ -623,7 +623,6 @@ export default function ProgramasPage() {
                       </div>
                     </div>
                   </div>
-                </div>
                 )}
 
                 {/* ── SECÇÃO 2 ── */}
