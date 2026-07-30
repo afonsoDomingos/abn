@@ -196,6 +196,30 @@ export default function AdminProgramasPage() {
     }
   };
 
+  const formatDescriptionToTwoColumns = () => {
+    if (description.length < 150) return;
+
+    // Split text into paragraphs
+    const paragraphs = description.split('\n').filter(p => p.trim().length > 0);
+
+    if (paragraphs.length < 2) {
+      // If less than 2 paragraphs, split by sentences
+      const sentences = description.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      if (sentences.length >= 2) {
+        const columnSize = Math.ceil(sentences.length / 2);
+        const column1 = sentences.slice(0, columnSize).join('. ').trim() + '.';
+        const column2 = sentences.slice(columnSize).join('. ').trim() + '.';
+        setDescription(`${column1}\n\n---\n\n${column2}`);
+      }
+    } else {
+      // Distribute paragraphs into 2 columns
+      const columnSize = Math.ceil(paragraphs.length / 2);
+      const column1 = paragraphs.slice(0, columnSize).join('\n\n');
+      const column2 = paragraphs.slice(columnSize).join('\n\n');
+      setDescription(`${column1}\n\n---\n\n${column2}`);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !description.trim()) {
@@ -433,7 +457,15 @@ export default function AdminProgramasPage() {
                     className={styles.formatBtn}
                     disabled={description.length < 200}
                   >
-                    📊 Formatar em 3 Colunas
+                    📊 3 Colunas
+                  </button>
+                  <button
+                    type="button"
+                    onClick={formatDescriptionToTwoColumns}
+                    className={styles.formatBtn}
+                    disabled={description.length < 150}
+                  >
+                    📊 2 Colunas
                   </button>
                 </div>
                 <textarea
