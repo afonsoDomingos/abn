@@ -62,30 +62,37 @@ export default function HomePrograms() {
           {programs.map(prog => {
             const phaseColor = phaseColors[prog.phase || ''] || '#d4af37';
             return (
-              <div key={prog._id} className={styles.card}>
+              <Link key={prog._id} href="/programas" className={styles.card}>
                 {prog.image && (
                   <div className={styles.cardImage}>
                     <img src={prog.image} alt={prog.title} />
                   </div>
                 )}
-                <div className={styles.meta}>
-                  {prog.phase && (
-                    <span
-                      className={styles.phaseBadge}
-                      style={{ color: phaseColor, background: `${phaseColor}18` }}
-                    >
-                      {prog.phase}
+                <div className={styles.cardContent}>
+                  <div className={styles.meta}>
+                    {prog.phase && (
+                      <span
+                        className={styles.phaseBadge}
+                        style={{ color: phaseColor, background: `${phaseColor}15`, border: `1px solid ${phaseColor}30` }}
+                      >
+                        {prog.phase}
+                      </span>
+                    )}
+                    {prog.duration && (
+                      <span className={styles.durationBadge}>⏱️ {prog.duration}</span>
+                    )}
+                  </div>
+                  <h3 className={styles.cardTitle}>{prog.title}</h3>
+                  <p className={styles.cardDesc}>
+                    {prog.description.slice(0, 140)}...
+                  </p>
+                  <div className={styles.cardAction}>
+                    <span className={styles.actionBtn}>
+                      {language === 'pt' ? 'Saber Mais' : 'Learn More'}
                     </span>
-                  )}
-                  {prog.duration && (
-                    <span className={styles.durationBadge}>⏱️ {prog.duration}</span>
-                  )}
+                  </div>
                 </div>
-                <h3 className={styles.cardTitle}>{prog.title}</h3>
-                <p className={styles.cardDesc}>
-                  {prog.description.slice(0, 160)}...
-                </p>
-              </div>
+              </Link>
             );
           })}
         </div>
