@@ -80,11 +80,19 @@ export default function AdminCursosPage() {
   const [selectedCourseForParticipants, setSelectedCourseForParticipants] = useState<Course | null>(null);
   const [participants, setParticipants] = useState<any[]>([]);
   const [loadingParticipants, setLoadingParticipants] = useState(false);
+  
+  // Filter states
+  const [participantSearch, setParticipantSearch] = useState('');
+  const [participantStatusFilter, setParticipantStatusFilter] = useState('todos');
+  const [participantProgressFilter, setParticipantProgressFilter] = useState('todos');
 
   const handleViewParticipants = async (course: Course) => {
     setSelectedCourseForParticipants(course);
     setShowParticipantsModal(true);
     setLoadingParticipants(true);
+    setParticipantSearch('');
+    setParticipantStatusFilter('todos');
+    setParticipantProgressFilter('todos');
     try {
       const res = await fetch('/api/payments');
       const data = await res.json();
@@ -99,6 +107,33 @@ export default function AdminCursosPage() {
     } finally {
       setLoadingParticipants(false);
     }
+  };
+
+  const getFilteredParticipants = () => {
+    return participants.filter(p => {
+      // Search filter
+      const searchLower = participantSearch.toLowerCase();
+      const matchesSearch = 
+        participantSearch === '' ||
+        (p.user?.name || '').toLowerCase().includes(searchLower) ||
+        (p.user?.email || '').toLowerCase().includes(searchLower);
+      
+      // Status filter
+      const matchesStatus = 
+        participantStatusFilter === 'todos' ||
+        (participantStatusFilter === 'aprovado' && p.status === 'aprovado') ||
+        (participantStatusFilter === 'bloqueado' && p.status !== 'aprovado');
+      
+      // Progress filter
+      const completedCount = p.completedLessons?.length || (p.completed ? 1 : 0);
+      const isCompleted = p.completed || completedCount > 0;
+      const matchesProgress =
+        participantProgressFilter === 'todos' ||
+        (participantProgressFilter === 'concluido' && isCompleted) ||
+        (participantProgressFilter === 'andamento' && !isCompleted);
+      
+      return matchesSearch && matchesStatus && matchesProgress;
+    });
   };
 
   const handleToggleStudentAccess = async (paymentId: string, currentStatus: string) => {
@@ -1382,6 +1417,84 @@ export default function AdminCursosPage() {
             <h2 style={{ color: '#0f172a', fontSize: '1.5rem', fontFamily: 'Outfit', fontWeight: 800, margin: '0 0 0.2rem 0' }}>Alunos Inscritos & Controlo de Acesso</h2>
             <p style={{ color: '#ff6b00', fontWeight: 800, margin: '0 0 1.5rem 0', fontSize: '0.95rem' }}>{selectedCourseForParticipants.title}</p>
 
+            {/* Filters */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid #e2e8f0' }}>
+              {/* Search */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="🔍 Pesquisar por nome ou email..."
+                  value={participantSearch}
+                  onChange={e => setParticipantSearch(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    borderRadius: '10px',
+                    border: '1.5px solid #cbd5e1',
+                    background: '#f8fafc',
+                    color: '#0f172a',
+                    fontWeight: 500,
+                    fontSize: '0.9rem',
+                    outline: 'none'
+                  }}
+                />
+              </div>
+              
+              {/* Status and Progress filters */}
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748b' }}>Status:</span>
+                  {['todos', 'aprovado', 'bloqueado'].map(status => (
+                    <button
+                      key={status}
+                      onClick={() => setParticipantStatusFilter(status)}
+                      style={{
+                        padding: '6px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid',
+                        background: participantStatusFilter === status ? '#ff6b00' : '#ffffff',
+                        color: participantStatusFilter === status ? '#ffffff' : '#64748b',
+                        borderColor: participantStatusFilter === status ? '#ff6b00' : '#e2e8f0',
+                        fontWeight: 700,
+                        fontSize: '0.75rem',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {status === 'todos' ? 'Todos' : status === 'aprovado' ? 'Aprovados' : 'Bloqueados'}
+                    </button>
+                  ))}
+                </div>
+                
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748b' }}>Progresso:</span>
+                  {['todos', 'concluido', 'andamento'].map(progress => (
+                    <button
+                      key={progress}
+                      onClick={() => setParticipantProgressFilter(progress)}
+                      style={{
+                        padding: '6px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid',
+                        background: participantProgressFilter === progress ? '#0ea5e9' : '#ffffff',
+                        color: participantProgressFilter === progress ? '#ffffff' : '#64748b',
+                        borderColor: participantProgressFilter === progress ? '#0ea5e9' : '#e2e8f0',
+                        fontWeight: 700,
+                        fontSize: '0.75rem',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {progress === 'todos' ? 'Todos' : progress === 'concluido' ? 'Concluídos' : 'Em andamento'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Results counter */}
+              <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>
+                Mostrando <strong>{getFilteredParticipants().length}</strong> de <strong>{participants.length}</strong> alunos
+              </div>
+            </div>
+
             <div style={{ flex: 1, overflowY: 'auto', paddingRight: '4px' }}>
               {loadingParticipants ? (
                 <p style={{ color: '#64748b', fontStyle: 'italic', textAlign: 'center', padding: '2rem 0' }}>A carregar alunos inscritos...</p>
@@ -1389,9 +1502,13 @@ export default function AdminCursosPage() {
                 <div style={{ color: '#64748b', textAlign: 'center', padding: '2.5rem 1rem', background: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
                   Nenhum aluno inscrito neste curso até ao momento.
                 </div>
+              ) : getFilteredParticipants().length === 0 ? (
+                <div style={{ color: '#64748b', textAlign: 'center', padding: '2.5rem 1rem', background: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+                  Nenhum aluno encontrado com os filtros aplicados.
+                </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-                  {participants.map(p => {
+                  {getFilteredParticipants().map(p => {
                     const completedCount = p.completedLessons?.length || (p.completed ? 1 : 0);
                     const isApproved = p.status === 'aprovado';
 
