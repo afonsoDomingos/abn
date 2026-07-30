@@ -226,13 +226,27 @@ export default function ProgramasPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (currentStep < totalSteps) {
       setCurrentStep(prev => prev + 1);
       return;
     }
-    setSubmitted(true);
+    try {
+      const response = await fetch('/api/clube/inscricoes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, origem: 'programas' }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        alert('Erro ao submeter inquérito: ' + (data.error || 'Tente novamente'));
+      }
+    } catch (error) {
+      alert('Erro ao submeter inquérito. Tente novamente.');
+    }
   };
 
   const handlePrevious = () => {
@@ -691,7 +705,6 @@ export default function ProgramasPage() {
                       </div>
                     </div>
                   </div>
-                </div>
                 )}
 
                 {/* ── SECÇÃO 3 ── */}
@@ -754,7 +767,6 @@ export default function ProgramasPage() {
                       </div>
                     </div>
                   </div>
-                </div>
                 )}
 
                 {/* ── SECÇÃO 4 ── */}
@@ -859,35 +871,35 @@ export default function ProgramasPage() {
                         nível seleccionado.
                       </p>
                     </div>
-                  <div className={styles.formGrid2}>
-                    <div className={styles.formField}>
-                      <label htmlFor="localData">Local e data</label>
-                      <input
-                        id="localData"
-                        type="text"
-                        className={styles.formInput}
-                        placeholder="Ex: Maputo, 30 de Julho de 2026"
-                        value={form.localData}
-                        onChange={e => setForm(f => ({ ...f, localData: e.target.value }))}
-                      />
+                    <div className={styles.formGrid2}>
+                      <div className={styles.formField}>
+                        <label htmlFor="localData">Local e data</label>
+                        <input
+                          id="localData"
+                          type="text"
+                          className={styles.formInput}
+                          placeholder="Ex: Maputo, 30 de Julho de 2026"
+                          value={form.localData}
+                          onChange={e => setForm(f => ({ ...f, localData: e.target.value }))}
+                        />
+                      </div>
+                      <div className={styles.formField}>
+                        <label htmlFor="assinatura">Assinatura do candidato (nome completo) <span className={styles.required}>*</span></label>
+                        <input
+                          id="assinatura"
+                          type="text"
+                          required
+                          className={`${styles.formInput} ${styles.signatureInput}`}
+                          placeholder="Escreva o seu nome como assinatura"
+                          value={form.assinatura}
+                          onChange={e => setForm(f => ({ ...f, assinatura: e.target.value }))}
+                        />
+                      </div>
                     </div>
-                    <div className={styles.formField}>
-                      <label htmlFor="assinatura">Assinatura do candidato (nome completo) <span className={styles.required}>*</span></label>
-                      <input
-                        id="assinatura"
-                        type="text"
-                        required
-                        className={`${styles.formInput} ${styles.signatureInput}`}
-                        placeholder="Escreva o seu nome como assinatura"
-                        value={form.assinatura}
-                        onChange={e => setForm(f => ({ ...f, assinatura: e.target.value }))}
-                      />
+                    <div className={styles.reservadoAbn}>
+                      <span>📌 Espaço reservado à ABN</span>
+                      <span>Nº de membro atribuído: ___________________________</span>
                     </div>
-                  </div>
-                  <div className={styles.reservadoAbn}>
-                    <span>📌 Espaço reservado à ABN</span>
-                    <span>Nº de membro atribuído: ___________________________</span>
-                  </div>
                   </div>
                 )}
 
