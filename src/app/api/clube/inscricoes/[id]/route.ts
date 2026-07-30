@@ -6,13 +6,13 @@ import InscricaoClube from '@/models/InscricaoClube';
 export const dynamic = 'force-dynamic';
 
 // PATCH — atualizar status ou notas de uma inscrição
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
     if (!token) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
 
-    const { id } = await params;
+    const { id } = await context.params;
     const body = await req.json();
     await dbConnect();
     const updated = await InscricaoClube.findByIdAndUpdate(
@@ -28,13 +28,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 }
 
 // DELETE — remover uma inscrição
-export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
     if (!token) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
 
-    const { id } = await params;
+    const { id } = await context.params;
     await dbConnect();
     await InscricaoClube.findByIdAndDelete(id);
     return NextResponse.json({ success: true });
