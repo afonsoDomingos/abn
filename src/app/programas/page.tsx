@@ -166,6 +166,8 @@ export default function ProgramasPage() {
   const [form, setForm] = useState<InqueritorForm>(initialForm);
   const [submitted, setSubmitted] = useState(false);
   const [clubeExpanded, setClubeExpanded] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const totalSteps = 6;
 
   useEffect(() => {
     fetch('/api/programs')
@@ -226,7 +228,25 @@ export default function ProgramasPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (currentStep < totalSteps) {
+      setCurrentStep(prev => prev + 1);
+      return;
+    }
     setSubmitted(true);
+  };
+
+  const handlePrevious = () => {
+    setCurrentStep(prev => Math.max(1, prev - 1));
+  };
+
+  const canProceed = () => {
+    if (currentStep === 1) {
+      return form.nomeCompleto.trim() !== '' && form.email.trim() !== '';
+    }
+    if (currentStep === 6) {
+      return form.assinatura.trim() !== '';
+    }
+    return true;
   };
 
   const closeModal = () => {
@@ -501,300 +521,345 @@ export default function ProgramasPage() {
               </div>
             ) : (
               <form className={styles.inqueritorForm} onSubmit={handleSubmit}>
+                {/* Progress Indicator */}
+                <div className={styles.wizardProgress}>
+                  <div className={styles.progressSteps}>
+                    {Array.from({ length: totalSteps }, (_, i) => (
+                      <div
+                        key={i + 1}
+                        className={`${styles.progressStep} ${currentStep === i + 1 ? styles.activeStep : ''} ${currentStep > i + 1 ? styles.completedStep : ''}`}
+                        onClick={() => currentStep > i + 1 && setCurrentStep(i + 1)}
+                      >
+                        <span className={styles.stepNumber}>{currentStep > i + 1 ? '✓' : i + 1}</span>
+                        <span className={styles.stepLabel}>
+                          {i + 1 === 1 && 'Identificação'}
+                          {i + 1 === 2 && 'Negócio'}
+                          {i + 1 === 3 && 'Adesão'}
+                          {i + 1 === 4 && 'Interesses'}
+                          {i + 1 === 5 && 'Origem'}
+                          {i + 1 === 6 && 'Declaração'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className={styles.progressBar}>
+                    <div className={styles.progressFill} style={{ width: `${(currentStep / totalSteps) * 100}%` }}></div>
+                  </div>
+                </div>
+
                 <p className={styles.formIntro}>
-                  Preencha os campos abaixo. Os dados fornecidos serão utilizados exclusivamente para fins de gestão da sua adesão ao Clube dos Empreendedores, nos termos da Cláusula de Protecção de Dados do Contrato de Adesão.
+                  {currentStep === 1 && 'Preencha os campos abaixo. Os dados fornecidos serão utilizados exclusivamente para fins de gestão da sua adesão ao Clube dos Empreendedores.'}
+                  {currentStep === 2 && 'Informações sobre o seu negócio ou actividade (opcional).'}
+                  {currentStep === 3 && 'Seleccione o nível de adesão pretendido e forma de pagamento.'}
+                  {currentStep === 4 && 'Seleccione as áreas de interesse (pode seleccionar múltiplas).'}
+                  {currentStep === 5 && 'Como conheceu o Clube dos Empreendedores?'}
+                  {currentStep === 6 && 'Revise a declaração e assine para submeter o inquérito.'}
                 </p>
 
                 {/* ── SECÇÃO 1 ── */}
-                <div className={styles.formSection}>
-                  <div className={styles.formSectionHeader}>
-                    <span className={styles.formSectionNumber}>1</span>
-                    <h3>Dados de Identificação</h3>
-                  </div>
-                  <div className={styles.formGrid2}>
-                    <div className={styles.formField}>
-                      <label htmlFor="nomeCompleto">Nome completo <span className={styles.required}>*</span></label>
-                      <input
-                        id="nomeCompleto"
-                        type="text"
-                        required
-                        className={styles.formInput}
-                        placeholder="Nome completo"
-                        value={form.nomeCompleto}
-                        onChange={e => setForm(f => ({ ...f, nomeCompleto: e.target.value }))}
-                      />
+                {currentStep === 1 && (
+                  <div className={styles.formSection}>
+                    <div className={styles.formSectionHeader}>
+                      <span className={styles.formSectionNumber}>1</span>
+                      <h3>Dados de Identificação</h3>
                     </div>
-                    <div className={styles.formField}>
-                      <label htmlFor="docIdentificacao">Documento de identificação (BI/Passaporte) nº</label>
-                      <input
-                        id="docIdentificacao"
-                        type="text"
-                        className={styles.formInput}
-                        placeholder="Número do documento"
-                        value={form.docIdentificacao}
-                        onChange={e => setForm(f => ({ ...f, docIdentificacao: e.target.value }))}
-                      />
-                    </div>
-                    <div className={styles.formField}>
-                      <label htmlFor="nuit">NUIT (quando aplicável)</label>
-                      <input
-                        id="nuit"
-                        type="text"
-                        className={styles.formInput}
-                        placeholder="Número NUIT"
-                        value={form.nuit}
-                        onChange={e => setForm(f => ({ ...f, nuit: e.target.value }))}
-                      />
-                    </div>
-                    <div className={styles.formField}>
-                      <label htmlFor="email">E-mail <span className={styles.required}>*</span></label>
-                      <input
-                        id="email"
-                        type="email"
-                        required
-                        className={styles.formInput}
-                        placeholder="seu@email.com"
-                        value={form.email}
-                        onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                      />
-                    </div>
-                    <div className={`${styles.formField} ${styles.colSpan2}`}>
-                      <label htmlFor="endereco">Endereço / Localidade</label>
-                      <input
-                        id="endereco"
-                        type="text"
-                        className={styles.formInput}
-                        placeholder="Cidade, Província"
-                        value={form.endereco}
-                        onChange={e => setForm(f => ({ ...f, endereco: e.target.value }))}
-                      />
+                    <div className={styles.formGrid2}>
+                      <div className={styles.formField}>
+                        <label htmlFor="nomeCompleto">Nome completo <span className={styles.required}>*</span></label>
+                        <input
+                          id="nomeCompleto"
+                          type="text"
+                          required
+                          className={styles.formInput}
+                          placeholder="Nome completo"
+                          value={form.nomeCompleto}
+                          onChange={e => setForm(f => ({ ...f, nomeCompleto: e.target.value }))}
+                        />
+                      </div>
+                      <div className={styles.formField}>
+                        <label htmlFor="docIdentificacao">Documento de identificação (BI/Passaporte) nº</label>
+                        <input
+                          id="docIdentificacao"
+                          type="text"
+                          className={styles.formInput}
+                          placeholder="Número do documento"
+                          value={form.docIdentificacao}
+                          onChange={e => setForm(f => ({ ...f, docIdentificacao: e.target.value }))}
+                        />
+                      </div>
+                      <div className={styles.formField}>
+                        <label htmlFor="nuit">NUIT (quando aplicável)</label>
+                        <input
+                          id="nuit"
+                          type="text"
+                          className={styles.formInput}
+                          placeholder="Número NUIT"
+                          value={form.nuit}
+                          onChange={e => setForm(f => ({ ...f, nuit: e.target.value }))}
+                        />
+                      </div>
+                      <div className={styles.formField}>
+                        <label htmlFor="email">E-mail <span className={styles.required}>*</span></label>
+                        <input
+                          id="email"
+                          type="email"
+                          required
+                          className={styles.formInput}
+                          placeholder="seu@email.com"
+                          value={form.email}
+                          onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                        />
+                      </div>
+                      <div className={`${styles.formField} ${styles.colSpan2}`}>
+                        <label htmlFor="endereco">Endereço / Localidade</label>
+                        <input
+                          id="endereco"
+                          type="text"
+                          className={styles.formInput}
+                          placeholder="Cidade, Província"
+                          value={form.endereco}
+                          onChange={e => setForm(f => ({ ...f, endereco: e.target.value }))}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
+                )}
 
                 {/* ── SECÇÃO 2 ── */}
-                <div className={styles.formSection}>
-                  <div className={styles.formSectionHeader}>
-                    <span className={styles.formSectionNumber}>2</span>
-                    <h3>Dados do Negócio / Actividade <span className={styles.optional}>(quando aplicável)</span></h3>
-                  </div>
-                  <div className={styles.formGrid2}>
-                    <div className={styles.formField}>
-                      <label htmlFor="nomeNegocio">Nome do negócio / empresa / cooperativa</label>
-                      <input
-                        id="nomeNegocio"
-                        type="text"
-                        className={styles.formInput}
-                        placeholder="Nome da empresa"
-                        value={form.nomeNegocio}
-                        onChange={e => setForm(f => ({ ...f, nomeNegocio: e.target.value }))}
-                      />
+                {currentStep === 2 && (
+                  <div className={styles.formSection}>
+                    <div className={styles.formSectionHeader}>
+                      <span className={styles.formSectionNumber}>2</span>
+                      <h3>Dados do Negócio / Actividade <span className={styles.optional}>(quando aplicável)</span></h3>
+                    </div>
+                    <div className={styles.formGrid2}>
+                      <div className={styles.formField}>
+                        <label htmlFor="nomeNegocio">Nome do negócio / empresa / cooperativa</label>
+                        <input
+                          id="nomeNegocio"
+                          type="text"
+                          className={styles.formInput}
+                          placeholder="Nome da empresa"
+                          value={form.nomeNegocio}
+                          onChange={e => setForm(f => ({ ...f, nomeNegocio: e.target.value }))}
+                        />
+                      </div>
+                      <div className={styles.formField}>
+                        <label htmlFor="alvara">Alvará / Certidão de registo nº (quando aplicável)</label>
+                        <input
+                          id="alvara"
+                          type="text"
+                          className={styles.formInput}
+                          placeholder="Número do alvará"
+                          value={form.alvara}
+                          onChange={e => setForm(f => ({ ...f, alvara: e.target.value }))}
+                        />
+                      </div>
                     </div>
                     <div className={styles.formField}>
-                      <label htmlFor="alvara">Alvará / Certidão de registo nº (quando aplicável)</label>
-                      <input
-                        id="alvara"
-                        type="text"
-                        className={styles.formInput}
-                        placeholder="Número do alvará"
-                        value={form.alvara}
-                        onChange={e => setForm(f => ({ ...f, alvara: e.target.value }))}
-                      />
-                    </div>
-                  </div>
-                  <div className={styles.formField}>
-                    <label>Sector de actividade</label>
-                    <div className={styles.checkGroup}>
-                      {['Agro-negócio', 'Comércio e serviços', 'Indústria criativa', 'Tecnologia e inovação', 'Turismo'].map(s => (
-                        <label key={s} className={styles.checkLabel}>
+                      <label>Sector de actividade</label>
+                      <div className={styles.checkGroup}>
+                        {['Agro-negócio', 'Comércio e serviços', 'Indústria criativa', 'Tecnologia e inovação', 'Turismo'].map(s => (
+                          <label key={s} className={styles.checkLabel}>
+                            <input
+                              type="checkbox"
+                              className={styles.checkInput}
+                              checked={form.sector.includes(s)}
+                              onChange={() => toggleSector(s)}
+                            />
+                            <span className={styles.checkBox}></span>
+                            {s}
+                          </label>
+                        ))}
+                        <label className={styles.checkLabel}>
                           <input
                             type="checkbox"
                             className={styles.checkInput}
-                            checked={form.sector.includes(s)}
-                            onChange={() => toggleSector(s)}
+                            checked={form.sector.includes('outro')}
+                            onChange={() => toggleSector('outro')}
                           />
                           <span className={styles.checkBox}></span>
-                          {s}
+                          Outro:
+                          <input
+                            type="text"
+                            className={styles.checkOtherInput}
+                            placeholder="Especifique"
+                            value={form.sectorOutro}
+                            onChange={e => setForm(f => ({ ...f, sectorOutro: e.target.value }))}
+                          />
                         </label>
-                      ))}
-                      <label className={styles.checkLabel}>
-                        <input
-                          type="checkbox"
-                          className={styles.checkInput}
-                          checked={form.sector.includes('outro')}
-                          onChange={() => toggleSector('outro')}
-                        />
-                        <span className={styles.checkBox}></span>
-                        Outro:
-                        <input
-                          type="text"
-                          className={styles.checkOtherInput}
-                          placeholder="Especifique"
-                          value={form.sectorOutro}
-                          onChange={e => setForm(f => ({ ...f, sectorOutro: e.target.value }))}
-                        />
-                      </label>
+                      </div>
                     </div>
                   </div>
                 </div>
+                )}
 
                 {/* ── SECÇÃO 3 ── */}
-                <div className={styles.formSection}>
-                  <div className={styles.formSectionHeader}>
-                    <span className={styles.formSectionNumber}>3</span>
-                    <h3>Nível de Adesão Pretendido</h3>
+                {currentStep === 3 && (
+                  <div className={styles.formSection}>
+                    <div className={styles.formSectionHeader}>
+                      <span className={styles.formSectionNumber}>3</span>
+                      <h3>Nível de Adesão Pretendido</h3>
+                    </div>
+                    <div className={styles.formField}>
+                      <div className={styles.radioGroup}>
+                        {[
+                          { val: 'jovem', label: 'Jovem / Estudante', sub: 'Inscrição 300 MT | Quota anual 1.000 MT' },
+                          { val: 'individual', label: 'Individual', sub: 'Inscrição 500 MT | Quota anual 2.400 MT' },
+                          { val: 'empresa', label: 'Empresa / PME', sub: 'Inscrição 1.500 MT | Quota anual 6.000 MT' },
+                          { val: 'corp-gold', label: 'Corporativo — Corporate Gold', sub: '20.000 MT/ano' },
+                          { val: 'corp-platinum', label: 'Corporativo — Corporate Platinum', sub: '40.000 MT/ano' },
+                          { val: 'corp-founding', label: 'Corporativo — Corporate Founding Partner', sub: 'Pacote personalizado' },
+                          { val: 'honorario', label: 'Honorário', sub: 'Por convite da Direcção da ABN (isento)' },
+                        ].map(opt => (
+                          <label key={opt.val} className={`${styles.radioLabel} ${form.nivelAdesao === opt.val ? styles.radioLabelActive : ''}`}>
+                            <input
+                              type="radio"
+                              name="nivelAdesao"
+                              className={styles.radioInput}
+                              value={opt.val}
+                              checked={form.nivelAdesao === opt.val}
+                              onChange={() => setForm(f => ({ ...f, nivelAdesao: opt.val }))}
+                            />
+                            <span className={styles.radioCircle}></span>
+                            <span className={styles.radioContent}>
+                              <span className={styles.radioLabelText}>{opt.label}</span>
+                              <span className={styles.radioSub}>{opt.sub}</span>
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <div className={styles.formField} style={{ marginTop: '1rem' }}>
+                      <label>Forma de pagamento da quota</label>
+                      <div className={styles.radioGroupRow}>
+                        {[
+                          { val: 'anual', label: 'Anual (com desconto de 10%)' },
+                          { val: 'trimestral', label: 'Trimestral' },
+                          { val: 'mensal', label: 'Mensal' },
+                        ].map(opt => (
+                          <label key={opt.val} className={`${styles.radioLabelRow} ${form.formaPagamento === opt.val ? styles.radioLabelRowActive : ''}`}>
+                            <input
+                              type="radio"
+                              name="formaPagamento"
+                              className={styles.radioInput}
+                              value={opt.val}
+                              checked={form.formaPagamento === opt.val}
+                              onChange={() => setForm(f => ({ ...f, formaPagamento: opt.val }))}
+                            />
+                            <span className={styles.radioCircle}></span>
+                            {opt.label}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <div className={styles.formField}>
-                    <div className={styles.radioGroup}>
+                </div>
+                )}
+
+                {/* ── SECÇÃO 4 ── */}
+                {currentStep === 4 && (
+                  <div className={styles.formSection}>
+                    <div className={styles.formSectionHeader}>
+                      <span className={styles.formSectionNumber}>4</span>
+                      <h3>Áreas de Interesse <span className={styles.optional}>(seleccione todas as aplicáveis)</span></h3>
+                    </div>
+                    <div className={styles.checkGroup}>
                       {[
-                        { val: 'jovem', label: 'Jovem / Estudante', sub: 'Inscrição 300 MT | Quota anual 1.000 MT' },
-                        { val: 'individual', label: 'Individual', sub: 'Inscrição 500 MT | Quota anual 2.400 MT' },
-                        { val: 'empresa', label: 'Empresa / PME', sub: 'Inscrição 1.500 MT | Quota anual 6.000 MT' },
-                        { val: 'corp-gold', label: 'Corporativo — Corporate Gold', sub: '20.000 MT/ano' },
-                        { val: 'corp-platinum', label: 'Corporativo — Corporate Platinum', sub: '40.000 MT/ano' },
-                        { val: 'corp-founding', label: 'Corporativo — Corporate Founding Partner', sub: 'Pacote personalizado' },
-                        { val: 'honorario', label: 'Honorário', sub: 'Por convite da Direcção da ABN (isento)' },
-                      ].map(opt => (
-                        <label key={opt.val} className={`${styles.radioLabel} ${form.nivelAdesao === opt.val ? styles.radioLabelActive : ''}`}>
+                        'Formação e capacitação empresarial',
+                        'Mentoria e coaching',
+                        'Incubação de negócio (ideia/arranque)',
+                        'Aceleração de negócio (negócio já validado)',
+                        'Networking empresarial e feiras',
+                        'Educação financeira',
+                        'Transformação digital para pequenos negócios',
+                        'Oportunidades de investimento e financiamento',
+                        'Parcerias institucionais',
+                        'Marketplace ABN / venda entre membros',
+                        'Programa Mentor Sénior (como mentor ou mentorado)',
+                        'Clube de Investidores',
+                      ].map(area => (
+                        <label key={area} className={styles.checkLabel}>
                           <input
-                            type="radio"
-                            name="nivelAdesao"
-                            className={styles.radioInput}
-                            value={opt.val}
-                            checked={form.nivelAdesao === opt.val}
-                            onChange={() => setForm(f => ({ ...f, nivelAdesao: opt.val }))}
+                            type="checkbox"
+                            className={styles.checkInput}
+                            checked={form.areasInteresse.includes(area)}
+                            onChange={() => toggleInteresse(area)}
                           />
-                          <span className={styles.radioCircle}></span>
-                          <span className={styles.radioContent}>
-                            <span className={styles.radioLabelText}>{opt.label}</span>
-                            <span className={styles.radioSub}>{opt.sub}</span>
-                          </span>
+                          <span className={styles.checkBox}></span>
+                          {area}
                         </label>
                       ))}
                     </div>
                   </div>
-                  <div className={styles.formField} style={{ marginTop: '1rem' }}>
-                    <label>Forma de pagamento da quota</label>
-                    <div className={styles.radioGroupRow}>
+                )}
+
+                {/* ── SECÇÃO 5 ── */}
+                {currentStep === 5 && (
+                  <div className={styles.formSection}>
+                    <div className={styles.formSectionHeader}>
+                      <span className={styles.formSectionNumber}>5</span>
+                      <h3>Como conheceu o Clube dos Empreendedores?</h3>
+                    </div>
+                    <div className={styles.radioGroupCol}>
                       {[
-                        { val: 'anual', label: 'Anual (com desconto de 10%)' },
-                        { val: 'trimestral', label: 'Trimestral' },
-                        { val: 'mensal', label: 'Mensal' },
+                        { val: 'site', label: 'Site da ABN (abnafrobiznetwork.com)' },
+                        { val: 'redes', label: 'Redes sociais' },
+                        { val: 'indicacao', label: 'Indicação de um membro/amigo' },
+                        { val: 'evento', label: 'Evento ou feira' },
                       ].map(opt => (
-                        <label key={opt.val} className={`${styles.radioLabelRow} ${form.formaPagamento === opt.val ? styles.radioLabelRowActive : ''}`}>
+                        <label key={opt.val} className={`${styles.radioLabelRow} ${form.comoConheceu === opt.val ? styles.radioLabelRowActive : ''}`}>
                           <input
                             type="radio"
-                            name="formaPagamento"
+                            name="comoConheceu"
                             className={styles.radioInput}
                             value={opt.val}
-                            checked={form.formaPagamento === opt.val}
-                            onChange={() => setForm(f => ({ ...f, formaPagamento: opt.val }))}
+                            checked={form.comoConheceu === opt.val}
+                            onChange={() => setForm(f => ({ ...f, comoConheceu: opt.val }))}
                           />
                           <span className={styles.radioCircle}></span>
                           {opt.label}
                         </label>
                       ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* ── SECÇÃO 4 ── */}
-                <div className={styles.formSection}>
-                  <div className={styles.formSectionHeader}>
-                    <span className={styles.formSectionNumber}>4</span>
-                    <h3>Áreas de Interesse <span className={styles.optional}>(seleccione todas as aplicáveis)</span></h3>
-                  </div>
-                  <div className={styles.checkGroup}>
-                    {[
-                      'Formação e capacitação empresarial',
-                      'Mentoria e coaching',
-                      'Incubação de negócio (ideia/arranque)',
-                      'Aceleração de negócio (negócio já validado)',
-                      'Networking empresarial e feiras',
-                      'Educação financeira',
-                      'Transformação digital para pequenos negócios',
-                      'Oportunidades de investimento e financiamento',
-                      'Parcerias institucionais',
-                      'Marketplace ABN / venda entre membros',
-                      'Programa Mentor Sénior (como mentor ou mentorado)',
-                      'Clube de Investidores',
-                    ].map(area => (
-                      <label key={area} className={styles.checkLabel}>
-                        <input
-                          type="checkbox"
-                          className={styles.checkInput}
-                          checked={form.areasInteresse.includes(area)}
-                          onChange={() => toggleInteresse(area)}
-                        />
-                        <span className={styles.checkBox}></span>
-                        {area}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* ── SECÇÃO 5 ── */}
-                <div className={styles.formSection}>
-                  <div className={styles.formSectionHeader}>
-                    <span className={styles.formSectionNumber}>5</span>
-                    <h3>Como conheceu o Clube dos Empreendedores?</h3>
-                  </div>
-                  <div className={styles.radioGroupCol}>
-                    {[
-                      { val: 'site', label: 'Site da ABN (abnafrobiznetwork.com)' },
-                      { val: 'redes', label: 'Redes sociais' },
-                      { val: 'indicacao', label: 'Indicação de um membro/amigo' },
-                      { val: 'evento', label: 'Evento ou feira' },
-                    ].map(opt => (
-                      <label key={opt.val} className={`${styles.radioLabelRow} ${form.comoConheceu === opt.val ? styles.radioLabelRowActive : ''}`}>
+                      <label className={`${styles.radioLabelRow} ${form.comoConheceu === 'outro' ? styles.radioLabelRowActive : ''}`}>
                         <input
                           type="radio"
                           name="comoConheceu"
                           className={styles.radioInput}
-                          value={opt.val}
-                          checked={form.comoConheceu === opt.val}
-                          onChange={() => setForm(f => ({ ...f, comoConheceu: opt.val }))}
+                          value="outro"
+                          checked={form.comoConheceu === 'outro'}
+                          onChange={() => setForm(f => ({ ...f, comoConheceu: 'outro' }))}
                         />
                         <span className={styles.radioCircle}></span>
-                        {opt.label}
+                        Outro:
+                        <input
+                          type="text"
+                          className={styles.checkOtherInput}
+                          placeholder="Especifique"
+                          value={form.comoConheceuOutro}
+                          onChange={e => setForm(f => ({ ...f, comoConheceuOutro: e.target.value }))}
+                        />
                       </label>
-                    ))}
-                    <label className={`${styles.radioLabelRow} ${form.comoConheceu === 'outro' ? styles.radioLabelRowActive : ''}`}>
-                      <input
-                        type="radio"
-                        name="comoConheceu"
-                        className={styles.radioInput}
-                        value="outro"
-                        checked={form.comoConheceu === 'outro'}
-                        onChange={() => setForm(f => ({ ...f, comoConheceu: 'outro' }))}
-                      />
-                      <span className={styles.radioCircle}></span>
-                      Outro:
-                      <input
-                        type="text"
-                        className={styles.checkOtherInput}
-                        placeholder="Especifique"
-                        value={form.comoConheceuOutro}
-                        onChange={e => setForm(f => ({ ...f, comoConheceuOutro: e.target.value }))}
-                      />
-                    </label>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* ── SECÇÃO 6 ── */}
-                <div className={styles.formSection}>
-                  <div className={styles.formSectionHeader}>
-                    <span className={styles.formSectionNumber}>6</span>
-                    <h3>Declaração</h3>
-                  </div>
-                  <div className={styles.declaracaoBox}>
-                    <p>
-                      Declaro que as informações prestadas neste inquérito são verdadeiras e completas, e que tomei conhecimento
-                      dos <strong>Termos de Referência (TdR) do Clube dos Empreendedores</strong>, comprometendo-me a formalizar a minha adesão
-                      através da assinatura do Contrato de Adesão e do pagamento da taxa de inscrição e quota correspondentes ao
-                      nível seleccionado.
-                    </p>
-                  </div>
+                {currentStep === 6 && (
+                  <div className={styles.formSection}>
+                    <div className={styles.formSectionHeader}>
+                      <span className={styles.formSectionNumber}>6</span>
+                      <h3>Declaração</h3>
+                    </div>
+                    <div className={styles.declaracaoBox}>
+                      <p>
+                        Declaro que as informações prestadas neste inquérito são verdadeiras e completas, e que tomei conhecimento
+                        dos <strong>Termos de Referência (TdR) do Clube dos Empreendedores</strong>, comprometendo-me a formalizar a minha adesão
+                        através da assinatura do Contrato de Adesão e do pagamento da taxa de inscrição e quota correspondentes ao
+                        nível seleccionado.
+                      </p>
+                    </div>
                   <div className={styles.formGrid2}>
                     <div className={styles.formField}>
                       <label htmlFor="localData">Local e data</label>
@@ -824,13 +889,22 @@ export default function ProgramasPage() {
                     <span>📌 Espaço reservado à ABN</span>
                     <span>Nº de membro atribuído: ___________________________</span>
                   </div>
-                </div>
+                  </div>
+                )}
 
-                {/* Submit */}
-                <div className={styles.formActions}>
-                  <button type="button" className={styles.cancelBtn} onClick={closeModal}>Cancelar</button>
-                  <button type="submit" id="btn-submeter-inquerito" className={styles.submitBtn}>
-                    Submeter Inquérito ✓
+                {/* Wizard Navigation */}
+                <div className={styles.wizardNavigation}>
+                  {currentStep > 1 && (
+                    <button type="button" className={styles.wizardBtn} onClick={handlePrevious}>
+                      ← Anterior
+                    </button>
+                  )}
+                  <button
+                    type="submit"
+                    className={styles.wizardBtn}
+                    disabled={!canProceed()}
+                  >
+                    {currentStep === totalSteps ? 'Submeter Inquérito ✓' : 'Próximo →'}
                   </button>
                 </div>
               </form>
