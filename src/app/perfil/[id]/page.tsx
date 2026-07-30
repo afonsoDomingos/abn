@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
+import { use } from 'react';
 import Navbar from '@/components/Navbar';
 import styles from './Profile.module.css';
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const id = params?.id || 'empresa';
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const id = resolvedParams?.id || 'empresa';
   const name = id
     .replace(/-/g, ' ')
     .replace(/(^\w|\s\w)/g, m => m.toUpperCase());
@@ -14,7 +16,10 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   };
 }
 
-export default function BusinessProfile({ params }: { params: { id: string } }) {
+export default function BusinessProfile({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params);
+  const id = resolvedParams?.id || 'empresa';
+  
   // Mock data
   const business = {
     name: 'TechAfrica Solutions',
