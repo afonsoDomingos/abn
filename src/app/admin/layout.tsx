@@ -27,7 +27,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Menu,
-  Users as UsersIcon
+  Users as UsersIcon,
+  UserCheck
 } from 'lucide-react';
 
 interface NavItem {
@@ -71,6 +72,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     {
       title: 'Comunicação',
       items: [
+        { href: '/admin/inscricoes', label: 'Inscrições', icon: <UserCheck size={18} /> },
         { href: '/admin/solicitacoes', label: 'Solicitações', icon: <ClipboardList size={18} /> },
         { href: '/admin/mensagens', label: 'Mensagens', icon: <MessageSquare size={18} /> },
         { href: '/admin/comunicacao', label: 'Envio de E-mails', icon: <Mail size={18} /> },
