@@ -21,6 +21,7 @@ interface User {
   name: string;
   email: string;
   department: string;
+  role: string;
 }
 
 export default function AdminColaboradoresPage() {
