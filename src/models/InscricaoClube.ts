@@ -42,7 +42,7 @@ const InscricaoClubeSchema = new Schema<IInscricaoClube>({
   comoConheceuOutro: String,
   localData: String,
   assinatura: String,
-  origem: { type: String, default: 'programas' },
+  origem: String,
   status: { type: String, default: 'pendente' },
   notasAdmin: String,
 }, { timestamps: true });
