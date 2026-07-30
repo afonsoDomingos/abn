@@ -130,6 +130,20 @@
   margin-top: -0.2rem;
 }
 
+.fieldCounter {
+  font-size: 0.7rem;
+  color: rgba(0, 0, 0, 0.4);
+  text-align: right;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.descriptionTextarea {
+  line-height: 1.6;
+  font-size: 0.95rem;
+  min-height: 280px;
+}
+
 .field input,
 .field select,
 .field textarea {

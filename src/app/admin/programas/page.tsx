@@ -399,13 +399,23 @@ export default function AdminProgramasPage() {
 
               <div className={`${styles.field} ${styles.fullWidth}`}>
                 <label>Descrição / O que é? *</label>
+                <span className={styles.fieldHint}>Descreva o programa de forma clara e detalhada. Pode usar parágrafos e formatação livre.</span>
                 <textarea
                   required
-                  rows={5}
+                  rows={12}
                   value={description}
                   onChange={e => setDescription(e.target.value)}
-                  placeholder="Descreva o programa em detalhe..."
+                  placeholder="Descreva o programa em detalhe...
+
+Exemplo:
+O ABN Startup 180 é o programa de incubação, desenvolvimento e aceleração de Negócios da Afrobiz Network (ABN).
+
+O programa foi concebido para apoiar empreendedores desde a fase da ideia até ao crescimento sustentável do negócio, através de formação, mentoria, networking, acompanhamento técnico e acesso a oportunidades."
+                  className={styles.descriptionTextarea}
                 />
+                <div className={styles.fieldCounter}>
+                  Caracteres: {description.length} | Palavras: {description.split(/\s+/).filter(w => w.length > 0).length}
+                </div>
               </div>
             </div>
           )}
