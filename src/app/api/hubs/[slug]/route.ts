@@ -18,11 +18,11 @@ async function verifyAdmin(request: NextRequest) {
 // GET single hub by slug
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
+  context: { params: Promise<{ slug: string }> }
 ) {
   try {
     await dbConnect();
-    const { slug } = await params;
+    const { slug } = await context.params;
     const hub = await Hub.findOne({ slug: slug.toLowerCase().trim() });
     
     if (!hub) {
@@ -38,7 +38,7 @@ export async function GET(
 // PUT update hub details (admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
+  context: { params: Promise<{ slug: string }> }
 ) {
   try {
     // 1. Auth check
@@ -49,7 +49,7 @@ export async function PUT(
 
     // 2. Connect DB
     await dbConnect();
-    const { slug } = await params;
+    const { slug } = await context.params;
 
     // 3. Read body
     const body = await request.json();
@@ -108,7 +108,7 @@ export async function PUT(
 // DELETE hub (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
+  context: { params: Promise<{ slug: string }> }
 ) {
   try {
     // 1. Auth check
@@ -119,7 +119,7 @@ export async function DELETE(
 
     // 2. Connect DB
     await dbConnect();
-    const { slug } = await params;
+    const { slug } = await context.params;
 
     const deleted = await Hub.findOneAndDelete({ slug: slug.toLowerCase().trim() });
     
