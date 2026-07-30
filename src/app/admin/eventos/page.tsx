@@ -23,6 +23,14 @@ export default function AdminEventosPage() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [msg, setMsg] = useState('');
+  
+  // Inscriptions management states
+  const [showInscriptionsModal, setShowInscriptionsModal] = useState(false);
+  const [selectedEventForInscriptions, setSelectedEventForInscriptions] = useState<EventItem | null>(null);
+  const [inscriptions, setInscriptions] = useState<any[]>([]);
+  const [loadingInscriptions, setLoadingInscriptions] = useState(false);
+  const [inscriptionSearch, setInscriptionSearch] = useState('');
+  const [inscriptionStatusFilter, setInscriptionStatusFilter] = useState('todos');
 
   // Form Fields
   const [title, setTitle] = useState('');
@@ -76,6 +84,77 @@ export default function AdminEventosPage() {
     setImageUrl('');
     setLink('');
     setShowForm(true);
+  };
+
+  const handleViewInscriptions = async (event: EventItem) => {
+    setSelectedEventForInscriptions(event);
+    setShowInscriptionsModal(true);
+    setLoadingInscriptions(true);
+    setInscriptionSearch('');
+    setInscriptionStatusFilter('todos');
+    try {
+      const res = await fetch(`/api/events/inscricoes?eventId=${event._id}`);
+      const data = await res.json();
+      if (data.inscricoes) {
+        setInscriptions(data.inscricoes);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingInscriptions(false);
+    }
+  };
+
+  const handleUpdateInscriptionStatus = async (inscriptionId: string, newStatus: string) => {
+    try {
+      const res = await fetch(`/api/events/inscricoes/${inscriptionId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setInscriptions(prev =>
+          prev.map(i => i._id === inscriptionId ? { ...i, status: newStatus } : i)
+        );
+      } else {
+        alert(data.error || 'Erro ao atualizar status.');
+      }
+    } catch (err) {
+      alert('Erro de conexão ao atualizar status.');
+    }
+  };
+
+  const handleDeleteInscription = async (inscriptionId: string) => {
+    if (!confirm('Eliminar esta inscrição permanentemente?')) return;
+    try {
+      const res = await fetch(`/api/events/inscricoes/${inscriptionId}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        setInscriptions(prev => prev.filter(i => i._id !== inscriptionId));
+      } else {
+        alert(data.error || 'Erro ao eliminar inscrição.');
+      }
+    } catch (err) {
+      alert('Erro de conexão ao eliminar inscrição.');
+    }
+  };
+
+  const getFilteredInscriptions = () => {
+    return inscriptions.filter(i => {
+      const searchLower = inscriptionSearch.toLowerCase();
+      const matchesSearch = 
+        inscriptionSearch === '' ||
+        (i.nomeCompleto || '').toLowerCase().includes(searchLower) ||
+        (i.email || '').toLowerCase().includes(searchLower) ||
+        (i.empresa || '').toLowerCase().includes(searchLower);
+      
+      const matchesStatus = 
+        inscriptionStatusFilter === 'todos' ||
+        i.status === inscriptionStatusFilter;
+      
+      return matchesSearch && matchesStatus;
+    });
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -350,12 +429,159 @@ export default function AdminEventosPage() {
                 <button className={styles.editBtn} onClick={() => handleEditClick(ev)}>
                   ✏️ Editar
                 </button>
+                <button 
+                  className={styles.inscriptionsBtn} 
+                  onClick={() => handleViewInscriptions(ev)}
+                  style={{
+                    padding: '8px 12px',
+                    background: 'rgba(14, 165, 233, 0.1)',
+                    color: '#0ea5e9',
+                    border: '1px solid rgba(14, 165, 233, 0.3)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                    fontSize: '0.85rem'
+                  }}
+                >
+                  👥 Inscrições
+                </button>
                 <button className={styles.deleteBtn} onClick={() => handleDelete(ev._id)}>
                   🗑️
                 </button>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Inscriptions Modal */}
+      {showInscriptionsModal && selectedEventForInscriptions && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+          <div style={{ maxWidth: '900px', width: '100%', margin: 'auto', padding: '2.5rem', borderRadius: '24px', position: 'relative', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 20px 40px rgba(15, 23, 42, 0.15)', display: 'flex', flexDirection: 'column', maxHeight: '85vh', overflow: 'hidden' }}>
+            <button 
+              style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: '#f1f5f9', border: 'none', color: '#64748b', fontSize: '1.4rem', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              onClick={() => { setShowInscriptionsModal(false); setSelectedEventForInscriptions(null); setInscriptions([]); }}
+            >
+              &times;
+            </button>
+            
+            <h2 style={{ color: '#0f172a', fontSize: '1.5rem', fontFamily: 'Outfit', fontWeight: 800, margin: '0 0 0.2rem 0' }}>Inscrições do Evento</h2>
+            <p style={{ color: '#0ea5e9', fontWeight: 800, margin: '0 0 1.5rem 0', fontSize: '0.95rem' }}>{selectedEventForInscriptions.title}</p>
+
+            {/* Filters */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid #e2e8f0' }}>
+              <input
+                type="text"
+                placeholder="🔍 Pesquisar por nome, email ou empresa..."
+                value={inscriptionSearch}
+                onChange={e => setInscriptionSearch(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '10px 14px',
+                  borderRadius: '10px',
+                  border: '1.5px solid #cbd5e1',
+                  background: '#f8fafc',
+                  color: '#0f172a',
+                  fontWeight: 500,
+                  fontSize: '0.9rem',
+                  outline: 'none'
+                }}
+              />
+              
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748b' }}>Status:</span>
+                {['todos', 'pendente', 'confirmado', 'cancelado', 'compareceu', 'nao_compareceu'].map(status => (
+                  <button
+                    key={status}
+                    onClick={() => setInscriptionStatusFilter(status)}
+                    style={{
+                      padding: '6px 12px',
+                      borderRadius: '8px',
+                      border: '1px solid',
+                      background: inscriptionStatusFilter === status ? '#0ea5e9' : '#ffffff',
+                      color: inscriptionStatusFilter === status ? '#ffffff' : '#64748b',
+                      borderColor: inscriptionStatusFilter === status ? '#0ea5e9' : '#e2e8f0',
+                      fontWeight: 700,
+                      fontSize: '0.75rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {status === 'todos' ? 'Todos' : status.charAt(0).toUpperCase() + status.slice(1)}
+                  </button>
+                ))}
+              </div>
+              
+              <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>
+                Mostrando <strong>{getFilteredInscriptions().length}</strong> de <strong>{inscriptions.length}</strong> inscrições
+              </div>
+            </div>
+
+            <div style={{ flex: 1, overflowY: 'auto', paddingRight: '4px' }}>
+              {loadingInscriptions ? (
+                <p style={{ color: '#64748b', fontStyle: 'italic', textAlign: 'center', padding: '2rem 0' }}>A carregar inscrições...</p>
+              ) : inscriptions.length === 0 ? (
+                <div style={{ color: '#64748b', textAlign: 'center', padding: '2.5rem 1rem', background: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+                  Nenhuma inscrição para este evento ainda.
+                </div>
+              ) : getFilteredInscriptions().length === 0 ? (
+                <div style={{ color: '#64748b', textAlign: 'center', padding: '2.5rem 1rem', background: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+                  Nenhuma inscrição encontrada com os filtros aplicados.
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                  {getFilteredInscriptions().map(insc => (
+                    <div key={insc._id} style={{ padding: '1.1rem 1.4rem', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', boxShadow: '0 2px 8px rgba(15,23,42,0.03)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                        <div style={{ fontWeight: 800, color: '#0f172a', fontSize: '1rem' }}>
+                          {insc.nomeCompleto}
+                        </div>
+                        <div style={{ fontSize: '0.84rem', color: '#64748b' }}>{insc.email} | 📞 {insc.telefone || 'Sem telefone'}</div>
+                        {insc.empresa && <div style={{ fontSize: '0.8rem', color: '#64748b' }}>🏢 {insc.empresa} | 💼 {insc.cargo || 'N/A'}</div>}
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <select
+                          value={insc.status}
+                          onChange={e => handleUpdateInscriptionStatus(insc._id, e.target.value)}
+                          style={{
+                            padding: '6px 10px',
+                            borderRadius: '8px',
+                            border: '1px solid #cbd5e1',
+                            background: '#f8fafc',
+                            color: '#0f172a',
+                            fontWeight: 600,
+                            fontSize: '0.8rem',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <option value="pendente">Pendente</option>
+                          <option value="confirmado">Confirmado</option>
+                          <option value="cancelado">Cancelado</option>
+                          <option value="compareceu">Compareceu</option>
+                          <option value="nao_compareceu">Não Compareceu</option>
+                        </select>
+                        <button
+                          onClick={() => handleDeleteInscription(insc._id)}
+                          style={{
+                            padding: '6px 10px',
+                            borderRadius: '8px',
+                            border: 'none',
+                            background: '#fef2f2',
+                            color: '#dc2626',
+                            fontWeight: 700,
+                            fontSize: '0.8rem',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>
