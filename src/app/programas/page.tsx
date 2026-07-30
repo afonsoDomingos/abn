@@ -232,19 +232,29 @@ export default function ProgramasPage() {
       setCurrentStep(prev => prev + 1);
       return;
     }
+    
+    // Validate required fields before submission
+    if (!form.nomeCompleto.trim() || !form.email.trim() || !form.nivelAdesao.trim()) {
+      alert('Por favor, preencha todos os campos obrigatórios: Nome, Email e Nível de Adesão.');
+      return;
+    }
+    
     try {
+      console.log('Enviando formulário:', { ...form, origem: 'programas' });
       const response = await fetch('/api/clube/inscricoes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, origem: 'programas' }),
       });
       const data = await response.json();
+      console.log('Resposta da API:', data);
       if (data.success) {
         setSubmitted(true);
       } else {
         alert('Erro ao submeter inquérito: ' + (data.error || 'Tente novamente'));
       }
     } catch (error) {
+      console.error('Erro ao submeter inquérito:', error);
       alert('Erro ao submeter inquérito. Tente novamente.');
     }
   };
