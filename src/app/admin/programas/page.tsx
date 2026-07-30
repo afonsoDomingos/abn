@@ -170,53 +170,53 @@ export default function AdminProgramasPage() {
     }
   };
 
-  const formatDescriptionToColumns = () => {
-    if (description.length < 200) return;
-
-    // Split text into paragraphs
-    const paragraphs = description.split('\n').filter(p => p.trim().length > 0);
-
-    if (paragraphs.length < 3) {
-      // If less than 3 paragraphs, split by sentences
-      const sentences = description.split(/[.!?]+/).filter(s => s.trim().length > 0);
-      if (sentences.length >= 3) {
-        const columnSize = Math.ceil(sentences.length / 3);
-        const column1 = sentences.slice(0, columnSize).join('. ').trim() + '.';
-        const column2 = sentences.slice(columnSize, columnSize * 2).join('. ').trim() + '.';
-        const column3 = sentences.slice(columnSize * 2).join('. ').trim() + '.';
-        setDescription(`${column1}\n\n${column2}\n\n${column3}`);
-      }
-    } else {
-      // Distribute paragraphs into 3 columns
-      const columnSize = Math.ceil(paragraphs.length / 3);
-      const column1 = paragraphs.slice(0, columnSize).join('\n\n');
-      const column2 = paragraphs.slice(columnSize, columnSize * 2).join('\n\n');
-      const column3 = paragraphs.slice(columnSize * 2).join('\n\n');
-      setDescription(`${column1}\n\n---\n\n${column2}\n\n---\n\n${column3}`);
-    }
-  };
-
-  const formatDescriptionToTwoColumns = () => {
+  const formatDescriptionAuto = () => {
     if (description.length < 150) return;
 
     // Split text into paragraphs
     const paragraphs = description.split('\n').filter(p => p.trim().length > 0);
 
-    if (paragraphs.length < 2) {
-      // If less than 2 paragraphs, split by sentences
-      const sentences = description.split(/[.!?]+/).filter(s => s.trim().length > 0);
-      if (sentences.length >= 2) {
-        const columnSize = Math.ceil(sentences.length / 2);
-        const column1 = sentences.slice(0, columnSize).join('. ').trim() + '.';
-        const column2 = sentences.slice(columnSize).join('. ').trim() + '.';
-        setDescription(`${column1}\n\n---\n\n${column2}`);
+    // Decide number of columns based on text length
+    const useThreeColumns = description.length >= 400;
+
+    if (useThreeColumns) {
+      // Format in 3 columns
+      if (paragraphs.length < 3) {
+        // If less than 3 paragraphs, split by sentences
+        const sentences = description.split(/[.!?]+/).filter(s => s.trim().length > 0);
+        if (sentences.length >= 3) {
+          const columnSize = Math.ceil(sentences.length / 3);
+          const column1 = sentences.slice(0, columnSize).join('. ').trim() + '.';
+          const column2 = sentences.slice(columnSize, columnSize * 2).join('. ').trim() + '.';
+          const column3 = sentences.slice(columnSize * 2).join('. ').trim() + '.';
+          setDescription(`${column1}\n\n${column2}\n\n${column3}`);
+        }
+      } else {
+        // Distribute paragraphs into 3 columns
+        const columnSize = Math.ceil(paragraphs.length / 3);
+        const column1 = paragraphs.slice(0, columnSize).join('\n\n');
+        const column2 = paragraphs.slice(columnSize, columnSize * 2).join('\n\n');
+        const column3 = paragraphs.slice(columnSize * 2).join('\n\n');
+        setDescription(`${column1}\n\n---\n\n${column2}\n\n---\n\n${column3}`);
       }
     } else {
-      // Distribute paragraphs into 2 columns
-      const columnSize = Math.ceil(paragraphs.length / 2);
-      const column1 = paragraphs.slice(0, columnSize).join('\n\n');
-      const column2 = paragraphs.slice(columnSize).join('\n\n');
-      setDescription(`${column1}\n\n---\n\n${column2}`);
+      // Format in 2 columns
+      if (paragraphs.length < 2) {
+        // If less than 2 paragraphs, split by sentences
+        const sentences = description.split(/[.!?]+/).filter(s => s.trim().length > 0);
+        if (sentences.length >= 2) {
+          const columnSize = Math.ceil(sentences.length / 2);
+          const column1 = sentences.slice(0, columnSize).join('. ').trim() + '.';
+          const column2 = sentences.slice(columnSize).join('. ').trim() + '.';
+          setDescription(`${column1}\n\n---\n\n${column2}`);
+        }
+      } else {
+        // Distribute paragraphs into 2 columns
+        const columnSize = Math.ceil(paragraphs.length / 2);
+        const column1 = paragraphs.slice(0, columnSize).join('\n\n');
+        const column2 = paragraphs.slice(columnSize).join('\n\n');
+        setDescription(`${column1}\n\n---\n\n${column2}`);
+      }
     }
   };
 
@@ -453,20 +453,15 @@ export default function AdminProgramasPage() {
                 <div className={styles.descriptionActions}>
                   <button
                     type="button"
-                    onClick={formatDescriptionToColumns}
-                    className={styles.formatBtn}
-                    disabled={description.length < 200}
-                  >
-                    📊 3 Colunas
-                  </button>
-                  <button
-                    type="button"
-                    onClick={formatDescriptionToTwoColumns}
+                    onClick={formatDescriptionAuto}
                     className={styles.formatBtn}
                     disabled={description.length < 150}
                   >
-                    📊 2 Colunas
+                    📊 Formatar Automaticamente
                   </button>
+                  <span className={styles.formatHint}>
+                    {description.length < 150 ? 'Mínimo 150 caracteres' : description.length < 400 ? 'Será formatado em 2 colunas' : 'Será formatado em 3 colunas'}
+                  </span>
                 </div>
                 <textarea
                   required
