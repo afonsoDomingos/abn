@@ -144,6 +144,35 @@
   min-height: 280px;
 }
 
+.descriptionActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.formatBtn {
+  background: rgba(255, 107, 0, 0.1);
+  border: 1px solid rgba(255, 107, 0, 0.3);
+  color: #ff6b00;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.formatBtn:hover:not(:disabled) {
+  background: rgba(255, 107, 0, 0.15);
+  border-color: rgba(255, 107, 0, 0.5);
+}
+
+.formatBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .field input,
 .field select,
 .field textarea {

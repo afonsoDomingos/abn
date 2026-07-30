@@ -170,6 +170,32 @@ export default function AdminProgramasPage() {
     }
   };
 
+  const formatDescriptionToColumns = () => {
+    if (description.length < 200) return;
+
+    // Split text into paragraphs
+    const paragraphs = description.split('\n').filter(p => p.trim().length > 0);
+
+    if (paragraphs.length < 3) {
+      // If less than 3 paragraphs, split by sentences
+      const sentences = description.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      if (sentences.length >= 3) {
+        const columnSize = Math.ceil(sentences.length / 3);
+        const column1 = sentences.slice(0, columnSize).join('. ').trim() + '.';
+        const column2 = sentences.slice(columnSize, columnSize * 2).join('. ').trim() + '.';
+        const column3 = sentences.slice(columnSize * 2).join('. ').trim() + '.';
+        setDescription(`${column1}\n\n${column2}\n\n${column3}`);
+      }
+    } else {
+      // Distribute paragraphs into 3 columns
+      const columnSize = Math.ceil(paragraphs.length / 3);
+      const column1 = paragraphs.slice(0, columnSize).join('\n\n');
+      const column2 = paragraphs.slice(columnSize, columnSize * 2).join('\n\n');
+      const column3 = paragraphs.slice(columnSize * 2).join('\n\n');
+      setDescription(`${column1}\n\n---\n\n${column2}\n\n---\n\n${column3}`);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !description.trim()) {
@@ -400,6 +426,16 @@ export default function AdminProgramasPage() {
               <div className={`${styles.field} ${styles.fullWidth}`}>
                 <label>Descrição / O que é? *</label>
                 <span className={styles.fieldHint}>Descreva o programa de forma clara e detalhada. Pode usar parágrafos e formatação livre.</span>
+                <div className={styles.descriptionActions}>
+                  <button
+                    type="button"
+                    onClick={formatDescriptionToColumns}
+                    className={styles.formatBtn}
+                    disabled={description.length < 200}
+                  >
+                    📊 Formatar em 3 Colunas
+                  </button>
+                </div>
                 <textarea
                   required
                   rows={12}
