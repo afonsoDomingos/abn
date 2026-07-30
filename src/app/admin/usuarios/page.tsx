@@ -14,6 +14,7 @@ interface User {
 
 const roleLabels: Record<string, { label: string; color: string }> = {
   admin: { label: 'Admin', color: '#d4af37' },
+  collaborator: { label: 'Colaborador', color: '#ff6b00' },
   empreendedor: { label: 'Empreendedor', color: '#2e8b57' },
   startup: { label: 'Startup', color: '#3b82f6' },
   investidor: { label: 'Investidor', color: '#a855f7' },
@@ -98,7 +99,7 @@ export default function AdminUsuariosPage() {
           onChange={e => setSearch(e.target.value)}
         />
         <div className={styles.filters}>
-          {['todos', 'empreendedor', 'startup', 'investidor', 'mentor', 'admin'].map(r => (
+          {['todos', 'empreendedor', 'startup', 'investidor', 'mentor', 'collaborator', 'admin'].map(r => (
             <button
               key={r}
               className={`${styles.filterBtn} ${filter === r ? styles.active : ''}`}
@@ -218,6 +219,7 @@ export default function AdminUsuariosPage() {
                   <option value="startup">Startup</option>
                   <option value="investidor">Investidor</option>
                   <option value="mentor">Mentor</option>
+                  <option value="collaborator">Colaborador</option>
                   <option value="admin">Admin</option>
                 </select>
               </div>

@@ -26,11 +26,13 @@ export function middleware(request: NextRequest) {
 
   const isAuthenticated = !!session;
   const isAdmin = session?.role === 'admin';
+  const isCollaborator = session?.role === 'collaborator';
+  const hasAdminAccess = isAdmin || isCollaborator;
 
   // Se já está logado e tenta aceder às páginas de auth, redireciona
   if (authRoutes.some(r => pathname.startsWith(r))) {
     if (isAuthenticated) {
-      const redirectTo = isAdmin ? '/admin' : '/dashboard';
+      const redirectTo = hasAdminAccess ? '/admin' : '/dashboard';
       return NextResponse.redirect(new URL(redirectTo, request.url));
     }
     return NextResponse.next();
@@ -55,11 +57,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // Rota de admin — verifica se tem role admin
+  // Rota de admin — verifica se tem role admin ou collaborator
   const isAdminRoute = adminRoutes.some(r => pathname.startsWith(r));
-  if (isAdminRoute && !isAdmin) {
+  if (isAdminRoute && !hasAdminAccess) {
     if (isApiRoute) {
-      return new NextResponse(JSON.stringify({ success: false, error: 'Acesso negado. Apenas administradores.' }), {
+      return new NextResponse(JSON.stringify({ success: false, error: 'Acesso negado. Apenas administradores e colaboradores.' }), {
         status: 403,
         headers: { 'content-type': 'application/json' }
       });
