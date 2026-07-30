@@ -46,18 +46,20 @@
 
 .heroContent h1 {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(2.2rem, 6vw, 3.8rem);
+  font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 800;
-  margin-bottom: 1rem;
-  line-height: 1.15;
+  margin-bottom: 1.25rem;
+  line-height: 1.2;
+  color: #1a1a1a;
 }
 
 .heroContent p {
-  font-size: 1.1rem;
-  color: rgba(0, 0, 0, 0.65);
+  font-size: 1.15rem;
+  color: rgba(0, 0, 0, 0.75);
   max-width: 600px;
   margin: 0 auto 2rem;
-  line-height: 1.7;
+  line-height: 1.75;
+  font-weight: 400;
 }
 
 .heroBtn {
@@ -160,7 +162,7 @@
 
 .clubeTitle {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
   font-weight: 800;
   margin: 0;
   background: linear-gradient(135deg, #f5d06e 0%, #d4af37 50%, #a07c10 100%);
@@ -242,12 +244,13 @@
 }
 
 .clubeDesc {
-  font-size: 1rem;
-  color: rgba(0, 0, 0, 0.7);
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.8);
   line-height: 1.8;
   margin: 0;
   white-space: pre-line;
   max-width: 900px;
+  font-weight: 400;
 }
 
 /* Pillars */
@@ -294,10 +297,11 @@
 }
 
 .clubePillar p {
-  font-size: 0.88rem;
-  color: rgba(0, 0, 0, 0.65);
-  line-height: 1.7;
+  font-size: 0.95rem;
+  color: rgba(0, 0, 0, 0.75);
+  line-height: 1.75;
   margin: 0;
+  font-weight: 400;
 }
 
 /* Expanded */
@@ -358,11 +362,11 @@
 
 .sectionLabel span {
   font-family: 'Outfit', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .sectionLabel::after {
@@ -383,8 +387,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
 }
 
 @media (max-width: 860px) {
@@ -396,19 +400,21 @@
 /* Card */
 .card {
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 20px;
-  padding: 1.5rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  transition: border-color 0.3s, transform 0.3s;
+  gap: 1.5rem;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .card:hover,
 .cardOpen {
-  border-color: rgba(212, 175, 55, 0.35);
-  transform: translateY(-3px);
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.15);
 }
 
 .cardTop {
@@ -424,38 +430,32 @@
   align-items: center;
 }
 
-.phaseBadge {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 0.3rem 0.85rem;
-  border-radius: 50px;
-  font-family: 'Outfit', sans-serif;
-}
 
 .durationBadge {
-  font-size: 0.78rem;
-  color: rgba(0, 0, 0, 0.6);
-  background: rgba(0, 0, 0, 0.05);
-  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.06);
+  padding: 0.35rem 0.8rem;
   border-radius: 50px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  font-weight: 500;
 }
 
 .cardTitle {
   font-family: 'Outfit', sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: 700;
   margin: 0;
   line-height: 1.3;
+  color: #1a1a1a;
 }
 
 .cardDesc {
-  font-size: 1rem;
-  color: rgba(0, 0, 0, 0.65);
-  line-height: 1.7;
+  font-size: 1.05rem;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.75;
   margin: 0;
+  font-weight: 400;
 }
 
 .cardDetails {
@@ -477,10 +477,11 @@
 }
 
 .detailBlock p {
-  font-size: 0.95rem;
-  color: rgba(0, 0, 0, 0.7);
-  line-height: 1.7;
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.75);
+  line-height: 1.75;
   margin: 0;
+  font-weight: 400;
 }
 
 .cardFooter {
@@ -491,12 +492,12 @@
 }
 
 .toggleBtn {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  color: rgba(0, 0, 0, 0.75);
-  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 0.9rem;
   font-weight: 600;
-  padding: 0.6rem 1.25rem;
+  padding: 0.7rem 1.4rem;
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.2s;
@@ -512,9 +513,9 @@
 .applyBtn {
   background: var(--primary);
   color: #000;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  padding: 0.6rem 1.5rem;
+  padding: 0.7rem 1.6rem;
   border-radius: 50px;
   text-decoration: none;
   transition: all 0.2s;
@@ -1272,11 +1273,11 @@
   }
 
   .hero {
-    padding: 100px 1rem 60px;
+    padding: 80px 1rem 50px;
   }
 
   .heroContent h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .heroContent p {
@@ -1294,6 +1295,7 @@
   .clubeHeader {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1.5rem;
   }
 
   .clubeHeaderRight {
@@ -1304,6 +1306,7 @@
   .clubeInscBtn {
     width: 100%;
     text-align: center;
+    padding: 1rem 1.5rem;
   }
 
   .clubePillars {
@@ -1312,24 +1315,25 @@
 
   .grid {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1.5rem;
   }
 
   .card {
-    padding: 1.25rem;
+    padding: 1.5rem;
   }
 
   .cardTitle {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
   }
 
   .cardDesc {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
   .modal {
     border-radius: 16px;
     max-height: 95vh;
+    margin: 1rem;
   }
 
   .modalHeader {
@@ -1380,7 +1384,7 @@
 
 @media (max-width: 480px) {
   .heroContent h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .heroBadge {
@@ -1388,19 +1392,56 @@
     padding: 0.25rem 0.75rem;
   }
 
+  .heroContent p {
+    font-size: 0.95rem;
+  }
+
   .clubeIcon {
     font-size: 2.5rem;
   }
 
   .clubeTitle {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
+  }
+
+  .clubeDesc {
+    font-size: 1rem;
   }
 
   .cardTitle {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
   }
 
   .cardDesc {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .detailBlock p {
+    font-size: 0.95rem;
+  }
+
+  .toggleBtn,
+  .applyBtn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .cardFooter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card {
+    padding: 1.75rem;
+  }
+
+  .clubePillars {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
