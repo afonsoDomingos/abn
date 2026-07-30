@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
     enum: ['empreendedor', 'startup', 'investidor', 'mentor', 'admin', 'collaborator'], 
     default: 'empreendedor' 
   },
+  department: { type: String, default: '' },
   profileImage: { type: String },
   // Perfil profissional & pessoal
   phone: { type: String, default: '' },

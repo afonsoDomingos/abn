@@ -8,6 +8,7 @@ interface User {
   name: string;
   email: string;
   role: string;
+  department: string;
   createdAt: string;
   password?: string;
 }
@@ -28,6 +29,7 @@ export default function AdminUsuariosPage() {
   const [filter, setFilter] = useState('todos');
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [saving, setSaving] = useState(false);
+  const [departments, setDepartments] = useState<{ _id: string; name: string }[]>([]);
 
   useEffect(() => {
     fetch('/api/admin/users')
@@ -37,6 +39,13 @@ export default function AdminUsuariosPage() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
+
+    fetch('/api/admin/departments')
+      .then(res => res.json())
+      .then(data => {
+        if (data.departments) setDepartments(data.departments);
+      })
+      .catch(() => {});
   }, []);
 
   const handleDelete = async (id: string) => {
@@ -62,6 +71,7 @@ export default function AdminUsuariosPage() {
         name: editingUser.name,
         email: editingUser.email,
         role: editingUser.role,
+        department: editingUser.department,
         password: editingUser.password
       }),
     });
@@ -223,6 +233,21 @@ export default function AdminUsuariosPage() {
                   <option value="admin">Admin</option>
                 </select>
               </div>
+              {editingUser.role === 'collaborator' && (
+                <div className={styles.field}>
+                  <label>Departamento</label>
+                  <select 
+                    value={editingUser.department} 
+                    onChange={e => setEditingUser({...editingUser, department: e.target.value})}
+                    className={styles.select}
+                  >
+                    <option value="">Selecione um departamento</option>
+                    {departments.map(dept => (
+                      <option key={dept._id} value={dept.name}>{dept.name}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
               <div className={styles.field}>
                 <label>Palavra-passe (deixe em branco para manter a atual)</label>
                 <input 
