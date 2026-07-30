@@ -12,6 +12,7 @@ interface Program {
   phase?: string;
   duration?: string;
   status: string;
+  image?: string;
 }
 
 export default function HomePrograms() {
@@ -62,6 +63,11 @@ export default function HomePrograms() {
             const phaseColor = phaseColors[prog.phase || ''] || '#d4af37';
             return (
               <div key={prog._id} className={styles.card}>
+                {prog.image && (
+                  <div className={styles.cardImage}>
+                    <img src={prog.image} alt={prog.title} />
+                  </div>
+                )}
                 <div className={styles.meta}>
                   {prog.phase && (
                     <span
