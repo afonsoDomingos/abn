@@ -166,9 +166,17 @@ export default function DashboardLayout({
               {!collapsed && <span>Investimentos</span>}
             </Link>
           )}
-          <Link href="/dashboard/formacao" className={isActive('/dashboard/formacao') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Formação' : undefined}>
+          <Link href="/dashboard/cursos" className={isActive('/dashboard/cursos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Cursos' : undefined}>
             <BookOpen size={18} />
-            {!collapsed && <span>Formação</span>}
+            {!collapsed && <span>Cursos</span>}
+          </Link>
+          <Link href="/dashboard/programas" className={isActive('/dashboard/programas') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Programas' : undefined}>
+            <Rocket size={18} />
+            {!collapsed && <span>Programas</span>}
+          </Link>
+          <Link href="/dashboard/eventos" className={isActive('/dashboard/eventos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Eventos' : undefined}>
+            <CalendarDays size={18} />
+            {!collapsed && <span>Eventos</span>}
           </Link>
           <Link href="/dashboard/mensagens" className={isActive('/dashboard/mensagens') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Mensagens' : undefined}>
             <MessageSquare size={18} />
