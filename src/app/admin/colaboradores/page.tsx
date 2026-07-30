@@ -46,7 +46,7 @@ export default function AdminColaboradoresPage() {
       .then(res => res.json())
       .then(data => {
         if (data.users) {
-          const collabs = data.users.filter((u: User) => u.role === 'collaborator');
+          const collabs = data.users.filter((u: any) => u.role === 'collaborator');
           setCollaborators(collabs);
         }
       })
