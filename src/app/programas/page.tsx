@@ -531,7 +531,17 @@ export default function ProgramasPage() {
                 <p className={styles.successNote}>
                   Os dados fornecidos são tratados exclusivamente para fins de gestão da sua adesão ao Clube dos Empreendedores, nos termos da Cláusula de Protecção de Dados do Contrato de Adesão.
                 </p>
-                <button className={styles.clubeInscBtn} onClick={closeModal}>Fechar</button>
+                <div className={styles.successActions}>
+                  <Link href="/programas" className={styles.successActionBtn} onClick={closeModal}>
+                    Ver mais programas
+                  </Link>
+                  <Link href="/cursos" className={styles.successActionBtn} onClick={closeModal}>
+                    Ver cursos
+                  </Link>
+                  <Link href="/eventos" className={styles.successActionBtn} onClick={closeModal}>
+                    Ver eventos
+                  </Link>
+                </div>
               </div>
             ) : (
               <form className={styles.inqueritorForm} onSubmit={handleSubmit}>
