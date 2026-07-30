@@ -9,12 +9,16 @@
 /* ── HERO ── */
 .hero {
   position: relative;
-  padding: 120px 1.5rem 80px;
+  padding: 140px 1.5rem 100px;
+  min-height: 500px;
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
   text-align: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .heroOverlay {
@@ -25,7 +29,7 @@
 .heroContent {
   position: relative;
   z-index: 1;
-  max-width: 760px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -1273,7 +1277,8 @@
   }
 
   .hero {
-    padding: 80px 1rem 50px;
+    padding: 100px 1rem 60px;
+    min-height: 400px;
   }
 
   .heroContent h1 {
@@ -1383,6 +1388,11 @@
 }
 
 @media (max-width: 480px) {
+  .hero {
+    padding: 80px 1rem 50px;
+    min-height: 350px;
+  }
+
   .heroContent h1 {
     font-size: 1.4rem;
   }
