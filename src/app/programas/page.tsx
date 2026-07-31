@@ -655,10 +655,20 @@ export default function ProgramasPage() {
             {/* Modal Header */}
             <div className={styles.modalHeader}>
               <div className={styles.modalHeaderLeft}>
-                <span className={styles.modalHeaderIcon}>🏛️</span>
+                <span className={styles.modalHeaderIcon}>
+                  {submitted && lastSubmission?.tipoPagamento === 'api_directo' ? '📱' : '🏛️'}
+                </span>
                 <div>
-                  <h2 className={styles.modalTitle}>Inquérito de Inscrição</h2>
-                  <p className={styles.modalSubtitle}>Clube dos Empreendedores — ABN | AfroBiz Network</p>
+                  <h2 className={styles.modalTitle}>
+                    {submitted && lastSubmission?.tipoPagamento === 'api_directo'
+                      ? 'Autorização de Pagamento Móvel'
+                      : 'Inquérito de Inscrição'}
+                  </h2>
+                  <p className={styles.modalSubtitle}>
+                    {submitted && lastSubmission?.tipoPagamento === 'api_directo'
+                      ? 'Confirmação com PIN no telemóvel M-Pesa / eMola'
+                      : 'Clube dos Empreendedores — ABN | AfroBiz Network'}
+                  </p>
                 </div>
               </div>
               <button className={styles.modalClose} onClick={closeModal} aria-label="Fechar">✕</button>
@@ -702,37 +712,83 @@ export default function ProgramasPage() {
                         )}
                       </div>
                     )}
-                  </>
-                ) : (
-                  <>
-                    <div className={styles.successIcon} style={{ background: '#dbeafe', color: '#2563eb', border: '2px solid #3b82f6' }}>📱</div>
-                    <span style={{ background: '#dbeafe', color: '#1d4ed8', fontWeight: 800, padding: '4px 14px', borderRadius: '20px', fontSize: '0.8rem', display: 'inline-block', marginBottom: '0.75rem' }}>
-                      Pagamento Direto — Confirmação de PIN Solicitada
-                    </span>
-                    <h3 style={{ margin: '0 0 0.5rem 0' }}>Confirme no seu Telemóvel!</h3>
-                    <p style={{ margin: '0 0 1rem 0', color: '#334155', lineHeight: '1.6' }}>
-                      Obrigado, <strong>{form.nomeCompleto || 'candidato'}</strong>! Enviámos a solicitação de débito no valor de <strong>{lastSubmission?.valorPago}</strong> para o telemóvel <strong>{lastSubmission?.telefonePagamento || 'registado'}</strong>.
+
+                    <p className={styles.successNote}>
+                      Os dados fornecidos são tratados exclusivamente para fins de gestão da sua adesão ao Clube dos Empreendedores, nos termos da Cláusula de Protecção de Dados.
                     </p>
-                    <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '12px', padding: '1rem', marginBottom: '1.25rem', color: '#1e40af', fontSize: '0.88rem', lineHeight: '1.5', textAlign: 'left' }}>
-                      💡 <strong>Passo seguinte:</strong> Por favor, verifique o seu ecrã de telemóvel e introduza o seu <strong>PIN M-Pesa / eMola</strong> para autorizar a transação.
+                    <div className={styles.successActions}>
+                      <Link href="/programas" className={styles.successActionBtn} onClick={closeModal}>
+                        Ver mais programas
+                      </Link>
+                      <Link href="/cursos" className={styles.successActionBtn} onClick={closeModal}>
+                        Ver cursos
+                      </Link>
+                      <Link href="/eventos" className={styles.successActionBtn} onClick={closeModal}>
+                        Ver eventos
+                      </Link>
                     </div>
                   </>
-                )}
+                ) : (
+                  /* ── COMPACT MOBILE PIN POPUP DIALOG ── */
+                  <div style={{ maxWidth: '440px', margin: '0 auto', padding: '0.5rem 0', textAlign: 'center' }}>
+                    {/* Live Mobile Push Payment Icon with Pulse Indicator */}
+                    <div style={{ position: 'relative', width: '72px', height: '72px', margin: '0 auto 1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#eff6ff', borderRadius: '50%', border: '2px solid #3b82f6', boxShadow: '0 8px 20px rgba(59, 130, 246, 0.15)' }}>
+                      <span style={{ fontSize: '2.2rem' }}>📱</span>
+                      <span style={{ position: 'absolute', top: '2px', right: '2px', width: '16px', height: '16px', background: '#10b981', borderRadius: '50%', border: '2px solid #ffffff' }} />
+                    </div>
 
-                <p className={styles.successNote}>
-                  Os dados fornecidos são tratados exclusivamente para fins de gestão da sua adesão ao Clube dos Empreendedores, nos termos da Cláusula de Protecção de Dados.
-                </p>
-                <div className={styles.successActions}>
-                  <Link href="/programas" className={styles.successActionBtn} onClick={closeModal}>
-                    Ver mais programas
-                  </Link>
-                  <Link href="/cursos" className={styles.successActionBtn} onClick={closeModal}>
-                    Ver cursos
-                  </Link>
-                  <Link href="/eventos" className={styles.successActionBtn} onClick={closeModal}>
-                    Ver eventos
-                  </Link>
-                </div>
+                    <span style={{ background: '#dbeafe', color: '#1e40af', fontWeight: 800, padding: '5px 14px', borderRadius: '20px', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      📲 Pedido de PIN Enviado ao Telemóvel
+                    </span>
+
+                    <h3 style={{ margin: '0.9rem 0 0.3rem 0', fontSize: '1.4rem', fontWeight: 900, color: '#0f172a' }}>
+                      Confirme no seu Telemóvel!
+                    </h3>
+                    
+                    <p style={{ margin: '0 0 1.25rem 0', color: '#475569', fontSize: '0.88rem', lineHeight: '1.5' }}>
+                      Enviámos o pedido de débito referente à candidatura de <strong>{form.nomeCompleto || 'candidato'}</strong>.
+                    </p>
+
+                    {/* Compact Payment Box */}
+                    <div style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', borderRadius: '14px', padding: '1rem 1.25rem', marginBottom: '1.25rem' }}>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 800, marginBottom: '0.2rem' }}>
+                        Valor Solicitado
+                      </div>
+                      <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#ff6b00', letterSpacing: '-0.5px' }}>
+                        {lastSubmission?.valorPago}
+                      </div>
+                      <div style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid #e2e8f0', fontSize: '0.88rem', color: '#1e293b', fontWeight: 700 }}>
+                        📱 Telemóvel: <span style={{ color: '#2563eb', fontWeight: 800 }}>{lastSubmission?.telefonePagamento || form.telefonePagamento || 'Registado'}</span>
+                      </div>
+                    </div>
+
+                    <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '12px', padding: '0.85rem 1rem', marginBottom: '1.5rem', color: '#1e40af', fontSize: '0.85rem', lineHeight: '1.5', textAlign: 'left' }}>
+                      💡 <strong>Menu no Telemóvel:</strong> Surgirá um pop-up no seu ecrã para introduzir o seu <strong>PIN M-Pesa / eMola</strong> e autorizar.
+                    </div>
+
+                    {/* Action Buttons: Confirm or Cancel */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                      <button
+                        type="button"
+                        onClick={closeModal}
+                        style={{ width: '100%', padding: '12px 18px', borderRadius: '10px', background: '#22c55e', color: '#ffffff', border: 'none', fontWeight: 800, fontSize: '0.95rem', cursor: 'pointer', boxShadow: '0 4px 12px rgba(34, 197, 94, 0.25)', transition: 'all 0.2s' }}
+                      >
+                        ✓ Já Introduzi o PIN no Telemóvel
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSubmitted(false);
+                          setCurrentStep(7);
+                        }}
+                        style={{ width: '100%', padding: '10px 18px', borderRadius: '10px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fca5a5', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', transition: 'all 0.2s' }}
+                      >
+                        ✕ Cancelar Operação / Alterar Método
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <form className={styles.inqueritorForm} onSubmit={handleSubmit}>
