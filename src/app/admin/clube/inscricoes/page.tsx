@@ -13,6 +13,9 @@ interface Inscricao {
   sector?: string[];
   nivelAdesao: string;
   formaPagamento?: string;
+  comprovativoUrl?: string;
+  valorPago?: string;
+  statusPagamento?: string;
   areasInteresse?: string[];
   comoConheceu?: string;
   localData?: string;
@@ -254,12 +257,22 @@ export default function AdminInscricoesClubePage() {
                 </div>
               )}
 
-              {/* Adesão */}
+              {/* Adesão & Pagamento */}
               <div className={styles.detailSection}>
-                <h4 className={styles.detailSectionTitle}>🏛️ Adesão</h4>
+                <h4 className={styles.detailSectionTitle}>🏛️ Adesão &amp; Pagamento</h4>
                 <div className={styles.detailGrid}>
                   <div className={styles.detailItem}><span>Nível</span><p>{NIVEL_LABELS[selected.nivelAdesao] || selected.nivelAdesao}</p></div>
                   {selected.formaPagamento && <div className={styles.detailItem}><span>Pagamento</span><p style={{ textTransform: 'capitalize' }}>{selected.formaPagamento}</p></div>}
+                  {selected.comprovativoUrl && (
+                    <div className={styles.detailItem} style={{ gridColumn: 'span 2' }}>
+                      <span>Comprovativo de Pagamento</span>
+                      <p>
+                        <a href={selected.comprovativoUrl} target="_blank" rel="noreferrer" style={{ color: '#ff6b00', fontWeight: 800, textDecoration: 'underline' }}>
+                          📄 Visualizar / Descarregar Comprovativo
+                        </a>
+                      </p>
+                    </div>
+                  )}
                   {selected.comoConheceu && <div className={styles.detailItem}><span>Como conheceu</span><p>{selected.comoConheceu}{selected.comoConheceuOutro ? ` — ${selected.comoConheceuOutro}` : ''}</p></div>}
                   <div className={styles.detailItem}><span>Origem</span><p>{selected.origem === 'home' ? 'Página Inicial' : 'Página de Programas'}</p></div>
                 </div>

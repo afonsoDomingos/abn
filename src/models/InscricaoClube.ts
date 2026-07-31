@@ -13,6 +13,9 @@ export interface IInscricaoClube extends Document {
   sectorOutro?: string;
   nivelAdesao: string;
   formaPagamento?: string;
+  comprovativoUrl?: string;
+  valorPago?: string;
+  statusPagamento?: string;
   areasInteresse?: string[];
   comoConheceu?: string;
   comoConheceuOutro?: string;
@@ -37,6 +40,9 @@ const InscricaoClubeSchema = new Schema<IInscricaoClube>({
   sectorOutro: String,
   nivelAdesao: { type: String, required: true },
   formaPagamento: String,
+  comprovativoUrl: String,
+  valorPago: String,
+  statusPagamento: { type: String, default: 'pendente' },
   areasInteresse: [String],
   comoConheceu: String,
   comoConheceuOutro: String,

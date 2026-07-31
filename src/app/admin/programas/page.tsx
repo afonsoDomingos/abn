@@ -11,6 +11,8 @@ interface Program {
   beneficios?: string;
   requisitos?: string;
   investimento?: string;
+  price?: string;
+  paymentInstructions?: string;
   processoSelecao?: string;
   criteriosSelecao?: string;
   phase?: string;
@@ -55,6 +57,8 @@ export default function AdminProgramasPage() {
   const [beneficios, setBeneficios] = useState('');
   const [requisitos, setRequisitos] = useState('');
   const [investimento, setInvestimento] = useState('');
+  const [price, setPrice] = useState('');
+  const [paymentInstructions, setPaymentInstructions] = useState('');
   const [processoSelecao, setProcessoSelecao] = useState('');
   const [criteriosSelecao, setCriteriosSelecao] = useState('');
   // Club specific states
@@ -101,6 +105,8 @@ export default function AdminProgramasPage() {
     setBeneficios(prog.beneficios || '');
     setRequisitos(prog.requisitos || '');
     setInvestimento(prog.investimento || '');
+    setPrice(prog.price || '');
+    setPaymentInstructions(prog.paymentInstructions || '');
     setProcessoSelecao(prog.processoSelecao || '');
     setCriteriosSelecao(prog.criteriosSelecao || '');
     setIsClub(prog.isClub || false);
@@ -131,6 +137,8 @@ export default function AdminProgramasPage() {
     setBeneficios('');
     setRequisitos('');
     setInvestimento('');
+    setPrice('');
+    setPaymentInstructions('');
     setProcessoSelecao('');
     setCriteriosSelecao('');
     setIsClub(false);
@@ -240,6 +248,8 @@ export default function AdminProgramasPage() {
       beneficios,
       requisitos,
       investimento,
+      price,
+      paymentInstructions,
       processoSelecao,
       criteriosSelecao,
       isClub,
@@ -412,11 +422,28 @@ export default function AdminProgramasPage() {
                 </div>
               </div>
               <div className={styles.field}>
+                <label>Preço / Taxa de Inscrição (MT ou Gratuito) 💳</label>
+                <input
+                  value={price}
+                  onChange={e => setPrice(e.target.value)}
+                  placeholder="Ex: 5.000 MT, 500 MT/mês ou Gratuito"
+                />
+              </div>
+              <div className={styles.field}>
                 <label>Tipo de Programa</label>
                 <select value={isClub ? 'clube' : 'programa'} onChange={e => setIsClub(e.target.value === 'clube')}>
                   <option value="programa">Programa Regular</option>
                   <option value="clube">Clube de Empreendedores</option>
                 </select>
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Instruções de Pagamento (M-Pesa / eMola / IBAN Bancário)</label>
+                <textarea
+                  value={paymentInstructions}
+                  onChange={e => setPaymentInstructions(e.target.value)}
+                  placeholder="Ex: M-Pesa: 841234567 | eMola: 861234567 | BAO: 0012-9876-0026-NIB-ABN"
+                  rows={2}
+                />
               </div>
               <div className={`${styles.field} ${styles.fullWidth}`}>
                 <label>Foto de Capa do Programa (URL ou Upload)</label>

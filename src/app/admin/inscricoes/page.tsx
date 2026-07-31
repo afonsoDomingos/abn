@@ -15,6 +15,8 @@ interface UnifiedInscription {
   // Programas specific
   nivelAdesao?: string;
   origem?: string;
+  comprovativoUrl?: string;
+  formaPagamento?: string;
   // Cursos specific
   progresso?: string;
   // Eventos specific
@@ -65,7 +67,9 @@ export default function AdminInscricoesPage() {
             itemTitle: `Clube - ${i.nivelAdesao}`,
             createdAt: i.createdAt,
             nivelAdesao: i.nivelAdesao,
-            origem: i.origem
+            origem: i.origem,
+            comprovativoUrl: i.comprovativoUrl,
+            formaPagamento: i.formaPagamento
           });
         });
       }
@@ -317,6 +321,7 @@ export default function AdminInscricoesPage() {
                 <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.85rem', color: '#64748b' }}>Email</th>
                 <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.85rem', color: '#64748b' }}>Tipo</th>
                 <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.85rem', color: '#64748b' }}>Item</th>
+                <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.85rem', color: '#64748b' }}>Comprovativo</th>
                 <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.85rem', color: '#64748b' }}>Status</th>
                 <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.85rem', color: '#64748b' }}>Data</th>
               </tr>
@@ -340,6 +345,15 @@ export default function AdminInscricoesPage() {
                     </span>
                   </td>
                   <td style={{ padding: '1rem', color: '#64748b', fontSize: '0.9rem' }}>{i.itemTitle}</td>
+                  <td style={{ padding: '1rem' }}>
+                    {i.comprovativoUrl ? (
+                      <a href={i.comprovativoUrl} target="_blank" rel="noreferrer" style={{ color: '#ff6b00', fontWeight: 800, fontSize: '0.8rem', textDecoration: 'underline' }}>
+                        📄 Ver Comprovativo
+                      </a>
+                    ) : (
+                      <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>—</span>
+                    )}
+                  </td>
                   <td style={{ padding: '1rem' }}>
                     <span style={{
                       padding: '4px 10px',

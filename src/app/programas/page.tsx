@@ -15,6 +15,8 @@ interface Program {
   beneficios?: string;
   requisitos?: string;
   investimento?: string;
+  price?: string;
+  paymentInstructions?: string;
   processoSelecao?: string;
   criteriosSelecao?: string;
   phase?: string;
@@ -138,6 +140,8 @@ interface InqueritorForm {
   // Sec 3
   nivelAdesao: string;
   formaPagamento: string;
+  metodoPagamento: string;
+  comprovativoUrl: string;
   // Sec 4
   areasInteresse: string[];
   // Sec 5
@@ -151,7 +155,7 @@ interface InqueritorForm {
 const initialForm: InqueritorForm = {
   nomeCompleto: '', docIdentificacao: '', nuit: '', email: '', endereco: '',
   nomeNegocio: '', alvara: '', sector: [], sectorOutro: '',
-  nivelAdesao: '', formaPagamento: '',
+  nivelAdesao: '', formaPagamento: '', metodoPagamento: 'mpesa', comprovativoUrl: '',
   areasInteresse: [],
   comoConheceu: '', comoConheceuOutro: '',
   localData: '', assinatura: '',
@@ -164,6 +168,7 @@ export default function ProgramasPage() {
   const [bannerUrl, setBannerUrl] = useState('/hero_entrepreneurs.png');
   const [showInquerito, setShowInquerito] = useState(false);
   const [form, setForm] = useState<InqueritorForm>(initialForm);
+  const [uploadingProof, setUploadingProof] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [clubeExpanded, setClubeExpanded] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
@@ -224,6 +229,28 @@ export default function ProgramasPage() {
         ? f.areasInteresse.filter(s => s !== val)
         : [...f.areasInteresse, val]
     }));
+  };
+
+  const handleProofUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    setUploadingProof(true);
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setForm(f => ({ ...f, comprovativoUrl: data.url }));
+      } else {
+        alert(data.error || 'Erro ao carregar comprovativo.');
+      }
+    } catch {
+      alert('Erro de conexão ao carregar comprovativo.');
+    } finally {
+      setUploadingProof(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -450,6 +477,9 @@ export default function ProgramasPage() {
                           )}
                           {prog.duration && (
                             <span className={styles.durationBadge}>⏱️ {prog.duration}</span>
+                          )}
+                          {prog.price && (
+                            <span className={styles.durationBadge} style={{ color: '#ff6b00', borderColor: 'rgba(255,107,0,0.3)', fontWeight: 800 }}>💳 {prog.price}</span>
                           )}
                         </div>
                         <h2 className={styles.cardTitle}>{prog.title}</h2>
@@ -764,7 +794,7 @@ export default function ProgramasPage() {
                       </div>
                     </div>
                     <div className={styles.formField} style={{ marginTop: '1rem' }}>
-                      <label>Forma de pagamento da quota</label>
+                      <label>Periodicidade da quota</label>
                       <div className={styles.radioGroupRow}>
                         {[
                           { val: 'anual', label: 'Anual (com desconto de 10%)' },
@@ -784,6 +814,86 @@ export default function ProgramasPage() {
                             {opt.label}
                           </label>
                         ))}
+                      </div>
+                    </div>
+
+                    <div className={styles.formField} style={{ marginTop: '1.25rem' }}>
+                      <label style={{ fontWeight: 800, fontSize: '0.95rem', color: '#ff6b00', display: 'block', marginBottom: '0.5rem' }}>
+                        💳 Método de Pagamento do Programa / Adesão
+                      </label>
+                      <div className={styles.radioGroupRow} style={{ flexWrap: 'wrap', gap: '0.75rem' }}>
+                        {[
+                          { val: 'mpesa', label: '📲 M-Pesa' },
+                          { val: 'emola', label: '📲 eMola' },
+                          { val: 'cartao', label: '💳 Cartão / Checkout' },
+                          { val: 'banco', label: '🏦 Transferência Bancária' },
+                        ].map(opt => (
+                          <label key={opt.val} className={`${styles.radioLabelRow} ${form.metodoPagamento === opt.val ? styles.radioLabelRowActive : ''}`} style={{ padding: '0.6rem 1rem', borderRadius: '8px' }}>
+                            <input
+                              type="radio"
+                              name="metodoPagamento"
+                              className={styles.radioInput}
+                              value={opt.val}
+                              checked={form.metodoPagamento === opt.val}
+                              onChange={() => setForm(f => ({ ...f, metodoPagamento: opt.val }))}
+                            />
+                            <span className={styles.radioCircle}></span>
+                            {opt.label}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Payment Instructions & Proof Upload Box */}
+                    <div style={{ marginTop: '1rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '1.25rem' }}>
+                      <h4 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontSize: '0.95rem', fontWeight: 800 }}>
+                        📌 Instruções de Pagamento ({form.metodoPagamento.toUpperCase()})
+                      </h4>
+                      
+                      {form.metodoPagamento === 'mpesa' && (
+                        <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
+                          <p style={{ margin: 0 }}>Envie o valor correspondente via M-Pesa para o número: <strong>84 123 4567 / 85 987 6543</strong> (Titular: AfroBiz Network Lda.).</p>
+                        </div>
+                      )}
+                      {form.metodoPagamento === 'emola' && (
+                        <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
+                          <p style={{ margin: 0 }}>Envie o valor correspondente via eMola para o número: <strong>86 123 4567</strong> (Titular: AfroBiz Network Lda.).</p>
+                        </div>
+                      )}
+                      {form.metodoPagamento === 'cartao' && (
+                        <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
+                          <p style={{ margin: 0 }}>Pagamento direto com Cartão de Débito/Crédito Visa ou Mastercard. A nossa equipa entrará em contacto com o link de checkout seguro após a candidatura.</p>
+                        </div>
+                      )}
+                      {form.metodoPagamento === 'banco' && (
+                        <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
+                          <p style={{ margin: '0 0 0.3rem 0' }}><strong>Banco:</strong> Banco da África Ocidental (BAO)</p>
+                          <p style={{ margin: '0 0 0.3rem 0' }}><strong>NIB:</strong> 0012-9876-0026-NIB-ABN</p>
+                          <p style={{ margin: 0 }}><strong>Titular:</strong> AfroBiz Network Lda.</p>
+                        </div>
+                      )}
+
+                      <div style={{ marginTop: '1rem', borderTop: '1px dashed #cbd5e1', paddingTop: '0.8rem' }}>
+                        <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#475569', marginBottom: '0.4rem' }}>
+                          📎 Anexar Comprovativo de Pagamento (opcional ou após transferência)
+                        </label>
+                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                          <input
+                            type="file"
+                            accept="image/*,application/pdf"
+                            onChange={e => {
+                              const file = e.target.files?.[0];
+                              if (file) handleProofUpload(file);
+                            }}
+                            style={{ fontSize: '0.85rem' }}
+                          />
+                          {uploadingProof && <span style={{ fontSize: '0.85rem', color: '#ff6b00', fontWeight: 600 }}>⏳ A carregar...</span>}
+                        </div>
+                        {form.comprovativoUrl && (
+                          <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#10b981', fontWeight: 700 }}>
+                            ✅ Comprovativo anexado com sucesso!
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

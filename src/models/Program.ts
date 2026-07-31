@@ -7,6 +7,8 @@ const ProgramSchema = new Schema({
   beneficios: { type: String, default: '' },
   requisitos: { type: String, default: '' },
   investimento: { type: String, default: '' },
+  price: { type: String, default: '' },
+  paymentInstructions: { type: String, default: '' },
   processoSelecao: { type: String, default: '' },
   criteriosSelecao: { type: String, default: '' },
   phase: { type: String, default: '' },

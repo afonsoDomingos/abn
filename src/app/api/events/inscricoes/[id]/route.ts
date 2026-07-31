@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export async function PATCH(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get('token')?.value;
+    const token = cookieStore.get('abn_session')?.value || cookieStore.get('token')?.value;
     if (!token) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
 
     const { id } = await context.params;
@@ -31,7 +31,7 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get('token')?.value;
+    const token = cookieStore.get('abn_session')?.value || cookieStore.get('token')?.value;
     if (!token) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
 
     const { id } = await context.params;

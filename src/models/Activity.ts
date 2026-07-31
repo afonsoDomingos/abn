@@ -21,9 +21,8 @@ const ActivitySchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-ActivitySchema.pre('save', function(next) {
+ActivitySchema.pre('save', function() {
   this.updatedAt = new Date();
-  next();
 });
 
 export default mongoose.models.Activity || mongoose.model('Activity', ActivitySchema);
