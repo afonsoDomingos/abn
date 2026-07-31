@@ -17,6 +17,7 @@ interface Inscricao {
   valorPago?: string;
   statusPagamento?: string;
   telefonePagamento?: string;
+  tipoPagamento?: string;
   areasInteresse?: string[];
   comoConheceu?: string;
   localData?: string;
@@ -264,6 +265,14 @@ export default function AdminInscricoesClubePage() {
                 <div className={styles.detailGrid}>
                   <div className={styles.detailItem}><span>Nível</span><p>{NIVEL_LABELS[selected.nivelAdesao] || selected.nivelAdesao}</p></div>
                   {selected.formaPagamento && <div className={styles.detailItem}><span>Pagamento</span><p style={{ textTransform: 'capitalize' }}>{selected.formaPagamento}</p></div>}
+                  {selected.tipoPagamento && (
+                    <div className={styles.detailItem}>
+                      <span>Modo de Pagamento</span>
+                      <p style={{ fontWeight: 800, color: selected.tipoPagamento === 'comprovativo_manual' ? '#d97706' : '#2563eb' }}>
+                        {selected.tipoPagamento === 'comprovativo_manual' ? '⏳ Comprovativo Manual (Em Análise)' : '⚡ API Direta / PIN Telemóvel'}
+                      </p>
+                    </div>
+                  )}
                   {selected.telefonePagamento && <div className={styles.detailItem}><span>Telemóvel Pagamento</span><p style={{ fontWeight: 700, color: '#0f172a' }}>📱 {selected.telefonePagamento}</p></div>}
                   {selected.comprovativoUrl && (
                     <div className={styles.detailItem} style={{ gridColumn: 'span 2' }}>

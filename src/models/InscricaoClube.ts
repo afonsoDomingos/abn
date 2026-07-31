@@ -17,6 +17,7 @@ export interface IInscricaoClube extends Document {
   valorPago?: string;
   statusPagamento?: string;
   telefonePagamento?: string;
+  tipoPagamento?: string; // 'api_directo' | 'comprovativo_manual'
   areasInteresse?: string[];
   comoConheceu?: string;
   comoConheceuOutro?: string;
@@ -45,6 +46,7 @@ const InscricaoClubeSchema = new Schema<IInscricaoClube>({
   valorPago: String,
   statusPagamento: { type: String, default: 'pendente' },
   telefonePagamento: String,
+  tipoPagamento: String,
   areasInteresse: [String],
   comoConheceu: String,
   comoConheceuOutro: String,

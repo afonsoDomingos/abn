@@ -171,6 +171,7 @@ export default function ProgramasPage() {
   const [form, setForm] = useState<InqueritorForm>(initialForm);
   const [uploadingProof, setUploadingProof] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [lastSubmission, setLastSubmission] = useState<{ tipoPagamento: string; comprovativoUrl?: string; telefonePagamento?: string; valorPago?: string } | null>(null);
   const [clubeExpanded, setClubeExpanded] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 7;
@@ -348,17 +349,34 @@ export default function ProgramasPage() {
     }
 
     const calc = calculateTotalValues();
+    const isManualProof = Boolean(form.comprovativoUrl && form.comprovativoUrl.trim() !== '');
+    const tipoPagamento = isManualProof ? 'comprovativo_manual' : 'api_directo';
+    const statusPagamento = isManualProof ? 'em_verificacao' : 'aguardando_pin';
+
+    const payload = {
+      ...form,
+      valorPago: `${calc.valorTotal} MT`,
+      tipoPagamento,
+      statusPagamento,
+      origem: 'programas',
+    };
     
     try {
-      console.log('Enviando formulário:', { ...form, valorPago: `${calc.valorTotal} MT`, origem: 'programas' });
+      console.log('Enviando formulário:', payload);
       const response = await fetch('/api/clube/inscricoes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, valorPago: `${calc.valorTotal} MT`, origem: 'programas' }),
+        body: JSON.stringify(payload),
       });
       const data = await response.json();
       console.log('Resposta da API:', data);
       if (data.success) {
+        setLastSubmission({
+          tipoPagamento,
+          comprovativoUrl: form.comprovativoUrl,
+          telefonePagamento: form.telefonePagamento,
+          valorPago: `${calc.valorTotal} MT`,
+        });
         setSubmitted(true);
       } else {
         alert('Erro ao submeter inquérito: ' + (data.error || 'Tente novamente'));
@@ -648,14 +666,61 @@ export default function ProgramasPage() {
 
             {submitted ? (
               <div className={styles.successState}>
-                <div className={styles.successIcon}>✅</div>
-                <h3>Inquérito enviado com sucesso!</h3>
-                <p>
-                  Obrigado, <strong>{form.nomeCompleto || 'candidato'}</strong>. O seu inquérito de inscrição foi recebido.
-                  A equipa ABN irá analisar o seu perfil e entrar em contacto brevemente.
-                </p>
+                {lastSubmission?.tipoPagamento === 'comprovativo_manual' ? (
+                  <>
+                    <div className={styles.successIcon} style={{ background: '#fef3c7', color: '#d97706', border: '2px solid #f59e0b' }}>⏳</div>
+                    <span style={{ background: '#fef3c7', color: '#b45309', fontWeight: 800, padding: '4px 14px', borderRadius: '20px', fontSize: '0.8rem', display: 'inline-block', marginBottom: '0.75rem' }}>
+                      Comprovativo Recebido — Aguardando Aprovação Manual
+                    </span>
+                    <h3 style={{ margin: '0 0 0.5rem 0' }}>Candidatura em Verificação!</h3>
+                    <p style={{ margin: '0 0 1rem 0', color: '#334155', lineHeight: '1.6' }}>
+                      Obrigado, <strong>{form.nomeCompleto || 'candidato'}</strong>. O seu comprovativo de pagamento no valor de <strong>{lastSubmission.valorPago}</strong> foi recebido com sucesso.
+                      A equipa ABN irá analisar o comprovativo e aprovar a sua adesão brevemente.
+                    </p>
+
+                    {/* Preview Visual do Comprovativo Anexado */}
+                    {lastSubmission.comprovativoUrl && (
+                      <div style={{ background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '12px', padding: '1rem', marginBottom: '1.25rem', textAlign: 'center' }}>
+                        <span style={{ display: 'block', fontSize: '0.82rem', fontWeight: 800, color: '#475569', marginBottom: '0.5rem' }}>
+                          📄 Comprovativo Anexado pelo Candidato:
+                        </span>
+                        {lastSubmission.comprovativoUrl.match(/\.(jpeg|jpg|png|gif|webp)$/i) ? (
+                          <img
+                            src={lastSubmission.comprovativoUrl}
+                            alt="Comprovativo anexado"
+                            style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '8px', objectFit: 'contain', border: '1px solid #cbd5e1', background: '#fff' }}
+                          />
+                        ) : (
+                          <a
+                            href={lastSubmission.comprovativoUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#ff6b00', color: '#fff', padding: '8px 16px', borderRadius: '8px', textDecoration: 'none', fontWeight: 700, fontSize: '0.85rem' }}
+                          >
+                            📄 Visualizar Documento Anexado
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.successIcon} style={{ background: '#dbeafe', color: '#2563eb', border: '2px solid #3b82f6' }}>📱</div>
+                    <span style={{ background: '#dbeafe', color: '#1d4ed8', fontWeight: 800, padding: '4px 14px', borderRadius: '20px', fontSize: '0.8rem', display: 'inline-block', marginBottom: '0.75rem' }}>
+                      Pagamento Direto — Confirmação de PIN Solicitada
+                    </span>
+                    <h3 style={{ margin: '0 0 0.5rem 0' }}>Confirme no seu Telemóvel!</h3>
+                    <p style={{ margin: '0 0 1rem 0', color: '#334155', lineHeight: '1.6' }}>
+                      Obrigado, <strong>{form.nomeCompleto || 'candidato'}</strong>! Enviámos a solicitação de débito no valor de <strong>{lastSubmission?.valorPago}</strong> para o telemóvel <strong>{lastSubmission?.telefonePagamento || 'registado'}</strong>.
+                    </p>
+                    <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '12px', padding: '1rem', marginBottom: '1.25rem', color: '#1e40af', fontSize: '0.88rem', lineHeight: '1.5', textAlign: 'left' }}>
+                      💡 <strong>Passo seguinte:</strong> Por favor, verifique o seu ecrã de telemóvel e introduza o seu <strong>PIN M-Pesa / eMola</strong> para autorizar a transação.
+                    </div>
+                  </>
+                )}
+
                 <p className={styles.successNote}>
-                  Os dados fornecidos são tratados exclusivamente para fins de gestão da sua adesão ao Clube dos Empreendedores, nos termos da Cláusula de Protecção de Dados do Contrato de Adesão.
+                  Os dados fornecidos são tratados exclusivamente para fins de gestão da sua adesão ao Clube dos Empreendedores, nos termos da Cláusula de Protecção de Dados.
                 </p>
                 <div className={styles.successActions}>
                   <Link href="/programas" className={styles.successActionBtn} onClick={closeModal}>
