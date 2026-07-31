@@ -173,7 +173,7 @@ export default function ProgramasPage() {
   const [submitted, setSubmitted] = useState(false);
   const [clubeExpanded, setClubeExpanded] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 6;
+  const totalSteps = 7;
 
   useEffect(() => {
     fetch('/api/programs')
@@ -254,6 +254,86 @@ export default function ProgramasPage() {
     }
   };
 
+  const calculateTotalValues = () => {
+    let taxaInscricao = 0;
+    let valorQuotaBase = 0;
+    let descricaoQuota = '';
+
+    switch (form.nivelAdesao) {
+      case 'jovem':
+        taxaInscricao = 300;
+        valorQuotaBase = 1000;
+        descricaoQuota = 'Jovem / Estudante';
+        break;
+      case 'individual':
+        taxaInscricao = 500;
+        valorQuotaBase = 2400;
+        descricaoQuota = 'Individual';
+        break;
+      case 'empresa':
+        taxaInscricao = 1500;
+        valorQuotaBase = 6000;
+        descricaoQuota = 'Empresa / PME';
+        break;
+      case 'corp-gold':
+        taxaInscricao = 5000;
+        valorQuotaBase = 20000;
+        descricaoQuota = 'Corporate Gold';
+        break;
+      case 'corp-platinum':
+        taxaInscricao = 10000;
+        valorQuotaBase = 40000;
+        descricaoQuota = 'Corporate Platinum';
+        break;
+      case 'corp-founding':
+        taxaInscricao = 0;
+        valorQuotaBase = 0;
+        descricaoQuota = 'Corporate Founding Partner';
+        break;
+      case 'honorario':
+        taxaInscricao = 0;
+        valorQuotaBase = 0;
+        descricaoQuota = 'Honorário (Isento)';
+        break;
+      default:
+        taxaInscricao = 0;
+        valorQuotaBase = 0;
+        descricaoQuota = 'Padrão';
+        break;
+    }
+
+    let quotaCobrada = 0;
+    let desconto = 0;
+    let periodoLabel = '';
+
+    if (form.nivelAdesao === 'honorario' || form.nivelAdesao === 'corp-founding') {
+      quotaCobrada = 0;
+      periodoLabel = 'Isento / Sob Consulta';
+    } else if (form.formaPagamento === 'mensal') {
+      quotaCobrada = Math.round(valorQuotaBase / 12);
+      periodoLabel = 'Quota Mensal';
+    } else if (form.formaPagamento === 'trimestral') {
+      quotaCobrada = Math.round(valorQuotaBase / 4);
+      periodoLabel = 'Quota Trimestral';
+    } else {
+      desconto = Math.round(valorQuotaBase * 0.10);
+      quotaCobrada = valorQuotaBase - desconto;
+      periodoLabel = 'Quota Anual (com 10% desc.)';
+    }
+
+    const valorTotal = taxaInscricao + quotaCobrada;
+
+    return {
+      taxaInscricao,
+      valorQuotaBase,
+      quotaCobrada,
+      desconto,
+      valorTotal,
+      descricaoQuota,
+      periodoLabel,
+    };
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (currentStep < totalSteps) {
@@ -266,13 +346,15 @@ export default function ProgramasPage() {
       alert('Por favor, preencha todos os campos obrigatórios: Nome, Email e Nível de Adesão.');
       return;
     }
+
+    const calc = calculateTotalValues();
     
     try {
-      console.log('Enviando formulário:', { ...form, origem: 'programas' });
+      console.log('Enviando formulário:', { ...form, valorPago: `${calc.valorTotal} MT`, origem: 'programas' });
       const response = await fetch('/api/clube/inscricoes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, origem: 'programas' }),
+        body: JSON.stringify({ ...form, valorPago: `${calc.valorTotal} MT`, origem: 'programas' }),
       });
       const data = await response.json();
       console.log('Resposta da API:', data);
@@ -294,6 +376,9 @@ export default function ProgramasPage() {
   const canProceed = () => {
     if (currentStep === 1) {
       return form.nomeCompleto.trim() !== '' && form.email.trim() !== '';
+    }
+    if (currentStep === 3) {
+      return form.nivelAdesao.trim() !== '';
     }
     if (currentStep === 6) {
       return form.assinatura.trim() !== '';
@@ -603,6 +688,7 @@ export default function ProgramasPage() {
                           {i + 1 === 4 && 'Interesses'}
                           {i + 1 === 5 && 'Origem'}
                           {i + 1 === 6 && 'Declaração'}
+                          {i + 1 === 7 && 'Checkout 💳'}
                         </span>
                       </div>
                     ))}
@@ -615,10 +701,11 @@ export default function ProgramasPage() {
                 <p className={styles.formIntro}>
                   {currentStep === 1 && 'Preencha os campos abaixo. Os dados fornecidos serão utilizados exclusivamente para fins de gestão da sua adesão ao Clube dos Empreendedores.'}
                   {currentStep === 2 && 'Informações sobre o seu negócio ou actividade (opcional).'}
-                  {currentStep === 3 && 'Seleccione o nível de adesão pretendido e forma de pagamento.'}
+                  {currentStep === 3 && 'Seleccione o nível de adesão pretendido e a periodicidade da quota.'}
                   {currentStep === 4 && 'Seleccione as áreas de interesse (pode seleccionar múltiplas).'}
                   {currentStep === 5 && 'Como conheceu o Clube dos Empreendedores?'}
-                  {currentStep === 6 && 'Revise a declaração e assine para submeter o inquérito.'}
+                  {currentStep === 6 && 'Revise a declaração e assine para avançar para o checkout de pagamento.'}
+                  {currentStep === 7 && 'Revise os seus dados, confira os valores calculados automaticamente e selecione a forma de pagamento para concluir.'}
                 </p>
 
                 {/* ── SECÇÃO 1 ── */}
@@ -817,102 +904,6 @@ export default function ProgramasPage() {
                         ))}
                       </div>
                     </div>
-
-                    <div className={styles.formField} style={{ marginTop: '1.25rem' }}>
-                      <label style={{ fontWeight: 800, fontSize: '0.95rem', color: '#ff6b00', display: 'block', marginBottom: '0.5rem' }}>
-                        💳 Método de Pagamento do Programa / Adesão
-                      </label>
-                      <div className={styles.radioGroupRow} style={{ flexWrap: 'wrap', gap: '0.75rem' }}>
-                        {[
-                          { val: 'mpesa', label: '📲 M-Pesa' },
-                          { val: 'emola', label: '📲 eMola' },
-                          { val: 'cartao', label: '💳 Cartão / Checkout' },
-                          { val: 'banco', label: '🏦 Transferência Bancária' },
-                        ].map(opt => (
-                          <label key={opt.val} className={`${styles.radioLabelRow} ${form.metodoPagamento === opt.val ? styles.radioLabelRowActive : ''}`} style={{ padding: '0.6rem 1rem', borderRadius: '8px' }}>
-                            <input
-                              type="radio"
-                              name="metodoPagamento"
-                              className={styles.radioInput}
-                              value={opt.val}
-                              checked={form.metodoPagamento === opt.val}
-                              onChange={() => setForm(f => ({ ...f, metodoPagamento: opt.val }))}
-                            />
-                            <span className={styles.radioCircle}></span>
-                            {opt.label}
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Payment Instructions & Proof Upload Box */}
-                    <div style={{ marginTop: '1rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '1.25rem' }}>
-                      <h4 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontSize: '0.95rem', fontWeight: 800 }}>
-                        📌 Instruções de Pagamento ({form.metodoPagamento.toUpperCase()})
-                      </h4>
-                      
-                      {form.metodoPagamento === 'mpesa' && (
-                        <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
-                          <p style={{ margin: 0 }}>Pagamento por M-Pesa. As instruções e os dados de confirmação serão disponibilizados pela equipa ABN após a submissão da candidatura.</p>
-                        </div>
-                      )}
-                      {form.metodoPagamento === 'emola' && (
-                        <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
-                          <p style={{ margin: 0 }}>Pagamento por eMola. As instruções e os dados de confirmação serão disponibilizados pela equipa ABN após a submissão da candidatura.</p>
-                        </div>
-                      )}
-                      {form.metodoPagamento === 'cartao' && (
-                        <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
-                          <p style={{ margin: 0 }}>Pagamento por Cartão de Débito/Crédito. A nossa equipa disponibilizará o link de checkout seguro após o envio do formulário.</p>
-                        </div>
-                      )}
-                      {form.metodoPagamento === 'banco' && (
-                        <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
-                          <p style={{ margin: 0 }}>Transferência Bancária. Os dados da conta bancária oficial da ABN serão facultados diretamente pela equipa ABN.</p>
-                        </div>
-                      )}
-
-                      {(form.metodoPagamento === 'mpesa' || form.metodoPagamento === 'emola') && (
-                        <div style={{ marginTop: '0.8rem', paddingTop: '0.8rem', borderTop: '1px solid #e2e8f0' }}>
-                          <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.3rem' }}>
-                            📱 Número de Telemóvel ({form.metodoPagamento.toUpperCase()}) para Débito &amp; Confirmação de PIN:
-                          </label>
-                          <input
-                            type="tel"
-                            placeholder="Ex: 841234567 ou 861234567"
-                            value={form.telefonePagamento}
-                            onChange={e => setForm(f => ({ ...f, telefonePagamento: e.target.value }))}
-                            style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem', outline: 'none', background: '#ffffff', color: '#0f172a' }}
-                          />
-                          <small style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', marginTop: '0.3rem' }}>
-                            💡 Insira o seu número registado no {form.metodoPagamento === 'mpesa' ? 'M-Pesa' : 'eMola'} para onde será enviado o pedido de pagamento para confirmação com PIN.
-                          </small>
-                        </div>
-                      )}
-
-                      <div style={{ marginTop: '1rem', borderTop: '1px dashed #cbd5e1', paddingTop: '0.8rem' }}>
-                        <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#475569', marginBottom: '0.4rem' }}>
-                          📎 Anexar Comprovativo de Pagamento (opcional ou após transferência)
-                        </label>
-                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                          <input
-                            type="file"
-                            accept="image/*,application/pdf"
-                            onChange={e => {
-                              const file = e.target.files?.[0];
-                              if (file) handleProofUpload(file);
-                            }}
-                            style={{ fontSize: '0.85rem' }}
-                          />
-                          {uploadingProof && <span style={{ fontSize: '0.85rem', color: '#ff6b00', fontWeight: 600 }}>⏳ A carregar...</span>}
-                        </div>
-                        {form.comprovativoUrl && (
-                          <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#10b981', fontWeight: 700 }}>
-                            ✅ Comprovativo anexado com sucesso!
-                          </div>
-                        )}
-                      </div>
-                    </div>
                   </div>
                 )}
 
@@ -1050,6 +1041,193 @@ export default function ProgramasPage() {
                   </div>
                 )}
 
+                {/* ── SECÇÃO 7: CHECKOUT FINAL & PAGAMENTO ── */}
+                {currentStep === 7 && (() => {
+                  const calc = calculateTotalValues();
+                  return (
+                    <div className={styles.formSection}>
+                      <div className={styles.formSectionHeader}>
+                        <span className={styles.formSectionNumber}>7</span>
+                        <h3>Resumo da Candidatura &amp; Checkout de Pagamento 💳</h3>
+                      </div>
+
+                      {/* Quadro de Resumo dos Dados Captados com opção de Retificar */}
+                      <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '1.25rem', marginBottom: '1.5rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem', borderBottom: '1px solid #cbd5e1', paddingBottom: '0.5rem' }}>
+                          <h4 style={{ margin: 0, color: '#0f172a', fontWeight: 800, fontSize: '0.95rem' }}>📋 Resumo das Informações Preenchidas</h4>
+                          <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Clique em retificar se necessitar corrigir algum dado</span>
+                        </div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.8rem', fontSize: '0.88rem' }}>
+                          <div style={{ background: '#ffffff', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
+                              <strong style={{ color: '#475569', fontSize: '0.75rem', textTransform: 'uppercase' }}>1. Identificação</strong>
+                              <button type="button" onClick={() => setCurrentStep(1)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
+                            </div>
+                            <p style={{ margin: '0 0 0.2rem 0', fontWeight: 700, color: '#0f172a' }}>{form.nomeCompleto || 'N/A'}</p>
+                            <p style={{ margin: 0, color: '#64748b', fontSize: '0.82rem' }}>{form.email}</p>
+                          </div>
+
+                          <div style={{ background: '#ffffff', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
+                              <strong style={{ color: '#475569', fontSize: '0.75rem', textTransform: 'uppercase' }}>2. Negócio</strong>
+                              <button type="button" onClick={() => setCurrentStep(2)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
+                            </div>
+                            <p style={{ margin: '0 0 0.2rem 0', fontWeight: 700, color: '#0f172a' }}>{form.nomeNegocio || 'Não especificado'}</p>
+                            {form.sector.length > 0 && <p style={{ margin: 0, color: '#64748b', fontSize: '0.82rem' }}>{form.sector.filter(s => s !== 'outro').join(', ')}</p>}
+                          </div>
+
+                          <div style={{ background: '#ffffff', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
+                              <strong style={{ color: '#475569', fontSize: '0.75rem', textTransform: 'uppercase' }}>3. Adesão Escolhida</strong>
+                              <button type="button" onClick={() => setCurrentStep(3)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
+                            </div>
+                            <p style={{ margin: '0 0 0.2rem 0', fontWeight: 700, color: '#0f172a' }}>{calc.descricaoQuota}</p>
+                            <p style={{ margin: 0, color: '#64748b', fontSize: '0.82rem', textTransform: 'capitalize' }}>Periodicidade: {form.formaPagamento || 'Anual'}</p>
+                          </div>
+
+                          <div style={{ background: '#ffffff', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
+                              <strong style={{ color: '#475569', fontSize: '0.75rem', textTransform: 'uppercase' }}>6. Assinatura</strong>
+                              <button type="button" onClick={() => setCurrentStep(6)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
+                            </div>
+                            <p style={{ margin: '0 0 0.2rem 0', fontWeight: 700, color: '#d4af37', fontStyle: 'italic' }}>{form.assinatura}</p>
+                            <p style={{ margin: 0, color: '#64748b', fontSize: '0.82rem' }}>{form.localData || 'Hoje'}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Quadro de Cálculo Automático de Valores */}
+                      <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', color: '#ffffff', borderRadius: '16px', padding: '1.5rem', marginBottom: '1.5rem', boxShadow: '0 10px 25px rgba(15, 23, 42, 0.25)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.15)', paddingBottom: '0.75rem' }}>
+                          <h4 style={{ margin: 0, color: '#d4af37', fontSize: '1.1rem', fontWeight: 800 }}>💰 Cálculo Automático de Valores</h4>
+                          <span style={{ fontSize: '0.8rem', background: 'rgba(212, 175, 55, 0.2)', color: '#d4af37', padding: '4px 10px', borderRadius: '20px', fontWeight: 700 }}>{calc.descricaoQuota}</span>
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.92rem' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', color: '#cbd5e1' }}>
+                            <span>Taxa de Inscrição no Clube / Programa:</span>
+                            <strong>{calc.taxaInscricao.toLocaleString('pt-PT')} MT</strong>
+                          </div>
+                          
+                          <div style={{ display: 'flex', justifyContent: 'space-between', color: '#cbd5e1' }}>
+                            <span>{calc.periodoLabel}:</span>
+                            <strong>{calc.quotaCobrada.toLocaleString('pt-PT')} MT</strong>
+                          </div>
+
+                          {calc.desconto > 0 && (
+                            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#10b981', fontWeight: 700 }}>
+                              <span>Desconto de Pagamento Anual (10%):</span>
+                              <span>-{calc.desconto.toLocaleString('pt-PT')} MT</span>
+                            </div>
+                          )}
+
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '2px solid rgba(255,107,0,0.5)', fontSize: '1.25rem', fontWeight: 900, color: '#ff6b00' }}>
+                            <span>TOTAL A PAGAR:</span>
+                            <span style={{ fontSize: '1.4rem', textShadow: '0 2px 10px rgba(255,107,0,0.3)' }}>{calc.valorTotal.toLocaleString('pt-PT')} MT</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Checkout de Pagamento (Métodos & Upload) */}
+                      <div className={styles.formField}>
+                        <label style={{ fontWeight: 800, fontSize: '0.95rem', color: '#ff6b00', display: 'block', marginBottom: '0.5rem' }}>
+                          💳 Escolha a Forma de Pagamento
+                        </label>
+                        <div className={styles.radioGroupRow} style={{ flexWrap: 'wrap', gap: '0.75rem' }}>
+                          {[
+                            { val: 'mpesa', label: '📲 M-Pesa' },
+                            { val: 'emola', label: '📲 eMola' },
+                            { val: 'cartao', label: '💳 Cartão / Checkout' },
+                            { val: 'banco', label: '🏦 Transferência Bancária' },
+                          ].map(opt => (
+                            <label key={opt.val} className={`${styles.radioLabelRow} ${form.metodoPagamento === opt.val ? styles.radioLabelRowActive : ''}`} style={{ padding: '0.6rem 1rem', borderRadius: '8px' }}>
+                              <input
+                                type="radio"
+                                name="metodoPagamento"
+                                className={styles.radioInput}
+                                value={opt.val}
+                                checked={form.metodoPagamento === opt.val}
+                                onChange={() => setForm(f => ({ ...f, metodoPagamento: opt.val }))}
+                              />
+                              <span className={styles.radioCircle}></span>
+                              {opt.label}
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div style={{ marginTop: '1rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '1.25rem' }}>
+                        <h4 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontSize: '0.95rem', fontWeight: 800 }}>
+                          📌 Instruções de Pagamento ({form.metodoPagamento.toUpperCase()})
+                        </h4>
+                        
+                        {form.metodoPagamento === 'mpesa' && (
+                          <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
+                            <p style={{ margin: 0 }}>Pagamento por M-Pesa. As instruções e os dados de confirmação serão disponibilizados pela equipa ABN após a submissão da candidatura.</p>
+                          </div>
+                        )}
+                        {form.metodoPagamento === 'emola' && (
+                          <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
+                            <p style={{ margin: 0 }}>Pagamento por eMola. As instruções e os dados de confirmação serão disponibilizados pela equipa ABN após a submissão da candidatura.</p>
+                          </div>
+                        )}
+                        {form.metodoPagamento === 'cartao' && (
+                          <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
+                            <p style={{ margin: 0 }}>Pagamento por Cartão de Débito/Crédito. A nossa equipa disponibilizará o link de checkout seguro após o envio do formulário.</p>
+                          </div>
+                        )}
+                        {form.metodoPagamento === 'banco' && (
+                          <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
+                            <p style={{ margin: 0 }}>Transferência Bancária. Os dados da conta bancária oficial da ABN serão facultados diretamente pela equipa ABN.</p>
+                          </div>
+                        )}
+
+                        {(form.metodoPagamento === 'mpesa' || form.metodoPagamento === 'emola') && (
+                          <div style={{ marginTop: '0.8rem', paddingTop: '0.8rem', borderTop: '1px solid #e2e8f0' }}>
+                            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.3rem' }}>
+                              📱 Número de Telemóvel ({form.metodoPagamento.toUpperCase()}) para Débito &amp; Confirmação de PIN:
+                            </label>
+                            <input
+                              type="tel"
+                              placeholder="Ex: 841234567 ou 861234567"
+                              value={form.telefonePagamento}
+                              onChange={e => setForm(f => ({ ...f, telefonePagamento: e.target.value }))}
+                              style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem', outline: 'none', background: '#ffffff', color: '#0f172a' }}
+                            />
+                            <small style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', marginTop: '0.3rem' }}>
+                              💡 Insira o seu número registado no {form.metodoPagamento === 'mpesa' ? 'M-Pesa' : 'eMola'} para onde será enviado o pedido de pagamento para confirmação com PIN.
+                            </small>
+                          </div>
+                        )}
+
+                        <div style={{ marginTop: '1rem', borderTop: '1px dashed #cbd5e1', paddingTop: '0.8rem' }}>
+                          <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#475569', marginBottom: '0.4rem' }}>
+                            📎 Anexar Comprovativo de Pagamento (opcional ou após transferência)
+                          </label>
+                          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                            <input
+                              type="file"
+                              accept="image/*,application/pdf"
+                              onChange={e => {
+                                const file = e.target.files?.[0];
+                                if (file) handleProofUpload(file);
+                              }}
+                              style={{ fontSize: '0.85rem' }}
+                            />
+                            {uploadingProof && <span style={{ fontSize: '0.85rem', color: '#ff6b00', fontWeight: 600 }}>⏳ A carregar...</span>}
+                          </div>
+                          {form.comprovativoUrl && (
+                            <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#10b981', fontWeight: 700 }}>
+                              ✅ Comprovativo anexado com sucesso!
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
                 {/* Wizard Navigation */}
                 <div className={styles.wizardNavigation}>
                   {currentStep > 1 && (
@@ -1062,7 +1240,7 @@ export default function ProgramasPage() {
                     className={styles.wizardBtn}
                     disabled={!canProceed()}
                   >
-                    {currentStep === totalSteps ? 'Submeter Inquérito ✓' : 'Próximo →'}
+                    {currentStep === totalSteps ? 'Finalizar Candidatura & Pagar 💳' : 'Próximo →'}
                   </button>
                 </div>
               </form>
