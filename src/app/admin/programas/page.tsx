@@ -441,7 +441,7 @@ export default function AdminProgramasPage() {
                 <textarea
                   value={paymentInstructions}
                   onChange={e => setPaymentInstructions(e.target.value)}
-                  placeholder="Ex: M-Pesa: 841234567 | eMola: 861234567 | BAO: 0012-9876-0026-NIB-ABN"
+                  placeholder="Introduza as instruções de pagamento específicas deste programa (M-Pesa, eMola, Conta Bancária)"
                   rows={2}
                 />
               </div>

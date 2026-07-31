@@ -852,24 +852,22 @@ export default function ProgramasPage() {
                       
                       {form.metodoPagamento === 'mpesa' && (
                         <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
-                          <p style={{ margin: 0 }}>Envie o valor correspondente via M-Pesa para o número: <strong>84 123 4567 / 85 987 6543</strong> (Titular: AfroBiz Network Lda.).</p>
+                          <p style={{ margin: 0 }}>Pagamento por M-Pesa. As instruções e os dados de confirmação serão disponibilizados pela equipa ABN após a submissão da candidatura.</p>
                         </div>
                       )}
                       {form.metodoPagamento === 'emola' && (
                         <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
-                          <p style={{ margin: 0 }}>Envie o valor correspondente via eMola para o número: <strong>86 123 4567</strong> (Titular: AfroBiz Network Lda.).</p>
+                          <p style={{ margin: 0 }}>Pagamento por eMola. As instruções e os dados de confirmação serão disponibilizados pela equipa ABN após a submissão da candidatura.</p>
                         </div>
                       )}
                       {form.metodoPagamento === 'cartao' && (
                         <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
-                          <p style={{ margin: 0 }}>Pagamento direto com Cartão de Débito/Crédito Visa ou Mastercard. A nossa equipa entrará em contacto com o link de checkout seguro após a candidatura.</p>
+                          <p style={{ margin: 0 }}>Pagamento por Cartão de Débito/Crédito. A nossa equipa disponibilizará o link de checkout seguro após o envio do formulário.</p>
                         </div>
                       )}
                       {form.metodoPagamento === 'banco' && (
                         <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
-                          <p style={{ margin: '0 0 0.3rem 0' }}><strong>Banco:</strong> Banco da África Ocidental (BAO)</p>
-                          <p style={{ margin: '0 0 0.3rem 0' }}><strong>NIB:</strong> 0012-9876-0026-NIB-ABN</p>
-                          <p style={{ margin: 0 }}><strong>Titular:</strong> AfroBiz Network Lda.</p>
+                          <p style={{ margin: 0 }}>Transferência Bancária. Os dados da conta bancária oficial da ABN serão facultados diretamente pela equipa ABN.</p>
                         </div>
                       )}
 
