@@ -141,6 +141,7 @@ interface InqueritorForm {
   nivelAdesao: string;
   formaPagamento: string;
   metodoPagamento: string;
+  telefonePagamento: string;
   comprovativoUrl: string;
   // Sec 4
   areasInteresse: string[];
@@ -155,7 +156,7 @@ interface InqueritorForm {
 const initialForm: InqueritorForm = {
   nomeCompleto: '', docIdentificacao: '', nuit: '', email: '', endereco: '',
   nomeNegocio: '', alvara: '', sector: [], sectorOutro: '',
-  nivelAdesao: '', formaPagamento: '', metodoPagamento: 'mpesa', comprovativoUrl: '',
+  nivelAdesao: '', formaPagamento: '', metodoPagamento: 'mpesa', telefonePagamento: '', comprovativoUrl: '',
   areasInteresse: [],
   comoConheceu: '', comoConheceuOutro: '',
   localData: '', assinatura: '',
@@ -868,6 +869,24 @@ export default function ProgramasPage() {
                       {form.metodoPagamento === 'banco' && (
                         <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
                           <p style={{ margin: 0 }}>Transferência Bancária. Os dados da conta bancária oficial da ABN serão facultados diretamente pela equipa ABN.</p>
+                        </div>
+                      )}
+
+                      {(form.metodoPagamento === 'mpesa' || form.metodoPagamento === 'emola') && (
+                        <div style={{ marginTop: '0.8rem', paddingTop: '0.8rem', borderTop: '1px solid #e2e8f0' }}>
+                          <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.3rem' }}>
+                            📱 Número de Telemóvel ({form.metodoPagamento.toUpperCase()}) para Débito &amp; Confirmação de PIN:
+                          </label>
+                          <input
+                            type="tel"
+                            placeholder="Ex: 841234567 ou 861234567"
+                            value={form.telefonePagamento}
+                            onChange={e => setForm(f => ({ ...f, telefonePagamento: e.target.value }))}
+                            style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem', outline: 'none', background: '#ffffff', color: '#0f172a' }}
+                          />
+                          <small style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', marginTop: '0.3rem' }}>
+                            💡 Insira o seu número registado no {form.metodoPagamento === 'mpesa' ? 'M-Pesa' : 'eMola'} para onde será enviado o pedido de pagamento para confirmação com PIN.
+                          </small>
                         </div>
                       )}
 
