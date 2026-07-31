@@ -7,6 +7,7 @@ import Payment from '@/models/Payment';
 import Program from '@/models/Program';
 import Event from '@/models/Event';
 import Post from '@/models/Post';
+import InscricaoClube from '@/models/InscricaoClube';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,8 +25,11 @@ export async function GET() {
     const totalEvents = await Event.countDocuments();
     const totalNews = await Post.countDocuments();
 
-    // Total Enrollments & Pending Certificate Requests
-    const totalEnrollments = await Payment.countDocuments();
+    // Total Enrollments (Courses + Club Inscriptions) & Pending Certificate Requests
+    const courseEnrollmentsCount = await Payment.countDocuments();
+    const clubInscriptionsCount = await InscricaoClube.countDocuments();
+    const totalEnrollments = courseEnrollmentsCount + clubInscriptionsCount;
+
     const pendingCertificates = await Payment.countDocuments({ certificateRequested: true, certificateApproved: false });
 
     // Real Distribution data by user role
@@ -47,8 +51,12 @@ export async function GET() {
       userGrowth.push({ month: formattedMonth, count });
     }
 
-    // Calculate dynamic real revenue from approved course registrations/payments
+    // Calculate dynamic real revenue from approved course registrations AND approved club inscriptions
     const approvedPayments = await Payment.find({ status: 'aprovado' });
+    const approvedClubInscriptions = await InscricaoClube.find({
+      $or: [{ status: 'aprovado' }, { statusPagamento: 'aprovado' }]
+    });
+
     let totalRevenue = 0;
 
     for (const payment of approvedPayments) {
@@ -61,10 +69,21 @@ export async function GET() {
       }
     }
 
+    for (const club of approvedClubInscriptions) {
+      if (club.valorPago) {
+        const cleanPrice = club.valorPago.replace(/[^\d]/g, '');
+        const val = parseInt(cleanPrice, 10);
+        if (!isNaN(val)) {
+          totalRevenue += val;
+        }
+      }
+    }
+
     const formattedRevenue = totalRevenue.toLocaleString('pt-PT') + ' MT';
 
-    // Fetch real activity log events (Enrollments, Certificate Requests, User Signups)
+    // Fetch real activity log events (Course Enrollments, Club Inscriptions, Certificate Requests, User Signups)
     const recentPayments = await Payment.find().sort({ createdAt: -1 }).limit(6).populate('user', 'name email');
+    const recentClubInscriptions = await InscricaoClube.find().sort({ createdAt: -1 }).limit(6);
     const recentUsersList = await User.find().sort({ createdAt: -1 }).limit(6);
 
     const activities: any[] = [];
@@ -90,6 +109,18 @@ export async function GET() {
         createdAt: p.createdAt,
         type: 'enrollment',
         badge: p.status
+      });
+    });
+
+    recentClubInscriptions.forEach((c: any) => {
+      activities.push({
+        id: `club-${c._id}`,
+        icon: '🏛️',
+        title: `Inscrição Clube / Programa (${c.valorPago || 'Padrão'})`,
+        desc: `${c.nomeCompleto} submeteu candidatura ao Clube (${c.nivelAdesao || 'Membro'})`,
+        createdAt: c.createdAt,
+        type: 'club_inscription',
+        badge: c.statusPagamento || c.status
       });
     });
 

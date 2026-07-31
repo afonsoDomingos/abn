@@ -117,7 +117,10 @@ export default function AdminPage() {
           actionLabel = 'Ver Certificados 📜';
         } else if (top.type === 'enrollment') {
           actionLink = '/admin/pagamentos';
-          actionLabel = 'Ver Inscrições 💳';
+          actionLabel = 'Ver Inscrições Cursos 💳';
+        } else if (top.type === 'club_inscription') {
+          actionLink = '/admin/clube/inscricoes';
+          actionLabel = 'Ver Inscrições Clube 🏛️';
         }
 
         return (
