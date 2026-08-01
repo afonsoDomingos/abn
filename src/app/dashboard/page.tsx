@@ -303,31 +303,12 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* 1. Maturidade & Pipeline da Startup (Layout Limpo) */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
-            {/* ABN Score */}
-            <div style={{ padding: '1.75rem', borderRadius: '24px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Maturidade do Projeto</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '1rem' }}>
-                <div style={{ fontSize: '2.8rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit', lineHeight: 1 }}>
-                  {score}<span style={{ fontSize: '1rem', color: '#94a3b8' }}>/100</span>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div className={styles.progressBar}>
-                    <div className={styles.progressFill} style={{ width: `${score}%` }}></div>
-                  </div>
-                  <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
-                    {score < 50 ? 'Fase Inicial de Configuração' : score < 100 ? 'Projeto Estruturado' : 'Pronto para Investimento! 🚀'}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Minhas Candidaturas em Resumo */}
+          {/* 1. Minhas Candidaturas em Destaque */}
+          <div style={{ marginBottom: '2.5rem' }}>
             <div style={{ padding: '1.75rem', borderRadius: '24px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.03)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 <h3 style={{ color: '#0f172a', fontSize: '1.05rem', margin: 0, fontFamily: 'Outfit', fontWeight: 800 }}>
-                  📋 Minhas Candidaturas
+                  📋 Minhas Candidaturas &amp; Inscrições
                 </h3>
                 <span style={{ fontSize: '0.75rem', background: '#f0fdf4', color: '#16a34a', fontWeight: 800, padding: '3px 10px', borderRadius: '12px' }}>
                   {userInscricoes.length} Registadas
@@ -335,17 +316,20 @@ export default function DashboardPage() {
               </div>
 
               {loadingInscricoes ? (
-                <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>A carregar...</div>
+                <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>A carregar candidaturas...</div>
               ) : userInscricoes.length === 0 ? (
-                <div style={{ background: '#f8fafc', border: '1px border-dashed #cbd5e1', borderRadius: '14px', padding: '1rem', textAlign: 'center', color: '#64748b', fontSize: '0.85rem', fontWeight: 500 }}>
-                  Nenhuma candidatura pendente. Explore os programas abertos na plataforma!
+                <div style={{ background: '#f8fafc', border: '1px border-dashed #cbd5e1', borderRadius: '14px', padding: '1.25rem', textAlign: 'center', color: '#64748b', fontSize: '0.85rem', fontWeight: 500 }}>
+                  Nenhuma candidatura pendente. Explore os programas e oportunidades abertos na plataforma!
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                  {userInscricoes.slice(0, 2).map((i, idx) => (
-                    <div key={idx} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '12px', padding: '0.75rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#0f172a' }}>{i.programaTitulo || `Clube ABN — ${i.nivelAdesao}`}</div>
-                      <span style={{ fontSize: '0.72rem', fontWeight: 800, padding: '3px 8px', borderRadius: '20px', background: i.status === 'aprovado' ? '#dcfce7' : '#fef3c7', color: i.status === 'aprovado' ? '#15803d' : '#b45309' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                  {userInscricoes.map((i, idx) => (
+                    <div key={idx} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '14px', padding: '0.85rem 1.1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>{i.programaTitulo || `Clube ABN — ${i.nivelAdesao?.toUpperCase() || 'Membro'}`}</div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Data: {new Date(i.createdAt).toLocaleDateString('pt-PT')}</div>
+                      </div>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', background: i.status === 'aprovado' ? '#dcfce7' : '#fef3c7', color: i.status === 'aprovado' ? '#15803d' : '#b45309' }}>
                         {i.status === 'aprovado' ? '🟢 Aprovado' : '⏳ Em Verificação'}
                       </span>
                     </div>
