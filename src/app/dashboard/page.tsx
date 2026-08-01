@@ -46,7 +46,8 @@ export default function DashboardPage() {
         userRole = u.role || 'empreendedor';
         userEmail = u.email || '';
         setRole(userRole);
-        if (userRole === 'admin') {
+        const r = userRole.toLowerCase();
+        if (r === 'admin' || r === 'collaborator' || r === 'colaborador') {
           window.location.href = '/admin';
           return;
         }

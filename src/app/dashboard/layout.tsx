@@ -44,6 +44,11 @@ export default function DashboardLayout({
     if (storedUser) {
       try {
         const parsed = JSON.parse(storedUser);
+        const userRole = (parsed.role || '').toLowerCase();
+        if (userRole === 'admin' || userRole === 'collaborator' || userRole === 'colaborador') {
+          window.location.href = '/admin';
+          return;
+        }
         setUser({
           name: parsed.name || 'Empreendedor',
           profileImage: parsed.profileImage || '',

@@ -29,7 +29,8 @@ export default function LoginPage() {
 
       if (res.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
-        if (data.user.role === 'admin') {
+        const role = (data.user.role || '').toLowerCase();
+        if (role === 'admin' || role === 'collaborator' || role === 'colaborador') {
           router.push('/admin');
         } else {
           router.push('/dashboard');
