@@ -76,123 +76,127 @@ export default function ProjetosPage() {
     }
   };
 
-  if (loading) return <div style={{ padding: '3rem', color: '#fff' }}>A carregar o seu projeto...</div>;
+  if (loading) return <div style={{ padding: '3rem', color: '#0f172a', fontWeight: 600 }}>A carregar o seu projeto...</div>;
 
   return (
     <div style={{ maxWidth: '800px' }}>
       <header style={{ marginBottom: '2.5rem' }}>
         <h1 className="text-gradient-gold">Gestão de Projetos</h1>
-        <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Acompanhe e edite as informações da sua startup no ecossistema ABN.</p>
+        <p style={{ opacity: 0.9, color: '#475569', fontSize: '0.95rem', fontWeight: 500, lineHeight: 1.5, marginTop: '0.4rem' }}>
+          Acompanhe e edite as informações da sua startup no ecossistema ABN.
+        </p>
       </header>
 
       {msg.text && (
         <div style={{
-          color: msg.type === 'success' ? '#2ecc71' : '#ff4d4d',
-          background: msg.type === 'success' ? 'rgba(46, 204, 113, 0.1)' : 'rgba(255, 77, 77, 0.1)',
+          color: msg.type === 'success' ? '#15803d' : '#b91c1c',
+          background: msg.type === 'success' ? '#f0fdf4' : '#fef2f2',
           padding: '1rem',
           borderRadius: '12px',
-          border: `1px solid ${msg.type === 'success' ? 'rgba(46, 204, 113, 0.2)' : 'rgba(255, 77, 77, 0.2)'}`,
-          marginBottom: '2rem'
+          border: `1px solid ${msg.type === 'success' ? '#bbf7d0' : '#fecaca'}`,
+          marginBottom: '2rem',
+          fontWeight: 600
         }}>
           {msg.text}
         </div>
       )}
 
       {editing ? (
-        <div className="glass" style={{ padding: '2.5rem', borderRadius: '24px' }}>
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', padding: '2.5rem', borderRadius: '24px' }}>
           <form onSubmit={handleUpdate} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase' }}>Nome da Startup *</label>
+                <label style={{ color: 'var(--primary)', fontWeight: 800, fontSize: '0.8rem', textTransform: 'uppercase' }}>Nome da Startup *</label>
                 <input 
                   value={name} 
                   onChange={e => setName(e.target.value)} 
                   required 
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px', color: '#fff' }}
+                  style={{ background: '#ffffff', border: '1px solid #cbd5e1', padding: '12px', borderRadius: '8px', color: '#0f172a' }}
                 />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase' }}>Setor / Categoria *</label>
+                <label style={{ color: 'var(--primary)', fontWeight: 800, fontSize: '0.8rem', textTransform: 'uppercase' }}>Setor / Categoria *</label>
                 <input 
                   value={category} 
                   onChange={e => setCategory(e.target.value)} 
                   required 
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px', color: '#fff' }}
+                  style={{ background: '#ffffff', border: '1px solid #cbd5e1', padding: '12px', borderRadius: '8px', color: '#0f172a' }}
                 />
               </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase' }}>Localização</label>
+                <label style={{ color: 'var(--primary)', fontWeight: 800, fontSize: '0.8rem', textTransform: 'uppercase' }}>Localização</label>
                 <input 
                   value={location} 
                   onChange={e => setLocation(e.target.value)} 
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px', color: '#fff' }}
+                  style={{ background: '#ffffff', border: '1px solid #cbd5e1', padding: '12px', borderRadius: '8px', color: '#0f172a' }}
                 />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase' }}>Website (URL)</label>
+                <label style={{ color: 'var(--primary)', fontWeight: 800, fontSize: '0.8rem', textTransform: 'uppercase' }}>Website (URL)</label>
                 <input 
                   value={website} 
                   onChange={e => setWebsite(e.target.value)} 
                   placeholder="https://"
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px', color: '#fff' }}
+                  style={{ background: '#ffffff', border: '1px solid #cbd5e1', padding: '12px', borderRadius: '8px', color: '#0f172a' }}
                 />
               </div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <label style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase' }}>Fase de Incubação</label>
+              <label style={{ color: 'var(--primary)', fontWeight: 800, fontSize: '0.8rem', textTransform: 'uppercase' }}>Fase de Incubação / Desenvolvimento</label>
               <select 
                 value={incubationPhase} 
                 onChange={e => setIncubationPhase(e.target.value)}
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px', color: '#fff' }}
+                style={{ background: '#ffffff', border: '1px solid #cbd5e1', padding: '12px', borderRadius: '8px', color: '#0f172a' }}
               >
-                <option value="Ideação">Ideação</option>
-                <option value="Validação">Validação</option>
-                <option value="Crescimento">Crescimento</option>
-                <option value="Escala">Escala</option>
+                <option value="Ideação">Ideação (Conceito)</option>
+                <option value="Validação">Validação (Estudo de Mercado)</option>
+                <option value="Mínimo Produto Viável (MVP)">Mínimo Produto Viável (MVP)</option>
+                <option value="Tração & Escala">Tração & Escala (Vendas Ativas)</option>
               </select>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <label style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase' }}>Descrição da Ideia</label>
+              <label style={{ color: 'var(--primary)', fontWeight: 800, fontSize: '0.8rem', textTransform: 'uppercase' }}>Descrição da Startup</label>
               <textarea 
                 value={description} 
                 onChange={e => setDescription(e.target.value)} 
                 rows={5}
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px', color: '#fff', resize: 'vertical' }}
+                placeholder="Descreva o propósito, produto e mercado da sua startup..."
+                style={{ background: '#ffffff', border: '1px solid #cbd5e1', padding: '12px', borderRadius: '8px', color: '#0f172a', resize: 'vertical' }}
               />
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-              <button type="submit" className="btn-primary" disabled={saving}>
-                {saving ? 'A guardar...' : 'Guardar Projeto'}
-              </button>
-              <button type="button" className="btn-outline" onClick={() => setEditing(false)} style={{ borderColor: 'rgba(255,255,255,0.2)', color: '#fff' }}>
+              <button type="button" className="btn-outline" onClick={() => setEditing(false)} style={{ borderColor: '#cbd5e1', color: '#475569' }}>
                 Cancelar
+              </button>
+              <button type="submit" className="btn-primary" disabled={saving}>
+                {saving ? 'A guardar...' : 'Guardar Alterações'}
               </button>
             </div>
           </form>
         </div>
       ) : (
-        <div className="glass" style={{ padding: '2.5rem', borderRadius: '24px', position: 'relative' }}>
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', padding: '2.5rem', borderRadius: '24px', position: 'relative' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-            <h2 style={{ color: '#fff', fontSize: '1.6rem', fontFamily: 'Outfit' }}>{business?.name}</h2>
-            <button className="btn-primary" onClick={() => setEditing(true)}>
+            <h2 style={{ color: '#0f172a', fontSize: '1.6rem', fontFamily: 'Outfit', fontWeight: 800 }}>{business?.name}</h2>
+            <button className="btn-primary" onClick={() => setEditing(true)} style={{ borderRadius: '10px' }}>
               ✏️ Editar Projeto
             </button>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
             <div>
-              <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Setor / Categoria</h4>
-              <p style={{ color: '#fff', fontSize: '1.05rem' }}>{business?.category}</p>
+              <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.5rem', fontWeight: 800 }}>Setor / Categoria</h4>
+              <p style={{ color: '#0f172a', fontSize: '1.05rem', fontWeight: 700 }}>{business?.category}</p>
             </div>
             <div>
-              <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Fase de Incubação</h4>
-              <span style={{ display: 'inline-block', background: 'rgba(255,107,0,0.15)', border: '1px solid var(--primary)', color: 'var(--primary)', padding: '4px 12px', borderRadius: '40px', fontSize: '0.85rem', fontWeight: 700 }}>
+              <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.5rem', fontWeight: 800 }}>Fase de Incubação</h4>
+              <span style={{ display: 'inline-block', background: '#fff7ed', border: '1px solid #ffedd5', color: '#c2410c', padding: '4px 14px', borderRadius: '40px', fontSize: '0.85rem', fontWeight: 800 }}>
                 🚀 {business?.incubationPhase}
               </span>
             </div>
@@ -200,14 +204,14 @@ export default function ProjetosPage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
             <div>
-              <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Localização</h4>
-              <p style={{ color: '#fff' }}>📍 {business?.location || 'Não informada'}</p>
+              <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.5rem', fontWeight: 800 }}>Localização</h4>
+              <p style={{ color: '#0f172a', fontWeight: 600 }}>📍 {business?.location || 'Não informada'}</p>
             </div>
             <div>
-              <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Website</h4>
-              <p style={{ color: '#fff' }}>
+              <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.5rem', fontWeight: 800 }}>Website</h4>
+              <p style={{ color: '#0f172a', fontWeight: 600 }}>
                 {business?.website ? (
-                  <a href={business.website} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>
+                  <a href={business.website} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'underline', fontWeight: 700 }}>
                     🔗 {business.website}
                   </a>
                 ) : (
@@ -217,9 +221,9 @@ export default function ProjetosPage() {
             </div>
           </div>
 
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '2rem' }}>
-            <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.8rem' }}>Descrição da Startup</h4>
-            <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: 1.6 }}>{business?.description || 'Adicione uma breve descrição para apresentar a sua startup a potenciais parceiros e mentores.'}</p>
+          <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '2rem' }}>
+            <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.8rem', fontWeight: 800 }}>Descrição da Startup</h4>
+            <p style={{ color: '#475569', lineHeight: 1.6, fontWeight: 500 }}>{business?.description || 'Adicione uma breve descrição para apresentar a sua startup a potenciais parceiros e mentores.'}</p>
           </div>
         </div>
       )}
