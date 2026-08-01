@@ -15,6 +15,8 @@ interface SpecialistMember {
   image: string;
   linkedin: string;
   email: string;
+  website?: string;
+  phone?: string;
   order: number;
   status: string;
 }
@@ -56,6 +58,8 @@ export default function AdminEspecialistasPage() {
   const [image, setImage] = useState('');
   const [linkedin, setLinkedin] = useState('');
   const [email, setEmail] = useState('');
+  const [website, setWebsite] = useState('');
+  const [phone, setPhone] = useState('');
   const [order, setOrder] = useState(0);
   const [status, setStatus] = useState('ativo');
 
@@ -107,6 +111,8 @@ export default function AdminEspecialistasPage() {
     setImage('');
     setLinkedin('');
     setEmail('');
+    setWebsite('');
+    setPhone('');
     setOrder(0);
     setStatus('ativo');
     setEditingId(null);
@@ -125,6 +131,8 @@ export default function AdminEspecialistasPage() {
     setImage(member.image || '');
     setLinkedin(member.linkedin || '');
     setEmail(member.email || '');
+    setWebsite(member.website || '');
+    setPhone(member.phone || '');
     setOrder(member.order || 0);
     setStatus(member.status || 'ativo');
     setShowForm(true);
@@ -147,6 +155,8 @@ export default function AdminEspecialistasPage() {
       image,
       linkedin,
       email,
+      website,
+      phone,
       order: Number(order),
       status
     };
@@ -350,6 +360,26 @@ export default function AdminEspecialistasPage() {
               </div>
 
               <div className={styles.formGroup}>
+                <label>Website / Portfólio (URL)</label>
+                <input
+                  type="text"
+                  value={website}
+                  onChange={e => setWebsite(e.target.value)}
+                  placeholder="https://exemplo.com ou https://meuportfolio.com"
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>WhatsApp / Telefone de Contacto</label>
+                <input
+                  type="text"
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                  placeholder="Ex: +258 84 123 4567"
+                />
+              </div>
+
+              <div className={styles.formGroup}>
                 <label>Status</label>
                 <select value={status} onChange={e => setStatus(e.target.value)}>
                   <option value="ativo">Ativo (Publicado)</option>
@@ -424,6 +454,7 @@ export default function AdminEspecialistasPage() {
                 <th>Tipo</th>
                 <th>Área / Departamento</th>
                 <th>País</th>
+                <th>Links / Contactos</th>
                 <th>Expertise</th>
                 <th>Status</th>
                 <th>Acções</th>
@@ -433,8 +464,19 @@ export default function AdminEspecialistasPage() {
               {filteredList.map(item => (
                 <tr key={item._id}>
                   <td>
-                    <div style={{ fontWeight: 700, color: '#fff' }}>{item.name}</div>
-                    <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>{item.role}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      {item.image ? (
+                        <img src={item.image} alt={item.name} style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #ff6b00' }} />
+                      ) : (
+                        <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#ff6b00', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.8rem' }}>
+                          {item.name.substring(0, 2).toUpperCase()}
+                        </div>
+                      )}
+                      <div>
+                        <div style={{ fontWeight: 700, color: '#fff' }}>{item.name}</div>
+                        <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>{item.role}</div>
+                      </div>
+                    </div>
                   </td>
                   <td>
                     <span className={styles.typeBadge}>
@@ -446,6 +488,33 @@ export default function AdminEspecialistasPage() {
                     <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8' }}>
                       📍 {item.country || 'Moçambique'}
                     </span>
+                  </td>
+                  <td>
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                      {item.linkedin && (
+                        <a href={item.linkedin} target="_blank" rel="noreferrer" title="LinkedIn" style={{ color: '#0a66c2', fontSize: '1rem', textDecoration: 'none' }}>
+                          🔗
+                        </a>
+                      )}
+                      {item.website && (
+                        <a href={item.website} target="_blank" rel="noreferrer" title="Website / Portfólio" style={{ color: '#ff6b00', fontSize: '1rem', textDecoration: 'none' }}>
+                          🌐
+                        </a>
+                      )}
+                      {item.email && (
+                        <a href={`mailto:${item.email}`} title="Email" style={{ color: '#10b981', fontSize: '1rem', textDecoration: 'none' }}>
+                          ✉️
+                        </a>
+                      )}
+                      {item.phone && (
+                        <a href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" title="WhatsApp" style={{ color: '#25d366', fontSize: '1rem', textDecoration: 'none' }}>
+                          📱
+                        </a>
+                      )}
+                      {!item.linkedin && !item.website && !item.email && !item.phone && (
+                        <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem' }}>—</span>
+                      )}
+                    </div>
                   </td>
                   <td>
                     {item.expertise && item.expertise.length > 0 ? (

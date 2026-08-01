@@ -15,6 +15,10 @@ interface Specialist {
   image?: string;
   bio?: string;
   category?: string;
+  linkedin?: string;
+  email?: string;
+  website?: string;
+  phone?: string;
 }
 
 const FALLBACK_SPECIALISTS: Specialist[] = [
@@ -102,6 +106,10 @@ export default function HomeSpecialists() {
               expertise: m.expertise || [],
               image: m.image,
               bio: m.bio,
+              linkedin: m.linkedin,
+              email: m.email,
+              website: m.website,
+              phone: m.phone,
               category: m.department?.toLowerCase().includes('tec') || m.role?.toLowerCase().includes('ia') || m.role?.toLowerCase().includes('meal')
                 ? 'Tecnologia'
                 : m.department?.toLowerCase().includes('invest') || m.department?.toLowerCase().includes('finan')
@@ -207,7 +215,54 @@ export default function HomeSpecialists() {
                 </div>
               )}
 
-              <div className={styles.cardActions}>
+              <div className={styles.cardActions} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {(item.linkedin || item.website || item.email || item.phone) && (
+                  <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+                    {item.linkedin && (
+                      <a
+                        href={item.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        title="LinkedIn"
+                        style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#0a66c2', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                      >
+                        🔗 LinkedIn
+                      </a>
+                    )}
+                    {item.website && (
+                      <a
+                        href={item.website}
+                        target="_blank"
+                        rel="noreferrer"
+                        title="Website / Portfólio"
+                        style={{ background: '#fff7ed', border: '1px solid #ffedd5', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#c2410c', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                      >
+                        🌐 Portfólio
+                      </a>
+                    )}
+                    {item.email && (
+                      <a
+                        href={`mailto:${item.email}`}
+                        title="Email"
+                        style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#047857', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                      >
+                        ✉️ E-mail
+                      </a>
+                    )}
+                    {item.phone && (
+                      <a
+                        href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        title="WhatsApp"
+                        style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#15803d', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                      >
+                        📱 WhatsApp
+                      </a>
+                    )}
+                  </div>
+                )}
+
                 <Link href={`/contacto?assunto=Mentoria+com+${encodeURIComponent(item.name)}`} className={styles.contactBtn}>
                   {language === 'pt' ? 'Solicitar Mentoria' : 'Request Mentorship'}
                 </Link>

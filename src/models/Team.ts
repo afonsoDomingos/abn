@@ -10,6 +10,8 @@ const TeamSchema = new Schema({
   image: { type: String, default: '' },
   linkedin: { type: String, default: '' },
   email: { type: String, default: '' },
+  website: { type: String, default: '' },
+  phone: { type: String, default: '' },
   order: { type: Number, default: 0 },
   type: { type: String, default: 'Especialista' },
   country: { type: String, default: 'Moçambique' },
