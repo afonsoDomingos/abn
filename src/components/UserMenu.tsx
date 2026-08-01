@@ -9,33 +9,65 @@ export default function UserMenu() {
   const [user, setUser] = useState<{ name: string; role?: string; profileImage?: string }>({ name: 'Membro', role: 'user' });
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const loadUserData = () => {
+  const loadUserData = async () => {
     try {
       let profileImg = '';
-      let userName = 'Membro';
-      let userRole = 'user';
+      let userName = '';
+      let userRole = '';
 
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
         const parsed = JSON.parse(storedUser);
-        userName = parsed.name || userName;
-        userRole = parsed.role || userRole;
+        userName = parsed.name || '';
+        userRole = parsed.role || '';
         profileImg = parsed.profileImage || parsed.avatar || '';
       }
 
       const match = document.cookie.match(new RegExp('(^| )abn_session=([^;]+)'));
       if (match) {
         const decoded = JSON.parse(decodeURIComponent(match[2]));
-        userName = decoded.name || userName;
-        userRole = decoded.role || userRole;
+        if (!userName) userName = decoded.name || '';
+        if (!userRole) userRole = decoded.role || '';
         if (!profileImg) profileImg = decoded.profileImage || decoded.avatar || '';
       }
 
-      setUser({
-        name: userName,
-        role: userRole,
-        profileImage: profileImg
-      });
+      if (userName || profileImg) {
+        setUser({
+          name: userName || 'Utilizador',
+          role: userRole || 'user',
+          profileImage: profileImg
+        });
+      }
+
+      // Fetch fresh profile directly from MongoDB
+      const res = await fetch('/api/user/profile');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.user) {
+          const freshName = data.user.name || userName || 'Utilizador';
+          const freshRole = data.user.role || userRole || 'user';
+          const freshImg = data.user.profileImage || data.user.avatar || profileImg || '';
+
+          setUser({
+            name: freshName,
+            role: freshRole,
+            profileImage: freshImg
+          });
+
+          // Sync localStorage
+          if (storedUser) {
+            try {
+              const parsed = JSON.parse(storedUser);
+              localStorage.setItem('user', JSON.stringify({
+                ...parsed,
+                name: freshName,
+                role: freshRole,
+                profileImage: freshImg
+              }));
+            } catch (e) {}
+          }
+        }
+      }
     } catch (e) {}
   };
 
@@ -76,22 +108,19 @@ export default function UserMenu() {
   const dashboardLabel = isManagement ? (user.role === 'admin' ? '⚡ Painel Admin' : '👤 Painel Operacional') : '📊 O Meu Painel';
   const profilePath = isManagement ? '/admin/perfil' : '/dashboard/perfil';
 
+  const avatarSrc = user.profileImage || '/perfil09.jpg';
+  const displayName = user.name ? user.name.split(' ')[0] : 'Utilizador';
+
   return (
     <div className={styles.userMenuContainer} ref={menuRef}>
       <div className={styles.userInfo} onClick={() => setIsOpen(!isOpen)} title={user.name}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '2px' }}>
-          <span className={styles.userName}>{user.name.split(' ')[0]}</span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '4px' }}>
+          <span className={styles.userName}>{displayName}</span>
         </div>
-        {user.profileImage ? (
-          <div 
-            className={styles.avatar}
-            style={{ backgroundImage: `url('${user.profileImage}')` }}
-          ></div>
-        ) : (
-          <div className={styles.avatarInitials}>
-            {user.name ? user.name.charAt(0).toUpperCase() : 'M'}
-          </div>
-        )}
+        <div 
+          className={styles.avatar}
+          style={{ backgroundImage: `url('${avatarSrc}')` }}
+        />
       </div>
 
       {isOpen && (
