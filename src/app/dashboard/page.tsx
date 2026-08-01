@@ -333,89 +333,14 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* 2. Analytics & Performance */}
-          <div className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <BarChart3 size={24} color="var(--primary, #ff6b00)" />
-            <h2 style={{ margin: 0 }}>Analytics &amp; Desempenho</h2>
-          </div>
-
-          <div style={{ padding: '1.75rem 2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', marginBottom: '2.5rem' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '2rem' }}>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <h4 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>Visitas</h4>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                  <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.profileViews || 0}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 700, background: '#f0fdf4', padding: '2px 6px', borderRadius: '12px' }}>+12%</span>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <h4 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>Cliques</h4>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                  <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.projectViews || 0}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 700, background: '#f0fdf4', padding: '2px 6px', borderRadius: '12px' }}>+8%</span>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <h4 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>Interesse</h4>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                  <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.interestedCount || 0}</span>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <h4 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>Pitch</h4>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                  <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.pitchDownloads || 0}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>Downloads</span>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <h4 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>Leads</h4>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                  <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', lineHeight: 1 }}>{analytics?.stats?.messagesCount || 0}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#ff6b00', fontWeight: 700, background: '#fff7ed', padding: '2px 6px', borderRadius: '12px' }}>Novos</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* 3. Growth & Business Evolution Grid (Cleaned Timeline) */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
-            {/* Monthly Growth Bar Chart */}
-            <div style={{ padding: '1.75rem 2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)' }}>
-              <h3 style={{ color: '#0f172a', fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}>
-                <TrendingUp size={20} color="var(--primary, #ff6b00)" />
-                Crescimento Mensal (Visualizações)
-              </h3>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: '140px', padding: '0 10px 10px', borderBottom: '1px solid #f1f5f9' }}>
-                {(analytics?.monthlyGrowth || [
-                  { month: 'Jan', height: '20%', views: '0' },
-                  { month: 'Fev', height: '35%', views: '0' },
-                  { month: 'Mar', height: '50%', views: '0' },
-                  { month: 'Abr', height: '65%', views: '0' },
-                  { month: 'Mai', height: '80%', views: '0' }
-                ]).map((item: any, idx: number) => (
-                  <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, gap: '0.5rem', height: '100%', justifyContent: 'flex-end' }}>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary, #ff6b00)' }}>{item.views}</div>
-                    <div style={{ width: '28px', height: item.height || '15%', background: 'linear-gradient(to top, #2a4fa6 0%, #ff6b00 100%)', borderRadius: '6px 6px 0 0', transition: 'height 0.3s ease' }}></div>
-                    <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>{item.month}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Business Pipeline (4 Steps Clean) */}
+          {/* 2. Business Evolution Pipeline Grid */}
+          <div style={{ marginBottom: '2.5rem' }}>
             <div style={{ padding: '1.75rem 2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)' }}>
               <h3 style={{ color: '#0f172a', fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}>
                 <Target size={20} color="var(--primary, #ff6b00)" />
-                Evolução do Negócio (Pipeline)
+                Evolução do Negócio (Pipeline de Incubação)
               </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
                 {[
                   { label: '1. Ideação', desc: 'Conceito da ideia e definição da equipa inicial' },
                   { label: '2. Validação', desc: 'Entrevistas de problemas e estudo de mercado' },
@@ -429,28 +354,34 @@ export default function DashboardPage() {
                   if (idx === currentPhaseIndex) status = 'current';
 
                   return (
-                    <div key={idx} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-                      <div style={{ 
-                        width: '26px', 
-                        height: '26px', 
-                        borderRadius: '50%', 
-                        background: status === 'done' ? '#16a34a' : status === 'current' ? '#ff6b00' : '#f1f5f9',
-                        color: status === 'pending' ? '#94a3b8' : '#ffffff',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '0.78rem',
-                        fontWeight: 800,
-                        flexShrink: 0
-                      }}>
-                        {status === 'done' ? '✓' : idx + 1}
+                    <div key={idx} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '14px', padding: '1.1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ 
+                          width: '28px', 
+                          height: '28px', 
+                          borderRadius: '50%', 
+                          background: status === 'done' ? '#16a34a' : status === 'current' ? '#ff6b00' : '#e2e8f0',
+                          color: status === 'pending' ? '#64748b' : '#ffffff',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.8rem',
+                          fontWeight: 800
+                        }}>
+                          {status === 'done' ? '✓' : idx + 1}
+                        </div>
+                        {status === 'current' && (
+                          <span style={{ fontSize: '0.7rem', color: '#ff6b00', background: '#fff7ed', border: '1px solid #ffedd5', padding: '2px 8px', borderRadius: '12px', fontWeight: 800 }}>
+                            Etapa Atual
+                          </span>
+                        )}
                       </div>
-                      <div>
-                        <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#0f172a', fontWeight: 700 }}>
-                          {step.label} {status === 'current' && <span style={{ fontSize: '0.7rem', color: '#ff6b00', background: '#fff7ed', border: '1px solid #ffedd5', padding: '2px 8px', borderRadius: '12px', marginLeft: '6px', fontWeight: 800 }}>Atual</span>}
-                        </h4>
-                        <p style={{ margin: '2px 0 0 0', fontSize: '0.78rem', color: '#64748b', lineHeight: 1.35 }}>{step.desc}</p>
-                      </div>
+                      <h4 style={{ margin: 0, fontSize: '0.92rem', color: '#0f172a', fontWeight: 800 }}>
+                        {step.label}
+                      </h4>
+                      <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, fontWeight: 500 }}>
+                        {step.desc}
+                      </p>
                     </div>
                   );
                 })}
