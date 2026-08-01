@@ -36,8 +36,17 @@ export default function AdminPage() {
   const [userGrowth, setUserGrowth] = useState<Array<{ month: string; count: number }>>([]);
   const [recentActivities, setRecentActivities] = useState<ActivityItem[]>([]);
   const [showActivityCard, setShowActivityCard] = useState(true);
+  const [userRole, setUserRole] = useState('admin');
 
   useEffect(() => {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      try {
+        const u = JSON.parse(userStr);
+        if (u.role) setUserRole(u.role);
+      } catch (e) {}
+    }
+
     setLoading(true);
     fetch('/api/admin/stats')
       .then(res => res.json())
@@ -50,6 +59,8 @@ export default function AdminPage() {
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, []);
+
+  const isCollaborator = userRole === 'collaborator' || userRole === 'colaborador';
 
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return 'Recente';
@@ -78,6 +89,92 @@ export default function AdminPage() {
       }} />
     </div>
   );
+
+  if (isCollaborator) {
+    return (
+      <div className={styles.dashboard} style={{ fontFamily: 'Inter, sans-serif' }}>
+        <header style={{ marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.4rem' }}>
+            <span style={{ background: '#eff6ff', color: '#1d4ed8', fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', border: '1px solid #bfdbfe' }}>
+              👤 Colaborador ABN
+            </span>
+          </div>
+          <h1 style={{ fontSize: '2rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', marginBottom: '0.3rem' }}>
+            Painel Operacional
+          </h1>
+          <p style={{ color: '#64748b', fontSize: '0.92rem', margin: 0, fontWeight: 500 }}>
+            Ferramentas diárias para gestão de tarefas, validação de candidaturas e suporte a empreendedores.
+          </p>
+        </header>
+
+        {/* 3 Cartões Diretos e Úteis */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
+          <Link href="/admin/atividades" style={{ textDecoration: 'none' }}>
+            <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.6rem', borderRadius: '20px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
+                <span style={{ fontSize: '0.75rem', color: '#c2410c', background: '#fff7ed', border: '1px solid #ffedd5', padding: '4px 10px', borderRadius: '20px', fontWeight: 800, textTransform: 'uppercase' }}>Foco Diário</span>
+                <Clock size={22} color="#c2410c" />
+              </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', margin: '0 0 4px 0' }}>
+                Minhas Atividades &amp; Tarefas
+              </h3>
+              <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, fontWeight: 500 }}>
+                Consultar tarefas atribuídas, prazos e atualizar estados de execução.
+              </p>
+            </div>
+          </Link>
+
+          <Link href="/admin/inscricoes" style={{ textDecoration: 'none' }}>
+            <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.6rem', borderRadius: '20px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
+                <span style={{ fontSize: '0.75rem', color: '#1d4ed8', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '4px 10px', borderRadius: '20px', fontWeight: 800, textTransform: 'uppercase' }}>Validação</span>
+                <ShieldCheck size={22} color="#1d4ed8" />
+              </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', margin: '0 0 4px 0' }}>
+                Inscrições &amp; Candidaturas
+              </h3>
+              <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, fontWeight: 500 }}>
+                Verificar pedidos de adesão de novos membros e programas ativos.
+              </p>
+            </div>
+          </Link>
+
+          <Link href="/admin/mensagens" style={{ textDecoration: 'none' }}>
+            <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '1.6rem', borderRadius: '20px', boxShadow: '0 4px 14px rgba(15,23,42,0.03)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
+                <span style={{ fontSize: '0.75rem', color: '#15803d', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '4px 10px', borderRadius: '20px', fontWeight: 800, textTransform: 'uppercase' }}>Atendimento</span>
+                <Users size={22} color="#15803d" />
+              </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', margin: '0 0 4px 0' }}>
+                Mensagens &amp; Suporte
+              </h3>
+              <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, fontWeight: 500 }}>
+                Responder a dúvidas e pedidos de contacto recebidos dos empreendedores.
+              </p>
+            </div>
+          </Link>
+        </div>
+
+        {/* Bloco de Ações Rápidas Úteis */}
+        <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', borderRadius: '20px', padding: '1.75rem', boxShadow: '0 4px 16px rgba(15,23,42,0.03)' }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', margin: '0 0 1rem 0' }}>
+            ⚡ Ações Operacionais Rápidas
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+            <Link href="/admin/atividades" className="btn-primary" style={{ textDecoration: 'none', padding: '12px 18px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, textAlign: 'center' }}>
+              ➕ Abrir Minhas Atividades
+            </Link>
+            <Link href="/admin/inscricoes" className="btn-outline" style={{ textDecoration: 'none', padding: '12px 18px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, textAlign: 'center', borderColor: '#cbd5e1', color: '#0f172a' }}>
+              📋 Verificar Candidaturas
+            </Link>
+            <Link href="/admin/mensagens" className="btn-outline" style={{ textDecoration: 'none', padding: '12px 18px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, textAlign: 'center', borderColor: '#cbd5e1', color: '#0f172a' }}>
+              ✉️ Responder a Mensagens
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.dashboard} style={{ fontFamily: 'Inter, sans-serif' }}>
