@@ -17,7 +17,10 @@ export default function DashboardPage() {
   });
   const [analytics, setAnalytics] = useState<any>(null);
   const [userInscricoes, setUserInscricoes] = useState<any[]>([]);
+  const [userCursos, setUserCursos] = useState<any[]>([]);
+  const [userServicos, setUserServicos] = useState<any[]>([]);
   const [loadingInscricoes, setLoadingInscricoes] = useState(true);
+  const [clientTab, setClientTab] = useState<'programas' | 'cursos' | 'servicos'>('programas');
 
   // Modal para Recursos Recomendados
   const [activeResource, setActiveResource] = useState<{
@@ -86,14 +89,7 @@ export default function DashboardPage() {
       setScore(calculatedScore);
       setChecklist(checks);
 
-      // 3. Fetch analytics
-      const analyticsRes = await fetch('/api/user/analytics');
-      const analyticsData = await analyticsRes.json();
-      if (analyticsData.success) {
-        setAnalytics(analyticsData);
-      }
-
-      // 4. Fetch user's inscriptions / memberships
+      // 3. Fetch user's inscriptions / memberships
       try {
         const inscRes = await fetch('/api/clube/inscricoes');
         const inscData = await inscRes.json();
@@ -101,13 +97,29 @@ export default function DashboardPage() {
           const myInsc = inscData.inscricoes.filter((i: any) => i.email?.toLowerCase() === userEmail.toLowerCase());
           setUserInscricoes(myInsc);
         }
-      } catch {
-        // fallback
-      } finally {
-        setLoadingInscricoes(false);
-      }
+      } catch (e) {}
+
+      // 4. Fetch user's course enrollments / payments
+      try {
+        const payRes = await fetch('/api/payments');
+        const payData = await payRes.json();
+        if (payData.payments) {
+          setUserCursos(payData.payments);
+        }
+      } catch (e) {}
+
+      // 5. Fetch user's requested services
+      try {
+        const reqRes = await fetch('/api/requests');
+        const reqData = await reqRes.json();
+        if (reqData.requests) {
+          setUserServicos(reqData.requests);
+        }
+      } catch (e) {}
+
     } catch (e) {
       console.error(e);
+    } finally {
       setLoadingInscricoes(false);
     }
   };
@@ -303,39 +315,141 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* 1. Minhas Candidaturas em Destaque */}
+          {/* 1. Minhas Inscrições, Cursos & Serviços Solicitados */}
           <div style={{ marginBottom: '2.5rem' }}>
             <div style={{ padding: '1.75rem', borderRadius: '24px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.03)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <h3 style={{ color: '#0f172a', fontSize: '1.05rem', margin: 0, fontFamily: 'Outfit', fontWeight: 800 }}>
-                  📋 Minhas Candidaturas &amp; Inscrições
-                </h3>
-                <span style={{ fontSize: '0.75rem', background: '#f0fdf4', color: '#16a34a', fontWeight: 800, padding: '3px 10px', borderRadius: '12px' }}>
-                  {userInscricoes.length} Registadas
-                </span>
+              
+              {/* Tabs Bar */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem', borderBottom: '1px solid #f1f5f9', paddingBottom: '1rem' }}>
+                <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
+                  <button
+                    onClick={() => setClientTab('programas')}
+                    style={{
+                      padding: '8px 14px',
+                      borderRadius: '10px',
+                      fontSize: '0.82rem',
+                      fontWeight: 800,
+                      border: 'none',
+                      cursor: 'pointer',
+                      background: clientTab === 'programas' ? '#ff6b00' : '#f8fafc',
+                      color: clientTab === 'programas' ? '#ffffff' : '#64748b',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    Programas &amp; Clube ({userInscricoes.length})
+                  </button>
+                  <button
+                    onClick={() => setClientTab('cursos')}
+                    style={{
+                      padding: '8px 14px',
+                      borderRadius: '10px',
+                      fontSize: '0.82rem',
+                      fontWeight: 800,
+                      border: 'none',
+                      cursor: 'pointer',
+                      background: clientTab === 'cursos' ? '#ff6b00' : '#f8fafc',
+                      color: clientTab === 'cursos' ? '#ffffff' : '#64748b',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    Cursos &amp; Formação ({userCursos.length})
+                  </button>
+                  <button
+                    onClick={() => setClientTab('servicos')}
+                    style={{
+                      padding: '8px 14px',
+                      borderRadius: '10px',
+                      fontSize: '0.82rem',
+                      fontWeight: 800,
+                      border: 'none',
+                      cursor: 'pointer',
+                      background: clientTab === 'servicos' ? '#ff6b00' : '#f8fafc',
+                      color: clientTab === 'servicos' ? '#ffffff' : '#64748b',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    Serviços Solicitados ({userServicos.length})
+                  </button>
+                </div>
               </div>
 
-              {loadingInscricoes ? (
-                <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>A carregar candidaturas...</div>
-              ) : userInscricoes.length === 0 ? (
-                <div style={{ background: '#f8fafc', border: '1px border-dashed #cbd5e1', borderRadius: '14px', padding: '1.25rem', textAlign: 'center', color: '#64748b', fontSize: '0.85rem', fontWeight: 500 }}>
-                  Nenhuma candidatura pendente. Explore os programas e oportunidades abertos na plataforma!
-                </div>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-                  {userInscricoes.map((i, idx) => (
-                    <div key={idx} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '14px', padding: '0.85rem 1.1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div>
-                        <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>{i.programaTitulo || `Clube ABN — ${i.nivelAdesao?.toUpperCase() || 'Membro'}`}</div>
-                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Data: {new Date(i.createdAt).toLocaleDateString('pt-PT')}</div>
-                      </div>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', background: i.status === 'aprovado' ? '#dcfce7' : '#fef3c7', color: i.status === 'aprovado' ? '#15803d' : '#b45309' }}>
-                        {i.status === 'aprovado' ? '🟢 Aprovado' : '⏳ Em Verificação'}
-                      </span>
+              {/* Tab Content 1: Programas & Clube */}
+              {clientTab === 'programas' && (
+                <div>
+                  {loadingInscricoes ? (
+                    <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>A carregar candidaturas...</div>
+                  ) : userInscricoes.length === 0 ? (
+                    <div style={{ background: '#f8fafc', border: '1px border-dashed #cbd5e1', borderRadius: '14px', padding: '1.25rem', textAlign: 'center', color: '#64748b', fontSize: '0.85rem', fontWeight: 500 }}>
+                      Nenhuma candidatura a programas pendente. Explore os programas abertos!
                     </div>
-                  ))}
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                      {userInscricoes.map((i, idx) => (
+                        <div key={idx} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '14px', padding: '0.85rem 1.1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div>
+                            <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>{i.programaTitulo || `Clube ABN — ${i.nivelAdesao?.toUpperCase() || 'Membro'}`}</div>
+                            <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Data de Envio: {new Date(i.createdAt).toLocaleDateString('pt-PT')}</div>
+                          </div>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', background: i.status === 'aprovado' ? '#dcfce7' : '#fef3c7', color: i.status === 'aprovado' ? '#15803d' : '#b45309' }}>
+                            {i.status === 'aprovado' ? '🟢 Aprovado' : '⏳ Em Verificação'}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
+
+              {/* Tab Content 2: Cursos & Formação */}
+              {clientTab === 'cursos' && (
+                <div>
+                  {userCursos.length === 0 ? (
+                    <div style={{ background: '#f8fafc', border: '1px border-dashed #cbd5e1', borderRadius: '14px', padding: '1.25rem', textAlign: 'center', color: '#64748b', fontSize: '0.85rem', fontWeight: 500 }}>
+                      Ainda não está matriculado em nenhum curso. Consulte a secção de Cursos &amp; Formação!
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                      {userCursos.map((c, idx) => (
+                        <div key={idx} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '14px', padding: '0.85rem 1.1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div>
+                            <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>{c.courseTitle || 'Curso ABN'}</div>
+                            <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Matrícula: {new Date(c.createdAt).toLocaleDateString('pt-PT')} — Valor: {c.amount || 'Gratuito'}</div>
+                          </div>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', background: c.status === 'aprovado' ? '#dcfce7' : '#fef3c7', color: c.status === 'aprovado' ? '#15803d' : '#b45309' }}>
+                            {c.status === 'aprovado' ? '🟢 Aprovado / Ativo' : '⏳ Em Análise'}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Tab Content 3: Serviços Solicitados */}
+              {clientTab === 'servicos' && (
+                <div>
+                  {userServicos.length === 0 ? (
+                    <div style={{ background: '#f8fafc', border: '1px border-dashed #cbd5e1', borderRadius: '14px', padding: '1.25rem', textAlign: 'center', color: '#64748b', fontSize: '0.85rem', fontWeight: 500 }}>
+                      Nenhum serviço solicitado até ao momento. Explore a área de Serviços &amp; Mentoria!
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                      {userServicos.map((s, idx) => (
+                        <div key={idx} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '14px', padding: '0.85rem 1.1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div>
+                            <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>{s.service || 'Serviço ABN'}</div>
+                            <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Solicitado em: {new Date(s.createdAt).toLocaleDateString('pt-PT')}</div>
+                          </div>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', background: s.status === 'concluido' ? '#dcfce7' : s.status === 'em_andamento' ? '#dbeafe' : '#fef3c7', color: s.status === 'concluido' ? '#15803d' : s.status === 'em_andamento' ? '#1e40af' : '#b45309' }}>
+                            {s.status === 'concluido' ? '🟢 Concluído' : s.status === 'em_andamento' ? '🔵 Em Andamento' : '⏳ Pendente'}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
             </div>
           </div>
 
