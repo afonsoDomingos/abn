@@ -1,0 +1,105 @@
+.page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.page h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+.profileCard {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 2rem;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary, #d4af37);
+}
+
+.avatarPlaceholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary, #d4af37), #b8860b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.profileInfo h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.email {
+  color: rgba(255,255,255,0.5);
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.roleBadge {
+  display: inline-block;
+  background: rgba(212,175,55,0.15);
+  border: 1px solid rgba(212,175,55,0.35);
+  color: var(--primary, #d4af37);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.profileDetails {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.detailGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detailGroup label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.5);
+}
+
+.detailGroup p {
+  color: rgba(255,255,255,0.8);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.detailGroup a {
+  color: var(--primary, #d4af37);
+  text-decoration: none;
+}
+
+.detailGroup a:hover {
+  text-decoration: underline;
+}

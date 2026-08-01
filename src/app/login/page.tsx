@@ -30,8 +30,10 @@ export default function LoginPage() {
       if (res.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
         const role = (data.user.role || '').toLowerCase();
-        if (role === 'admin' || role === 'collaborator' || role === 'colaborador') {
+        if (role === 'admin') {
           router.push('/admin');
+        } else if (role === 'collaborator' || role === 'colaborador') {
+          router.push('/colaborador');
         } else {
           router.push('/dashboard');
         }
