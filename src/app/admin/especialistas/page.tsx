@@ -26,6 +26,7 @@ export default function AdminEspecialistasPage() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
   const [activeFilter, setActiveFilter] = useState('Todos');
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   // Form state
   const [name, setName] = useState('');
@@ -39,6 +40,25 @@ export default function AdminEspecialistasPage() {
   const [email, setEmail] = useState('');
   const [order, setOrder] = useState(0);
   const [status, setStatus] = useState('ativo');
+
+  const handleImageUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    setUploadingImage(true);
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setImage(data.url);
+      } else {
+        alert(data.error || 'Erro no upload da imagem.');
+      }
+    } catch {
+      alert('Erro de conexão ao carregar imagem.');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -231,13 +251,52 @@ export default function AdminEspecialistasPage() {
               </div>
 
               <div className={styles.formGroup}>
-                <label>URL da Foto (imagem de perfil)</label>
-                <input
-                  type="text"
-                  value={image}
-                  onChange={e => setImage(e.target.value)}
-                  placeholder="/Perfil01.jpg ou https://..."
-                />
+                <label>Foto de Perfil (URL ou Upload de Ficheiro)</label>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    value={image}
+                    onChange={e => setImage(e.target.value)}
+                    placeholder="/Perfil01.jpg ou https://..."
+                    style={{ flex: 1 }}
+                  />
+                  <label
+                    style={{
+                      cursor: 'pointer',
+                      padding: '0.75rem 1rem',
+                      background: 'var(--primary, #ff6b00)',
+                      color: '#ffffff',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      fontWeight: 700,
+                      whiteSpace: 'nowrap',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    {uploadingImage ? '⏳ A carregar...' : '📁 Escolher Foto'}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={e => {
+                        const file = e.target.files?.[0];
+                        if (file) handleImageUpload(file);
+                      }}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                </div>
+                {image && (
+                  <div style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <img
+                      src={image}
+                      alt="Pré-visualização"
+                      style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #ff6b00' }}
+                    />
+                    <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.7)' }}>Pré-visualização da foto</span>
+                  </div>
+                )}
               </div>
 
               <div className={styles.formGroup}>
