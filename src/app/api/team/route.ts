@@ -105,7 +105,14 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'Acesso negado.' }, { status: 403 });
     }
 
-    const { id } = await request.json();
+    const { searchParams } = new URL(request.url);
+    let id = searchParams.get('id');
+    if (!id) {
+      try {
+        const body = await request.json();
+        id = body?.id;
+      } catch {}
+    }
 
     if (!id) {
       return NextResponse.json({ error: 'ID do membro é obrigatório.' }, { status: 400 });

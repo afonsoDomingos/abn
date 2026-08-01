@@ -29,7 +29,8 @@ import {
   Menu,
   Users as UsersIcon,
   UserCheck,
-  Building
+  Building,
+  Award
 } from 'lucide-react';
 
 interface NavItem {
@@ -54,6 +55,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       items: [
         { href: '/admin', label: t.admin.dashboard, icon: <LayoutDashboard size={18} /> },
         { href: '/admin/usuarios', label: t.admin.users, icon: <Users size={18} /> },
+        { href: '/admin/especialistas', label: 'Especialistas & Mentores', icon: <Award size={18} /> },
         { href: '/admin/equipa', label: 'Equipa', icon: <UsersIcon size={18} /> },
         { href: '/admin/departamentos', label: 'Departamentos', icon: <Building size={18} /> },
         { href: '/admin/colaboradores', label: 'Colaboradores', icon: <UserCheck size={18} /> },

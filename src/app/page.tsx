@@ -11,6 +11,7 @@ import HomeEvents from "@/components/HomeEvents";
 import Articles from "@/components/Articles";
 import HomeTeam from "@/components/HomeTeam";
 import Courses from "@/components/Courses";
+import HomeSpecialists from "@/components/HomeSpecialists";
 import Stats from "@/components/Stats";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -33,6 +34,7 @@ export default function Home() {
         <HomeOpportunities />
         <HomeEvents />
         <Courses />
+        <HomeSpecialists />
         <Articles />
         <HomeTeam />
         <Stats />

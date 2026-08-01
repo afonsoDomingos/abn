@@ -34,7 +34,22 @@ const defaultPrograms = [
     publicoAlvo: '',
     beneficios: '- Formação prática;\n- Certificado de participação;\n- Networking;\n- Mentoria;\n- Acesso às atividades da ABN.',
     requisitos: '- Ter idade igual ou superior a 16 anos;\n- Interesse em empreendedorismo;\n- Compromisso com a aprendizagem.',
-    investimento: 'Inscrição: Gratuita\nFormação: Conforme cada edição (algumas edições poderão ser patrocinadas ou totalmente gratuitas).',
+    investimento: `• Startups Incubadas do ABN Startup 180+: Gratuito ou incluído na mensalidade de incubação.
+
+1. Participantes Individuais:
+- Formação Intensiva (7 dias): 8.000 MT – 18.000 MT / participante
+- Formação Completa (15 dias): 15.000 MT – 35.000 MT / participante
+- Sessão de Coaching Individual (60–90 min): 2.000 MT – 5.000 MT
+- Pacote de Coaching (6 sessões / trimestre): 10.000 MT – 25.000 MT
+- Certificação em Soft Skills / Liderança: 8.000 MT – 20.000 MT
+
+2. Empresas & Corporativo (Formação B2B - até 20 pessoas):
+- Formação Intensiva de 7 dias (In-Company): 250.000 MT – 600.000 MT (pacote)
+- Formação Completa de 15 dias (In-Company): 450.000 MT – 1.000.000 MT (pacote)
+- Contratos Trimestrais ou Anuais de Acompanhamento: Valor negociado por contrato
+
+3. Licenciamento da Metodologia:
+- Licenciamento da Metodologia (por território/ano): 3.000 USD – 10.000 USD / ano`,
     processoSelecao: '',
     criteriosSelecao: '',
     phase: 'Desenvolvimento',
