@@ -34,6 +34,7 @@ interface Program {
   lema?: string;
   isClub?: boolean;
   province?: string;
+  customFields?: any[];
 }
 
 const FALLBACK_PROGRAMS: Program[] = [
@@ -183,6 +184,8 @@ export default function ProgramasPage() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [bannerUrl, setBannerUrl] = useState('/hero_entrepreneurs.png');
   const [showInquerito, setShowInquerito] = useState(false);
+  const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
+  const [respostasPersonalizadas, setRespostasPersonalizadas] = useState<Record<string, any>>({});
   const [form, setForm] = useState<InqueritorForm>(initialForm);
   const [uploadingProof, setUploadingProof] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -271,6 +274,54 @@ export default function ProgramasPage() {
   };
 
   const calculateTotalValues = () => {
+    // Caso seja um programa regular (ex: Mentalidade Empreendedora) e não o Clube
+    if (selectedProgram && !selectedProgram.isClub) {
+      let valorTotal = 0;
+      let descricaoQuota = '';
+
+      switch (form.nivelAdesao) {
+        case 'formacao-7d':
+          valorTotal = 8000;
+          descricaoQuota = 'Formação Intensiva (7 dias)';
+          break;
+        case 'formacao-15d':
+          valorTotal = 15000;
+          descricaoQuota = 'Formação Completa (15 dias)';
+          break;
+        case 'coaching-individual':
+          valorTotal = 2500;
+          descricaoQuota = 'Sessão de Coaching Individual (60-90 min)';
+          break;
+        case 'coaching-pacote':
+          valorTotal = 12000;
+          descricaoQuota = 'Pacote Trimestral de Coaching (6 sessões)';
+          break;
+        case 'certificacao':
+          valorTotal = 10000;
+          descricaoQuota = 'Certificação em Soft Skills & Liderança';
+          break;
+        case 'corporativo-b2b':
+          valorTotal = 0;
+          descricaoQuota = 'Formação Corporativa B2B (Sob Consulta)';
+          break;
+        default:
+          valorTotal = 8000;
+          descricaoQuota = 'Formação Básica';
+          break;
+      }
+
+      return {
+        taxaInscricao: 0,
+        valorQuotaBase: valorTotal,
+        quotaCobrada: valorTotal,
+        desconto: 0,
+        valorTotal,
+        descricaoQuota,
+        periodoLabel: 'Inscrição na Formação / Pagamento Único',
+      };
+    }
+
+    // Caso seja o Clube dos Empreendedores ABN
     let taxaInscricao = 0;
     let valorQuotaBase = 0;
     let descricaoQuota = '';
@@ -370,10 +421,13 @@ export default function ProgramasPage() {
 
     const payload = {
       ...form,
+      programaId: selectedProgram?._id,
+      programaTitulo: selectedProgram?.title || 'Clube dos Empreendedores ABN',
+      respostasPersonalizadas,
       valorPago: `${calc.valorTotal} MT`,
       tipoPagamento,
       statusPagamento,
-      origem: 'programas',
+      origem: selectedProgram ? selectedProgram.title : 'programas',
     };
     
     try {
@@ -423,6 +477,9 @@ export default function ProgramasPage() {
     setShowInquerito(false);
     setSubmitted(false);
     setForm(initialForm);
+    setSelectedProgram(null);
+    setRespostasPersonalizadas({});
+    setCurrentStep(1);
   };
 
   return (
@@ -467,7 +524,11 @@ export default function ProgramasPage() {
                   <button
                     id="btn-inscrever-clube"
                     className={styles.clubeInscBtn}
-                    onClick={() => setShowInquerito(true)}
+                    onClick={() => {
+                      setSelectedProgram(clube);
+                      setForm(f => ({ ...f, nivelAdesao: 'individual' }));
+                      setShowInquerito(true);
+                    }}
                   >
                     ✍️ Inscrever-me no Clube
                   </button>
@@ -649,9 +710,20 @@ export default function ProgramasPage() {
                         >
                           {isOpen ? 'Ver Menos ▲' : 'Saber Mais ▼'}
                         </button>
-                        <Link href="/registro" className={styles.applyBtn}>
+                        <button
+                          className={styles.applyBtn}
+                          onClick={() => {
+                            setSelectedProgram(prog);
+                            if (prog.isClub) {
+                              setForm(f => ({ ...f, nivelAdesao: 'individual' }));
+                            } else {
+                              setForm(f => ({ ...f, nivelAdesao: 'formacao-7d' }));
+                            }
+                            setShowInquerito(true);
+                          }}
+                        >
                           Candidatar-me
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   );
@@ -986,19 +1058,33 @@ export default function ProgramasPage() {
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
                       <span className={styles.formSectionNumber}>3</span>
-                      <h3>Nível de Adesão Pretendido</h3>
+                      <h3>
+                        {selectedProgram && !selectedProgram.isClub
+                          ? `Modalidade de Formação / Participação (${selectedProgram.title})`
+                          : 'Nível de Adesão Pretendido'}
+                      </h3>
                     </div>
                     <div className={styles.formField}>
                       <div className={styles.radioGroup}>
-                        {[
-                          { val: 'jovem', label: 'Jovem / Estudante', sub: 'Inscrição 300 MT | Quota anual 1.000 MT' },
-                          { val: 'individual', label: 'Individual', sub: 'Inscrição 500 MT | Quota anual 2.400 MT' },
-                          { val: 'empresa', label: 'Empresa / PME', sub: 'Inscrição 1.500 MT | Quota anual 6.000 MT' },
-                          { val: 'corp-gold', label: 'Corporativo — Corporate Gold', sub: '20.000 MT/ano' },
-                          { val: 'corp-platinum', label: 'Corporativo — Corporate Platinum', sub: '40.000 MT/ano' },
-                          { val: 'corp-founding', label: 'Corporativo — Corporate Founding Partner', sub: 'Pacote personalizado' },
-                          { val: 'honorario', label: 'Honorário', sub: 'Por convite da Direcção da ABN (isento)' },
-                        ].map(opt => (
+                        {(selectedProgram && !selectedProgram.isClub
+                          ? [
+                              { val: 'formacao-7d', label: 'Formação Intensiva (7 dias)', sub: 'Mindset & Soft Skills | 8.000 MT – 18.000 MT' },
+                              { val: 'formacao-15d', label: 'Formação Completa (15 dias)', sub: 'Desenvolvimento Comportamental | 15.000 MT – 35.000 MT' },
+                              { val: 'coaching-individual', label: 'Sessão de Coaching Individual (60–90 min)', sub: '2.500 MT / sessão' },
+                              { val: 'coaching-pacote', label: 'Pacote Trimestral de Coaching (6 sessões)', sub: '12.000 MT / pacote' },
+                              { val: 'certificacao', label: 'Certificação em Soft Skills & Liderança', sub: '10.000 MT' },
+                              { val: 'corporativo-b2b', label: 'Formação Corporativa B2B (In-Company / Equipa)', sub: 'Pacote sob consulta com a Direcção ABN' },
+                            ]
+                          : [
+                              { val: 'jovem', label: 'Jovem / Estudante', sub: 'Inscrição 300 MT | Quota anual 1.000 MT' },
+                              { val: 'individual', label: 'Individual', sub: 'Inscrição 500 MT | Quota anual 2.400 MT' },
+                              { val: 'empresa', label: 'Empresa / PME', sub: 'Inscrição 1.500 MT | Quota anual 6.000 MT' },
+                              { val: 'corp-gold', label: 'Corporativo — Corporate Gold', sub: '20.000 MT/ano' },
+                              { val: 'corp-platinum', label: 'Corporativo — Corporate Platinum', sub: '40.000 MT/ano' },
+                              { val: 'corp-founding', label: 'Corporativo — Corporate Founding Partner', sub: 'Pacote personalizado' },
+                              { val: 'honorario', label: 'Honorário', sub: 'Por convite da Direcção da ABN (isento)' },
+                            ]
+                        ).map(opt => (
                           <label key={opt.val} className={`${styles.radioLabel} ${form.nivelAdesao === opt.val ? styles.radioLabelActive : ''}`}>
                             <input
                               type="radio"
@@ -1017,29 +1103,32 @@ export default function ProgramasPage() {
                         ))}
                       </div>
                     </div>
-                    <div className={styles.formField} style={{ marginTop: '1rem' }}>
-                      <label>Periodicidade da quota</label>
-                      <div className={styles.radioGroupRow}>
-                        {[
-                          { val: 'anual', label: 'Anual (com desconto de 10%)' },
-                          { val: 'trimestral', label: 'Trimestral' },
-                          { val: 'mensal', label: 'Mensal' },
-                        ].map(opt => (
-                          <label key={opt.val} className={`${styles.radioLabelRow} ${form.formaPagamento === opt.val ? styles.radioLabelRowActive : ''}`}>
-                            <input
-                              type="radio"
-                              name="formaPagamento"
-                              className={styles.radioInput}
-                              value={opt.val}
-                              checked={form.formaPagamento === opt.val}
-                              onChange={() => setForm(f => ({ ...f, formaPagamento: opt.val }))}
-                            />
-                            <span className={styles.radioCircle}></span>
-                            {opt.label}
-                          </label>
-                        ))}
+
+                    {(!selectedProgram || selectedProgram.isClub) && (
+                      <div className={styles.formField} style={{ marginTop: '1rem' }}>
+                        <label>Periodicidade da quota</label>
+                        <div className={styles.radioGroupRow}>
+                          {[
+                            { val: 'anual', label: 'Anual (com desconto de 10%)' },
+                            { val: 'trimestral', label: 'Trimestral' },
+                            { val: 'mensal', label: 'Mensal' },
+                          ].map(opt => (
+                            <label key={opt.val} className={`${styles.radioLabelRow} ${form.formaPagamento === opt.val ? styles.radioLabelRowActive : ''}`}>
+                              <input
+                                type="radio"
+                                name="formaPagamento"
+                                className={styles.radioInput}
+                                value={opt.val}
+                                checked={form.formaPagamento === opt.val}
+                                onChange={() => setForm(f => ({ ...f, formaPagamento: opt.val }))}
+                              />
+                              <span className={styles.radioCircle}></span>
+                              {opt.label}
+                            </label>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 )}
 
@@ -1048,8 +1137,106 @@ export default function ProgramasPage() {
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
                       <span className={styles.formSectionNumber}>4</span>
-                      <h3>Áreas de Interesse <span className={styles.optional}>(seleccione todas as aplicáveis)</span></h3>
+                      <h3>Áreas de Interesse &amp; Inquérito {selectedProgram ? `— ${selectedProgram.title}` : ''}</h3>
                     </div>
+
+                    {/* Pergunta(s) Personalizada(s) do Programa se existirem */}
+                    {selectedProgram?.customFields && selectedProgram.customFields.length > 0 && (
+                      <div style={{ background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '12px', padding: '1.2rem', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase' }}>
+                          📋 Pergunta(s) Personalizada(s) do Programa
+                        </div>
+                        {selectedProgram.customFields.map((field: any) => (
+                          <div key={field.id} className={styles.formField}>
+                            <label style={{ color: '#0f172a', fontWeight: 700 }}>
+                              {field.label} {field.required && <span className={styles.required}>*</span>}
+                            </label>
+
+                            {field.type === 'text' && (
+                              <input
+                                type="text"
+                                className={styles.formInput}
+                                required={field.required}
+                                placeholder={field.placeholder || ''}
+                                value={respostasPersonalizadas[field.label] || ''}
+                                onChange={e => setRespostasPersonalizadas({ ...respostasPersonalizadas, [field.label]: e.target.value })}
+                              />
+                            )}
+
+                            {field.type === 'textarea' && (
+                              <textarea
+                                rows={3}
+                                className={styles.formInput}
+                                required={field.required}
+                                placeholder={field.placeholder || ''}
+                                value={respostasPersonalizadas[field.label] || ''}
+                                onChange={e => setRespostasPersonalizadas({ ...respostasPersonalizadas, [field.label]: e.target.value })}
+                              />
+                            )}
+
+                            {field.type === 'select' && (
+                              <select
+                                className={styles.formInput}
+                                required={field.required}
+                                value={respostasPersonalizadas[field.label] || ''}
+                                onChange={e => setRespostasPersonalizadas({ ...respostasPersonalizadas, [field.label]: e.target.value })}
+                              >
+                                <option value="">Selecione uma opção...</option>
+                                {field.options?.map((opt: string) => (
+                                  <option key={opt} value={opt}>{opt}</option>
+                                ))}
+                              </select>
+                            )}
+
+                            {field.type === 'checkbox' && (
+                              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.4rem' }}>
+                                {field.options?.map((opt: string) => {
+                                  const currentArr = Array.isArray(respostasPersonalizadas[field.label]) ? respostasPersonalizadas[field.label] : [];
+                                  const isChecked = currentArr.includes(opt);
+                                  return (
+                                    <label key={opt} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.88rem', cursor: 'pointer', background: '#fff', padding: '6px 12px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
+                                      <input
+                                        type="checkbox"
+                                        checked={isChecked}
+                                        onChange={() => {
+                                          const nextArr = isChecked ? currentArr.filter((item: string) => item !== opt) : [...currentArr, opt];
+                                          setRespostasPersonalizadas({ ...respostasPersonalizadas, [field.label]: nextArr });
+                                        }}
+                                      />
+                                      {opt}
+                                    </label>
+                                  );
+                                })}
+                              </div>
+                            )}
+
+                            {field.type === 'file' && (
+                              <input
+                                type="file"
+                                className={styles.formInput}
+                                required={field.required}
+                                onChange={async e => {
+                                  const file = e.target.files?.[0];
+                                  if (file) {
+                                    const formData = new FormData();
+                                    formData.append('file', file);
+                                    try {
+                                      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                                      const data = await res.json();
+                                      if (data.success && data.url) {
+                                        setRespostasPersonalizadas({ ...respostasPersonalizadas, [field.label]: data.url });
+                                      }
+                                    } catch (err) {
+                                      console.error(err);
+                                    }
+                                  }
+                                }}
+                              />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                     <div className={styles.checkGroup}>
                       {[
                         'Formação e capacitação empresarial',
