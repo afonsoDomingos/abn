@@ -13,7 +13,6 @@ export default function ColaboradorDashboard() {
   });
 
   useEffect(() => {
-    // Fetch stats for collaborator
     Promise.all([
       fetch('/api/users').then(r => r.json()),
       fetch('/api/atividades').then(r => r.json()),
@@ -32,18 +31,18 @@ export default function ColaboradorDashboard() {
   }, []);
 
   const statCards = [
-    { title: 'Total Usuários', value: stats.totalUsers, icon: '👥', color: '#3498db' },
-    { title: 'Atividades Ativas', value: stats.activeActivities, icon: '🎯', color: '#2ecc71' },
-    { title: 'Eventos', value: stats.upcomingEvents, icon: '📅', color: '#e67e22' },
-    { title: 'Programas Ativos', value: stats.activePrograms, icon: '🚀', color: '#9b59b6' },
-    { title: 'Mensagens', value: stats.messages, icon: '💬', color: '#f39c12' },
+    { title: 'Total Usuários', value: stats.totalUsers, color: '#3498db' },
+    { title: 'Atividades Ativas', value: stats.activeActivities, color: '#2ecc71' },
+    { title: 'Eventos', value: stats.upcomingEvents, color: '#e67e22' },
+    { title: 'Programas Ativos', value: stats.activePrograms, color: '#9b59b6' },
+    { title: 'Mensagens', value: stats.messages, color: '#f39c12' },
   ];
 
   return (
     <div className={styles.dashboard}>
       <div className={styles.welcomeSection}>
         <h1 className="text-gradient-gold">Bem-vindo ao Painel Colaborador</h1>
-        <p style={{ color: 'rgba(255,255,255,0.6)', marginTop: '0.5rem' }}>
+        <p style={{ color: '#64748b', marginTop: '0.5rem' }}>
           Gerencia as atividades e interações com a comunidade ABN
         </p>
       </div>
@@ -52,7 +51,7 @@ export default function ColaboradorDashboard() {
         {statCards.map((card, idx) => (
           <div key={idx} className={styles.statCard} style={{ borderColor: `${card.color}33` }}>
             <div className={styles.statIcon} style={{ background: `${card.color}22`, color: card.color }}>
-              {card.icon}
+              <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: card.color }}></div>
             </div>
             <div className={styles.statContent}>
               <h3>{card.title}</h3>
@@ -63,14 +62,15 @@ export default function ColaboradorDashboard() {
       </div>
 
       <div className={styles.recentActivity}>
-        <h3 style={{ marginBottom: '1.5rem', fontFamily: 'Outfit' }}>Atividade Recente</h3>
+        <h3 style={{ marginBottom: '1.5rem', fontFamily: 'Outfit', color: '#1e293b' }}>Atividade Recente</h3>
         <div style={{ 
           padding: '1.5rem', 
           borderRadius: '16px', 
-          background: '#161616', 
-          border: '1px solid rgba(255,255,255,0.08)' 
+          background: '#ffffff', 
+          border: '1px solid #e8eaf0',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
         }}>
-          <p style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p style={{ color: '#64748b' }}>
             Utilize o menu lateral para acessar as diferentes funcionalidades disponíveis.
           </p>
         </div>
