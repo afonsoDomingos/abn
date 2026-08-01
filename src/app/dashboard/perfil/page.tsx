@@ -198,10 +198,12 @@ export default function PerfilPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setMsg({ type: 'success', text: 'Perfil atualizado com sucesso!' });
-        localStorage.setItem('user', JSON.stringify(data.user));
-        setUser(data.user);
+        setMsg({ type: 'success', text: '✅ Perfil atualizado com sucesso!' });
+        const updatedUser = { ...data.user, profileImage: profileImage || data.user.profileImage };
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        setUser(updatedUser);
         setPassword('');
+        window.dispatchEvent(new Event('user-profile-updated'));
       } else {
         setMsg({ type: 'error', text: data.error || 'Erro ao atualizar perfil.' });
       }

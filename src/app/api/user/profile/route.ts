@@ -10,24 +10,27 @@ export async function PUT(request: Request) {
     const body = await request.json();
     const { id, name, email, password, profileImage, phone, country, city, company, sector, linkedin, bio, birthDate, gender, nationality, passportBioPage, passportPhoto, educationLevel, howHeardAboutUs } = body;
     
-    if (!id) {
-      return NextResponse.json({ error: 'ID do usuário é obrigatório.' }, { status: 400 });
-    }
-
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get('abn_session');
     if (!sessionCookie) {
       return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 });
     }
 
-    let session;
+    let session: any;
     try {
       session = JSON.parse(decodeURIComponent(sessionCookie.value));
     } catch {
       return NextResponse.json({ error: 'Sessão inválida.' }, { status: 401 });
     }
 
-    if (session.id !== id && session.role !== 'admin') {
+    const sessionId = String(session.id || session._id || '');
+    const targetId = String(id || sessionId || '');
+
+    if (!targetId) {
+      return NextResponse.json({ error: 'ID do usuário é obrigatório.' }, { status: 400 });
+    }
+
+    if (sessionId !== targetId && session.role !== 'admin') {
       return NextResponse.json({ error: 'Acesso negado. Apenas o próprio usuário ou administradores podem alterar este perfil.' }, { status: 403 });
     }
 
@@ -108,7 +111,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Sessão inválida.' }, { status: 401 });
     }
 
-    const user = await User.findById(session.id).select('-password');
+    const userId = session.id || session._id;
+    const user = await User.findById(userId).select('-password');
     if (!user) {
       return NextResponse.json({ error: 'Usuário não encontrado.' }, { status: 404 });
     }

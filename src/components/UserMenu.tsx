@@ -9,29 +9,45 @@ export default function UserMenu() {
   const [user, setUser] = useState<{ name: string; role?: string; profileImage?: string }>({ name: 'Membro', role: 'user' });
   const menuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Read session from cookie or localStorage
+  const loadUserData = () => {
     try {
+      let profileImg = '';
+      let userName = 'Membro';
+      let userRole = 'user';
+
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        userName = parsed.name || userName;
+        userRole = parsed.role || userRole;
+        profileImg = parsed.profileImage || parsed.avatar || '';
+      }
+
       const match = document.cookie.match(new RegExp('(^| )abn_session=([^;]+)'));
       if (match) {
         const decoded = JSON.parse(decodeURIComponent(match[2]));
-        setUser({
-          name: decoded.name || 'Membro',
-          role: decoded.role || 'user',
-          profileImage: decoded.profileImage || decoded.avatar || ''
-        });
-      } else {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-          const parsed = JSON.parse(storedUser);
-          setUser({
-            name: parsed.name || 'Membro',
-            role: parsed.role || 'user',
-            profileImage: parsed.profileImage || parsed.avatar || ''
-          });
-        }
+        userName = decoded.name || userName;
+        userRole = decoded.role || userRole;
+        if (!profileImg) profileImg = decoded.profileImage || decoded.avatar || '';
       }
+
+      setUser({
+        name: userName,
+        role: userRole,
+        profileImage: profileImg
+      });
     } catch (e) {}
+  };
+
+  useEffect(() => {
+    loadUserData();
+
+    const handleProfileUpdate = () => {
+      loadUserData();
+    };
+
+    window.addEventListener('user-profile-updated', handleProfileUpdate);
+    window.addEventListener('storage', handleProfileUpdate);
 
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -40,7 +56,11 @@ export default function UserMenu() {
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      window.removeEventListener('user-profile-updated', handleProfileUpdate);
+      window.removeEventListener('storage', handleProfileUpdate);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const handleLogout = async () => {

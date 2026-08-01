@@ -58,8 +58,10 @@ export default function ProfilePage() {
 
       if (data.success) {
         setMsg({ type: 'success', text: '✅ Perfil atualizado com sucesso!' });
-        // Update local storage
-        localStorage.setItem('user', JSON.stringify({ ...data.user, profileImage: user.profileImage }));
+        // Update local storage & sync session
+        const updatedUser = { ...data.user, profileImage: user.profileImage };
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        window.dispatchEvent(new Event('user-profile-updated'));
         setTimeout(() => setMsg({ type: '', text: '' }), 3000);
       } else {
         setMsg({ type: 'error', text: data.error || 'Erro ao atualizar perfil.' });
