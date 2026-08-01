@@ -12,6 +12,7 @@ const TeamSchema = new Schema({
   email: { type: String, default: '' },
   order: { type: Number, default: 0 },
   type: { type: String, default: 'Especialista' },
+  country: { type: String, default: 'Moçambique' },
   status: { type: String, enum: ['ativo', 'inativo'], default: 'ativo' },
   createdAt: { type: Date, default: Date.now }
 });

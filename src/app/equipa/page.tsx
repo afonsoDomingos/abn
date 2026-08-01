@@ -11,6 +11,7 @@ interface TeamMember {
   name: string;
   role: string;
   department: string;
+  country?: string;
   bio: string;
   expertise: string[];
   responsibilities: string[];
@@ -319,6 +320,9 @@ export default function TeamPage() {
                       {member.department && (
                         <p className={styles.department}>{member.department}</p>
                       )}
+                      <p style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600, marginTop: '0.2rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        📍 {member.country || 'Moçambique'}
+                      </p>
 
                       <div className={styles.divider} />
 

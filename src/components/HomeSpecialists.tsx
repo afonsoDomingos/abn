@@ -10,6 +10,7 @@ interface Specialist {
   name: string;
   role: string;
   department?: string;
+  country?: string;
   expertise: string[];
   image?: string;
   bio?: string;
@@ -97,6 +98,7 @@ export default function HomeSpecialists() {
               name: m.name,
               role: m.role,
               department: m.department,
+              country: m.country || 'Moçambique',
               expertise: m.expertise || [],
               image: m.image,
               bio: m.bio,
@@ -171,7 +173,12 @@ export default function HomeSpecialists() {
                   )}
                 </div>
                 <div className={styles.headerInfo}>
-                  <span className={styles.categoryBadge}>{item.category}</span>
+                  <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '0.4rem' }}>
+                    <span className={styles.categoryBadge}>{item.category}</span>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+                      📍 {item.country || 'Moçambique'}
+                    </span>
+                  </div>
                   <h3 className={styles.name}>{item.name}</h3>
                   <p className={styles.role}>{item.role}</p>
                 </div>

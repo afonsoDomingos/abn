@@ -9,6 +9,7 @@ interface SpecialistMember {
   role: string;
   type: string;
   department: string;
+  country?: string;
   bio: string;
   expertise: string[];
   image: string;
@@ -17,6 +18,22 @@ interface SpecialistMember {
   order: number;
   status: string;
 }
+
+const COUNTRIES = [
+  'Moçambique',
+  'Angola',
+  'Cabo Verde',
+  'Guiné-Bissau',
+  'São Tomé e Príncipe',
+  'África do Sul',
+  'Nigéria',
+  'Quénia',
+  'Gana',
+  'Ruanda',
+  'Portugal',
+  'Brasil',
+  'Outro'
+];
 
 export default function AdminEspecialistasPage() {
   const [list, setList] = useState<SpecialistMember[]>([]);
@@ -33,6 +50,7 @@ export default function AdminEspecialistasPage() {
   const [role, setRole] = useState('');
   const [type, setType] = useState('Especialista');
   const [department, setDepartment] = useState('');
+  const [country, setCountry] = useState('Moçambique');
   const [bio, setBio] = useState('');
   const [expertise, setExpertise] = useState('');
   const [image, setImage] = useState('');
@@ -83,6 +101,7 @@ export default function AdminEspecialistasPage() {
     setRole('');
     setType('Especialista');
     setDepartment('');
+    setCountry('Moçambique');
     setBio('');
     setExpertise('');
     setImage('');
@@ -100,6 +119,7 @@ export default function AdminEspecialistasPage() {
     setRole(member.role);
     setType(member.type || 'Especialista');
     setDepartment(member.department || '');
+    setCountry(member.country || 'Moçambique');
     setBio(member.bio || '');
     setExpertise(member.expertise?.join('\n') || '');
     setImage(member.image || '');
@@ -121,6 +141,7 @@ export default function AdminEspecialistasPage() {
       role,
       type,
       department,
+      country,
       bio,
       expertise: expertise.split('\n').map(s => s.trim()).filter(Boolean),
       image,
@@ -248,6 +269,15 @@ export default function AdminEspecialistasPage() {
                   onChange={e => setDepartment(e.target.value)}
                   placeholder="Ex: Tecnologia & Inovação, Finanças, Comunicação"
                 />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>País *</label>
+                <select value={country} onChange={e => setCountry(e.target.value)}>
+                  {COUNTRIES.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
               </div>
 
               <div className={styles.formGroup}>
@@ -393,6 +423,7 @@ export default function AdminEspecialistasPage() {
                 <th>Profissional</th>
                 <th>Tipo</th>
                 <th>Área / Departamento</th>
+                <th>País</th>
                 <th>Expertise</th>
                 <th>Status</th>
                 <th>Acções</th>
@@ -411,6 +442,11 @@ export default function AdminEspecialistasPage() {
                     </span>
                   </td>
                   <td>{item.department || '-'}</td>
+                  <td>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8' }}>
+                      📍 {item.country || 'Moçambique'}
+                    </span>
+                  </td>
                   <td>
                     {item.expertise && item.expertise.length > 0 ? (
                       item.expertise.slice(0, 3).map((exp, i) => (
