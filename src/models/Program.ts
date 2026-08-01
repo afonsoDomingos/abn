@@ -28,7 +28,17 @@ const ProgramSchema = new Schema({
   compromissoMembros: { type: String, default: '' },
   lema: { type: String, default: '' },
   isClub: { type: Boolean, default: false },
-  province: { type: String, default: '' }
+  province: { type: String, default: '' },
+  customFields: [
+    {
+      id: { type: String },
+      label: { type: String, required: true },
+      type: { type: String, enum: ['text', 'textarea', 'select', 'checkbox', 'file'], default: 'text' },
+      options: { type: [String], default: [] },
+      required: { type: Boolean, default: false },
+      placeholder: { type: String, default: '' }
+    }
+  ]
 });
 
 const Program = models.Program || model('Program', ProgramSchema);

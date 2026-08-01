@@ -3,6 +3,15 @@
 import { useEffect, useState } from 'react';
 import styles from './Programas.module.css';
 
+export interface CustomField {
+  id: string;
+  label: string;
+  type: 'text' | 'textarea' | 'select' | 'checkbox' | 'file';
+  options: string[];
+  required: boolean;
+  placeholder?: string;
+}
+
 interface Program {
   _id: string;
   title: string;
@@ -33,6 +42,7 @@ interface Program {
   lema?: string;
   isClub?: boolean;
   province?: string;
+  customFields?: CustomField[];
 }
 
 export default function AdminProgramasPage() {
@@ -43,7 +53,8 @@ export default function AdminProgramasPage() {
   const [saving, setSaving] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [msg, setMsg] = useState('');
-  const [activeTab, setActiveTab] = useState<'geral' | 'conteudo' | 'selecao' | 'clube'>('geral');
+  const [activeTab, setActiveTab] = useState<'geral' | 'conteudo' | 'selecao' | 'clube' | 'inquerito'>('geral');
+  const [customFields, setCustomFields] = useState<CustomField[]>([]);
 
   // Form states
   const [title, setTitle] = useState('');
@@ -120,6 +131,7 @@ export default function AdminProgramasPage() {
     setBeneficiosMembros(prog.beneficiosMembros || '');
     setCompromissoMembros(prog.compromissoMembros || '');
     setLema(prog.lema || '');
+    setCustomFields(prog.customFields || []);
     setActiveTab('geral');
     setShowForm(true);
   };
@@ -152,6 +164,7 @@ export default function AdminProgramasPage() {
     setBeneficiosMembros('');
     setCompromissoMembros('');
     setLema('');
+    setCustomFields([]);
     setActiveTab('geral');
     setShowForm(true);
   };
@@ -263,6 +276,7 @@ export default function AdminProgramasPage() {
       beneficiosMembros,
       compromissoMembros,
       lema,
+      customFields,
     };
 
     try {
@@ -372,6 +386,13 @@ export default function AdminProgramasPage() {
               onClick={() => setActiveTab('clube')}
             >
               🏛️ Clube de Empreendedores
+            </button>
+            <button
+              type="button"
+              className={`${styles.tabBtn} ${activeTab === 'inquerito' ? styles.activeTabBtn : ''}`}
+              onClick={() => setActiveTab('inquerito')}
+            >
+              📝 Inquérito Personalizado
             </button>
           </div>
 
@@ -675,6 +696,139 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
                   placeholder="- Participar activamente nas actividades do clube&#10;- Compartilhar conhecimento e experiências"
                 />
               </div>
+            </div>
+          )}
+
+          {activeTab === 'inquerito' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1rem 0' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <h4 style={{ margin: 0, color: 'var(--primary, #ff6b00)', fontSize: '1.1rem' }}>
+                    Formulário de Inquérito Personalizado
+                  </h4>
+                  <p style={{ margin: '0.2rem 0 0', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>
+                    Adicione perguntas específicas que os candidatos deverão responder ao inscreverem-se neste programa.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  style={{ background: 'var(--primary, #ff6b00)', color: '#fff', border: 'none', padding: '0.65rem 1.3rem', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' }}
+                  onClick={() => {
+                    setCustomFields([
+                      ...customFields,
+                      { id: Date.now().toString(), label: '', type: 'text', options: [], required: false, placeholder: '' }
+                    ]);
+                  }}
+                >
+                  + Adicionar Pergunta / Campo
+                </button>
+              </div>
+
+              {customFields.length === 0 ? (
+                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.15)', borderRadius: '14px', padding: '3rem 1.5rem', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>
+                  <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>📋</div>
+                  <p style={{ margin: 0, fontSize: '0.95rem' }}>Nenhuma pergunta personalizada configurada para este programa.</p>
+                  <p style={{ margin: '0.3rem 0 0', fontSize: '0.85rem', color: 'rgba(255,255,255,0.35)' }}>Clique no botão "+ Adicionar Pergunta / Campo" acima para personalizar o inquérito.</p>
+                </div>
+              ) : (
+                customFields.map((field, idx) => (
+                  <div key={field.id || idx} style={{ background: '#121927', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '16px', padding: '1.4rem', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', letterSpacing: '0.05em' }}>
+                        PERGUNTA #{idx + 1}
+                      </span>
+                      <button
+                        type="button"
+                        style={{ background: 'rgba(231,76,60,0.15)', color: '#e74c3c', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}
+                        onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))}
+                      >
+                        🗑️ Remover Pergunta
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+                      <div className={styles.field}>
+                        <label>Título da Pergunta *</label>
+                        <input
+                          type="text"
+                          required
+                          value={field.label}
+                          onChange={e => {
+                            const updated = [...customFields];
+                            updated[idx].label = e.target.value;
+                            setCustomFields(updated);
+                          }}
+                          placeholder="Ex: Possui registo comercial (NUIT)?"
+                        />
+                      </div>
+
+                      <div className={styles.field}>
+                        <label>Tipo de Resposta</label>
+                        <select
+                          value={field.type}
+                          onChange={e => {
+                            const updated = [...customFields];
+                            updated[idx].type = e.target.value as any;
+                            setCustomFields(updated);
+                          }}
+                        >
+                          <option value="text">Texto Curto</option>
+                          <option value="textarea">Texto Longo / Parágrafo</option>
+                          <option value="select">Escolha Única (Dropdown)</option>
+                          <option value="checkbox">Caixa de Seleção (Múltipla)</option>
+                          <option value="file">Upload de Ficheiro (PDF/Imagem)</option>
+                        </select>
+                      </div>
+
+                      <div className={styles.field} style={{ justifyContent: 'center' }}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', marginTop: '1.6rem' }}>
+                          <input
+                            type="checkbox"
+                            checked={field.required}
+                            onChange={e => {
+                              const updated = [...customFields];
+                              updated[idx].required = e.target.checked;
+                              setCustomFields(updated);
+                            }}
+                            style={{ width: '18px', height: '18px', accentColor: '#ff6b00' }}
+                          />
+                          <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 600 }}>Resposta Obrigatória</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {(field.type === 'select' || field.type === 'checkbox') && (
+                      <div className={styles.field}>
+                        <label>Opções de Seleção (separadas por vírgula)</label>
+                        <input
+                          type="text"
+                          value={field.options ? field.options.join(', ') : ''}
+                          onChange={e => {
+                            const updated = [...customFields];
+                            updated[idx].options = e.target.value.split(',').map(s => s.trim()).filter(Boolean);
+                            setCustomFields(updated);
+                          }}
+                          placeholder="Ex: Sim, Não, Em Processo de Formalização"
+                        />
+                      </div>
+                    )}
+
+                    <div className={styles.field}>
+                      <label>Texto de Ajuda / Placeholder (opcional)</label>
+                      <input
+                        type="text"
+                        value={field.placeholder || ''}
+                        onChange={e => {
+                          const updated = [...customFields];
+                          updated[idx].placeholder = e.target.value;
+                          setCustomFields(updated);
+                        }}
+                        placeholder="Ex: Exemplo de resposta esperada..."
+                      />
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           )}
 

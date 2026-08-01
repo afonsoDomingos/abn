@@ -24,6 +24,7 @@ export interface IInscricaoClube extends Document {
   localData?: string;
   assinatura?: string;
   origem?: string; // 'home' | 'programas'
+  respostasPersonalizadas?: Record<string, any>;
   status: string; // 'pendente' | 'aprovado' | 'rejeitado' | 'contactado'
   notasAdmin?: string;
   createdAt: Date;
@@ -53,6 +54,7 @@ const InscricaoClubeSchema = new Schema<IInscricaoClube>({
   localData: String,
   assinatura: String,
   origem: String,
+  respostasPersonalizadas: { type: Schema.Types.Mixed, default: {} },
   status: { type: String, default: 'pendente' },
   notasAdmin: String,
 }, { timestamps: true });

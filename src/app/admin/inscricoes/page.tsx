@@ -17,6 +17,7 @@ interface UnifiedInscription {
   origem?: string;
   comprovativoUrl?: string;
   formaPagamento?: string;
+  respostasPersonalizadas?: Record<string, any>;
   // Cursos specific
   progresso?: string;
   // Eventos specific
@@ -32,6 +33,8 @@ export default function AdminInscricoesPage() {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('todos');
   const [statusFilter, setStatusFilter] = useState('todos');
+
+  const [selectedDetail, setSelectedDetail] = useState<UnifiedInscription | null>(null);
 
   useEffect(() => {
     fetchAllInscricoes();
@@ -69,7 +72,8 @@ export default function AdminInscricoesPage() {
             nivelAdesao: i.nivelAdesao,
             origem: i.origem,
             comprovativoUrl: i.comprovativoUrl,
-            formaPagamento: i.formaPagamento
+            formaPagamento: i.formaPagamento,
+            respostasPersonalizadas: i.respostasPersonalizadas || {}
           });
         });
       }
@@ -324,6 +328,7 @@ export default function AdminInscricoesPage() {
                 <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.85rem', color: '#64748b' }}>Comprovativo</th>
                 <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.85rem', color: '#64748b' }}>Status</th>
                 <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.85rem', color: '#64748b' }}>Data</th>
+                <th style={{ padding: '1rem', textAlign: 'center', fontWeight: 700, fontSize: '0.85rem', color: '#64748b' }}>Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -370,10 +375,113 @@ export default function AdminInscricoesPage() {
                   <td style={{ padding: '1rem', color: '#64748b', fontSize: '0.85rem' }}>
                     {new Date(i.createdAt).toLocaleDateString('pt-PT')}
                   </td>
+                  <td style={{ padding: '1rem', textAlign: 'center' }}>
+                    <button
+                      onClick={() => setSelectedDetail(i)}
+                      style={{
+                        background: '#f1f5f9',
+                        border: '1px solid #cbd5e1',
+                        color: '#0f172a',
+                        padding: '6px 12px',
+                        borderRadius: '8px',
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      🔍 Ver Respostas
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Modal de Detalhes do Inquérito */}
+      {selectedDetail && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 999, padding: '1rem' }}>
+          <div style={{ background: '#ffffff', borderRadius: '20px', maxWidth: '650px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '2rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '1rem' }}>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '1.3rem', color: '#0f172a', fontFamily: 'Outfit, sans-serif' }}>
+                  Detalhes do Inquérito & Candidatura
+                </h3>
+                <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{selectedDetail.itemTitle}</span>
+              </div>
+              <button onClick={() => setSelectedDetail(null)} style={{ background: '#f1f5f9', border: 'none', width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', fontWeight: 800, color: '#475569' }}>
+                ✕
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                  Dados do Candidato
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', fontSize: '0.9rem' }}>
+                  <div><strong>Nome:</strong> {selectedDetail.nome}</div>
+                  <div><strong>E-mail:</strong> {selectedDetail.email}</div>
+                  <div><strong>Telefone:</strong> {selectedDetail.telefone || '—'}</div>
+                  <div><strong>Empresa / Negócio:</strong> {selectedDetail.empresa || '—'}</div>
+                  <div><strong>Nível Adesão:</strong> {selectedDetail.nivelAdesao || '—'}</div>
+                  <div><strong>Forma Pagamento:</strong> {selectedDetail.formaPagamento || '—'}</div>
+                </div>
+              </div>
+
+              {/* Respostas Personalizadas */}
+              <div style={{ background: '#ffffff', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#0ea5e9', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                  📝 Respostas do Inquérito Personalizado
+                </div>
+
+                {selectedDetail.respostasPersonalizadas && Object.keys(selectedDetail.respostasPersonalizadas).length > 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    {Object.entries(selectedDetail.respostasPersonalizadas).map(([pergunta, resposta]) => (
+                      <div key={pergunta} style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                        <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: '0.2rem' }}>
+                          • {pergunta}
+                        </div>
+                        <div style={{ fontSize: '0.9rem', color: '#0f172a', paddingLeft: '0.8rem', whiteSpace: 'pre-wrap' }}>
+                          {typeof resposta === 'object' ? JSON.stringify(resposta) : String(resposta || '—')}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ fontSize: '0.88rem', color: '#94a3b8', fontStyle: 'italic' }}>
+                    Nenhuma resposta personalizada registada para esta inscrição.
+                  </div>
+                )}
+              </div>
+
+              {selectedDetail.comprovativoUrl && (
+                <div style={{ background: '#fff7ed', padding: '1rem', borderRadius: '12px', border: '1px solid #fed7aa', textAlign: 'center' }}>
+                  <span style={{ display: 'block', fontSize: '0.82rem', fontWeight: 800, color: '#c2410c', marginBottom: '0.5rem' }}>
+                    📄 Comprovativo de Pagamento
+                  </span>
+                  <a
+                    href={selectedDetail.comprovativoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#ff6b00', color: '#ffffff', padding: '8px 16px', borderRadius: '8px', textDecoration: 'none', fontWeight: 700, fontSize: '0.85rem' }}
+                  >
+                    Abrir Comprovativo Anexado
+                  </a>
+                </div>
+              )}
+            </div>
+
+            <div style={{ marginTop: '1.5rem', textAlign: 'right' }}>
+              <button
+                onClick={() => setSelectedDetail(null)}
+                style={{ background: '#0f172a', color: '#ffffff', border: 'none', padding: '0.7rem 1.5rem', borderRadius: '10px', fontWeight: 700, cursor: 'pointer' }}
+              >
+                Fechar Detalhes
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
