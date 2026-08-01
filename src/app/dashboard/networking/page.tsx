@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from '../Dashboard.module.css';
+import { Search, UserPlus, UserCheck, MessageSquare, Building2, ShieldCheck, Sparkles } from 'lucide-react';
 
 interface Profile {
   id: string;
@@ -60,7 +60,14 @@ export default function NetworkingPage() {
     }
   };
 
-  // Filter profiles
+  const roleLabels: Record<string, { label: string; bg: string; color: string }> = {
+    empreendedor: { label: 'Empreendedor', bg: '#eff6ff', color: '#1d4ed8' },
+    startup: { label: 'Startup Incubada', bg: '#fff7ed', color: '#c2410c' },
+    investidor: { label: 'Investidor Anjo', bg: '#f0fdf4', color: '#15803d' },
+    mentor: { label: 'Mentor Especialista', bg: '#faf5ff', color: '#7e22ce' },
+    admin: { label: 'ABN Admin', bg: '#fee2e2', color: '#b91c1c' },
+  };
+
   const filtered = profiles.filter(p => {
     const matchesRole = filter === 'todos' || p.role === filter;
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -69,119 +76,269 @@ export default function NetworkingPage() {
     return matchesRole && matchesSearch;
   });
 
-  if (loading) return <div style={{ padding: '3rem', color: '#fff' }}>A carregar diretório de membros...</div>;
+  if (loading) {
+    return (
+      <div style={{ padding: '4rem 1rem', textAlign: 'center', color: '#64748b', fontWeight: 600 }}>
+        A carregar o diretório de membros do ecossistema ABN...
+      </div>
+    );
+  }
 
   return (
-    <div style={{ maxWidth: '1000px' }}>
+    <div style={{ maxWidth: '1150px', width: '100%', margin: '0 auto', fontFamily: 'Inter, sans-serif' }}>
+      
+      {/* Header */}
       <header style={{ marginBottom: '2.5rem' }}>
-        <h1 className="text-gradient-gold">Networking & Conexões</h1>
-        <p style={{ opacity: 0.8, color: '#e5e5e5' }}>Conecte-se com fundadores, encontre parceiros e interaja com investidores no ecossistema ABN.</p>
+        <h1 style={{ fontSize: '2.1rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', margin: '0 0 0.4rem 0' }}>
+          Networking &amp; Conexões de Negócios
+        </h1>
+        <p style={{ color: '#64748b', fontSize: '0.98rem', margin: 0, lineHeight: 1.5, fontWeight: 500 }}>
+          Conecte-se com fundadores de startups, investidores, mentores e parceiros estratégicos no ecossistema ABN.
+        </p>
       </header>
 
-      {/* Search and Filters */}
-      <div style={{ display: 'flex', gap: '1.5rem', marginBottom: '2.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-        <input
-          type="text"
-          placeholder="Pesquisar por nome, startup ou especialidade..."
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          style={{
-            flex: 1,
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            padding: '12px 20px',
-            borderRadius: '12px',
-            color: '#fff',
-            minWidth: '280px'
-          }}
-        />
+      {/* Barra de Pesquisa e Filtros */}
+      <div style={{ 
+        background: '#ffffff', 
+        border: '1px solid #e2e8f0', 
+        borderRadius: '20px', 
+        padding: '1.25rem 1.5rem', 
+        boxShadow: '0 4px 16px rgba(15,23,42,0.03)', 
+        marginBottom: '2.5rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1.25rem'
+      }}>
+        {/* Input de Pesquisa */}
+        <div style={{ position: 'relative', width: '100%' }}>
+          <Search size={20} color="#94a3b8" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
+          <input
+            type="text"
+            placeholder="Pesquisar membros por nome, startup ou área de atuação..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            style={{
+              width: '100%',
+              background: '#f8fafc',
+              border: '1.5px solid #e2e8f0',
+              padding: '12px 16px 12px 48px',
+              borderRadius: '12px',
+              color: '#0f172a',
+              fontSize: '0.92rem',
+              fontWeight: 500,
+              outline: 'none',
+              transition: 'all 0.2s'
+            }}
+          />
+        </div>
 
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {(['todos', 'empreendedor', 'startup', 'investidor'] as const).map(role => (
-            <button
-              key={role}
-              onClick={() => setFilter(role)}
-              className="btn-outline"
-              style={{
-                padding: '8px 16px',
-                fontSize: '0.8rem',
-                background: filter === role ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
-                color: '#fff',
-                border: '1px solid rgba(255,255,255,0.1)',
-                cursor: 'pointer',
-                borderRadius: '8px',
-                textTransform: 'capitalize'
-              }}
-            >
-              {role === 'todos' ? 'Todos' : role}
-            </button>
-          ))}
+        {/* Filtros de Categoria */}
+        <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginRight: '4px' }}>Filtrar:</span>
+          {(['todos', 'empreendedor', 'startup', 'investidor', 'mentor'] as const).map(role => {
+            const active = filter === role;
+            const labels: Record<string, string> = {
+              todos: 'Todos os Membros',
+              empreendedor: 'Empreendedores',
+              startup: 'Startups',
+              investidor: 'Investidores',
+              mentor: 'Mentores'
+            };
+
+            return (
+              <button
+                key={role}
+                onClick={() => setFilter(role)}
+                style={{
+                  padding: '8px 16px',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  border: 'none',
+                  cursor: 'pointer',
+                  borderRadius: '10px',
+                  background: active ? '#ff6b00' : '#f1f5f9',
+                  color: active ? '#ffffff' : '#475569',
+                  transition: 'all 0.2s'
+                }}
+              >
+                {labels[role]}
+              </button>
+            );
+          })}
         </div>
       </div>
 
+      {/* Grelha de Perfis */}
       {filtered.length === 0 ? (
-        <div className="glass" style={{ padding: '3rem', borderRadius: '20px', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic' }}>
-          Nenhum membro encontrado com os critérios indicados.
+        <div style={{ 
+          background: '#ffffff', 
+          border: '1.5px dashed #cbd5e1', 
+          borderRadius: '20px', 
+          padding: '4rem 2rem', 
+          textAlign: 'center', 
+          color: '#64748b' 
+        }}>
+          <div style={{ fontSize: '2.5rem', marginBottom: '0.8rem' }}>🔍</div>
+          <h3 style={{ margin: '0 0 0.4rem 0', color: '#0f172a', fontFamily: 'Outfit' }}>Nenhum membro encontrado</h3>
+          <p style={{ margin: 0, fontSize: '0.9rem' }}>Tente ajustar os critérios de pesquisa ou selecione outra categoria.</p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
-          {filtered.map(profile => (
-            <div key={profile.id} className="glass" style={{ padding: '1.8rem', borderRadius: '20px', display: 'flex', flexDirection: 'column', gap: '1.2rem', alignItems: 'center', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
-              
-              {/* Profile Avatar */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', 
+          gap: '1.5rem' 
+        }}>
+          {filtered.map(profile => {
+            const roleInfo = roleLabels[profile.role] || { label: profile.role, bg: '#f1f5f9', color: '#475569' };
+            const avatarImg = profile.profileImage || '/perfil09.jpg';
+
+            return (
               <div 
+                key={profile.id} 
                 style={{ 
-                  width: '90px', 
-                  height: '90px', 
-                  borderRadius: '50%', 
-                  backgroundImage: `url(${profile.profileImage})`, 
-                  backgroundSize: 'cover', 
-                  backgroundPosition: 'center', 
-                  border: '3px solid var(--primary)',
-                  boxShadow: '0 0 15px rgba(255,107,0,0.1)'
+                  background: '#ffffff', 
+                  borderRadius: '20px', 
+                  padding: '1.75rem', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  gap: '1.2rem', 
+                  alignItems: 'center', 
+                  textAlign: 'center', 
+                  border: '1px solid #e2e8f0',
+                  boxShadow: '0 4px 16px rgba(15,23,42,0.03)',
+                  transition: 'transform 0.2s, box-shadow 0.2s'
                 }}
-              />
+              >
+                {/* Profile Avatar */}
+                <div 
+                  style={{ 
+                    width: '86px', 
+                    height: '86px', 
+                    borderRadius: '50%', 
+                    backgroundImage: `url(${avatarImg})`, 
+                    backgroundSize: 'cover', 
+                    backgroundPosition: 'center', 
+                    border: '3px solid #ff6b00',
+                    boxShadow: '0 4px 12px rgba(255,107,0,0.18)',
+                    flexShrink: 0
+                  }}
+                />
 
-              <div>
-                <h3 style={{ color: '#fff', fontSize: '1.2rem', margin: '0 0 4px 0', fontFamily: 'Outfit' }}>{profile.name}</h3>
-                <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--primary)', background: 'rgba(255,107,0,0.1)', padding: '2px 8px', borderRadius: '12px' }}>
-                  {profile.role}
-                </span>
-                
-                {profile.startupName && (
-                  <div style={{ marginTop: '0.8rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>
-                    🚀 <strong>{profile.startupName}</strong>
-                    <div style={{ fontSize: '0.75rem', opacity: 0.8 }}>({profile.startupCategory})</div>
-                  </div>
-                )}
+                <div style={{ width: '100%' }}>
+                  <h3 style={{ color: '#0f172a', fontSize: '1.15rem', margin: '0 0 6px 0', fontFamily: 'Outfit', fontWeight: 800 }}>
+                    {profile.name}
+                  </h3>
+                  
+                  <span style={{ 
+                    fontSize: '0.72rem', 
+                    fontWeight: 800, 
+                    textTransform: 'uppercase', 
+                    letterSpacing: '0.4px',
+                    background: roleInfo.bg, 
+                    color: roleInfo.color, 
+                    padding: '3px 10px', 
+                    borderRadius: '12px',
+                    display: 'inline-block'
+                  }}>
+                    {roleInfo.label}
+                  </span>
+                  
+                  {profile.startupName && (
+                    <div style={{ marginTop: '0.8rem', fontSize: '0.85rem', color: '#334155', background: '#f8fafc', padding: '6px 12px', borderRadius: '10px', border: '1px solid #f1f5f9' }}>
+                      🚀 <strong style={{ color: '#0f172a' }}>{profile.startupName}</strong>
+                      {profile.startupCategory && (
+                        <span style={{ fontSize: '0.75rem', color: '#64748b', display: 'block', marginTop: '2px' }}>
+                          ({profile.startupCategory})
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <p style={{ 
+                  color: '#64748b', 
+                  fontSize: '0.84rem', 
+                  lineHeight: 1.45, 
+                  margin: 0, 
+                  height: '54px', 
+                  overflow: 'hidden', 
+                  textOverflow: 'ellipsis',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  fontWeight: 500
+                }}>
+                  {profile.description || 'Membro oficial registado no ecossistema de negócios ABN Hub.'}
+                </p>
+
+                {/* Botões de Ação Diretos */}
+                <div style={{ 
+                  display: 'flex', 
+                  gap: '0.75rem', 
+                  width: '100%', 
+                  marginTop: 'auto', 
+                  borderTop: '1px solid #f1f5f9', 
+                  paddingTop: '1.25rem' 
+                }}>
+                  <button 
+                    onClick={() => handleFollow(profile.id)} 
+                    style={{ 
+                      flex: 1, 
+                      padding: '10px 0', 
+                      fontSize: '0.82rem', 
+                      fontWeight: 800,
+                      borderRadius: '10px',
+                      border: profile.isFollowing ? '1.5px solid #cbd5e1' : 'none',
+                      background: profile.isFollowing ? '#ffffff' : '#ff6b00',
+                      color: profile.isFollowing ? '#475569' : '#ffffff',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {profile.isFollowing ? (
+                      <>
+                        <UserCheck size={16} /> Seguindo
+                      </>
+                    ) : (
+                      <>
+                        <UserPlus size={16} /> Seguir
+                      </>
+                    )}
+                  </button>
+
+                  <button 
+                    onClick={() => router.push('/dashboard/mensagens')} 
+                    style={{ 
+                      flex: 1, 
+                      padding: '10px 0', 
+                      fontSize: '0.82rem', 
+                      fontWeight: 800,
+                      borderRadius: '10px',
+                      border: '1.5px solid #cbd5e1',
+                      background: '#ffffff',
+                      color: '#0f172a',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    <MessageSquare size={16} /> Conversar
+                  </button>
+                </div>
+
               </div>
-
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', lineHeight: 1.5, margin: 0, height: '60px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {profile.description || 'Nenhuma descrição adicionada ao perfil de membro.'}
-              </p>
-
-              {/* Action buttons */}
-              <div style={{ display: 'flex', gap: '0.8rem', width: '100%', marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1.2rem' }}>
-                <button 
-                  onClick={() => handleFollow(profile.id)} 
-                  className={profile.isFollowing ? 'btn-outline' : 'btn-primary'}
-                  style={{ flex: 1, padding: '8px 0', fontSize: '0.8rem', color: '#fff', borderColor: profile.isFollowing ? 'rgba(255,255,255,0.2)' : 'none' }}
-                >
-                  {profile.isFollowing ? '🤝 Seguindo' : '➕ Seguir'}
-                </button>
-                <button 
-                  onClick={() => router.push('/dashboard/mensagens')} 
-                  className="btn-outline"
-                  style={{ flex: 1, padding: '8px 0', fontSize: '0.8rem', color: '#fff', borderColor: 'rgba(255,255,255,0.2)' }}
-                >
-                  💬 Conversar
-                </button>
-              </div>
-
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
   );
 }
+
