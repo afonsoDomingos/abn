@@ -155,20 +155,26 @@ export default function AdminPage() {
           </Link>
         </div>
 
-        {/* Bloco de Ações Rápidas Úteis */}
+        {/* Bloco de Ações Rápidas Úteis de Gestão e Edição */}
         <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', borderRadius: '20px', padding: '1.75rem', boxShadow: '0 4px 16px rgba(15,23,42,0.03)' }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', margin: '0 0 1rem 0' }}>
-            ⚡ Ações Operacionais Rápidas
+            ⚡ Gestão &amp; Edição Operacional da Plataforma
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-            <Link href="/admin/atividades" className="btn-primary" style={{ textDecoration: 'none', padding: '12px 18px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, textAlign: 'center' }}>
-              ➕ Abrir Minhas Atividades
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+            <Link href="/admin/atividades" className="btn-primary" style={{ textDecoration: 'none', padding: '12px 16px', borderRadius: '12px', fontSize: '0.82rem', fontWeight: 800, textAlign: 'center' }}>
+              📝 Minhas Atividades
             </Link>
-            <Link href="/admin/inscricoes" className="btn-outline" style={{ textDecoration: 'none', padding: '12px 18px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, textAlign: 'center', borderColor: '#cbd5e1', color: '#0f172a' }}>
-              📋 Verificar Candidaturas
+            <Link href="/admin/inscricoes" className="btn-outline" style={{ textDecoration: 'none', padding: '12px 16px', borderRadius: '12px', fontSize: '0.82rem', fontWeight: 800, textAlign: 'center', borderColor: '#cbd5e1', color: '#0f172a' }}>
+              📋 Candidaturas
             </Link>
-            <Link href="/admin/mensagens" className="btn-outline" style={{ textDecoration: 'none', padding: '12px 18px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, textAlign: 'center', borderColor: '#cbd5e1', color: '#0f172a' }}>
-              ✉️ Responder a Mensagens
+            <Link href="/admin/cursos" className="btn-outline" style={{ textDecoration: 'none', padding: '12px 16px', borderRadius: '12px', fontSize: '0.82rem', fontWeight: 800, textAlign: 'center', borderColor: '#cbd5e1', color: '#0f172a' }}>
+              📚 Gerir / Editar Cursos
+            </Link>
+            <Link href="/admin/programas" className="btn-outline" style={{ textDecoration: 'none', padding: '12px 16px', borderRadius: '12px', fontSize: '0.82rem', fontWeight: 800, textAlign: 'center', borderColor: '#cbd5e1', color: '#0f172a' }}>
+              🚀 Gerir / Editar Programas
+            </Link>
+            <Link href="/admin/eventos" className="btn-outline" style={{ textDecoration: 'none', padding: '12px 16px', borderRadius: '12px', fontSize: '0.82rem', fontWeight: 800, textAlign: 'center', borderColor: '#cbd5e1', color: '#0f172a' }}>
+              📅 Gerir / Editar Eventos
             </Link>
           </div>
         </div>
