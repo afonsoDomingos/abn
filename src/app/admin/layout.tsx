@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import SidebarFooter from './SidebarFooter';
@@ -48,8 +48,31 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { t } = useLanguage();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const [userRole, setUserRole] = useState<string>('admin');
 
-  const navGroups: NavGroup[] = [
+  useEffect(() => {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      try {
+        const u = JSON.parse(userStr);
+        if (u.role) setUserRole(u.role);
+      } catch (e) {}
+    }
+  }, []);
+
+  const isCollaborator = userRole === 'collaborator' || userRole === 'colaborador';
+
+  const RESTRICTED_COLLABORATOR_ROUTES = [
+    '/admin/usuarios',
+    '/admin/colaboradores',
+    '/admin/pagamentos',
+    '/admin/configuracoes',
+    '/admin/hubs',
+    '/admin/departamentos',
+    '/admin/equipa'
+  ];
+
+  const rawNavGroups: NavGroup[] = [
     {
       title: 'Geral',
       items: [
@@ -92,6 +115,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       ]
     }
   ];
+
+  // Filter groups for Collaborator
+  const navGroups = rawNavGroups.map(group => ({
+    ...group,
+    items: group.items.filter(item => !isCollaborator || !RESTRICTED_COLLABORATOR_ROUTES.includes(item.href))
+  })).filter(group => group.items.length > 0);
+
+  const isRestrictedRouteForCollaborator = isCollaborator && RESTRICTED_COLLABORATOR_ROUTES.includes(pathname);
 
   return (
     <div className={`${styles.adminLayout} ${collapsed ? styles.adminLayoutCollapsed : ''}`}>
@@ -152,11 +183,34 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Menu size={20} />
             </button>
             <h2 className={styles.headerTitle}>{t.admin.panel}</h2>
+            {isCollaborator ? (
+              <span style={{ background: '#eff6ff', color: '#1d4ed8', fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', border: '1px solid #bfdbfe' }}>
+                👤 Colaborador
+              </span>
+            ) : (
+              <span style={{ background: '#fff7ed', color: '#c2410c', fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', border: '1px solid #ffedd5' }}>
+                ⚡ Administrador
+              </span>
+            )}
           </div>
           <UserMenu />
         </header>
+
         <div className={styles.adminContent}>
-          {children}
+          {isRestrictedRouteForCollaborator ? (
+            <div style={{ background: '#ffffff', borderRadius: '24px', padding: '3rem 2rem', textAlign: 'center', border: '1px solid #e2e8f0', boxShadow: '0 10px 25px rgba(15,23,42,0.04)', maxWidth: '600px', margin: '3rem auto' }}>
+              <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🔒</div>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.5rem 0' }}>Acesso Restrito ao Administrador</h2>
+              <p style={{ color: '#64748b', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                Esta seção requer privilégios de Administrador. O seu perfil de <strong>Colaborador</strong> tem acesso liberado para gestão de inscrições, cursos, programas, eventos, mensagens e conteúdos.
+              </p>
+              <Link href="/admin" className="btn-primary" style={{ textDecoration: 'none', padding: '10px 20px', borderRadius: '10px', fontWeight: 700, fontSize: '0.88rem', display: 'inline-block' }}>
+                Voltar ao Painel Operacional
+              </Link>
+            </div>
+          ) : (
+            children
+          )}
         </div>
       </main>
     </div>
