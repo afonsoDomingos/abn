@@ -100,6 +100,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     {
       title: 'Comunicação',
       items: [
+        { href: '/admin/atividades', label: 'Gestão de Atividades', icon: <ClipboardList size={18} /> },
         { href: '/admin/inscricoes', label: 'Inscrições', icon: <UserCheck size={18} /> },
         { href: '/admin/solicitacoes', label: 'Solicitações', icon: <ClipboardList size={18} /> },
         { href: '/admin/mensagens', label: 'Mensagens', icon: <MessageSquare size={18} /> },
