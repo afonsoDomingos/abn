@@ -117,11 +117,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   ];
 
-  // Filter groups for Collaborator
-  const navGroups = rawNavGroups.map(group => ({
-    ...group,
-    items: group.items.filter(item => !isCollaborator || !RESTRICTED_COLLABORATOR_ROUTES.includes(item.href))
-  })).filter(group => group.items.length > 0);
+  const collaboratorNavGroups: NavGroup[] = [
+    {
+      title: 'Minha Operação',
+      items: [
+        { href: '/admin', label: 'Painel Geral', icon: <LayoutDashboard size={18} /> },
+        { href: '/admin/atividades', label: 'Minhas Atividades & Tarefas', icon: <ClipboardList size={18} /> },
+      ]
+    },
+    {
+      title: 'Gestão Operacional',
+      items: [
+        { href: '/admin/inscricoes', label: 'Inscrições & Candidaturas', icon: <UserCheck size={18} /> },
+        { href: '/admin/cursos', label: 'Cursos & Formações', icon: <BookOpen size={18} /> },
+        { href: '/admin/programas', label: 'Programas de Incubação', icon: <Rocket size={18} /> },
+        { href: '/admin/eventos', label: 'Eventos & Webinars', icon: <CalendarDays size={18} /> },
+        { href: '/admin/mensagens', label: 'Mensagens & Atendimento', icon: <MessageSquare size={18} /> },
+      ]
+    }
+  ];
+
+  // Select groups: Clean and focused for Collaborator vs Full for Admin
+  const navGroups = isCollaborator 
+    ? collaboratorNavGroups 
+    : rawNavGroups;
 
   const isRestrictedRouteForCollaborator = isCollaborator && RESTRICTED_COLLABORATOR_ROUTES.includes(pathname);
 
