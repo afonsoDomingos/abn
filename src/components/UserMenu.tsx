@@ -18,7 +18,7 @@ export default function UserMenu() {
         setUser({
           name: decoded.name || 'Membro',
           role: decoded.role || 'user',
-          profileImage: decoded.avatar || ''
+          profileImage: decoded.profileImage || decoded.avatar || ''
         });
       } else {
         const storedUser = localStorage.getItem('user');
@@ -27,7 +27,7 @@ export default function UserMenu() {
           setUser({
             name: parsed.name || 'Membro',
             role: parsed.role || 'user',
-            profileImage: parsed.avatar || ''
+            profileImage: parsed.profileImage || parsed.avatar || ''
           });
         }
       }
@@ -51,9 +51,10 @@ export default function UserMenu() {
     window.location.href = '/login';
   };
 
-  const isAdmin = user.role === 'admin';
-  const dashboardPath = isAdmin ? '/admin' : '/dashboard';
-  const dashboardLabel = isAdmin ? '👑 Painel Admin' : '📊 O Meu Painel';
+  const isManagement = user.role === 'admin' || user.role === 'collaborator' || user.role === 'colaborador';
+  const dashboardPath = isManagement ? '/admin' : '/dashboard';
+  const dashboardLabel = isManagement ? (user.role === 'admin' ? '⚡ Painel Admin' : '👤 Painel Operacional') : '📊 O Meu Painel';
+  const profilePath = isManagement ? '/admin/perfil' : '/dashboard/perfil';
 
   return (
     <div className={styles.userMenuContainer} ref={menuRef}>
@@ -78,8 +79,8 @@ export default function UserMenu() {
           <Link href={dashboardPath} onClick={() => setIsOpen(false)} className={styles.menuItem}>
             {dashboardLabel}
           </Link>
-          <Link href={isAdmin ? '/admin/perfil' : '/dashboard'} onClick={() => setIsOpen(false)} className={styles.menuItem}>
-            👤 Editar Perfil
+          <Link href={profilePath} onClick={() => setIsOpen(false)} className={styles.menuItem}>
+            👤 Editar Meu Perfil &amp; Foto
           </Link>
           <div className={styles.separator}></div>
           <button onClick={handleLogout} className={`${styles.menuItem} ${styles.logout}`}>

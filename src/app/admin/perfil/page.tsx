@@ -90,18 +90,40 @@ export default function ProfilePage() {
           <h3>Informações Pessoais</h3>
           <form onSubmit={handleSave} className={styles.form}>
             <div className={styles.field}>
-              <label>Avatar (URL da Imagem)</label>
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                <div className={styles.avatarPreview} style={{ width: '60px', height: '60px' }}>
-                  <img src={user.profileImage || '/perfil09.jpg'} alt="Avatar" />
-                </div>
-                <input 
-                  type="text" 
-                  value={user.profileImage} 
-                  onChange={e => setUser({...user, profileImage: e.target.value})}
-                  placeholder="URL da imagem..."
-                  style={{ flex: 1 }}
+              <label style={{ fontWeight: 800, color: '#0f172a' }}>Foto de Perfil</label>
+              <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', background: '#f8fafc', padding: '1rem', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+                <div 
+                  style={{ 
+                    width: '70px', 
+                    height: '70px', 
+                    borderRadius: '50%', 
+                    backgroundImage: `url(${user.profileImage || '/perfil09.jpg'})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    border: '3px solid var(--primary)',
+                    flexShrink: 0
+                  }} 
                 />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={e => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setUser({ ...user, profileImage: reader.result as string });
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                    style={{ fontSize: '0.85rem' }}
+                  />
+                  <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+                    Escolha uma foto de perfil (PNG, JPG ou WEBP).
+                  </span>
+                </div>
               </div>
             </div>
 
