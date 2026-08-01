@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Eye, Rocket, Users, Download, MessageCircle, TrendingUp, Target, Video, FileText, CheckCircle2, XCircle, BarChart3, Star, Clock, Calendar, CheckSquare, Award, ArrowUpRight, Play, ExternalLink } from 'lucide-react';
+import { Rocket, Users, Target, CheckCircle2, XCircle, BarChart3, Star, Clock, Calendar, FileText, Download } from 'lucide-react';
 import styles from './Dashboard.module.css';
 
 export default function DashboardPage() {

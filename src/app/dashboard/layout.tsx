@@ -188,12 +188,6 @@ export default function DashboardLayout({
             <MessageSquare size={18} />
             {!collapsed && <span>Mensagens</span>}
           </Link>
-          {user.role === 'collaborator' && (
-            <Link href="/dashboard/atividades" className={isActive('/dashboard/atividades') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Atividades' : undefined}>
-              <ClipboardList size={18} />
-              {!collapsed && <span>Atividades</span>}
-            </Link>
-          )}
         </nav>
         <div className={styles.sidebarFooter}>
           <Link 
