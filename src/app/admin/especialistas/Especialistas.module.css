@@ -45,7 +45,9 @@
   border-radius: 12px;
   border: 1px solid #cbd5e1;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .tab {
@@ -58,6 +60,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .tab:hover {
@@ -150,11 +153,31 @@
   background: #121824;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+.tableContainer::-webkit-scrollbar {
+  height: 8px;
+}
+
+.tableContainer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tableContainer::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 0, 0.5);
+  border-radius: 4px;
+}
+
+.tableContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 107, 0, 0.8);
 }
 
 .table {
   width: 100%;
+  min-width: 1050px;
   border-collapse: collapse;
   text-align: left;
 }
