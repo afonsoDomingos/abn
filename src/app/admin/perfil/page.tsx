@@ -53,7 +53,7 @@ export default function ProfilePage() {
             id: u._id || u.id || prev.id,
             name: u.name || prev.name,
             email: u.email || prev.email,
-            profileImage: u.profileImage || prev.profileImage || '/perfil09.jpg',
+            profileImage: u.profileImage || prev.profileImage || '',
             phone: u.phone || prev.phone,
             company: u.company || prev.company,
             sector: u.sector || prev.sector,
