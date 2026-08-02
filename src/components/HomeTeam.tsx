@@ -62,6 +62,12 @@ export default function HomeTeam() {
           const active = data.team
             .filter((m: any) => {
               if (m.status === 'inativo') return false;
+              if (m.type === 'Equipa' || m.type === 'equipa') return true;
+              const dept = (m.department || '').toLowerCase();
+              const role = (m.role || '').toLowerCase();
+              if (dept.includes('direc') || role.includes('director') || role.includes('directora') || role.includes('presidente') || role.includes('assistente')) {
+                return true;
+              }
               if (m.type === 'Especialista' || m.type === 'especialista' || m.type === 'Mentor') {
                 return false;
               }

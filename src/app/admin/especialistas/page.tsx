@@ -92,7 +92,15 @@ export default function AdminEspecialistasPage() {
       .then(res => res.json())
       .then(data => {
         if (data.team) {
-          const specOnly = data.team.filter((m: any) => m.type !== 'Equipa' && m.type !== 'equipa');
+          const specOnly = data.team.filter((m: any) => {
+            if (m.type === 'Equipa' || m.type === 'equipa') return false;
+            const dept = (m.department || '').toLowerCase();
+            const role = (m.role || '').toLowerCase();
+            if (dept.includes('direc') || role.includes('director') || role.includes('directora') || role.includes('presidente') || role.includes('assistente')) {
+              return false;
+            }
+            return true;
+          });
           setList(specOnly);
         }
         setLoading(false);
