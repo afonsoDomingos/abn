@@ -13,11 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://afrobiznetwork.com"),
   title: {
-    default: "ABN – AfroBiz Network",
-    template: "%s | ABN – AfroBiz Network"
+    default: "AfroBiz Network (ABN) — Conectando África ao Mundo",
+    template: "%s | AfroBiz Network (ABN)"
   },
-  description: "O principal ecossistema de negócios e empreendedorismo para o mercado africano e afrodescendente. Conectamos startups, PMEs, mentores, investidores e parceiros estratégicos.",
+  description: "O principal ecossistema de negócios e aceleração empresarial em África. Conectamos startups, PMEs, mentores, investidores e parceiros estratégicos com programas de incubação, eventos e acesso a capital.",
   keywords: [
     "ABN",
     "AfroBiz Network",
@@ -28,12 +29,12 @@ export const metadata: Metadata = {
     "Aceleração de Startups",
     "Negócios em África",
     "Investimento em África",
-    "Presença Digital",
-    "Afro-futurismo"
+    "Capacitação",
+    "Mentoria de Negócios"
   ],
-  authors: [{ name: "ABN – AfroBiz Network" }],
-  creator: "ABN – AfroBiz Network",
-  publisher: "ABN – AfroBiz Network",
+  authors: [{ name: "AfroBiz Network (ABN)" }],
+  creator: "AfroBiz Network (ABN)",
+  publisher: "AfroBiz Network (ABN)",
   icons: {
     icon: "/abn-logo.png",
     shortcut: "/abn-logo.png",
@@ -42,24 +43,30 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_PT",
-    url: "https://abnafrobiznetwork.com",
-    title: "ABN – AfroBiz Network | Incubadora & Aceleração de Startups",
-    description: "O principal ecossistema de negócios e empreendedorismo para o mercado africano e afrodescendente. Conectamos startups, PMEs, mentores, investidores e parceiros estratégicos.",
-    siteName: "ABN – AfroBiz Network",
+    url: "https://afrobiznetwork.com",
+    title: "AfroBiz Network (ABN) — Conectando África ao Mundo",
+    description: "O principal ecossistema de negócios e aceleração empresarial em África. Conectamos startups, PMEs, mentores e investidores.",
+    siteName: "AfroBiz Network (ABN)",
     images: [
+      {
+        url: "/hero_entrepreneurs.png",
+        width: 1200,
+        height: 630,
+        alt: "AfroBiz Network Banner - Conectando África ao Mundo",
+      },
       {
         url: "/abn-logo.png",
         width: 512,
         height: 512,
-        alt: "ABN – AfroBiz Network Logo",
+        alt: "ABN Logo",
       }
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ABN – AfroBiz Network",
-    description: "O principal ecossistema de negócios e empreendedorismo para o mercado africano e afrodescendente.",
-    images: ["/abn-logo.png"],
+    title: "AfroBiz Network (ABN) — Conectando África ao Mundo",
+    description: "O principal ecossistema de negócios e aceleração empresarial em África.",
+    images: ["/hero_entrepreneurs.png"],
     creator: "@afrobiznetwork"
   },
   robots: {
