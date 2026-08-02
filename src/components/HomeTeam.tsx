@@ -59,22 +59,29 @@ export default function HomeTeam() {
       .then(r => r.json())
       .then(data => {
         if (data.team && data.team.length > 0) {
-          const active = data.team
-            .filter((m: any) => {
-              if (m.status === 'inativo') return false;
-              if (m.type === 'Equipa' || m.type === 'equipa') return true;
-              const dept = (m.department || '').toLowerCase();
-              const role = (m.role || '').toLowerCase();
-              if (dept.includes('direc') || role.includes('director') || role.includes('directora') || role.includes('presidente') || role.includes('assistente')) {
-                return true;
-              }
-              if (m.type === 'Especialista' || m.type === 'especialista' || m.type === 'Mentor') {
-                return false;
-              }
-              return true;
-            })
-            .sort((a: any, b: any) => a.order - b.order);
-          if (active.length > 0) setTeam(active);
+          const dbMembers = data.team.filter((m: any) => {
+            if (m.status === 'inativo') return false;
+            if (m.type === 'Especialista' || m.type === 'especialista' || m.type === 'Mentor') return false;
+            return true;
+          });
+
+          const merged = FALLBACK.map(def => {
+            const firstName = def.name.split(' ')[0].toLowerCase();
+            const matchInDb = dbMembers.find((db: any) => db.name.toLowerCase().includes(firstName));
+            if (matchInDb) {
+              return {
+                ...def,
+                ...matchInDb,
+                _id: matchInDb._id || def._id,
+                image: matchInDb.image || def.image,
+                role: matchInDb.role || def.role,
+                department: matchInDb.department || def.department
+              };
+            }
+            return def;
+          });
+
+          setTeam(merged);
         }
         setLoading(false);
       })

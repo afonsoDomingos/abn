@@ -179,20 +179,32 @@ export default function TeamPage() {
       .then(res => res.json())
       .then(data => {
         if (data.team && data.team.length > 0) {
-          const activeMembers = data.team.filter((m: any) => {
+          const dbMembers = data.team.filter((m: any) => {
             if (m.status === 'inativo') return false;
-            if (m.type === 'Equipa' || m.type === 'equipa') return true;
-            const dept = (m.department || '').toLowerCase();
-            const role = (m.role || '').toLowerCase();
-            if (dept.includes('direc') || role.includes('director') || role.includes('directora') || role.includes('presidente') || role.includes('assistente')) {
-              return true;
-            }
-            if (m.type === 'Especialista' || m.type === 'especialista' || m.type === 'Mentor') {
-              return false;
-            }
+            if (m.type === 'Especialista' || m.type === 'especialista' || m.type === 'Mentor') return false;
             return true;
           });
-          if (activeMembers.length > 0) setTeam(activeMembers);
+
+          // Merge DB updates into the official 8 ABN team members
+          const mergedTeam = DEFAULT_TEAM.map(def => {
+            const firstName = def.name.split(' ')[0].toLowerCase();
+            const matchInDb = dbMembers.find((db: any) => db.name.toLowerCase().includes(firstName));
+            if (matchInDb) {
+              return {
+                ...def,
+                ...matchInDb,
+                _id: matchInDb._id || def._id,
+                image: matchInDb.image || def.image,
+                role: matchInDb.role || def.role,
+                bio: matchInDb.bio || def.bio,
+                linkedin: matchInDb.linkedin || def.linkedin,
+                email: matchInDb.email || def.email
+              };
+            }
+            return def;
+          });
+
+          setTeam(mergedTeam);
         }
         setLoading(false);
       })
