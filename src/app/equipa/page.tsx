@@ -193,39 +193,35 @@ export default function TeamPage() {
       .then(res => res.json())
       .then(data => {
         if (data.team && data.team.length > 0) {
+          const ABN_TEAM_NAMES = ['culpa', 'leonel', 'josina', 'afonso', 'lizi', 'palmira', 'contardo', 'gabriel', 'yolanda', 'nádya', 'nadya'];
+
           const dbMembers = data.team
             .filter((m: any) => {
               if (m.status === 'inativo') return false;
-              const typeLower = (m.type || '').toLowerCase();
+              const nameLower = (m.name || '').toLowerCase();
               const roleLower = (m.role || '').toLowerCase();
+              const typeLower = (m.type || '').toLowerCase();
 
-              // Explicitly reject all Specialists, Mentors, Advisors, and Consultants
-              if (
-                typeLower.includes('especialista') ||
-                typeLower.includes('mentor') ||
-                typeLower.includes('advisor') ||
-                typeLower.includes('consultor') ||
-                roleLower.includes('advisor') ||
-                roleLower.includes('consultor') ||
-                roleLower.includes('especialista') ||
-                roleLower.includes('mentor')
-              ) {
-                return false;
-              }
+              // Explicitly check if name belongs to ABN executive team
+              const isAbnTeamName = ABN_TEAM_NAMES.some(n => nameLower.includes(n));
+              if (isAbnTeamName) return true;
 
-              // Must be type 'Equipa' or executive role
+              // Check if type is explicitly Equipa
               if (typeLower === 'equipa') return true;
-              if (
+
+              // Reject foreign advisors/consultants
+              if (roleLower.includes('advisor') || roleLower.includes('consultor')) return false;
+
+              // Check if role is an executive director or assistant
+              const isExecutiveRole =
                 roleLower.includes('director') ||
-                roleLower.includes('directora') ||
+                roleLower.includes('diretora') ||
                 roleLower.includes('presidente') ||
                 roleLower.includes('assistente') ||
-                roleLower.includes('coordenador')
-              ) {
-                return true;
-              }
+                roleLower.includes('coordenador') ||
+                roleLower.includes('recursos humanos');
 
-              return false;
+              return isExecutiveRole;
             })
             .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
 
