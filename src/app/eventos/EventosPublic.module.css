@@ -119,7 +119,8 @@
 /* Event Cards Layout */
 .eventsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 360px));
+  justify-content: center;
   gap: 2rem;
 }
 
@@ -131,6 +132,7 @@
   display: flex;
   flex-direction: column;
   transition: all 0.3s;
+  width: 100%;
 }
 
 .eventCard:hover {
@@ -140,7 +142,8 @@
 }
 
 .imgWrapper {
-  aspect-ratio: 1 / 1;
+  width: 100%;
+  height: 200px;
   position: relative;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.02);

@@ -150,7 +150,7 @@ export default function AdminComunicacaoPage() {
         <h1 style={{ fontFamily: 'Outfit', background: 'linear-gradient(135deg, #ff8c00, #ff6b00)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '2rem', margin: '0 0 0.5rem 0' }}>
           📢 Transmissão de E-mails (Broadcast)
         </h1>
-        <p style={{ color: 'rgba(255,255,255,0.6)', margin: 0 }}>
+        <p style={{ color: '#64748b', margin: 0 }}>
           Envie comunicações e alertas de e-mail automatizados para todos os utilizadores registados através do Resend.
         </p>
       </div>
@@ -160,30 +160,30 @@ export default function AdminComunicacaoPage() {
         <div style={{ flex: '2 1 600px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           {/* Email Form */}
-          <form onSubmit={handleSend} className="glass" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-            <h3 style={{ margin: 0, fontFamily: 'Outfit', color: '#fff', fontSize: '1.2rem' }}>✉️ Nova Mensagem</h3>
+          <form onSubmit={handleSend} className="glass" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1.2rem', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+            <h3 style={{ margin: 0, fontFamily: 'Outfit', color: '#0f172a', fontSize: '1.2rem' }}>✉️ Nova Mensagem</h3>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Assunto do E-mail</label>
+              <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Assunto do E-mail</label>
               <input 
                 value={subject}
                 onChange={e => setSubject(e.target.value)}
                 placeholder="Introduza o assunto da mensagem"
                 required
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px', color: '#fff', fontSize: '0.9rem' }}
+                style={{ background: '#ffffff', border: '1px solid #cbd5e1', padding: '12px', borderRadius: '8px', color: '#0f172a', fontSize: '0.9rem' }}
               />
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Corpo do E-mail (Código HTML)</label>
+                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Corpo do E-mail (Código HTML)</label>
                 <button
                   type="button"
                   onClick={() => setPreviewMode(!previewMode)}
                   style={{
-                    background: 'rgba(255,255,255,0.08)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    color: '#fff',
+                    background: '#f1f5f9',
+                    border: '1px solid #cbd5e1',
+                    color: '#0f172a',
                     padding: '4px 10px',
                     borderRadius: '6px',
                     fontSize: '0.75rem',
@@ -197,18 +197,19 @@ export default function AdminComunicacaoPage() {
 
               {previewMode ? (
                 <div style={{ 
-                  background: '#fff', 
+                  background: '#f8fafc', 
                   borderRadius: '8px', 
                   padding: '12px', 
                   minHeight: '250px', 
                   maxHeight: '400px', 
                   overflowY: 'auto',
-                  border: '1px solid rgba(255,255,255,0.1)'
+                  border: '1px solid #e2e8f0',
+                  color: '#0f172a'
                 }}>
                   {html ? (
                     <div dangerouslySetInnerHTML={{ __html: html }} />
                   ) : (
-                    <p style={{ color: '#888', fontStyle: 'italic', fontSize: '0.9rem', margin: 0 }}>Nada para pré-visualizar. Insira código HTML ou selecione um modelo.</p>
+                    <p style={{ color: '#64748b', fontStyle: 'italic', fontSize: '0.9rem', margin: 0 }}>Nada para pré-visualizar. Insira código HTML ou selecione um modelo.</p>
                   )}
                 </div>
               ) : (
@@ -218,7 +219,7 @@ export default function AdminComunicacaoPage() {
                   placeholder="Escreva ou cole o seu código HTML. Dica: use estilos inline para e-mails."
                   required
                   rows={10}
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px', color: '#fff', fontFamily: 'monospace', fontSize: '0.85rem', resize: 'vertical' }}
+                  style={{ background: '#ffffff', border: '1px solid #cbd5e1', padding: '12px', borderRadius: '8px', color: '#0f172a', fontFamily: 'monospace', fontSize: '0.85rem', resize: 'vertical' }}
                 />
               )}
             </div>
@@ -251,45 +252,45 @@ export default function AdminComunicacaoPage() {
         <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           {/* Stats card */}
-          <div className="glass" style={{ padding: '1.5rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-            <h3 style={{ margin: 0, fontFamily: 'Outfit', color: '#fff', fontSize: '1.1rem' }}>📊 Dados do Broadcast</h3>
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.8rem' }}>
-              <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem' }}>Utilizadores Alvo:</span>
-              <strong style={{ color: '#fff' }}>{totalUsers !== null ? `${totalUsers} registados` : 'A carregar...'}</strong>
+          <div className="glass" style={{ padding: '1.5rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '0.8rem', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+            <h3 style={{ margin: 0, fontFamily: 'Outfit', color: '#0f172a', fontSize: '1.1rem' }}>📊 Dados do Broadcast</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.8rem' }}>
+              <span style={{ color: '#64748b', fontSize: '0.85rem' }}>Utilizadores Alvo:</span>
+              <strong style={{ color: '#0f172a' }}>{totalUsers !== null ? `${totalUsers} registados` : 'A carregar...'}</strong>
             </div>
-            <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.4 }}>
+            <div style={{ fontSize: '0.78rem', color: '#64748b', lineHeight: 1.4 }}>
               * Os e-mails serão enviados para todos os utilizadores através do Resend em lotes protegidos de 50 destinatários em BCC para garantir privacidade de contactos e evitar spam.
             </div>
           </div>
 
           {/* Email Templates list */}
-          <div className="glass" style={{ padding: '1.5rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <h3 style={{ margin: 0, fontFamily: 'Outfit', color: '#fff', fontSize: '1.1rem' }}>📋 Modelos Disponíveis</h3>
+          <div className="glass" style={{ padding: '1.5rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1rem', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+            <h3 style={{ margin: 0, fontFamily: 'Outfit', color: '#0f172a', fontSize: '1.1rem' }}>📋 Modelos Disponíveis</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
               {templates.map((tpl, idx) => (
                 <button
                   key={idx}
                   onClick={() => selectTemplate(tpl)}
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    background: '#ffffff',
+                    border: '1px solid #cbd5e1',
                     borderRadius: '12px',
                     padding: '12px',
                     textAlign: 'left',
-                    color: '#fff',
+                    color: '#0f172a',
                     cursor: 'pointer',
-                    fontSize: '0.82rem',
+                    fontSize: '0.85rem',
                     fontWeight: 600,
                     transition: 'all 0.2s',
                     width: '100%'
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+                    e.currentTarget.style.background = '#f8fafc';
                     e.currentTarget.style.borderColor = 'var(--primary)';
                   }}
                   onMouseLeave={e => {
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                    e.currentTarget.style.background = '#ffffff';
+                    e.currentTarget.style.borderColor = '#cbd5e1';
                   }}
                 >
                   {tpl.name}
@@ -299,16 +300,16 @@ export default function AdminComunicacaoPage() {
           </div>
 
           {/* Resend setup helper */}
-          <div className="glass" style={{ padding: '1.5rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '0.6rem', border: '1px solid rgba(255,107,0,0.15)' }}>
+          <div className="glass" style={{ padding: '1.5rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '0.6rem', background: '#ffffff', border: '1px solid rgba(255,107,0,0.3)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
             <h3 style={{ margin: 0, fontFamily: 'Outfit', color: 'var(--primary)', fontSize: '0.95rem' }}>⚙️ Configuração do Resend</h3>
-            <p style={{ margin: 0, fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.4 }}>
-              Certifique-se de configurar as seguintes chaves no seu ficheiro <code>.env.local</code> para o envio funcionar corretamente:
+            <p style={{ margin: 0, fontSize: '0.78rem', color: '#334155', lineHeight: 1.4 }}>
+              Certifique-se de configurar as seguintes chaves no seu ficheiro <code style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px', color: '#0f172a' }}>.env.local</code> para o envio funcionar corretamente:
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '4px' }}>
-              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '4px' }}>
+              <div style={{ fontSize: '0.78rem', color: '#334155', fontFamily: 'monospace', wordBreak: 'break-all', background: '#f8fafc', padding: '8px 10px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
                 🔑 RESEND_API_KEY=re_xxx
               </div>
-              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+              <div style={{ fontSize: '0.78rem', color: '#334155', fontFamily: 'monospace', wordBreak: 'break-all', background: '#f8fafc', padding: '8px 10px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
                 📧 RESEND_FROM_EMAIL=sua-empresa@seu-dominio.com
               </div>
             </div>

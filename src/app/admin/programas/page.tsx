@@ -706,7 +706,7 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
                   <h4 style={{ margin: 0, color: 'var(--primary, #ff6b00)', fontSize: '1.1rem' }}>
                     Formulário de Inquérito Personalizado
                   </h4>
-                  <p style={{ margin: '0.2rem 0 0', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>
+                  <p style={{ margin: '0.2rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>
                     Adicione perguntas específicas que os candidatos deverão responder ao inscreverem-se neste programa.
                   </p>
                 </div>
@@ -725,30 +725,30 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
               </div>
 
               {customFields.length === 0 ? (
-                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.15)', borderRadius: '14px', padding: '3rem 1.5rem', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>
+                <div style={{ background: '#f8fafc', border: '2px dashed #cbd5e1', borderRadius: '14px', padding: '3rem 1.5rem', textAlign: 'center', color: '#64748b' }}>
                   <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>📋</div>
-                  <p style={{ margin: 0, fontSize: '0.95rem' }}>Nenhuma pergunta personalizada configurada para este programa.</p>
-                  <p style={{ margin: '0.3rem 0 0', fontSize: '0.85rem', color: 'rgba(255,255,255,0.35)' }}>Clique no botão "+ Adicionar Pergunta / Campo" acima para personalizar o inquérito.</p>
+                  <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: '#334155' }}>Nenhuma pergunta personalizada configurada para este programa.</p>
+                  <p style={{ margin: '0.3rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>Clique no botão "+ Adicionar Pergunta / Campo" acima para personalizar o inquérito.</p>
                 </div>
               ) : (
                 customFields.map((field, idx) => (
-                  <div key={field.id || idx} style={{ background: '#121927', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '16px', padding: '1.4rem', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', letterSpacing: '0.05em' }}>
+                  <div key={field.id || idx} style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '16px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.8rem' }}>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', letterSpacing: '0.05em' }}>
                         PERGUNTA #{idx + 1}
                       </span>
                       <button
                         type="button"
-                        style={{ background: 'rgba(231,76,60,0.15)', color: '#e74c3c', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}
+                        style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', padding: '0.4rem 0.85rem', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}
                         onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))}
                       >
                         🗑️ Remover Pergunta
                       </button>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.2rem' }}>
                       <div className={styles.field}>
-                        <label>Título da Pergunta *</label>
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Título da Pergunta *</label>
                         <input
                           type="text"
                           required
@@ -759,11 +759,12 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
                             setCustomFields(updated);
                           }}
                           placeholder="Ex: Possui registo comercial (NUIT)?"
+                          style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
                         />
                       </div>
 
                       <div className={styles.field}>
-                        <label>Tipo de Resposta</label>
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Tipo de Resposta</label>
                         <select
                           value={field.type}
                           onChange={e => {
@@ -771,6 +772,7 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
                             updated[idx].type = e.target.value as any;
                             setCustomFields(updated);
                           }}
+                          style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
                         >
                           <option value="text">Texto Curto</option>
                           <option value="textarea">Texto Longo / Parágrafo</option>
@@ -792,14 +794,14 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
                             }}
                             style={{ width: '18px', height: '18px', accentColor: '#ff6b00' }}
                           />
-                          <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 600 }}>Resposta Obrigatória</span>
+                          <span style={{ fontSize: '0.85rem', color: '#0f172a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Resposta Obrigatória</span>
                         </label>
                       </div>
                     </div>
 
                     {(field.type === 'select' || field.type === 'checkbox') && (
                       <div className={styles.field}>
-                        <label>Opções de Seleção (separadas por vírgula)</label>
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Opções de Seleção (separadas por vírgula)</label>
                         <input
                           type="text"
                           value={field.options ? field.options.join(', ') : ''}
@@ -809,12 +811,13 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
                             setCustomFields(updated);
                           }}
                           placeholder="Ex: Sim, Não, Em Processo de Formalização"
+                          style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
                         />
                       </div>
                     )}
 
                     <div className={styles.field}>
-                      <label>Texto de Ajuda / Placeholder (opcional)</label>
+                      <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Texto de Ajuda / Placeholder (opcional)</label>
                       <input
                         type="text"
                         value={field.placeholder || ''}
@@ -824,6 +827,7 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
                           setCustomFields(updated);
                         }}
                         placeholder="Ex: Exemplo de resposta esperada..."
+                        style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
                       />
                     </div>
                   </div>
