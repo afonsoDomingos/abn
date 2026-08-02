@@ -24,6 +24,25 @@ export default function ProfilePage() {
   const [msg, setMsg] = useState({ type: '', text: '' });
 
   useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        setUser(prev => ({
+          ...prev,
+          id: parsed.id || parsed._id || prev.id,
+          name: parsed.name || prev.name,
+          email: parsed.email || prev.email,
+          profileImage: parsed.profileImage || parsed.avatar || prev.profileImage,
+          phone: parsed.phone || prev.phone,
+          company: parsed.company || prev.company,
+          sector: parsed.sector || prev.sector,
+          linkedin: parsed.linkedin || prev.linkedin,
+          bio: parsed.bio || prev.bio
+        }));
+      } catch (e) {}
+    }
+
     fetch('/api/user/profile')
       .then(res => res.json())
       .then(data => {
@@ -31,28 +50,16 @@ export default function ProfilePage() {
           const u = data.user;
           setUser(prev => ({
             ...prev,
-            id: u._id || u.id || '',
-            name: u.name || '',
-            email: u.email || '',
-            profileImage: u.profileImage || '/perfil09.jpg',
-            phone: u.phone || '',
-            company: u.company || '',
-            sector: u.sector || '',
-            linkedin: u.linkedin || '',
-            bio: u.bio || ''
+            id: u._id || u.id || prev.id,
+            name: u.name || prev.name,
+            email: u.email || prev.email,
+            profileImage: u.profileImage || prev.profileImage || '/perfil09.jpg',
+            phone: u.phone || prev.phone,
+            company: u.company || prev.company,
+            sector: u.sector || prev.sector,
+            linkedin: u.linkedin || prev.linkedin,
+            bio: u.bio || prev.bio
           }));
-        } else {
-          const storedUser = localStorage.getItem('user');
-          if (storedUser) {
-            const parsed = JSON.parse(storedUser);
-            setUser(prev => ({
-              ...prev,
-              id: parsed.id || parsed._id || '',
-              name: parsed.name || '',
-              email: parsed.email || '',
-              profileImage: parsed.profileImage || '/perfil09.jpg'
-            }));
-          }
         }
         setLoading(false);
       })

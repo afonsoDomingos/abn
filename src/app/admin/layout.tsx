@@ -77,6 +77,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       title: 'Geral',
       items: [
         { href: '/admin', label: t.admin.dashboard, icon: <LayoutDashboard size={18} /> },
+        { href: '/admin/perfil', label: 'Meu Perfil & Foto', icon: <UserCheck size={18} /> },
         { href: '/admin/usuarios', label: t.admin.users, icon: <Users size={18} /> },
         { href: '/admin/especialistas', label: 'Especialistas & Mentores', icon: <Award size={18} /> },
         { href: '/admin/equipa', label: 'Equipa', icon: <UsersIcon size={18} /> },
