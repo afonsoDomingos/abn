@@ -193,34 +193,17 @@ export default function TeamPage() {
       .then(res => res.json())
       .then(data => {
         if (data.team && data.team.length > 0) {
-          const dbMembers = data.team.filter((m: any) => {
-            if (m.status === 'inativo') return false;
-            if (m.type === 'Especialista' || m.type === 'especialista' || m.type === 'Mentor') return false;
-            return true;
-          });
+          const dbMembers = data.team
+            .filter((m: any) => {
+              if (m.status === 'inativo') return false;
+              if (m.type === 'Especialista' || m.type === 'especialista' || m.type === 'Mentor') return false;
+              return true;
+            })
+            .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
 
-          // Merge DB updates into team members, prioritizing database uploaded images 100%
-          const mergedTeam = DEFAULT_TEAM.map(def => {
-            const firstName = def.name.split(' ')[0].toLowerCase();
-            const matchInDb = dbMembers.find((db: any) => db.name.toLowerCase().includes(firstName));
-            if (matchInDb) {
-              return {
-                ...def,
-                ...matchInDb,
-                _id: matchInDb._id || def._id,
-                name: matchInDb.name || def.name,
-                image: (matchInDb.image && matchInDb.image.trim() !== '') ? matchInDb.image : def.image,
-                role: matchInDb.role || def.role,
-                department: matchInDb.department || def.department,
-                bio: matchInDb.bio || def.bio,
-                linkedin: matchInDb.linkedin || def.linkedin,
-                email: matchInDb.email || def.email
-              };
-            }
-            return def;
-          });
-
-          setTeam(mergedTeam);
+          if (dbMembers.length > 0) {
+            setTeam(dbMembers);
+          }
         }
         setLoading(false);
       })
