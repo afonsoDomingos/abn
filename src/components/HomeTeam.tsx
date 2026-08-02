@@ -16,15 +16,15 @@ interface TeamMember {
 }
 
 const FALLBACK: TeamMember[] = [
-  { _id: 'f0', name: 'Culpa Francisco Xavier Lissamo', role: 'Presidente', department: 'Presidência & Conselho de Administração', expertise: ['Liderança Africana', 'Posicionamento Estratégico', 'Desenvolvimento de Ecossistemas'], image: '', status: 'ativo', order: 0 },
-  { _id: 'f1', name: 'Leonel Sapite', role: 'Director de Programas', department: 'Direcção de Programas, Incubação e Sustentabilidade', expertise: ['Desenvolvimento Comunitário', 'Empreendedorismo', 'Direitos Humanos'], image: '', status: 'ativo', order: 1 },
-  { _id: 'f2', name: 'Josina Aurora Nhantumbo', role: 'Directora Adjunta de Programas', department: 'Direcção de Programas, Incubação e Sustentabilidade', expertise: ['Igualdade de Género', 'Inclusão Social', 'Empoderamento Económico'], image: '', status: 'ativo', order: 2 },
-  { _id: 'f3', name: 'Contardo Muarramuassa', role: 'Director Adjunto de Programas', department: 'Direcção de Programas, Incubação e Sustentabilidade', expertise: ['Desenvolvimento Comunitário', 'Planeamento Territorial', 'WASH'], image: '', status: 'ativo', order: 3 },
-  { _id: 'f4', name: 'Afonso Domingos', role: 'Director de Tecnologia e Inovação', department: 'Direcção de Tecnologia e Inovação', expertise: ['Inteligência Artificial', 'Transformação Digital', 'Branding'], image: '', status: 'ativo', order: 4 },
-  { _id: 'f5', name: 'Lizi Cristina Mulambo', role: 'Directora de Administração, Finanças e RH', department: 'Direcção de Administração, Finanças e RH', expertise: ['Gestão Financeira', 'Recursos Humanos', 'Liderança'], image: '', status: 'ativo', order: 5 },
-  { _id: 'f6', name: 'Yolanda Emídio', role: 'Assistente Administrativa', department: 'Direcção de Administração, Finanças e RH', expertise: ['Apoio Administrativo', 'Gestão Documental', 'Suporte'], image: '', status: 'ativo', order: 6 },
-  { _id: 'f7', name: 'Nádya Cristina Domingos Cosmo', role: 'Directora de Investimentos e Parcerias', department: 'Direcção de Investimentos e Parcerias', expertise: ['Mobilização de Investimentos', 'Parcerias Estratégicas'], image: '', status: 'ativo', order: 7 },
-  { _id: 'f8', name: 'Gabriel Armindo', role: 'Director de MEAL', department: 'Direcção de Monitoria, Avaliação e Aprendizagem', expertise: ['MEAL', 'Monitoria e Avaliação', 'Power BI'], image: '', status: 'ativo', order: 8 },
+  { _id: 'f0', name: 'Culpa Francisco Xavier Lissamo', role: 'Presidente', department: 'Presidência & Conselho de Administração', expertise: ['Liderança Africana', 'Posicionamento Estratégico', 'Desenvolvimento de Ecossistemas'], image: '/Perfil01.jpg', status: 'ativo', order: 0 },
+  { _id: 'f1', name: 'Leonel Sapite', role: 'Director de Programas', department: 'Direcção de Programas, Incubação e Sustentabilidade', expertise: ['Desenvolvimento Comunitário', 'Empreendedorismo', 'Direitos Humanos'], image: '/Perfil04.jpg', status: 'ativo', order: 1 },
+  { _id: 'f2', name: 'Josina Aurora Nhantumbo', role: 'Directora Adjunta de Programas', department: 'Direcção de Programas, Incubação e Sustentabilidade', expertise: ['Igualdade de Género', 'Inclusão Social', 'Empoderamento Económico'], image: '/Perfil02.jpg', status: 'ativo', order: 2 },
+  { _id: 'f3', name: 'Contardo Muarramuassa', role: 'Director Adjunto de Programas', department: 'Direcção de Programas, Incubação e Sustentabilidade', expertise: ['Desenvolvimento Comunitário', 'Planeamento Territorial', 'WASH'], image: '/Perfil05.jpg', status: 'ativo', order: 3 },
+  { _id: 'f4', name: 'Afonso Domingos', role: 'Director de Tecnologia e Inovação', department: 'Direcção de Tecnologia e Inovação', expertise: ['Inteligência Artificial', 'Transformação Digital', 'Branding'], image: '/perfil09.jpg', status: 'ativo', order: 4 },
+  { _id: 'f5', name: 'Lizi Cristina Mulambo', role: 'Directora de Administração, Finanças e RH', department: 'Direcção de Administração, Finanças e RH', expertise: ['Gestão Financeira', 'Recursos Humanos', 'Liderança'], image: '/Perfil02.jpg', status: 'ativo', order: 5 },
+  { _id: 'f6', name: 'Yolanda Emídio', role: 'Assistente Administrativa', department: 'Direcção de Administração, Finanças e RH', expertise: ['Apoio Administrativo', 'Gestão Documental', 'Suporte'], image: '/Perfil04.jpg', status: 'ativo', order: 6 },
+  { _id: 'f7', name: 'Nádya Cristina Domingos Cosmo', role: 'Directora de Investimentos e Parcerias', department: 'Direcção de Investimentos e Parcerias', expertise: ['Mobilização de Investimentos', 'Parcerias Estratégicas'], image: '/Perfil05.jpg', status: 'ativo', order: 7 },
+  { _id: 'f8', name: 'Gabriel Armindo', role: 'Director de MEAL', department: 'Direcção de Monitoria, Avaliação e Aprendizagem', expertise: ['MEAL', 'Monitoria e Avaliação', 'Power BI'], image: '/Perfil01.jpg', status: 'ativo', order: 8 },
 ];
 
 function getRoleMeta(role: string): { color: string; bg: string } {
