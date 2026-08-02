@@ -147,37 +147,55 @@ export default function ProfilePage() {
           <form onSubmit={handleSave} className={styles.form}>
             <div className={styles.field}>
               <label style={{ fontWeight: 800, color: '#0f172a' }}>Foto de Perfil</label>
-              <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', background: '#f8fafc', padding: '1rem', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+              <label 
+                style={{ 
+                  display: 'flex', 
+                  gap: '1.5rem', 
+                  alignItems: 'center', 
+                  background: '#f8fafc', 
+                  padding: '1.2rem', 
+                  borderRadius: '16px', 
+                  border: '1px solid #cbd5e1',
+                  cursor: 'pointer',
+                  transition: 'border-color 0.2s'
+                }}
+              >
                 <div 
                   style={{ 
-                    width: '75px', 
-                    height: '75px', 
+                    width: '80px', 
+                    height: '80px', 
                     borderRadius: '50%', 
                     backgroundImage: `url(${user.profileImage || '/perfil09.jpg'})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    border: '3px solid var(--primary)',
-                    flexShrink: 0
+                    border: '3px solid var(--primary, #ff6b00)',
+                    flexShrink: 0,
+                    position: 'relative',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
                   }} 
-                />
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
-                  <label style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline' }}>
-                    {uploading ? 'A enviar imagem...' : '📷 Alterar Foto de Perfil'}
-                    <input 
-                      type="file" 
-                      accept="image/*"
-                      onChange={e => {
-                        const file = e.target.files?.[0];
-                        if (file) handleFileUpload(file);
-                      }}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-                  <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
-                    Selecione uma imagem do seu dispositivo (PNG, JPG ou WEBP).
-                  </span>
+                >
+                  <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '1.4rem' }}>
+                    📷
+                  </div>
                 </div>
-              </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', flex: 1 }}>
+                  <span style={{ fontSize: '0.92rem', color: 'var(--primary, #ff6b00)', fontWeight: 800 }}>
+                    {uploading ? '⏳ A carregar imagem...' : '📷 Clique aqui para Escolher Nova Foto'}
+                  </span>
+                  <span style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4 }}>
+                    Selecione qualquer imagem do seu computador ou telemóvel (PNG, JPG ou WEBP).
+                  </span>
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={e => {
+                      const file = e.target.files?.[0];
+                      if (file) handleFileUpload(file);
+                    }}
+                    style={{ display: 'none' }}
+                  />
+                </div>
+              </label>
             </div>
 
             <div className={styles.field}>

@@ -125,10 +125,18 @@ export default function UserMenu() {
 
       {isOpen && (
         <div className={styles.dropdown}>
-          <Link href={dashboardPath} onClick={() => setIsOpen(false)} className={styles.menuItem}>
+          <Link 
+            href={dashboardPath} 
+            onClick={() => setIsOpen(false)} 
+            className={styles.menuItem}
+          >
             {dashboardLabel}
           </Link>
-          <Link href={profilePath} onClick={() => setIsOpen(false)} className={styles.menuItem}>
+          <Link 
+            href={profilePath} 
+            onClick={() => setIsOpen(false)} 
+            className={styles.menuItem}
+          >
             👤 Editar Meu Perfil &amp; Foto
           </Link>
           <div className={styles.separator}></div>
