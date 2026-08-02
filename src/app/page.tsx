@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import OurMission from "@/components/OurMission";
 import PresidentMessage from "@/components/PresidentMessage";
 import HomePrograms from "@/components/HomePrograms";
+import CallToActionBanner from "@/components/CallToActionBanner";
 import Services from "@/components/Services";
 import HomeOpportunities from "@/components/HomeOpportunities";
 import HomeEvents from "@/components/HomeEvents";
@@ -30,6 +31,7 @@ export default function Home() {
         <OurMission />
         <PresidentMessage />
         <HomePrograms />
+        <CallToActionBanner />
         <Services />
         <HomeOpportunities />
         <HomeEvents />
