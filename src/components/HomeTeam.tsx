@@ -16,6 +16,7 @@ interface TeamMember {
 }
 
 const FALLBACK: TeamMember[] = [
+  { _id: 'f0', name: 'Culpa Francisco Xavier Lissamo', role: 'Presidente', department: 'Presidência & Conselho de Administração', expertise: ['Liderança Africana', 'Posicionamento Estratégico', 'Desenvolvimento de Ecossistemas'], image: '', status: 'ativo', order: 0 },
   { _id: 'f1', name: 'Leonel Sapite', role: 'Director de Programas', department: 'Direcção de Programas, Incubação e Sustentabilidade', expertise: ['Desenvolvimento Comunitário', 'Empreendedorismo', 'Direitos Humanos'], image: '', status: 'ativo', order: 1 },
   { _id: 'f2', name: 'Josina Aurora Nhantumbo', role: 'Directora Adjunta de Programas', department: 'Direcção de Programas, Incubação e Sustentabilidade', expertise: ['Igualdade de Género', 'Inclusão Social', 'Empoderamento Económico'], image: '', status: 'ativo', order: 2 },
   { _id: 'f3', name: 'Contardo Muarramuassa', role: 'Director Adjunto de Programas', department: 'Direcção de Programas, Incubação e Sustentabilidade', expertise: ['Desenvolvimento Comunitário', 'Planeamento Territorial', 'WASH'], image: '', status: 'ativo', order: 3 },

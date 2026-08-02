@@ -54,6 +54,20 @@ function getInitials(name: string): string {
 
 const DEFAULT_TEAM: TeamMember[] = [
   {
+    _id: 'default-0',
+    name: 'Culpa Francisco Xavier Lissamo',
+    role: 'Presidente',
+    department: 'Presidência & Conselho de Administração',
+    bio: 'Líder Africano, Construtor de Ecossistemas de Desenvolvimento em África. Fundador da CCA, ODEI, ABN & Persona. Especialista em Liderança, Posicionamento Estratégico e Desenvolvimento de Jovens.',
+    expertise: ['Liderança Africana', 'Posicionamento Estratégico', 'Desenvolvimento de Ecossistemas', 'Empoderamento de Jovens'],
+    responsibilities: ['Visão estratégica e institucional', 'Liderança executiva', 'Relações diplomáticas e institucionais'],
+    image: '',
+    linkedin: '',
+    email: '',
+    order: 0,
+    status: 'ativo'
+  },
+  {
     _id: 'default-1',
     name: 'Leonel Sapite',
     role: 'Director de Programas',
