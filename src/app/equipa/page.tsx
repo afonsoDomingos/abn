@@ -179,7 +179,13 @@ export default function TeamPage() {
       .then(res => res.json())
       .then(data => {
         if (data.team && data.team.length > 0) {
-          const activeMembers = data.team.filter((m: TeamMember) => m.status === 'ativo');
+          const activeMembers = data.team.filter((m: any) => {
+            if (m.status === 'inativo') return false;
+            if (m.type === 'Especialista' || m.type === 'especialista' || m.type === 'Mentor') {
+              return false;
+            }
+            return true;
+          });
           if (activeMembers.length > 0) setTeam(activeMembers);
         }
         setLoading(false);

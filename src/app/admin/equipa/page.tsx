@@ -48,7 +48,10 @@ export default function AdminEquipaPage() {
     fetch('/api/team')
       .then(res => res.json())
       .then(data => {
-        if (data.team) setTeam(data.team);
+        if (data.team) {
+          const teamOnly = data.team.filter((m: any) => m.type === 'Equipa' || m.type === 'equipa' || !m.type || m.role?.toLowerCase().includes('director') || m.role?.toLowerCase().includes('directora') || m.role?.toLowerCase().includes('presidente') || m.role?.toLowerCase().includes('assistente'));
+          setTeam(teamOnly);
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -101,6 +104,7 @@ export default function AdminEquipaPage() {
       name,
       role,
       department,
+      type: 'Equipa',
       bio,
       expertise: expertise.split('\n').map(s => s.trim()).filter(s => s),
       responsibilities: responsibilities.split('\n').map(s => s.trim()).filter(s => s),

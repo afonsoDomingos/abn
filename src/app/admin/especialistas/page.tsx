@@ -91,7 +91,10 @@ export default function AdminEspecialistasPage() {
     fetch('/api/team')
       .then(res => res.json())
       .then(data => {
-        if (data.team) setList(data.team);
+        if (data.team) {
+          const specOnly = data.team.filter((m: any) => m.type !== 'Equipa' && m.type !== 'equipa');
+          setList(specOnly);
+        }
         setLoading(false);
       })
       .catch(err => {

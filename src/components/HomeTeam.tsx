@@ -60,8 +60,14 @@ export default function HomeTeam() {
       .then(data => {
         if (data.team && data.team.length > 0) {
           const active = data.team
-            .filter((m: TeamMember) => m.status === 'ativo')
-            .sort((a: TeamMember, b: TeamMember) => a.order - b.order);
+            .filter((m: any) => {
+              if (m.status === 'inativo') return false;
+              if (m.type === 'Especialista' || m.type === 'especialista' || m.type === 'Mentor') {
+                return false;
+              }
+              return true;
+            })
+            .sort((a: any, b: any) => a.order - b.order);
           if (active.length > 0) setTeam(active);
         }
         setLoading(false);

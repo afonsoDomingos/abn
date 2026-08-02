@@ -96,7 +96,11 @@ export default function HomeSpecialists() {
       .then(data => {
         if (data.team && data.team.length > 0) {
           const list: Specialist[] = data.team
-            .filter((m: any) => m.status === 'ativo')
+            .filter((m: any) => {
+              if (m.status === 'inativo') return false;
+              if (m.type === 'Equipa' || m.type === 'equipa') return false;
+              return true;
+            })
             .map((m: any) => ({
               _id: m._id,
               name: m.name,
