@@ -6,7 +6,7 @@ import styles from './UserMenu.module.css';
 
 export default function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState<{ name: string; role?: string; profileImage?: string }>({ name: 'Membro', role: 'user' });
+  const [user, setUser] = useState<{ name: string; role?: string; profileImage?: string }>({ name: '', role: 'user' });
   const menuRef = useRef<HTMLDivElement>(null);
 
   const loadUserData = async () => {
@@ -108,19 +108,38 @@ export default function UserMenu() {
   const dashboardLabel = isManagement ? (user.role === 'admin' ? '⚡ Painel Admin' : '👤 Painel Operacional') : '📊 O Meu Painel';
   const profilePath = isManagement ? '/admin/perfil' : '/dashboard/perfil';
 
-  const avatarSrc = user.profileImage || '/perfil09.jpg';
-  const displayName = user.name ? user.name.split(' ')[0] : 'Utilizador';
+  const rawName = (user.name && user.name !== 'Membro') ? user.name : (user.role === 'admin' ? 'Administrador' : 'Utilizador');
+  const displayName = rawName.split(' ')[0];
+  const avatarSrc = user.profileImage || '';
+  const initials = displayName.substring(0, 2).toUpperCase();
 
   return (
     <div className={styles.userMenuContainer} ref={menuRef}>
-      <div className={styles.userInfo} onClick={() => setIsOpen(!isOpen)} title={user.name}>
+      <div className={styles.userInfo} onClick={() => setIsOpen(!isOpen)} title={rawName}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '4px' }}>
           <span className={styles.userName}>{displayName}</span>
         </div>
-        <div 
-          className={styles.avatar}
-          style={{ backgroundImage: `url('${avatarSrc}')` }}
-        />
+        {avatarSrc ? (
+          <div 
+            className={styles.avatar}
+            style={{ backgroundImage: `url('${avatarSrc}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+          />
+        ) : (
+          <div 
+            className={styles.avatar}
+            style={{ 
+              background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%)', 
+              color: '#ffffff', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              fontWeight: 800, 
+              fontSize: '0.85rem' 
+            }}
+          >
+            {initials}
+          </div>
+        )}
       </div>
 
       {isOpen && (
