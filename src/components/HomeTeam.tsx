@@ -74,7 +74,8 @@ export default function HomeTeam() {
                 ...def,
                 ...matchInDb,
                 _id: matchInDb._id || def._id,
-                image: matchInDb.image || def.image,
+                name: matchInDb.name || def.name,
+                image: (matchInDb.image && matchInDb.image.trim() !== '') ? matchInDb.image : def.image,
                 role: matchInDb.role || def.role,
                 department: matchInDb.department || def.department
               };

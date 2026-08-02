@@ -199,7 +199,7 @@ export default function TeamPage() {
             return true;
           });
 
-          // Merge DB updates into the official 8 ABN team members
+          // Merge DB updates into team members, prioritizing database uploaded images 100%
           const mergedTeam = DEFAULT_TEAM.map(def => {
             const firstName = def.name.split(' ')[0].toLowerCase();
             const matchInDb = dbMembers.find((db: any) => db.name.toLowerCase().includes(firstName));
@@ -208,8 +208,10 @@ export default function TeamPage() {
                 ...def,
                 ...matchInDb,
                 _id: matchInDb._id || def._id,
-                image: matchInDb.image || def.image,
+                name: matchInDb.name || def.name,
+                image: (matchInDb.image && matchInDb.image.trim() !== '') ? matchInDb.image : def.image,
                 role: matchInDb.role || def.role,
+                department: matchInDb.department || def.department,
                 bio: matchInDb.bio || def.bio,
                 linkedin: matchInDb.linkedin || def.linkedin,
                 email: matchInDb.email || def.email
