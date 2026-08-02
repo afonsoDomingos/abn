@@ -69,7 +69,36 @@ export default function AdminEquipaPage() {
       .then(res => res.json())
       .then(data => {
         if (data.team) {
-          const teamOnly = data.team.filter((m: any) => m.type === 'Equipa' || m.type === 'equipa' || !m.type || m.role?.toLowerCase().includes('director') || m.role?.toLowerCase().includes('directora') || m.role?.toLowerCase().includes('presidente') || m.role?.toLowerCase().includes('assistente'));
+          const teamOnly = data.team.filter((m: any) => {
+            const typeLower = (m.type || '').toLowerCase();
+            const roleLower = (m.role || '').toLowerCase();
+
+            if (
+              typeLower.includes('especialista') ||
+              typeLower.includes('mentor') ||
+              typeLower.includes('advisor') ||
+              typeLower.includes('consultor') ||
+              roleLower.includes('advisor') ||
+              roleLower.includes('consultor') ||
+              roleLower.includes('especialista') ||
+              roleLower.includes('mentor')
+            ) {
+              return false;
+            }
+
+            if (typeLower === 'equipa') return true;
+            if (
+              roleLower.includes('director') ||
+              roleLower.includes('directora') ||
+              roleLower.includes('presidente') ||
+              roleLower.includes('assistente') ||
+              roleLower.includes('coordenador')
+            ) {
+              return true;
+            }
+
+            return false;
+          });
           setTeam(teamOnly);
         }
         setLoading(false);

@@ -63,13 +63,43 @@ export default function HomeTeam() {
           const dbMembers = data.team
             .filter((m: any) => {
               if (m.status === 'inativo') return false;
-              if (m.type === 'Especialista' || m.type === 'especialista' || m.type === 'Mentor') return false;
-              return true;
+              const typeLower = (m.type || '').toLowerCase();
+              const roleLower = (m.role || '').toLowerCase();
+
+              // Explicitly reject all Specialists, Mentors, Advisors, and Consultants
+              if (
+                typeLower.includes('especialista') ||
+                typeLower.includes('mentor') ||
+                typeLower.includes('advisor') ||
+                typeLower.includes('consultor') ||
+                roleLower.includes('advisor') ||
+                roleLower.includes('consultor') ||
+                roleLower.includes('especialista') ||
+                roleLower.includes('mentor')
+              ) {
+                return false;
+              }
+
+              // Must be type 'Equipa' or executive role
+              if (typeLower === 'equipa') return true;
+              if (
+                roleLower.includes('director') ||
+                roleLower.includes('directora') ||
+                roleLower.includes('presidente') ||
+                roleLower.includes('assistente') ||
+                roleLower.includes('coordenador')
+              ) {
+                return true;
+              }
+
+              return false;
             })
             .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
 
           if (dbMembers.length > 0) {
             setTeam(dbMembers);
+          } else {
+            setTeam(FALLBACK);
           }
         }
         setLoading(false);
