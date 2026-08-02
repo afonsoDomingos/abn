@@ -58,7 +58,7 @@ export async function PUT(request: Request) {
     }
 
     const user = await User.findByIdAndUpdate(
-      id,
+      targetId,
       updateData,
       { new: true }
     ).select('-password');
