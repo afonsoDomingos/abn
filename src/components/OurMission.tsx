@@ -4,6 +4,7 @@ import { useLanguage } from '@/lib/LanguageContext';
 import styles from './OurMission.module.css';
 import { useState, useEffect } from 'react';
 import { translations } from '@/lib/translations';
+import { motion } from 'framer-motion';
 
 export default function OurMission() {
   const { language } = useLanguage();
@@ -38,7 +39,13 @@ export default function OurMission() {
       <div className={styles.container}>
         <div className={styles.grid}>
           {/* Left Column: Image with wavy background pattern */}
-          <div className={styles.imageColumn}>
+          <motion.div 
+            className={styles.imageColumn}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          >
             <div className={styles.patternBackground}>
               <div className={styles.wavyPattern}></div>
             </div>
@@ -63,10 +70,16 @@ export default function OurMission() {
                 />
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Dynamic Text Content (About / Mission / Vision) */}
-          <div className={styles.contentColumn}>
+          <motion.div 
+            className={styles.contentColumn}
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
+          >
             <span className={styles.badge}>
               {tContent.badge}
             </span>
@@ -135,7 +148,7 @@ export default function OurMission() {
             <div className={styles.tagline}>
               {tContent.tagline}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

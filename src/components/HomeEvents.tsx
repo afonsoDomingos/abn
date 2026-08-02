@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 import styles from './HomeEvents.module.css';
+import { motion } from 'framer-motion';
 
 interface Event {
   _id: string;
@@ -37,7 +38,13 @@ export default function HomeEvents() {
 
   return (
     <section className={styles.section}>
-      <div className={styles.container}>
+      <motion.div 
+        className={styles.container}
+        initial={{ opacity: 0, y: 35 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+      >
         {/* Header */}
         <div className={styles.header}>
           <span className={styles.badge}>
@@ -115,7 +122,7 @@ export default function HomeEvents() {
             {language === 'pt' ? 'Ver Todos os Eventos →' : 'View All Events →'}
           </Link>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

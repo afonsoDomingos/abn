@@ -5,6 +5,7 @@ import { useLanguage } from '@/lib/LanguageContext';
 import { translations } from '@/lib/translations';
 import Link from 'next/link';
 import styles from './PresidentMessage.module.css';
+import { motion } from 'framer-motion';
 
 interface PresidentMessageProps {
   showFullPageLayout?: boolean;
@@ -56,7 +57,13 @@ export default function PresidentMessage({ showFullPageLayout = false }: Preside
 
   return (
     <section className={`${styles.section} ${showFullPageLayout ? styles.sectionFullPage : ''}`} id="mensagem-presidente">
-      <div className={styles.container}>
+      <motion.div 
+        className={styles.container}
+        initial={{ opacity: 0, y: 40, scale: 0.98 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+      >
         
         {/* Header Section */}
         <div className={styles.header}>
@@ -167,7 +174,7 @@ export default function PresidentMessage({ showFullPageLayout = false }: Preside
           </div>
 
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

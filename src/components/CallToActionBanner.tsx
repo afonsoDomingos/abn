@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 import styles from './CallToActionBanner.module.css';
+import { motion } from 'framer-motion';
 
 export default function CallToActionBanner() {
   const { language } = useLanguage();
@@ -10,7 +11,13 @@ export default function CallToActionBanner() {
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        <div className={styles.card}>
+        <motion.div 
+          className={styles.card}
+          initial={{ opacity: 0, y: 30, scale: 0.96 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
           {/* Decorative glowing background elements */}
           <div className={styles.glowOrange} />
           <div className={styles.glowBlue} />
@@ -56,7 +63,7 @@ export default function CallToActionBanner() {
               </Link>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

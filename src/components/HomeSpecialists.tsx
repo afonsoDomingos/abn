@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './HomeSpecialists.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
+import { motion } from 'framer-motion';
 
 interface Specialist {
   _id: string;
@@ -29,7 +30,7 @@ const FALLBACK_SPECIALISTS: Specialist[] = [
     department: 'Incubação & Fortalecimento Institucional',
     expertise: ['Empreendedorismo', 'Direitos Humanos', 'Gestão de Projetos', 'Capacitação'],
     category: 'Desenvolvimento',
-    image: ''
+    image: '/Perfil04.jpg'
   },
   {
     _id: 's2',
@@ -38,7 +39,7 @@ const FALLBACK_SPECIALISTS: Specialist[] = [
     department: 'Tecnologia & Inovação',
     expertise: ['Inteligência Artificial', 'Automação (RPA)', 'Branding', 'Startups'],
     category: 'Tecnologia',
-    image: ''
+    image: '/perfil09.jpg'
   },
   {
     _id: 's3',
@@ -47,7 +48,7 @@ const FALLBACK_SPECIALISTS: Specialist[] = [
     department: 'Empoderamento Económico',
     expertise: ['Antropologia', 'Inclusão Social', 'Empoderamento Feminino', 'Consultoria'],
     category: 'Inclusão & Impacto',
-    image: ''
+    image: '/Perfil02.jpg'
   },
   {
     _id: 's4',
@@ -78,7 +79,7 @@ const FALLBACK_SPECIALISTS: Specialist[] = [
   }
 ];
 
-const CATEGORIES = ['Todos', 'Tecnologia', 'Desenvolvimento', 'Inclusão & Impacto', 'Finanças'];
+const CATEGORIES = ['Todos', 'Tecnologia', 'Finanças', 'Inclusão & Impacto', 'Desenvolvimento'];
 
 function getInitials(name: string): string {
   return name.split(' ').filter(Boolean).slice(0, 2).map(n => n[0].toUpperCase()).join('');
@@ -135,7 +136,13 @@ export default function HomeSpecialists() {
 
   return (
     <section className={styles.section} id="especialistas">
-      <div className={styles.container}>
+      <motion.div 
+        className={styles.container}
+        initial={{ opacity: 0, y: 35 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+      >
         {/* Header */}
         <div className={styles.header}>
           <div className={styles.headerText}>
@@ -289,7 +296,7 @@ export default function HomeSpecialists() {
             {language === 'pt' ? 'Inscrever-me como Especialista' : 'Apply as Specialist'}
           </Link>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
