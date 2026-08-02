@@ -78,8 +78,39 @@ export default function ProfilePage() {
       });
       const data = await res.json();
       if (data.success && data.url) {
-        setUser(prev => ({ ...prev, profileImage: data.url }));
-        setMsg({ type: 'success', text: 'Foto enviada! Clique em Salvar Alterações para guardar.' });
+        const newImg = data.url;
+        setUser(prev => ({ ...prev, profileImage: newImg }));
+        
+        // Auto-save new profile image to database profile immediately
+        const saveRes = await fetch('/api/user/profile', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            profileImage: newImg,
+            phone: user.phone,
+            company: user.company,
+            sector: user.sector,
+            linkedin: user.linkedin,
+            bio: user.bio
+          }),
+        });
+
+        const saveData = await saveRes.json();
+        if (saveData.success) {
+          const storedUser = localStorage.getItem('user');
+          const parsedUser = storedUser ? JSON.parse(storedUser) : {};
+          const updatedUser = { ...parsedUser, ...saveData.user, profileImage: newImg };
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+          
+          // Trigger header update event instantly
+          window.dispatchEvent(new Event('user-profile-updated'));
+          setMsg({ type: 'success', text: '✅ Foto de perfil atualizada com sucesso!' });
+        } else {
+          setMsg({ type: 'success', text: 'Foto enviada! Clique em Salvar Alterações para guardar.' });
+        }
       } else {
         setMsg({ type: 'error', text: data.error || 'Erro ao carregar imagem.' });
       }
