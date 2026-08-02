@@ -449,8 +449,8 @@ export default function AdminEspecialistasPage() {
         ))}
       </div>
 
-      {/* Table */}
-      <div className={styles.tableContainer}>
+      {/* Desktop Table & Mobile Cards Container */}
+      <div className={styles.contentWrapper}>
         {loading ? (
           <div style={{ padding: '3rem', textAlign: 'center', color: '#888' }}>A carregar perfis...</div>
         ) : filteredList.length === 0 ? (
@@ -458,106 +458,179 @@ export default function AdminEspecialistasPage() {
             Nenhum registo encontrado para este filtro.
           </div>
         ) : (
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Profissional</th>
-                <th>Tipo</th>
-                <th>Área / Departamento</th>
-                <th>País</th>
-                <th>Links / Contactos</th>
-                <th>Expertise</th>
-                <th>Status</th>
-                <th>Acções</th>
-              </tr>
-            </thead>
-            <tbody>
+          <>
+            {/* Desktop Table View */}
+            <div className={styles.tableContainer}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>Profissional</th>
+                    <th>Tipo</th>
+                    <th>Área / Departamento</th>
+                    <th>País</th>
+                    <th>Contactos</th>
+                    <th>Expertise</th>
+                    <th>Status</th>
+                    <th>Acções</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredList.map(item => (
+                    <tr key={item._id}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          {item.image ? (
+                            <img src={item.image} alt={item.name} style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #ff6b00', flexShrink: 0 }} />
+                          ) : (
+                            <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#ff6b00', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.8rem', flexShrink: 0 }}>
+                              {item.name.substring(0, 2).toUpperCase()}
+                            </div>
+                          )}
+                          <div>
+                            <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.9rem' }}>{item.name}</div>
+                            <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)' }}>{item.role}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span className={styles.typeBadge}>
+                          {item.type || 'Especialista'}
+                        </span>
+                      </td>
+                      <td>{item.department || '-'}</td>
+                      <td>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8', whiteSpace: 'nowrap' }}>
+                          📍 {item.country || 'Moçambique'}
+                        </span>
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                          {item.linkedin && (
+                            <a href={item.linkedin} target="_blank" rel="noreferrer" title="LinkedIn" style={{ color: '#0a66c2', fontSize: '1rem', textDecoration: 'none' }}>
+                              🔗
+                            </a>
+                          )}
+                          {item.website && (
+                            <a href={item.website} target="_blank" rel="noreferrer" title="Website / Portfólio" style={{ color: '#ff6b00', fontSize: '1rem', textDecoration: 'none' }}>
+                              🌐
+                            </a>
+                          )}
+                          {item.email && (
+                            <a href={`mailto:${item.email}`} title="Email" style={{ color: '#10b981', fontSize: '1rem', textDecoration: 'none' }}>
+                              ✉️
+                            </a>
+                          )}
+                          {item.phone && (
+                            <a href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" title="WhatsApp" style={{ color: '#25d366', fontSize: '1rem', textDecoration: 'none' }}>
+                              📱
+                            </a>
+                          )}
+                          {!item.linkedin && !item.website && !item.email && !item.phone && (
+                            <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem' }}>—</span>
+                          )}
+                        </div>
+                      </td>
+                      <td style={{ maxWidth: '240px' }}>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                          {item.expertise && item.expertise.length > 0 ? (
+                            item.expertise.slice(0, 2).map((exp, i) => {
+                              const cleanExp = exp.length > 32 ? exp.substring(0, 30) + '...' : exp;
+                              return (
+                                <span key={i} className={styles.chip} title={exp}>
+                                  {cleanExp}
+                                </span>
+                              );
+                            })
+                          ) : (
+                            <span style={{ color: '#666' }}>-</span>
+                          )}
+                        </div>
+                      </td>
+                      <td>
+                        <span className={`${styles.statusBadge} ${item.status === 'ativo' ? styles.active : styles.inactive}`}>
+                          {item.status === 'ativo' ? 'Ativo' : 'Inativo'}
+                        </span>
+                      </td>
+                      <td>
+                        <div className={styles.actions}>
+                          <button className={styles.actionBtn} onClick={() => handleEdit(item)}>
+                            Editar
+                          </button>
+                          <button
+                            className={`${styles.actionBtn} ${styles.deleteBtn}`}
+                            onClick={() => handleDelete(item._id)}
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Cards Grid View (< 768px) */}
+            <div className={styles.mobileCardsGroup}>
               {filteredList.map(item => (
-                <tr key={item._id}>
-                  <td>
+                <div key={item._id} className={styles.mobileCard}>
+                  <div className={styles.mobileCardHeader}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                       {item.image ? (
-                        <img src={item.image} alt={item.name} style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #ff6b00' }} />
+                        <img src={item.image} alt={item.name} style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #ff6b00' }} />
                       ) : (
-                        <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#ff6b00', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.8rem' }}>
+                        <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#ff6b00', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem' }}>
                           {item.name.substring(0, 2).toUpperCase()}
                         </div>
                       )}
                       <div>
-                        <div style={{ fontWeight: 700, color: '#fff' }}>{item.name}</div>
-                        <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>{item.role}</div>
+                        <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.95rem' }}>{item.name}</div>
+                        <div style={{ fontSize: '0.8rem', color: '#ff8c00', fontWeight: 600 }}>{item.role}</div>
                       </div>
                     </div>
-                  </td>
-                  <td>
-                    <span className={styles.typeBadge}>
-                      {item.type || 'Especialista'}
-                    </span>
-                  </td>
-                  <td>{item.department || '-'}</td>
-                  <td>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8' }}>
-                      📍 {item.country || 'Moçambique'}
-                    </span>
-                  </td>
-                  <td>
-                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                      {item.linkedin && (
-                        <a href={item.linkedin} target="_blank" rel="noreferrer" title="LinkedIn" style={{ color: '#0a66c2', fontSize: '1rem', textDecoration: 'none' }}>
-                          🔗
-                        </a>
-                      )}
-                      {item.website && (
-                        <a href={item.website} target="_blank" rel="noreferrer" title="Website / Portfólio" style={{ color: '#ff6b00', fontSize: '1rem', textDecoration: 'none' }}>
-                          🌐
-                        </a>
-                      )}
-                      {item.email && (
-                        <a href={`mailto:${item.email}`} title="Email" style={{ color: '#10b981', fontSize: '1rem', textDecoration: 'none' }}>
-                          ✉️
-                        </a>
-                      )}
-                      {item.phone && (
-                        <a href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" title="WhatsApp" style={{ color: '#25d366', fontSize: '1rem', textDecoration: 'none' }}>
-                          📱
-                        </a>
-                      )}
-                      {!item.linkedin && !item.website && !item.email && !item.phone && (
-                        <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem' }}>—</span>
-                      )}
+                    <span className={styles.typeBadge}>{item.type || 'Especialista'}</span>
+                  </div>
+
+                  <div className={styles.mobileCardBody}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', color: '#94a3b8', margin: '0.4rem 0' }}>
+                      <span>📍 {item.country || 'Moçambique'}</span>
+                      <span className={`${styles.statusBadge} ${item.status === 'ativo' ? styles.active : styles.inactive}`}>
+                        {item.status === 'ativo' ? 'Ativo' : 'Inativo'}
+                      </span>
                     </div>
-                  </td>
-                  <td>
-                    {item.expertise && item.expertise.length > 0 ? (
-                      item.expertise.slice(0, 3).map((exp, i) => (
-                        <span key={i} className={styles.chip}>{exp}</span>
-                      ))
-                    ) : (
-                      <span style={{ color: '#666' }}>-</span>
+
+                    {item.department && (
+                      <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)', marginBottom: '0.4rem' }}>
+                        <strong>Área:</strong> {item.department}
+                      </div>
                     )}
-                  </td>
-                  <td>
-                    <span className={`${styles.statusBadge} ${item.status === 'ativo' ? styles.active : styles.inactive}`}>
-                      {item.status === 'ativo' ? 'Ativo' : 'Inativo'}
-                    </span>
-                  </td>
-                  <td>
-                    <div className={styles.actions}>
-                      <button className={styles.actionBtn} onClick={() => handleEdit(item)}>
-                        Editar
-                      </button>
-                      <button
-                        className={`${styles.actionBtn} ${styles.deleteBtn}`}
-                        onClick={() => handleDelete(item._id)}
-                      >
-                        Eliminar
-                      </button>
+
+                    {item.expertise && item.expertise.length > 0 && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', margin: '0.5rem 0' }}>
+                        {item.expertise.slice(0, 3).map((exp, i) => (
+                          <span key={i} className={styles.chip} title={exp}>
+                            {exp.length > 35 ? exp.substring(0, 32) + '...' : exp}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.mobileCardFooter}>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      {item.linkedin && <a href={item.linkedin} target="_blank" rel="noreferrer" title="LinkedIn">🔗</a>}
+                      {item.email && <a href={`mailto:${item.email}`} title="Email">✉️</a>}
+                      {item.phone && <a href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" title="WhatsApp">📱</a>}
                     </div>
-                  </td>
-                </tr>
+                    <div className={styles.actions}>
+                      <button className={styles.actionBtn} onClick={() => handleEdit(item)}>Editar</button>
+                      <button className={`${styles.actionBtn} ${styles.deleteBtn}`} onClick={() => handleDelete(item._id)}>Eliminar</button>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </>
         )}
       </div>
     </div>
