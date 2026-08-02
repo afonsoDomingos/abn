@@ -286,11 +286,19 @@ export default function AdminEspecialistasPage() {
 
               <div className={styles.formGroup}>
                 <label>País *</label>
-                <select value={country} onChange={e => setCountry(e.target.value)}>
+                <input
+                  type="text"
+                  list="countries-list"
+                  required
+                  value={country}
+                  onChange={e => setCountry(e.target.value)}
+                  placeholder="Selecione ou escreva o país (ex: Moçambique, Angola, Alemanha...)"
+                />
+                <datalist id="countries-list">
                   {COUNTRIES.map(c => (
-                    <option key={c} value={c}>{c}</option>
+                    <option key={c} value={c} />
                   ))}
-                </select>
+                </datalist>
               </div>
 
               <div className={styles.formGroup}>
