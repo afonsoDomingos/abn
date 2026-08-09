@@ -24,12 +24,35 @@ export default function Navbar() {
       })
       .catch(() => { });
 
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
+    const checkUser = async () => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          setCurrentUser(JSON.parse(storedUser));
+        } catch (e) { }
+      }
+
       try {
-        setCurrentUser(JSON.parse(storedUser));
+        const res = await fetch('/api/user/profile');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.user) {
+            setCurrentUser(data.user);
+            localStorage.setItem('user', JSON.stringify(data.user));
+          }
+        }
       } catch (e) { }
-    }
+    };
+
+    checkUser();
+
+    window.addEventListener('user-profile-updated', checkUser);
+    window.addEventListener('storage', checkUser);
+
+    return () => {
+      window.removeEventListener('user-profile-updated', checkUser);
+      window.removeEventListener('storage', checkUser);
+    };
   }, []);
 
   // Close menu on route changes / scroll
@@ -162,27 +185,40 @@ export default function Navbar() {
 
         <nav className={styles.drawerNav}>
           {currentUser && (
-            <div style={{ background: '#fff7ed', border: '1px solid #ffedd5', padding: '12px 14px', borderRadius: '12px', marginBottom: '0.5rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0f172a' }}>
-                👋 Olá, {currentUser.name || 'Membro'}
-              </span>
-              <Link
-                href={dashboardPath}
-                onClick={closeMenu}
-                style={{
-                  background: '#ff6b00',
-                  color: '#ffffff',
-                  padding: '10px 14px',
-                  borderRadius: '8px',
-                  fontWeight: 800,
-                  fontSize: '0.85rem',
-                  textDecoration: 'none',
-                  textAlign: 'center',
-                  display: 'block'
-                }}
-              >
-                {dashboardLabel}
-              </Link>
+            <div style={{ background: '#fff7ed', border: '1px solid #ffedd5', padding: '12px 14px', borderRadius: '12px', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              {(currentUser.profileImage || currentUser.avatar) ? (
+                <img
+                  src={currentUser.profileImage || currentUser.avatar}
+                  alt={currentUser.name || 'User'}
+                  style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ff6b00', flexShrink: 0 }}
+                />
+              ) : (
+                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.9rem', flexShrink: 0 }}>
+                  {(currentUser.name || 'Membro').substring(0, 2).toUpperCase()}
+                </div>
+              )}
+              <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '4px', minWidth: 0 }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  👋 Olá, {(currentUser.name || 'Membro').split(' ')[0]}
+                </span>
+                <Link
+                  href={dashboardPath}
+                  onClick={closeMenu}
+                  style={{
+                    background: '#ff6b00',
+                    color: '#ffffff',
+                    padding: '6px 12px',
+                    borderRadius: '8px',
+                    fontWeight: 800,
+                    fontSize: '0.78rem',
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                    display: 'block'
+                  }}
+                >
+                  {dashboardLabel}
+                </Link>
+              </div>
             </div>
           )}
 

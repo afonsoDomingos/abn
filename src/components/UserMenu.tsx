@@ -64,11 +64,11 @@ export default function UserMenu() {
                 role: freshRole,
                 profileImage: freshImg
               }));
-            } catch (e) {}
+            } catch (e) { }
           }
         }
       }
-    } catch (e) {}
+    } catch (e) { }
   };
 
   useEffect(() => {
@@ -98,7 +98,7 @@ export default function UserMenu() {
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
-    } catch (e) {}
+    } catch (e) { }
     localStorage.removeItem('user');
     window.location.href = '/login';
   };
@@ -120,23 +120,17 @@ export default function UserMenu() {
           <span className={styles.userName}>{displayName}</span>
         </div>
         {avatarSrc ? (
-          <div 
+          <img
+            src={avatarSrc}
+            alt={displayName}
             className={styles.avatar}
-            style={{ backgroundImage: `url('${avatarSrc}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+            style={{ objectFit: 'cover' }}
+            onError={(e) => {
+              (e.target as HTMLElement).style.display = 'none';
+            }}
           />
         ) : (
-          <div 
-            className={styles.avatar}
-            style={{ 
-              background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%)', 
-              color: '#ffffff', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              fontWeight: 800, 
-              fontSize: '0.85rem' 
-            }}
-          >
+          <div className={styles.avatarInitials}>
             {initials}
           </div>
         )}
@@ -144,16 +138,16 @@ export default function UserMenu() {
 
       {isOpen && (
         <div className={styles.dropdown}>
-          <Link 
-            href={dashboardPath} 
-            onClick={() => setIsOpen(false)} 
+          <Link
+            href={dashboardPath}
+            onClick={() => setIsOpen(false)}
             className={styles.menuItem}
           >
             {dashboardLabel}
           </Link>
-          <Link 
-            href={profilePath} 
-            onClick={() => setIsOpen(false)} 
+          <Link
+            href={profilePath}
+            onClick={() => setIsOpen(false)}
             className={styles.menuItem}
           >
             👤 Editar Meu Perfil &amp; Foto
