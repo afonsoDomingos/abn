@@ -17,34 +17,67 @@ interface PromoItem {
 export default function PromoBanner() {
     const { language } = useLanguage();
     const [isVisible, setIsVisible] = useState(false);
-    const [promo, setPromo] = useState<PromoItem | null>(null);
+    const [promos, setPromos] = useState<PromoItem[]>([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
         // Check if dismissed in current session
         const isDismissed = sessionStorage.getItem('abn_promo_dismissed');
         if (isDismissed === 'true') return;
 
-        // Load active programs or fallback to default promo
-        fetch('/api/programs')
-            .then(res => res.json())
-            .then(data => {
+        // Load active programs & opportunities to build rotating array
+        const loadPromos = async () => {
+            const items: PromoItem[] = [];
+
+            try {
+                const res = await fetch('/api/programs');
+                const data = await res.json();
                 if (data.programs && data.programs.length > 0) {
-                    const active = data.programs.find((p: any) => p.status === 'ativo') || data.programs[0];
-                    setPromo({
-                        id: active._id,
-                        badge: language === 'pt' ? '🔥 Vagas Abertas' : '🔥 Open Applications',
-                        title: active.title,
-                        description: active.description ? active.description.slice(0, 100) + '...' : (language === 'pt' ? 'Acelere o seu negócio com mentoria e suporte ABN.' : 'Accelerate your business with ABN mentorship.'),
-                        link: `/programas/${active._id}`,
-                        ctaText: language === 'pt' ? 'Inscrever-me Agora →' : 'Apply Now →'
+                    data.programs.filter((p: any) => p.status === 'ativo').slice(0, 2).forEach((prog: any) => {
+                        items.push({
+                            id: prog._id,
+                            badge: language === 'pt' ? '🚀 Programa em Destaque' : '🚀 Featured Program',
+                            title: prog.title,
+                            description: prog.description ? prog.description.slice(0, 105) + '...' : '',
+                            link: `/programas/${prog._id}`,
+                            ctaText: language === 'pt' ? 'Inscrever-me Agora →' : 'Apply Now →'
+                        });
                     });
-                } else {
-                    setPromo(getDefaultPromo(language));
                 }
-            })
-            .catch(() => {
-                setPromo(getDefaultPromo(language));
+            } catch (e) { }
+
+            try {
+                const resOpp = await fetch('/api/opportunities');
+                const dataOpp = await resOpp.json();
+                if (dataOpp.opportunities && dataOpp.opportunities.length > 0) {
+                    const opp = dataOpp.opportunities[0];
+                    items.push({
+                        id: opp._id || 'opp-1',
+                        badge: language === 'pt' ? '💰 Oportunidade & Bolsa' : '💰 Opportunity & Grant',
+                        title: opp.title,
+                        description: opp.description ? opp.description.slice(0, 105) + '...' : '',
+                        link: '/oportunidades',
+                        ctaText: language === 'pt' ? 'Ver Oportunidade →' : 'View Opportunity →'
+                    });
+                }
+            } catch (e) { }
+
+            // Add default high-converting promos if list is short
+            items.push({
+                id: 'clube-abn',
+                badge: language === 'pt' ? '👑 Clube Empreendedores' : '👑 Entrepreneur Club',
+                title: language === 'pt' ? 'Acesso Exclusivo à Rede ABN' : 'Exclusive Access to ABN Network',
+                description: language === 'pt'
+                    ? 'Conecte a sua startup a mentores internacionais, investidores e eventos V.I.P.'
+                    : 'Connect your startup to international mentors, investors, and VIP events.',
+                link: '/programas',
+                ctaText: language === 'pt' ? 'Aderir ao Clube →' : 'Join the Club →'
             });
+
+            setPromos(items);
+        };
+
+        loadPromos();
 
         // Show after 4 seconds
         const timer = setTimeout(() => {
@@ -54,57 +87,76 @@ export default function PromoBanner() {
         return () => clearTimeout(timer);
     }, [language]);
 
-    // Auto hide after 14 seconds of showing
+    // Rotate through promos automatically every 6.5 seconds
     useEffect(() => {
-        if (!isVisible) return;
+        if (!isVisible || promos.length <= 1) return;
 
-        const autoHideTimer = setTimeout(() => {
-            setIsVisible(false);
-        }, 14000);
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % promos.length);
+        }, 6500);
 
-        return () => clearTimeout(autoHideTimer);
-    }, [isVisible]);
+        return () => clearInterval(interval);
+    }, [isVisible, promos.length]);
 
     const handleDismiss = () => {
         setIsVisible(false);
         sessionStorage.setItem('abn_promo_dismissed', 'true');
     };
 
-    if (!isVisible || !promo) return null;
+    if (!isVisible || promos.length === 0) return null;
+
+    const current = promos[currentIndex] || promos[0];
 
     return (
         <div className={styles.promoWrapper}>
             <div className={styles.promoCard}>
-                <div className={styles.progressBar} />
+                {/* Resetting progress bar key triggers timer animation on each rotation */}
+                <div key={currentIndex} className={styles.progressBar} />
 
                 <div className={styles.topRow}>
                     <div className={styles.badge}>
                         <span className={styles.pulseDot} />
-                        {promo.badge}
+                        {current.badge}
                     </div>
-                    <button
-                        type="button"
-                        className={styles.closeBtn}
-                        onClick={handleDismiss}
-                        aria-label="Fechar notificação"
-                        title={language === 'pt' ? 'Fechar' : 'Close'}
-                    >
-                        ✕
-                    </button>
+
+                    <div className={styles.controlsRow}>
+                        {promos.length > 1 && (
+                            <div className={styles.dotsContainer}>
+                                {promos.map((_, idx) => (
+                                    <button
+                                        key={idx}
+                                        type="button"
+                                        className={`${styles.dot} ${idx === currentIndex ? styles.dotActive : ''}`}
+                                        onClick={() => setCurrentIndex(idx)}
+                                        title={`Promoção ${idx + 1}`}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                        <button
+                            type="button"
+                            className={styles.closeBtn}
+                            onClick={handleDismiss}
+                            aria-label="Fechar notificação"
+                            title={language === 'pt' ? 'Fechar' : 'Close'}
+                        >
+                            ✕
+                        </button>
+                    </div>
                 </div>
 
                 <div className={styles.content}>
-                    <h4 className={styles.title}>{promo.title}</h4>
-                    <p className={styles.description}>{promo.description}</p>
+                    <h4 className={styles.title}>{current.title}</h4>
+                    <p className={styles.description}>{current.description}</p>
                 </div>
 
                 <div className={styles.actions}>
                     <Link
-                        href={promo.link}
+                        href={current.link}
                         className={styles.ctaBtn}
                         onClick={handleDismiss}
                     >
-                        {promo.ctaText}
+                        {current.ctaText}
                     </Link>
                     <button
                         type="button"
@@ -117,17 +169,4 @@ export default function PromoBanner() {
             </div>
         </div>
     );
-}
-
-function getDefaultPromo(lang: string): PromoItem {
-    return {
-        id: 'default',
-        badge: lang === 'pt' ? '🚀 Oportunidade ABN' : '🚀 ABN Opportunity',
-        title: lang === 'pt' ? 'Programa F-STARTUPS 180' : 'F-STARTUPS 180 Program',
-        description: lang === 'pt'
-            ? 'Acelere a sua ideia com mentoria especializada, workshops e rede de investidores.'
-            : 'Accelerate your idea with specialized mentorship, workshops, and investor network.',
-        link: '/programas',
-        ctaText: lang === 'pt' ? 'Candidatar a Minha Startup →' : 'Apply My Startup →'
-    };
 }
