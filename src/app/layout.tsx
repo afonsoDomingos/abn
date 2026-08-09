@@ -84,6 +84,7 @@ export const metadata: Metadata = {
 
 import { LanguageProvider } from "@/lib/LanguageContext";
 import CookieConsent from "@/components/CookieConsent";
+import PromoBanner from "@/components/PromoBanner";
 
 export default function RootLayout({
   children,
@@ -96,6 +97,7 @@ export default function RootLayout({
         <LanguageProvider>
           {children}
           <CookieConsent />
+          <PromoBanner />
         </LanguageProvider>
       </body>
     </html>
