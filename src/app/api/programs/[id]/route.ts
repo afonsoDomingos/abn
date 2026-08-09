@@ -93,10 +93,10 @@ const FALLBACK_PROGRAMS = [
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     // Check fallbacks first if id starts with 'f-'
     if (id && id.startsWith('f-')) {
@@ -107,7 +107,7 @@ export async function GET(
     }
 
     await dbConnect();
-    
+
     // Try finding by MongoDB ID
     let program = null;
     if (id && id.match(/^[0-9a-fA-F]{24}$/)) {
