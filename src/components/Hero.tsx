@@ -24,7 +24,7 @@ export default function Hero() {
     { title: language === 'pt' ? 'Mentalidade Empreendedora' : 'Entrepreneurial Mindset', type: language === 'pt' ? 'Capacitação' : 'Training', link: '/incubacao', icon: '🧠' },
     { title: language === 'pt' ? 'Clube dos Empreendedores & Network' : 'Entrepreneurs Club & Network', type: language === 'pt' ? 'Comunidade' : 'Community', link: '/incubacao', icon: '🏛️' },
     { title: language === 'pt' ? 'Bolsas de Estudo e Financiamentos' : 'Grants & Funding Opportunities', type: language === 'pt' ? 'Oportunidade' : 'Opportunity', link: '/oportunidades', icon: '💰' },
-    { title: language === 'pt' ? 'Rede de Mentores e Especialistas' : 'Mentor & Expert Network', type: language === 'pt' ? 'Mentoria' : 'Mentorship', link: '/#especialistas', icon: '👨‍🏫' },
+    { title: language === 'pt' ? 'Rede de Mentores e Especialistas' : 'Mentor & Expert Network', type: language === 'pt' ? 'Mentoria' : 'Mentorship', link: '/especialistas', icon: '👨‍🏫' },
     { title: language === 'pt' ? 'Cursos Certificados e Bootcamps' : 'Certified Courses & Bootcamps', type: language === 'pt' ? 'Academia' : 'Academy', link: '/dashboard/formacao', icon: '📚' },
     { title: language === 'pt' ? 'Próximos Eventos & Summits' : 'Upcoming Events & Summits', type: language === 'pt' ? 'Eventos' : 'Events', link: '/eventos', icon: '📅' },
     { title: language === 'pt' ? 'Marketplace de Serviços Empresariais' : 'Business Services Marketplace', type: language === 'pt' ? 'Serviços' : 'Services', link: '/marketplace', icon: '💼' },
@@ -32,10 +32,10 @@ export default function Hero() {
 
   const filteredSearch = searchQuery.trim() === ''
     ? []
-    : SEARCH_ITEMS.filter(item => 
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        item.type.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+    : SEARCH_ITEMS.filter(item =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.type.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   useEffect(() => {
     fetch('/api/config')
@@ -117,7 +117,7 @@ export default function Hero() {
             <div style={{ position: 'relative', marginTop: '1.5rem', maxWidth: '460px' }}>
               <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '50px', padding: '4px 6px 4px 16px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}>
                 <span style={{ fontSize: '1rem', marginRight: '8px', opacity: 0.85 }}>🔍</span>
-                <input 
+                <input
                   type="text"
                   value={searchQuery}
                   onChange={e => {
@@ -129,8 +129,8 @@ export default function Hero() {
                   style={{ background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: '0.85rem', width: '100%', fontFamily: 'inherit' }}
                 />
                 {searchQuery && (
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     onClick={() => { setSearchQuery(''); setShowResults(false); }}
                     style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.7, padding: '0 8px', fontSize: '0.85rem' }}
                   >
