@@ -1570,7 +1570,7 @@ export default function ProgramasPage() {
                     className={styles.wizardBtn}
                     disabled={!canProceed()}
                   >
-                    {currentStep === totalSteps ? 'Finalizar Candidatura & Pagar 💳' : 'Próximo →'}
+                    {currentStep === totalSteps ? 'Finalizar Candidatura 💳' : 'Próximo →'}
                   </button>
                 </div>
               </form>
