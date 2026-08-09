@@ -22,13 +22,13 @@ export default function Navbar() {
           setHubs(data.hubs);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
 
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
         setCurrentUser(JSON.parse(storedUser));
-      } catch (e) {}
+      } catch (e) { }
     }
   }, []);
 
@@ -95,7 +95,7 @@ export default function Navbar() {
                 <Link href="/impacto" onClick={closeMenu}>🌟 {t.nav.impact}</Link>
                 <Link href="/mensagem-do-presidente" onClick={closeMenu}>📜 Mensagem do Presidente</Link>
                 <Link href="/equipa" onClick={closeMenu}>👥 Equipa Executiva</Link>
-                <Link href="/#especialistas" onClick={closeMenu}>👨‍🏫 Especialistas &amp; Mentores</Link>
+                <Link href="/especialistas" onClick={closeMenu}>👨‍🏫 Especialistas &amp; Mentores</Link>
                 <Link href="/parceiros" onClick={closeMenu}>🤝 {t.nav.connections}</Link>
                 <div className={styles.divider}></div>
                 <div className={styles.dropdownHeader}>
@@ -120,7 +120,7 @@ export default function Navbar() {
 
           <div className={styles.actions}>
             <LanguageSelector />
-            
+
             {currentUser ? (
               <UserMenu />
             ) : (
@@ -166,8 +166,8 @@ export default function Navbar() {
               <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0f172a' }}>
                 👋 Olá, {currentUser.name || 'Membro'}
               </span>
-              <Link 
-                href={dashboardPath} 
+              <Link
+                href={dashboardPath}
                 onClick={closeMenu}
                 style={{
                   background: '#ff6b00',
@@ -202,7 +202,7 @@ export default function Navbar() {
           <Link href="/impacto" onClick={closeMenu}>🌟 {t.nav.impact}</Link>
           <Link href="/mensagem-do-presidente" onClick={closeMenu}>📜 Mensagem do Presidente</Link>
           <Link href="/equipa" onClick={closeMenu}>👥 Equipa Executiva</Link>
-          <Link href="/#especialistas" onClick={closeMenu}>👨‍🏫 Especialistas &amp; Mentores</Link>
+          <Link href="/especialistas" onClick={closeMenu}>👨‍🏫 Especialistas &amp; Mentores</Link>
           <Link href="/parceiros" onClick={closeMenu}>🤝 {t.nav.connections}</Link>
 
           <div className={styles.drawerSectionTitle}>

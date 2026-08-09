@@ -211,7 +211,7 @@ export default function ProgramasPage() {
       .then(data => {
         if (data.configs?.page_banners?.programas) setBannerUrl(data.configs.page_banners.programas);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -407,7 +407,7 @@ export default function ProgramasPage() {
       setCurrentStep(prev => prev + 1);
       return;
     }
-    
+
     // Validate required fields before submission
     if (!form.nomeCompleto.trim() || !form.email.trim() || !form.nivelAdesao.trim()) {
       alert('Por favor, preencha todos os campos obrigatórios: Nome, Email e Nível de Adesão.');
@@ -429,7 +429,7 @@ export default function ProgramasPage() {
       statusPagamento,
       origem: selectedProgram ? selectedProgram.title : 'programas',
     };
-    
+
     try {
       console.log('Enviando formulário:', payload);
       const response = await fetch('/api/clube/inscricoes', {
@@ -710,6 +710,13 @@ export default function ProgramasPage() {
                         >
                           {isOpen ? 'Ver Menos ▲' : 'Saber Mais ▼'}
                         </button>
+                        <Link
+                          href={`/programas/${prog._id}`}
+                          className={styles.shareLinkBtn}
+                          title="Ver página do programa (link partilhável)"
+                        >
+                          🔗 Partilhar
+                        </Link>
                         <button
                           className={styles.applyBtn}
                           onClick={() => {
@@ -831,7 +838,7 @@ export default function ProgramasPage() {
                     <h3 style={{ margin: '0.9rem 0 0.3rem 0', fontSize: '1.4rem', fontWeight: 900, color: '#0f172a' }}>
                       Confirme no seu Telemóvel!
                     </h3>
-                    
+
                     <p style={{ margin: '0 0 1.25rem 0', color: '#475569', fontSize: '0.88rem', lineHeight: '1.5' }}>
                       Enviámos o pedido de débito referente à candidatura de <strong>{form.nomeCompleto || 'candidato'}</strong>.
                     </p>
@@ -1068,22 +1075,22 @@ export default function ProgramasPage() {
                       <div className={styles.radioGroup}>
                         {(selectedProgram && !selectedProgram.isClub
                           ? [
-                              { val: 'formacao-7d', label: 'Formação Intensiva (7 dias)', sub: 'Mindset & Soft Skills | 8.000 MT – 18.000 MT' },
-                              { val: 'formacao-15d', label: 'Formação Completa (15 dias)', sub: 'Desenvolvimento Comportamental | 15.000 MT – 35.000 MT' },
-                              { val: 'coaching-individual', label: 'Sessão de Coaching Individual (60–90 min)', sub: '2.500 MT / sessão' },
-                              { val: 'coaching-pacote', label: 'Pacote Trimestral de Coaching (6 sessões)', sub: '12.000 MT / pacote' },
-                              { val: 'certificacao', label: 'Certificação em Soft Skills & Liderança', sub: '10.000 MT' },
-                              { val: 'corporativo-b2b', label: 'Formação Corporativa B2B (In-Company / Equipa)', sub: 'Pacote sob consulta com a Direcção ABN' },
-                            ]
+                            { val: 'formacao-7d', label: 'Formação Intensiva (7 dias)', sub: 'Mindset & Soft Skills | 8.000 MT – 18.000 MT' },
+                            { val: 'formacao-15d', label: 'Formação Completa (15 dias)', sub: 'Desenvolvimento Comportamental | 15.000 MT – 35.000 MT' },
+                            { val: 'coaching-individual', label: 'Sessão de Coaching Individual (60–90 min)', sub: '2.500 MT / sessão' },
+                            { val: 'coaching-pacote', label: 'Pacote Trimestral de Coaching (6 sessões)', sub: '12.000 MT / pacote' },
+                            { val: 'certificacao', label: 'Certificação em Soft Skills & Liderança', sub: '10.000 MT' },
+                            { val: 'corporativo-b2b', label: 'Formação Corporativa B2B (In-Company / Equipa)', sub: 'Pacote sob consulta com a Direcção ABN' },
+                          ]
                           : [
-                              { val: 'jovem', label: 'Jovem / Estudante', sub: 'Inscrição 300 MT | Quota anual 1.000 MT' },
-                              { val: 'individual', label: 'Individual', sub: 'Inscrição 500 MT | Quota anual 2.400 MT' },
-                              { val: 'empresa', label: 'Empresa / PME', sub: 'Inscrição 1.500 MT | Quota anual 6.000 MT' },
-                              { val: 'corp-gold', label: 'Corporativo — Corporate Gold', sub: '20.000 MT/ano' },
-                              { val: 'corp-platinum', label: 'Corporativo — Corporate Platinum', sub: '40.000 MT/ano' },
-                              { val: 'corp-founding', label: 'Corporativo — Corporate Founding Partner', sub: 'Pacote personalizado' },
-                              { val: 'honorario', label: 'Honorário', sub: 'Por convite da Direcção da ABN (isento)' },
-                            ]
+                            { val: 'jovem', label: 'Jovem / Estudante', sub: 'Inscrição 300 MT | Quota anual 1.000 MT' },
+                            { val: 'individual', label: 'Individual', sub: 'Inscrição 500 MT | Quota anual 2.400 MT' },
+                            { val: 'empresa', label: 'Empresa / PME', sub: 'Inscrição 1.500 MT | Quota anual 6.000 MT' },
+                            { val: 'corp-gold', label: 'Corporativo — Corporate Gold', sub: '20.000 MT/ano' },
+                            { val: 'corp-platinum', label: 'Corporativo — Corporate Platinum', sub: '40.000 MT/ano' },
+                            { val: 'corp-founding', label: 'Corporativo — Corporate Founding Partner', sub: 'Pacote personalizado' },
+                            { val: 'honorario', label: 'Honorário', sub: 'Por convite da Direcção da ABN (isento)' },
+                          ]
                         ).map(opt => (
                           <label key={opt.val} className={`${styles.radioLabel} ${form.nivelAdesao === opt.val ? styles.radioLabelActive : ''}`}>
                             <input
@@ -1432,7 +1439,7 @@ export default function ProgramasPage() {
                             <span>Taxa de Inscrição no Clube / Programa:</span>
                             <strong>{calc.taxaInscricao.toLocaleString('pt-PT')} MT</strong>
                           </div>
-                          
+
                           <div style={{ display: 'flex', justifyContent: 'space-between', color: '#cbd5e1' }}>
                             <span>{calc.periodoLabel}:</span>
                             <strong>{calc.quotaCobrada.toLocaleString('pt-PT')} MT</strong>
@@ -1484,7 +1491,7 @@ export default function ProgramasPage() {
                         <h4 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontSize: '0.95rem', fontWeight: 800 }}>
                           📌 Instruções de Pagamento ({form.metodoPagamento.toUpperCase()})
                         </h4>
-                        
+
                         {form.metodoPagamento === 'mpesa' && (
                           <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
                             <p style={{ margin: 0 }}>Pagamento por M-Pesa. As instruções e os dados de confirmação serão disponibilizados pela equipa ABN após a submissão da candidatura.</p>

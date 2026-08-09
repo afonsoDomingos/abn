@@ -150,8 +150,15 @@
 }
 
 @keyframes pulseOrange {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.35); }
-  50% { box-shadow: 0 0 0 6px rgba(255, 107, 0, 0); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.35);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 107, 0, 0);
+  }
 }
 
 .clubeIconRow {
@@ -315,8 +322,15 @@
 }
 
 @keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .clubeExpandedGrid {
@@ -550,6 +564,29 @@
   box-shadow: 0 6px 18px rgba(255, 107, 0, 0.35);
 }
 
+.shareLinkBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.65rem 1.3rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.shareLinkBtn:hover {
+  background: rgba(255, 107, 0, 0.1);
+  border-color: rgba(255, 107, 0, 0.4);
+  color: #ff6b00;
+  transform: translateY(-1px);
+}
+
 /* Loading & Empty */
 .loading {
   display: flex;
@@ -570,12 +607,21 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .empty {
@@ -604,8 +650,13 @@
 }
 
 @keyframes overlayIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .modal {
@@ -621,8 +672,15 @@
 }
 
 @keyframes modalSlideIn {
-  from { opacity: 0; transform: translateY(30px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modalHeader {
@@ -851,12 +909,12 @@
   background: rgba(255, 107, 0, 0.04);
 }
 
-.checkInput:checked + .checkBox {
+.checkInput:checked+.checkBox {
   background: #ff6b00;
   border-color: #ff6b00;
 }
 
-.checkInput:checked + .checkBox::after {
+.checkInput:checked+.checkBox::after {
   content: '✓';
   position: absolute;
   inset: 0;
@@ -1112,8 +1170,15 @@
 }
 
 @keyframes bounceIn {
-  from { transform: scale(0); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .successState h3 {
@@ -1314,21 +1379,21 @@
   .progressSteps {
     gap: 0.3rem;
   }
-  
+
   .stepNumber {
     width: 28px;
     height: 28px;
     font-size: 0.75rem;
   }
-  
+
   .stepLabel {
     font-size: 0.65rem;
   }
-  
+
   .wizardNavigation {
     flex-direction: column-reverse;
   }
-  
+
   .wizardBtn {
     max-width: 100%;
     width: 100%;
