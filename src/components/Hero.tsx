@@ -114,9 +114,9 @@ export default function Hero() {
             </div>
 
             {/* Quick Search Bar */}
-            <div style={{ position: 'relative', marginTop: '1.5rem', maxWidth: '460px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '50px', padding: '4px 6px 4px 16px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}>
-                <span style={{ fontSize: '1rem', marginRight: '8px', opacity: 0.85 }}>🔍</span>
+            <div className={styles.searchContainer}>
+              <div className={styles.searchShell}>
+                <span className={styles.searchIcon}>🔍</span>
                 <input
                   type="text"
                   value={searchQuery}
@@ -126,43 +126,93 @@ export default function Hero() {
                   }}
                   onFocus={() => setShowResults(true)}
                   placeholder={language === 'pt' ? 'O que procura? (ex: Incubação, Mentores...)' : 'Search (e.g. Incubation, Mentors...)'}
-                  style={{ background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: '0.85rem', width: '100%', fontFamily: 'inherit' }}
+                  className={styles.searchInput}
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={() => { setSearchQuery(''); setShowResults(false); }}
-                    style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.7, padding: '0 8px', fontSize: '0.85rem' }}
+                    className={styles.clearBtn}
+                    title={language === 'pt' ? 'Limpar' : 'Clear'}
                   >
                     ✕
                   </button>
                 )}
+                <button
+                  type="button"
+                  onClick={() => setShowResults(true)}
+                  className={styles.searchBtn}
+                >
+                  {language === 'pt' ? 'Pesquisar' : 'Search'}
+                </button>
+              </div>
+
+              {/* Quick Tags / Suggestions */}
+              <div className={styles.quickChips}>
+                <span className={styles.chipLabel}>⚡ {language === 'pt' ? 'Populares:' : 'Popular:'}</span>
+                <button
+                  type="button"
+                  className={styles.chip}
+                  onClick={() => { setSearchQuery('Incubação'); setShowResults(true); }}
+                >
+                  🚀 {language === 'pt' ? 'Incubação' : 'Incubation'}
+                </button>
+                <button
+                  type="button"
+                  className={styles.chip}
+                  onClick={() => { setSearchQuery('Mentores'); setShowResults(true); }}
+                >
+                  🧠 {language === 'pt' ? 'Mentoria' : 'Mentorship'}
+                </button>
+                <button
+                  type="button"
+                  className={styles.chip}
+                  onClick={() => { setSearchQuery('Bolsas'); setShowResults(true); }}
+                >
+                  💰 {language === 'pt' ? 'Oportunidades' : 'Grants'}
+                </button>
+                <button
+                  type="button"
+                  className={styles.chip}
+                  onClick={() => { setSearchQuery('Eventos'); setShowResults(true); }}
+                >
+                  📅 {language === 'pt' ? 'Eventos' : 'Events'}
+                </button>
               </div>
 
               {/* Search Results Dropdown */}
               {showResults && searchQuery.trim().length > 0 && (
-                <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '8px', background: '#ffffff', borderRadius: '16px', border: '1px solid #cbd5e1', boxShadow: '0 12px 32px rgba(0,0,0,0.2)', overflow: 'hidden', zIndex: 100, color: '#0f172a' }}>
+                <div className={styles.dropdownCard}>
                   {filteredSearch.length === 0 ? (
                     <div style={{ padding: '16px', fontSize: '0.85rem', color: '#64748b', textAlign: 'center' }}>
                       {language === 'pt' ? 'Nenhum resultado encontrado para ' : 'No results found for '} "<strong>{searchQuery}</strong>"
                     </div>
                   ) : (
-                    <div style={{ maxHeight: '280px', overflowY: 'auto', padding: '6px' }}>
+                    <div style={{ maxHeight: '300px', overflowY: 'auto', padding: '8px' }}>
                       {filteredSearch.map((item, i) => (
                         <Link
                           key={i}
                           href={item.link}
                           onClick={() => setShowResults(false)}
-                          style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '10px', textDecoration: 'none', color: '#0f172a', transition: 'background 0.2s' }}
-                          onMouseEnter={e => (e.currentTarget.style.background = '#f1f5f9')}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            padding: '10px 14px',
+                            borderRadius: '12px',
+                            textDecoration: 'none',
+                            color: '#0f172a',
+                            transition: 'all 0.2s ease'
+                          }}
+                          onMouseEnter={e => (e.currentTarget.style.background = '#f8fafc')}
                           onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                         >
-                          <span style={{ fontSize: '1.2rem' }}>{item.icon}</span>
+                          <span style={{ fontSize: '1.3rem', width: '28px', textAlign: 'center' }}>{item.icon}</span>
                           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                            <span style={{ fontSize: '0.88rem', fontWeight: 600, color: '#0f172a' }}>{item.title}</span>
-                            <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 700, textTransform: 'uppercase' }}>{item.type}</span>
+                            <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#0f172a' }}>{item.title}</span>
+                            <span style={{ fontSize: '0.7rem', color: '#ff6b00', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{item.type}</span>
                           </div>
-                          <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>→</span>
+                          <span style={{ fontSize: '0.85rem', color: '#ff6b00', fontWeight: 700 }}>→</span>
                         </Link>
                       ))}
                     </div>
