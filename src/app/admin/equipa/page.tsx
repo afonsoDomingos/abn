@@ -69,32 +69,24 @@ export default function AdminEquipaPage() {
       .then(res => res.json())
       .then(data => {
         if (data.team) {
+          // Show all members that are explicitly typed as Equipa,
+          // OR that have executive roles (to catch legacy records without type set)
           const teamOnly = data.team.filter((m: any) => {
             const typeLower = (m.type || '').toLowerCase();
             const roleLower = (m.role || '').toLowerCase();
 
-            if (
-              typeLower.includes('especialista') ||
-              typeLower.includes('mentor') ||
-              typeLower.includes('advisor') ||
-              typeLower.includes('consultor') ||
-              roleLower.includes('advisor') ||
-              roleLower.includes('consultor') ||
-              roleLower.includes('especialista') ||
-              roleLower.includes('mentor')
-            ) {
-              return false;
-            }
-
+            // Always include if explicitly marked as Equipa
             if (typeLower === 'equipa') return true;
-            if (
-              roleLower.includes('director') ||
-              roleLower.includes('directora') ||
-              roleLower.includes('presidente') ||
-              roleLower.includes('assistente') ||
-              roleLower.includes('coordenador')
-            ) {
-              return true;
+
+            // Include if no type was set AND has an executive role
+            if (!m.type || m.type === '') {
+              return (
+                roleLower.includes('director') ||
+                roleLower.includes('directora') ||
+                roleLower.includes('presidente') ||
+                roleLower.includes('assistente') ||
+                roleLower.includes('coordenador')
+              );
             }
 
             return false;
@@ -414,7 +406,7 @@ export default function AdminEquipaPage() {
               </div>
               <h3 className={styles.cardTitle}>{member.name}</h3>
               <p className={styles.cardRole}>{member.role}</p>
-              
+
               <div className={styles.cardDetails}>
                 {member.expertise && member.expertise.length > 0 && (
                   <div className={styles.detailItem}>
