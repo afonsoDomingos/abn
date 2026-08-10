@@ -1,9 +1,9 @@
 .scrollToTop {
   position: fixed;
-  bottom: 110px;
-  right: 30px;
-  width: 60px;
-  height: 60px;
+  bottom: 95px;
+  right: 25px;
+  width: 42px;
+  height: 42px;
   background: var(--gradient-gold);
   color: #000;
   border-radius: 50%;
@@ -11,26 +11,31 @@
   align-items: center;
   justify-content: center;
   z-index: 999;
-  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.35);
   cursor: pointer;
   border: none;
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .scrollToTop:hover {
-  box-shadow: 0 15px 35px rgba(212, 175, 55, 0.6);
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.55);
 }
 
 .scrollToTop svg {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
 }
 
 @media (max-width: 768px) {
   .scrollToTop {
-    bottom: 85px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
+    bottom: 80px;
+    right: 16px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .scrollToTop svg {
+    width: 16px;
+    height: 16px;
   }
 }
