@@ -21,6 +21,7 @@ interface Specialist {
     website?: string;
     phone?: string;
     category?: string;
+    views?: number;
 }
 
 function slugify(text: string): string {
@@ -266,6 +267,9 @@ export default function EspecialistasPage() {
                                             <div className={styles.badges}>
                                                 {s.category && <span className={styles.catBadge}>{s.category}</span>}
                                                 <span className={styles.countryBadge}>📍 {s.country || 'Moçambique'}</span>
+                                                <span className={styles.countryBadge} style={{ background: '#f8fafc', color: '#475569', border: '1px solid #cbd5e1' }}>
+                                                    👁️ {s.views || 0}
+                                                </span>
                                             </div>
 
                                             <h3 className={styles.name}>

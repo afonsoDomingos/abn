@@ -21,6 +21,7 @@ interface Specialist {
   website?: string;
   phone?: string;
   category?: string;
+  views?: number;
 }
 
 export function slugify(text: string): string {
@@ -134,6 +135,20 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
         if (found) {
           if (!found.category) found.category = derivedCategory(found);
           setSpecialist(found);
+
+          // Track view visit
+          fetch('/api/team/view', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: found._id, name: found.name, slug: rawSlug })
+          })
+            .then(r => r.json())
+            .then(vData => {
+              if (vData.views) {
+                setSpecialist(prev => prev ? { ...prev, views: vData.views } : null);
+              }
+            })
+            .catch(() => {});
         }
         setLoading(false);
       })
@@ -201,6 +216,8 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
     );
   }
 
+  const viewsCount = (specialist.views || 0) + 1;
+
   return (
     <>
       <Navbar />
@@ -224,6 +241,7 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
               <div className={styles.badges}>
                 {specialist.category && <span className={styles.catBadge}>{specialist.category}</span>}
                 <span className={styles.countryBadge}>📍 {specialist.country || 'Moçambique'}</span>
+                <span className={styles.viewsBadge}>👁️ {viewsCount} {viewsCount === 1 ? 'Visualização' : 'Visualizações'}</span>
               </div>
               <h1 className={styles.name}>{specialist.name}</h1>
               <p className={styles.role}>{specialist.role}</p>

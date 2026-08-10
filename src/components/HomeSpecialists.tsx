@@ -20,6 +20,7 @@ interface Specialist {
   email?: string;
   website?: string;
   phone?: string;
+  views?: number;
 }
 
 const FALLBACK_SPECIALISTS: Specialist[] = [
