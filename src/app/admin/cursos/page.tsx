@@ -85,6 +85,7 @@ export default function AdminCursosPage() {
   const [participantSearch, setParticipantSearch] = useState('');
   const [participantStatusFilter, setParticipantStatusFilter] = useState('todos');
   const [participantProgressFilter, setParticipantProgressFilter] = useState('todos');
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handleViewParticipants = async (course: Course) => {
     setSelectedCourseForParticipants(course);
@@ -451,8 +452,43 @@ export default function AdminCursosPage() {
                 }}
               >
                 {course.image && (
-                  <div style={{ width: '100%', height: '150px', overflow: 'hidden', borderRadius: '14px', margin: '-0.5rem 0 0.5rem 0' }}>
-                    <img src={course.image} alt={course.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div 
+                    style={{ 
+                      width: '100%', 
+                      maxHeight: '260px', 
+                      background: '#0f172a', 
+                      borderRadius: '14px', 
+                      overflow: 'hidden', 
+                      margin: '-0.5rem 0 0.5rem 0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      position: 'relative',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() => setPreviewImage(course.image!)}
+                    title="Clique para ampliar e ver a capa inteira sem cortes"
+                  >
+                    <img 
+                      src={course.image} 
+                      alt={course.title} 
+                      style={{ width: '100%', maxHeight: '260px', objectFit: 'contain' }} 
+                    />
+                    <span style={{ 
+                      position: 'absolute', 
+                      bottom: '8px', 
+                      right: '8px', 
+                      background: 'rgba(15,23,42,0.85)', 
+                      color: '#ffffff', 
+                      fontSize: '0.7rem', 
+                      fontWeight: 700, 
+                      padding: '3px 8px', 
+                      borderRadius: '6px',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      backdropFilter: 'blur(4px)'
+                    }}>
+                      🔍 Ver Capa Inteira
+                    </span>
                   </div>
                 )}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
@@ -691,8 +727,28 @@ export default function AdminCursosPage() {
                         </label>
                       </div>
                       {image && (
-                        <div style={{ marginTop: '6px', width: '120px', height: '70px', borderRadius: '8px', overflow: 'hidden', border: '1px solid #cbd5e1' }}>
-                          <img src={image} alt="Preview Capa" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <div 
+                          style={{ 
+                            marginTop: '8px', 
+                            width: '100%', 
+                            maxHeight: '220px', 
+                            borderRadius: '12px', 
+                            overflow: 'hidden', 
+                            border: '1px solid #cbd5e1',
+                            background: '#0f172a',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            position: 'relative',
+                            cursor: 'pointer'
+                          }}
+                          onClick={() => setPreviewImage(image)}
+                          title="Clique para visualizar a imagem de capa em tamanho real"
+                        >
+                          <img src={image} alt="Preview Capa" style={{ width: '100%', maxHeight: '220px', objectFit: 'contain' }} />
+                          <span style={{ position: 'absolute', bottom: '6px', right: '8px', background: 'rgba(15,23,42,0.85)', color: '#fff', fontSize: '0.7rem', padding: '3px 8px', borderRadius: '4px', fontWeight: 600 }}>
+                            🔍 Ampliar Capa
+                          </span>
                         </div>
                       )}
                     </div>
@@ -1563,6 +1619,72 @@ export default function AdminCursosPage() {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      {/* Modal Lightbox de Visualização da Capa Inteira */}
+      {previewImage && (
+        <div 
+          style={{ 
+            position: 'fixed', 
+            inset: 0, 
+            background: 'rgba(15, 23, 42, 0.9)', 
+            backdropFilter: 'blur(8px)', 
+            zIndex: 2000, 
+            display: 'flex', 
+            flexDirection: 'column',
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            padding: '1.5rem' 
+          }}
+          onClick={() => setPreviewImage(null)}
+        >
+          <div 
+            style={{ 
+              position: 'relative', 
+              maxWidth: '90vw', 
+              maxHeight: '85vh', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center' 
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setPreviewImage(null)}
+              style={{ 
+                position: 'absolute', 
+                top: '-15px', 
+                right: '-15px', 
+                background: '#ff6b00', 
+                color: '#fff', 
+                border: 'none', 
+                borderRadius: '50%', 
+                width: '36px', 
+                height: '36px', 
+                fontSize: '1.2rem', 
+                fontWeight: 800, 
+                cursor: 'pointer',
+                boxShadow: '0 4px 14px rgba(0,0,0,0.3)',
+                zIndex: 10
+              }}
+            >
+              ✕
+            </button>
+            <img 
+              src={previewImage} 
+              alt="Capa do Curso em tamanho real" 
+              style={{ 
+                maxWidth: '90vw', 
+                maxHeight: '82vh', 
+                objectFit: 'contain', 
+                borderRadius: '16px', 
+                boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+                border: '2px solid rgba(255,255,255,0.15)'
+              }} 
+            />
+            <span style={{ marginTop: '10px', color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600 }}>
+              💡 Clique fora ou no X para fechar
+            </span>
           </div>
         </div>
       )}

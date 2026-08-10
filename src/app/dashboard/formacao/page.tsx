@@ -61,6 +61,7 @@ function FormacaoPageInner() {
   const [enrollCompany, setEnrollCompany] = useState('');
   const [showEnrollConfirmModal, setShowEnrollConfirmModal] = useState(false);
   const [courseToEnroll, setCourseToEnroll] = useState<any | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [paymentInfo, setPaymentInfo] = useState({
     titular: 'Lizi Cristina Mulambo',
     bim_conta: '5283397',
@@ -466,37 +467,87 @@ function FormacaoPageInner() {
             const progressPercent = Math.min(100, Math.round((doneCount / totalLessons) * 100));
 
             return (
-              <div key={course.id || course._id} style={{ padding: '2rem', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', display: 'flex', flexDirection: 'column', gap: '1.25rem', overflow: 'hidden' }}>
+              <div key={course.id || course._id} style={{
+                borderRadius: '20px',
+                background: '#ffffff',
+                border: '1px solid #e8edf5',
+                boxShadow: '0 2px 16px rgba(15,23,42,0.06)',
+                overflow: 'hidden',
+                transition: 'box-shadow 0.2s, transform 0.2s'
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(255,107,0,0.10)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 16px rgba(15,23,42,0.06)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
+              >
+                {/* Top accent bar */}
+                <div style={{ height: '4px', background: status === 'aprovado' ? 'linear-gradient(90deg,#16a34a,#22c55e)' : 'linear-gradient(90deg,#ff6b00,#ff8c3a)' }} />
+
                 {course.image && (
-                  <div style={{ width: '100%', height: '180px', overflow: 'hidden', borderRadius: '14px', margin: '-0.5rem 0 0.5rem 0' }}>
-                    <img src={course.image} alt={course.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div 
+                    style={{ 
+                      width: '100%', 
+                      maxHeight: '320px', 
+                      background: '#0f172a', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      overflow: 'hidden',
+                      position: 'relative',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() => setPreviewImage(course.image)}
+                    title="Clique para visualizar a imagem/ficha completa em tamanho real"
+                  >
+                    <img 
+                      src={course.image} 
+                      alt={course.title} 
+                      style={{ width: '100%', maxHeight: '320px', objectFit: 'contain' }} 
+                    />
+                    <span style={{ 
+                      position: 'absolute', 
+                      bottom: '10px', 
+                      right: '12px', 
+                      background: 'rgba(15,23,42,0.85)', 
+                      color: '#ffffff', 
+                      fontSize: '0.72rem', 
+                      fontWeight: 700, 
+                      padding: '4px 10px', 
+                      borderRadius: '6px',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      backdropFilter: 'blur(4px)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                    }}>
+                      🔍 Ver Capa Completa
+                    </span>
                   </div>
                 )}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
-                  <div>
-                    <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                      <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#ff6b00', fontWeight: 800, letterSpacing: '0.08em' }}>Curso Certificado</span>
-                      <span style={{ fontSize: '0.78rem', fontWeight: 800, color: isCoursePaid(course) ? '#2a4fa6' : '#16a34a', background: isCoursePaid(course) ? '#eff6ff' : '#f0fdf4', padding: '3px 10px', borderRadius: '50px', border: `1px solid ${isCoursePaid(course) ? '#bfdbfe' : '#bbf7d0'}` }}>
-                        {course.price}
+
+                <div style={{ padding: '1.4rem 1.6rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1.5rem', flexWrap: 'wrap' }}>
+                  {/* Left: Info */}
+                  <div style={{ flex: 1, minWidth: '200px' }}>
+                    {/* Badges row */}
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '0.6rem' }}>
+                      <span style={{ fontSize: '0.68rem', textTransform: 'uppercase', color: '#ff6b00', fontWeight: 800, letterSpacing: '0.1em', background: '#fff7ed', padding: '3px 8px', borderRadius: '6px', border: '1px solid #fed7aa' }}>
+                        🎓 Certificado
+                      </span>
+                      <span style={{ fontSize: '0.72rem', fontWeight: 800, color: isCoursePaid(course) ? '#1d4ed8' : '#15803d', background: isCoursePaid(course) ? '#eff6ff' : '#f0fdf4', padding: '3px 10px', borderRadius: '6px', border: `1px solid ${isCoursePaid(course) ? '#bfdbfe' : '#bbf7d0'}` }}>
+                        {isCoursePaid(course) ? `💳 ${course.price} MT` : '✅ GRATUITO'}
                       </span>
                       {status === 'aprovado' && (
-                        <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#f0fdf4', color: '#16a34a', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #bbf7d0' }}>
-                          ✓ Inscrito
-                        </span>
+                        <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#f0fdf4', color: '#16a34a', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', border: '1px solid #bbf7d0' }}>✓ Inscrito</span>
                       )}
                       {status === 'pendente' && (
-                        <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#fefce8', color: '#ca8a04', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #fef08a' }}>
-                          ⏳ Pendente
-                        </span>
+                        <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#fefce8', color: '#ca8a04', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', border: '1px solid #fef08a' }}>⏳ Em Verificação</span>
                       )}
                       {status === 'rejeitado' && (
-                        <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#fef2f2', color: '#dc2626', padding: '3px 10px', borderRadius: '50px', textTransform: 'uppercase', border: '1px solid #fecaca' }}>
-                          ✕ Rejeitado
-                        </span>
+                        <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#fef2f2', color: '#dc2626', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', border: '1px solid #fecaca' }}>✕ Rejeitado</span>
                       )}
                     </div>
-                    <h3 style={{ color: '#0f172a', margin: '8px 0', fontSize: '1.3rem', fontFamily: 'Outfit', fontWeight: 800 }}>{course.title}</h3>
-                    <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.88rem', color: '#64748b', fontWeight: 500 }}>
+
+                    {/* Title */}
+                    <h3 style={{ color: '#0f172a', margin: '0 0 0.5rem 0', fontSize: '1.15rem', fontFamily: 'Outfit', fontWeight: 800, lineHeight: 1.3 }}>{course.title}</h3>
+
+                    {/* Meta */}
+                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.82rem', color: '#64748b', fontWeight: 500, flexWrap: 'wrap' }}>
                       <span>👨‍🏫 {course.instructor}</span>
                       <span>⏱️ {course.duration}</span>
                       <span>📚 {totalLessons} Aulas</span>
@@ -1291,6 +1342,71 @@ function FormacaoPageInner() {
               }
             }
           `}</style>
+      {/* Modal Lightbox de Visualização da Capa em Alta Resolução */}
+      {previewImage && (
+        <div 
+          style={{ 
+            position: 'fixed', 
+            inset: 0, 
+            background: 'rgba(15, 23, 42, 0.92)', 
+            backdropFilter: 'blur(8px)', 
+            zIndex: 2000, 
+            display: 'flex', 
+            flexDirection: 'column',
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            padding: '1.5rem' 
+          }}
+          onClick={() => setPreviewImage(null)}
+        >
+          <div 
+            style={{ 
+              position: 'relative', 
+              maxWidth: '92vw', 
+              maxHeight: '88vh', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center' 
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setPreviewImage(null)}
+              style={{ 
+                position: 'absolute', 
+                top: '-15px', 
+                right: '-15px', 
+                background: '#ff6b00', 
+                color: '#fff', 
+                border: 'none', 
+                borderRadius: '50%', 
+                width: '38px', 
+                height: '38px', 
+                fontSize: '1.3rem', 
+                fontWeight: 800, 
+                cursor: 'pointer',
+                boxShadow: '0 4px 14px rgba(0,0,0,0.3)',
+                zIndex: 10
+              }}
+            >
+              ✕
+            </button>
+            <img 
+              src={previewImage} 
+              alt="Capa do Curso em alta resolução" 
+              style={{ 
+                maxWidth: '92vw', 
+                maxHeight: '84vh', 
+                objectFit: 'contain', 
+                borderRadius: '16px', 
+                boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+                border: '2px solid rgba(255,255,255,0.15)'
+              }} 
+            />
+            <span style={{ marginTop: '10px', color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600 }}>
+              💡 Clique fora ou no X para fechar
+            </span>
+          </div>
         </div>
       )}
     </div>
