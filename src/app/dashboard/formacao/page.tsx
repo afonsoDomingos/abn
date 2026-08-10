@@ -61,8 +61,21 @@ function FormacaoPageInner() {
   const [enrollCompany, setEnrollCompany] = useState('');
   const [showEnrollConfirmModal, setShowEnrollConfirmModal] = useState(false);
   const [courseToEnroll, setCourseToEnroll] = useState<any | null>(null);
+  const [paymentInfo, setPaymentInfo] = useState({
+    titular: 'Lizi Cristina Mulambo',
+    bim_conta: '5283397',
+    bim_nib: '0001 000000005283397 57',
+    moza_conta: '0087656640001',
+    moza_nib: '0034 000008765664101 25',
+    mpesa: '857670109',
+    emola: '876687082'
+  });
 
   useEffect(() => {
+    fetch('/api/config')
+      .then(r => r.json())
+      .then(d => { if (d.configs?.payment_info) setPaymentInfo(p => ({ ...p, ...d.configs.payment_info })); })
+      .catch(() => {});
     fetchEnrollments();
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -1053,20 +1066,20 @@ function FormacaoPageInner() {
             <p style={{ color: '#ff6b00', fontWeight: 700, margin: '0 0 1.5rem 0', fontSize: '0.95rem' }}>Curso: {selectedCourse.title} ({selectedCourse.price})</p>
 
             <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '0.7rem 1rem', borderRadius: '10px', fontSize: '0.78rem', color: '#334155', display: 'flex', flexDirection: 'column', gap: '0.3rem', marginBottom: '1rem', lineHeight: '1.4' }}>
-              <strong style={{ color: '#0f172a', fontSize: '0.8rem' }}>🏦 Dados de Pagamento &amp; Transferência — <span style={{ fontWeight: 400 }}>Titular: Lizi Cristina Mulambo</span></strong>
+              <strong style={{ color: '#0f172a', fontSize: '0.8rem' }}>🏦 Dados de Pagamento &amp; Transferência — <span style={{ fontWeight: 400 }}>Titular: {paymentInfo.titular}</span></strong>
               <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                 <div style={{ background: '#ffffff', padding: '0.35rem 0.6rem', borderRadius: '6px', border: '1px solid #e2e8f0', flex: 1, minWidth: '140px' }}>
-                  <span style={{ fontWeight: 700, color: '#0f172a' }}>1️⃣ BIM</span> · Conta: <strong>5283397</strong><br/>
-                  <span style={{ fontSize: '0.7rem', color: '#64748b' }}>NIB: 0001 000000005283397 57</span>
+                  <span style={{ fontWeight: 700, color: '#0f172a' }}>1️⃣ BIM</span> · Conta: <strong>{paymentInfo.bim_conta}</strong><br/>
+                  <span style={{ fontSize: '0.7rem', color: '#64748b' }}>NIB: {paymentInfo.bim_nib}</span>
                 </div>
                 <div style={{ background: '#ffffff', padding: '0.35rem 0.6rem', borderRadius: '6px', border: '1px solid #e2e8f0', flex: 1, minWidth: '140px' }}>
-                  <span style={{ fontWeight: 700, color: '#0f172a' }}>2️⃣ Moza</span> · Conta: <strong>0087656640001</strong><br/>
-                  <span style={{ fontSize: '0.7rem', color: '#64748b' }}>NIB: 0034 000008765664101 25</span>
+                  <span style={{ fontWeight: 700, color: '#0f172a' }}>2️⃣ Moza</span> · Conta: <strong>{paymentInfo.moza_conta}</strong><br/>
+                  <span style={{ fontSize: '0.7rem', color: '#64748b' }}>NIB: {paymentInfo.moza_nib}</span>
                 </div>
               </div>
               <div style={{ background: '#ffffff', padding: '0.35rem 0.6rem', borderRadius: '6px', border: '1px solid #e2e8f0', display: 'flex', gap: '1rem' }}>
-                <span>📱 <strong>M-Pesa:</strong> 857670109</span>
-                <span>📱 <strong>e-Mola:</strong> 876687082</span>
+                <span>📱 <strong>M-Pesa:</strong> {paymentInfo.mpesa}</span>
+                <span>📱 <strong>e-Mola:</strong> {paymentInfo.emola}</span>
               </div>
               <span style={{ fontSize: '0.72rem', color: '#ff6b00', fontWeight: 600 }}>* Realize o pagamento e submeta o comprovativo abaixo.</span>
             </div>

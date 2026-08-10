@@ -6,6 +6,15 @@ import styles from './Config.module.css';
 
 export default function AdminConfigPage() {
   const [hero, setHero] = useState({ title: '', description: '', banners: [] as string[] });
+  const [paymentInfo, setPaymentInfo] = useState({
+    titular: 'Lizi Cristina Mulambo',
+    bim_conta: '5283397',
+    bim_nib: '0001 000000005283397 57',
+    moza_conta: '0087656640001',
+    moza_nib: '0034 000008765664101 25',
+    mpesa: '857670109',
+    emola: '876687082'
+  });
   const [stats, setStats] = useState([{ label: '', value: '' }]);
   const [logo, setLogo] = useState('/abn-logo.png');
   const [partners, setPartners] = useState([{ name: '', logo: '' }]);
@@ -93,6 +102,7 @@ export default function AdminConfigPage() {
           if (data.configs.how_it_works_content) setHowItWorks(data.configs.how_it_works_content);
           if (data.configs.testimonials_content) setTestimonials(data.configs.testimonials_content);
           if (data.configs.faq_content) setFaq(data.configs.faq_content);
+          if (data.configs.payment_info) setPaymentInfo(prev => ({ ...prev, ...data.configs.payment_info }));
           if (data.configs.articles_content) setArticles(data.configs.articles_content);
           if (data.configs.team_content) setTeam(data.configs.team_content);
           if (data.configs.president_message_content) {
@@ -1241,6 +1251,47 @@ export default function AdminConfigPage() {
           <button className="btn-primary" onClick={() => saveConfig('page_banners', pageBanners)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Banners das Páginas'}
           </button>
+        </section>
+
+        {/* Dados de Pagamento */}
+        <section className={`glass ${styles.section}`}>
+          <h3>💳 Dados de Pagamento</h3>
+          <p style={{ opacity: 0.7, fontSize: '0.85rem', marginBottom: '1.2rem' }}>Estes dados aparecem no modal de submissão de comprovativo nos cursos e formações.</p>
+          <div className={styles.form}>
+            <div className={styles.field}>
+              <label>Titular da Conta</label>
+              <input value={paymentInfo.titular} onChange={e => setPaymentInfo(p => ({ ...p, titular: e.target.value }))} placeholder="Nome do titular" />
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
+              <div className={styles.field}>
+                <label>🏦 BIM — Conta</label>
+                <input value={paymentInfo.bim_conta} onChange={e => setPaymentInfo(p => ({ ...p, bim_conta: e.target.value }))} placeholder="Ex: 5283397" />
+              </div>
+              <div className={styles.field}>
+                <label>🏦 BIM — NIB</label>
+                <input value={paymentInfo.bim_nib} onChange={e => setPaymentInfo(p => ({ ...p, bim_nib: e.target.value }))} placeholder="Ex: 0001 000000005283397 57" />
+              </div>
+              <div className={styles.field}>
+                <label>🏦 Moza Banco — Conta</label>
+                <input value={paymentInfo.moza_conta} onChange={e => setPaymentInfo(p => ({ ...p, moza_conta: e.target.value }))} placeholder="Ex: 0087656640001" />
+              </div>
+              <div className={styles.field}>
+                <label>🏦 Moza Banco — NIB</label>
+                <input value={paymentInfo.moza_nib} onChange={e => setPaymentInfo(p => ({ ...p, moza_nib: e.target.value }))} placeholder="Ex: 0034 000008765664101 25" />
+              </div>
+              <div className={styles.field}>
+                <label>📱 M-Pesa</label>
+                <input value={paymentInfo.mpesa} onChange={e => setPaymentInfo(p => ({ ...p, mpesa: e.target.value }))} placeholder="Ex: 857670109" />
+              </div>
+              <div className={styles.field}>
+                <label>📱 e-Mola</label>
+                <input value={paymentInfo.emola} onChange={e => setPaymentInfo(p => ({ ...p, emola: e.target.value }))} placeholder="Ex: 876687082" />
+              </div>
+            </div>
+            <button className="btn-primary" onClick={() => saveConfig('payment_info', paymentInfo)} disabled={saving}>
+              {saving ? 'A guardar...' : '💾 Guardar Dados de Pagamento'}
+            </button>
+          </div>
         </section>
       </div>
     </div>
