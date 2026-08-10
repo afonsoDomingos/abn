@@ -1052,26 +1052,23 @@ function FormacaoPageInner() {
             <h2 style={{ color: '#0f172a', fontSize: '1.6rem', fontFamily: 'Outfit', fontWeight: 800, marginBottom: '0.2rem' }}>Submeter Comprovativo</h2>
             <p style={{ color: '#ff6b00', fontWeight: 700, margin: '0 0 1.5rem 0', fontSize: '0.95rem' }}>Curso: {selectedCourse.title} ({selectedCourse.price})</p>
 
-            <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '1.2rem', borderRadius: '14px', fontSize: '0.88rem', color: '#334155', display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '1.5rem', lineHeight: '1.5' }}>
-              <strong style={{ color: '#0f172a' }}>🏦 Dados de Pagamento &amp; Transferência:</strong>
-              <span><strong>Titular:</strong> Lizi Cristina Mulambo</span>
-              <div style={{ background: '#ffffff', padding: '0.6rem 0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-                <div style={{ fontWeight: 700, color: '#0f172a' }}>1️⃣ Millennium BIM</div>
-                <div><strong>Conta:</strong> 5283397</div>
-                <div><strong>NIB:</strong> 0001 000000005283397 57</div>
+            <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '0.7rem 1rem', borderRadius: '10px', fontSize: '0.78rem', color: '#334155', display: 'flex', flexDirection: 'column', gap: '0.3rem', marginBottom: '1rem', lineHeight: '1.4' }}>
+              <strong style={{ color: '#0f172a', fontSize: '0.8rem' }}>🏦 Dados de Pagamento &amp; Transferência — <span style={{ fontWeight: 400 }}>Titular: Lizi Cristina Mulambo</span></strong>
+              <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                <div style={{ background: '#ffffff', padding: '0.35rem 0.6rem', borderRadius: '6px', border: '1px solid #e2e8f0', flex: 1, minWidth: '140px' }}>
+                  <span style={{ fontWeight: 700, color: '#0f172a' }}>1️⃣ BIM</span> · Conta: <strong>5283397</strong><br/>
+                  <span style={{ fontSize: '0.7rem', color: '#64748b' }}>NIB: 0001 000000005283397 57</span>
+                </div>
+                <div style={{ background: '#ffffff', padding: '0.35rem 0.6rem', borderRadius: '6px', border: '1px solid #e2e8f0', flex: 1, minWidth: '140px' }}>
+                  <span style={{ fontWeight: 700, color: '#0f172a' }}>2️⃣ Moza</span> · Conta: <strong>0087656640001</strong><br/>
+                  <span style={{ fontSize: '0.7rem', color: '#64748b' }}>NIB: 0034 000008765664101 25</span>
+                </div>
               </div>
-              <div style={{ background: '#ffffff', padding: '0.6rem 0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-                <div style={{ fontWeight: 700, color: '#0f172a' }}>2️⃣ Moza Banco</div>
-                <div><strong>Conta:</strong> 0087656640001</div>
-                <div><strong>NIB:</strong> 0034 000008765664101 25</div>
+              <div style={{ background: '#ffffff', padding: '0.35rem 0.6rem', borderRadius: '6px', border: '1px solid #e2e8f0', display: 'flex', gap: '1rem' }}>
+                <span>📱 <strong>M-Pesa:</strong> 857670109</span>
+                <span>📱 <strong>e-Mola:</strong> 876687082</span>
               </div>
-              <div style={{ background: '#ffffff', padding: '0.6rem 0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <div>📱 <strong>M-Pesa:</strong> 857670109</div>
-                <div>📱 <strong>e-Mola:</strong> 876687082</div>
-              </div>
-              <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 600, display: 'block', marginTop: '0.3rem' }}>
-                * Realize o pagamento/transferência e submeta o comprovativo abaixo.
-              </span>
+              <span style={{ fontSize: '0.72rem', color: '#ff6b00', fontWeight: 600 }}>* Realize o pagamento e submeta o comprovativo abaixo.</span>
             </div>
 
             <form onSubmit={handlePaySubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
