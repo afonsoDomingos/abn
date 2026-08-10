@@ -216,7 +216,6 @@ export default function AdminAtividadesPage() {
               {filtered.map(act => {
                 const st = statusLabels[act.status] || { label: act.status, bg: '#f1f5f9', color: '#334155' };
                 const pr = priorityLabels[act.priority] || { label: act.priority, bg: '#f1f5f9', color: '#334155' };
-
                 return (
                   <tr key={act._id} style={{ borderBottom: '1px solid #f1f5f9', transition: 'background 0.15s' }}>
                     <td style={{ padding: '16px 20px' }}>
