@@ -497,116 +497,121 @@
 .copyBtnSm {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 0.82rem;
-  font-weight: 600;
-  padding: 0.55rem 1.2rem;
-  border-radius: 50px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
   cursor: pointer;
   font-family: 'Outfit', sans-serif;
   transition: all 0.2s;
 }
 .copyBtnSm:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.18);
   color: #fff;
 }
 
 .waBtnSm {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: rgba(37, 211, 102, 0.12);
-  border: 1px solid rgba(37, 211, 102, 0.35);
+  gap: 0.3rem;
+  background: rgba(37, 211, 102, 0.15);
+  border: 1px solid rgba(37, 211, 102, 0.4);
   color: #25d366;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 0.55rem 1.2rem;
-  border-radius: 50px;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
   cursor: pointer;
   font-family: 'Outfit', sans-serif;
   transition: all 0.2s;
 }
 .waBtnSm:hover {
-  background: rgba(37, 211, 102, 0.22);
+  background: rgba(37, 211, 102, 0.28);
+  transform: translateY(-1px);
 }
 
 .linkedinBtnSm {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: rgba(10, 102, 194, 0.12);
-  border: 1px solid rgba(10, 102, 194, 0.35);
+  gap: 0.3rem;
+  background: rgba(10, 102, 194, 0.15);
+  border: 1px solid rgba(10, 102, 194, 0.4);
   color: #38bdf8;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 0.55rem 1.2rem;
-  border-radius: 50px;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
   cursor: pointer;
   font-family: 'Outfit', sans-serif;
   transition: all 0.2s;
 }
 .linkedinBtnSm:hover {
-  background: rgba(10, 102, 194, 0.25);
+  background: rgba(10, 102, 194, 0.3);
   color: #ffffff;
+  transform: translateY(-1px);
 }
 
 .facebookBtnSm {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: rgba(24, 119, 242, 0.12);
-  border: 1px solid rgba(24, 119, 242, 0.35);
+  gap: 0.3rem;
+  background: rgba(24, 119, 242, 0.15);
+  border: 1px solid rgba(24, 119, 242, 0.4);
   color: #60a5fa;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 0.55rem 1.2rem;
-  border-radius: 50px;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
   cursor: pointer;
   font-family: 'Outfit', sans-serif;
   transition: all 0.2s;
 }
 .facebookBtnSm:hover {
-  background: rgba(24, 119, 242, 0.25);
+  background: rgba(24, 119, 242, 0.3);
   color: #ffffff;
+  transform: translateY(-1px);
 }
 
 .twitterBtnSm {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: #f8fafc;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 0.55rem 1.2rem;
-  border-radius: 50px;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
   cursor: pointer;
   font-family: 'Outfit', sans-serif;
   transition: all 0.2s;
 }
 .twitterBtnSm:hover {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
 }
 
 .emailBtnSm {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.35);
+  gap: 0.3rem;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
   color: #34d399;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 0.55rem 1.2rem;
-  border-radius: 50px;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
   cursor: pointer;
   font-family: 'Outfit', sans-serif;
   transition: all 0.2s;
 }
 .emailBtnSm:hover {
-  background: rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.3);
   color: #ffffff;
+  transform: translateY(-1px);
 }
 
 /* ── MODAL ── */

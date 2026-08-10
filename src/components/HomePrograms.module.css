@@ -173,43 +173,41 @@
 
 .shareGroup {
   display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
 }
 
 .copyBtn {
   flex: 1;
-  min-width: 100px;
   background: #f1f5f9;
   color: #334155;
   border: 1px solid #cbd5e1;
-  border-radius: 50px;
-  padding: 0.45rem 0.7rem;
+  border-radius: 20px;
+  padding: 0.4rem 0.6rem;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   font-family: 'Outfit', sans-serif;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .copyBtn:hover {
   background: #e2e8f0;
   color: #0f172a;
-  border-color: #94a3b8;
 }
 
 .waBtn {
   flex: 1;
-  min-width: 100px;
   background: #25d366;
   color: #ffffff;
   border: none;
-  border-radius: 50px;
-  padding: 0.45rem 0.7rem;
+  border-radius: 20px;
+  padding: 0.4rem 0.6rem;
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
@@ -218,109 +216,33 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .waBtn:hover {
   background: #1eb956;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
 }
 
-.linkedinBtn {
-  flex: 1;
-  min-width: 90px;
-  background: #0a66c2;
-  color: #ffffff;
+.iconBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   border: none;
-  border-radius: 50px;
-  padding: 0.45rem 0.7rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-}
-
-.linkedinBtn:hover {
-  background: #084e96;
-  transform: translateY(-1px);
-}
-
-.facebookBtn {
-  flex: 1;
-  min-width: 90px;
-  background: #1877f2;
-  color: #ffffff;
-  border: none;
-  border-radius: 50px;
-  padding: 0.45rem 0.7rem;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 0.78rem;
   cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  flex-shrink: 0;
+  line-height: 1;
 }
 
-.facebookBtn:hover {
-  background: #0d5bbd;
-  transform: translateY(-1px);
-}
-
-.twitterBtn {
-  flex: 1;
-  min-width: 80px;
-  background: #0f172a;
-  color: #ffffff;
-  border: none;
-  border-radius: 50px;
-  padding: 0.45rem 0.7rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.twitterBtn:hover {
-  background: #1e293b;
-  transform: translateY(-1px);
-}
-
-.emailBtn {
-  flex: 1;
-  min-width: 80px;
-  background: #10b981;
-  color: #ffffff;
-  border: none;
-  border-radius: 50px;
-  padding: 0.45rem 0.7rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.emailBtn:hover {
-  background: #059669;
-  transform: translateY(-1px);
+.iconBtn:hover {
+  transform: scale(1.15);
+  opacity: 0.9;
 }
 
 @keyframes shimmer {
