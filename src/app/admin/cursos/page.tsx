@@ -1621,6 +1621,8 @@ export default function AdminCursosPage() {
             </div>
           </div>
         </div>
+      )}
+
       {/* Modal Lightbox de Visualização da Capa Inteira */}
       {previewImage && (
         <div 

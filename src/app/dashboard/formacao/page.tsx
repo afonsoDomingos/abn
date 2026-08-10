@@ -1342,6 +1342,9 @@ function FormacaoPageInner() {
               }
             }
           `}</style>
+        </div>
+      )}
+
       {/* Modal Lightbox de Visualização da Capa em Alta Resolução */}
       {previewImage && (
         <div 

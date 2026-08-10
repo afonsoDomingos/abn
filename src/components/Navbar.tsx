@@ -75,7 +75,7 @@ export default function Navbar() {
       <nav className={styles.navbar}>
         <div className={styles.container}>
           <Link href="/" className={styles.logo} onClick={closeMenu}>
-            <img src="/icon.png" alt="ABN Logo" className={styles.logoImg} />
+            <img src="/abn-logo.png" alt="ABN Logo" className={styles.logoImg} />
             <div className={styles.brandText}>
               <span className={styles.abn}>ABN</span>
               <span className={styles.network}>AfroBiz Network</span>
@@ -177,7 +177,7 @@ export default function Navbar() {
       <div className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ''}`}>
         <div className={styles.drawerHeader}>
           <Link href="/" className={styles.logo} onClick={closeMenu}>
-            <img src="/icon.png" alt="ABN Logo" className={styles.logoImg} />
+            <img src="/abn-logo.png" alt="ABN Logo" className={styles.logoImg} />
             <span className={styles.abn}>ABN</span>
           </Link>
           <button className={styles.closeBtn} onClick={closeMenu} aria-label="Fechar menu">✕</button>
