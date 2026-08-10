@@ -250,7 +250,7 @@ export default function EspecialistasPage() {
                                 return (
                                     <div key={s._id} className={styles.card} style={{ animationDelay: `${idx * 55}ms` }}>
                                         {/* Avatar */}
-                                        <div className={styles.imageWrapper}>
+                                        <Link href={`/especialistas/${slugify(s.name)}`} className={styles.imageWrapper} title={`Ver Perfil de ${s.name}`}>
                                             {s.image ? (
                                                 <img src={s.image} alt={s.name} className={styles.image} />
                                             ) : (
@@ -259,7 +259,7 @@ export default function EspecialistasPage() {
                                                 </div>
                                             )}
                                             <div className={styles.imageGradient} />
-                                        </div>
+                                        </Link>
 
                                         {/* Content */}
                                         <div className={styles.cardContent}>
@@ -268,7 +268,11 @@ export default function EspecialistasPage() {
                                                 <span className={styles.countryBadge}>📍 {s.country || 'Moçambique'}</span>
                                             </div>
 
-                                            <h3 className={styles.name}>{s.name}</h3>
+                                            <h3 className={styles.name}>
+                                                <Link href={`/especialistas/${slugify(s.name)}`} style={{ color: 'inherit', textDecoration: 'none' }} title={`Ver Perfil de ${s.name}`}>
+                                                    {s.name}
+                                                </Link>
+                                            </h3>
                                             <p className={styles.role}>{s.role}</p>
                                             {s.department && <p className={styles.department}>{s.department}</p>}
 

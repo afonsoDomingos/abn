@@ -261,26 +261,62 @@
 
 .cardActions {
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.contactBtn {
-  display: block;
+.actionRow {
+  display: flex;
+  gap: 0.5rem;
   width: 100%;
+}
+
+.profileBtn {
+  flex: 1;
   text-align: center;
-  padding: 0.75rem 1rem;
-  background: #ffffff;
-  border: 1px solid #1e3a8a;
-  color: #1e3a8a;
-  font-weight: 600;
-  font-size: 0.9rem;
+  padding: 0.65rem 0.6rem;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 0.82rem;
   border-radius: 12px;
   text-decoration: none;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.profileBtn:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+.contactBtn {
+  flex: 1;
+  text-align: center;
+  padding: 0.65rem 0.6rem;
+  background: #1e3a8a;
+  border: 1px solid #1e3a8a;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.82rem;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .contactBtn:hover {
-  background: #1e3a8a;
-  color: #ffffff;
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 /* CTA Banner */

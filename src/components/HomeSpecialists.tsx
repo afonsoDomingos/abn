@@ -81,6 +81,18 @@ const FALLBACK_SPECIALISTS: Specialist[] = [
 
 const CATEGORIES = ['Todos', 'Tecnologia', 'Finanças', 'Inclusão & Impacto', 'Desenvolvimento'];
 
+function slugify(text: string): string {
+  return (text || '')
+    .toString()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/[\s_]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 function getInitials(name: string): string {
   return name.split(' ').filter(Boolean).slice(0, 2).map(n => n[0].toUpperCase()).join('');
 }
@@ -179,100 +191,112 @@ export default function HomeSpecialists() {
 
         {/* Specialists Grid */}
         <div className={styles.grid}>
-          {filtered.map(item => (
-            <div key={item._id} className={styles.card}>
-              <div className={styles.cardTop}>
-                <div className={styles.avatarWrapper}>
-                  {item.image ? (
-                    <img src={item.image} alt={item.name} className={styles.avatarImg} />
-                  ) : (
-                    <div className={styles.avatarInitials}>
-                      {getInitials(item.name)}
+          {filtered.map(item => {
+            const profileSlug = slugify(item.name);
+            return (
+              <div key={item._id} className={styles.card}>
+                <div className={styles.cardTop}>
+                  <Link href={`/especialistas/${profileSlug}`} className={styles.avatarWrapper} title={`Ver Perfil de ${item.name}`}>
+                    {item.image ? (
+                      <img src={item.image} alt={item.name} className={styles.avatarImg} />
+                    ) : (
+                      <div className={styles.avatarInitials}>
+                        {getInitials(item.name)}
+                      </div>
+                    )}
+                  </Link>
+                  <div className={styles.headerInfo}>
+                    <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '0.4rem' }}>
+                      <span className={styles.categoryBadge}>{item.category}</span>
+                      <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+                        📍 {item.country || 'Moçambique'}
+                      </span>
                     </div>
-                  )}
-                </div>
-                <div className={styles.headerInfo}>
-                  <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '0.4rem' }}>
-                    <span className={styles.categoryBadge}>{item.category}</span>
-                    <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-                      📍 {item.country || 'Moçambique'}
-                    </span>
+                    <h3 className={styles.name}>
+                      <Link href={`/especialistas/${profileSlug}`} style={{ color: 'inherit', textDecoration: 'none' }} title={`Ver Perfil de ${item.name}`}>
+                        {item.name}
+                      </Link>
+                    </h3>
+                    <p className={styles.role}>{item.role}</p>
                   </div>
-                  <h3 className={styles.name}>{item.name}</h3>
-                  <p className={styles.role}>{item.role}</p>
                 </div>
-              </div>
 
-              {item.expertise && item.expertise.length > 0 && (
-                <div className={styles.expertiseWrapper}>
-                  <div className={styles.expertiseLabel}>
-                    {language === 'pt' ? 'Áreas de Atuação' : 'Core Expertise'}
-                  </div>
-                  <div className={styles.chips}>
-                    {item.expertise.slice(0, 4).map((exp, i) => (
-                      <span key={i} className={styles.chip}>{exp}</span>
-                    ))}
-                    {item.expertise.length > 4 && (
-                      <span className={styles.moreChip}>+{item.expertise.length - 4}</span>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              <div className={styles.cardActions} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {(item.linkedin || item.website || item.email || item.phone) && (
-                  <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-                    {item.linkedin && (
-                      <a
-                        href={item.linkedin}
-                        target="_blank"
-                        rel="noreferrer"
-                        title="LinkedIn"
-                        style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#0a66c2', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                      >
-                        🔗 LinkedIn
-                      </a>
-                    )}
-                    {item.website && (
-                      <a
-                        href={item.website}
-                        target="_blank"
-                        rel="noreferrer"
-                        title="Website / Portfólio"
-                        style={{ background: '#fff7ed', border: '1px solid #ffedd5', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#c2410c', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                      >
-                        🌐 Portfólio
-                      </a>
-                    )}
-                    {item.email && (
-                      <a
-                        href={`mailto:${item.email}`}
-                        title="Email"
-                        style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#047857', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                      >
-                        ✉️ E-mail
-                      </a>
-                    )}
-                    {item.phone && (
-                      <a
-                        href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        title="WhatsApp"
-                        style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#15803d', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                      >
-                        📱 WhatsApp
-                      </a>
-                    )}
+                {item.expertise && item.expertise.length > 0 && (
+                  <div className={styles.expertiseWrapper}>
+                    <div className={styles.expertiseLabel}>
+                      {language === 'pt' ? 'Áreas de Atuação' : 'Core Expertise'}
+                    </div>
+                    <div className={styles.chips}>
+                      {item.expertise.slice(0, 4).map((exp, i) => (
+                        <span key={i} className={styles.chip}>{exp}</span>
+                      ))}
+                      {item.expertise.length > 4 && (
+                        <span className={styles.moreChip}>+{item.expertise.length - 4}</span>
+                      )}
+                    </div>
                   </div>
                 )}
 
-                <Link href={`/contacto?assunto=Mentoria+com+${encodeURIComponent(item.name)}`} className={styles.contactBtn}>
-                  {language === 'pt' ? 'Solicitar Mentoria' : 'Request Mentorship'}
-                </Link>
+                <div className={styles.cardActions}>
+                  {(item.linkedin || item.website || item.email || item.phone) && (
+                    <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+                      {item.linkedin && (
+                        <a
+                          href={item.linkedin}
+                          target="_blank"
+                          rel="noreferrer"
+                          title="LinkedIn"
+                          style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#0a66c2', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                        >
+                          🔗 LinkedIn
+                        </a>
+                      )}
+                      {item.website && (
+                        <a
+                          href={item.website}
+                          target="_blank"
+                          rel="noreferrer"
+                          title="Website / Portfólio"
+                          style={{ background: '#fff7ed', border: '1px solid #ffedd5', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#c2410c', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                        >
+                          🌐 Portfólio
+                        </a>
+                      )}
+                      {item.email && (
+                        <a
+                          href={`mailto:${item.email}`}
+                          title="Email"
+                          style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#047857', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                        >
+                          ✉️ E-mail
+                        </a>
+                      )}
+                      {item.phone && (
+                        <a
+                          href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          title="WhatsApp"
+                          style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#15803d', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                        >
+                          📱 WhatsApp
+                        </a>
+                      )}
+                    </div>
+                  )}
+
+                  <div className={styles.actionRow}>
+                    <Link href={`/especialistas/${profileSlug}`} className={styles.profileBtn}>
+                      👤 Ver Perfil
+                    </Link>
+                    <Link href={`/contacto?assunto=Mentoria+com+${encodeURIComponent(item.name)}`} className={styles.contactBtn}>
+                      {language === 'pt' ? 'Mentoria →' : 'Mentorship →'}
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* CTA Banner */}
