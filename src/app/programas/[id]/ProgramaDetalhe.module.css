@@ -530,6 +530,85 @@
   background: rgba(37, 211, 102, 0.22);
 }
 
+.linkedinBtnSm {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(10, 102, 194, 0.12);
+  border: 1px solid rgba(10, 102, 194, 0.35);
+  color: #38bdf8;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.55rem 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.2s;
+}
+.linkedinBtnSm:hover {
+  background: rgba(10, 102, 194, 0.25);
+  color: #ffffff;
+}
+
+.facebookBtnSm {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(24, 119, 242, 0.12);
+  border: 1px solid rgba(24, 119, 242, 0.35);
+  color: #60a5fa;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.55rem 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.2s;
+}
+.facebookBtnSm:hover {
+  background: rgba(24, 119, 242, 0.25);
+  color: #ffffff;
+}
+
+.twitterBtnSm {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.55rem 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.2s;
+}
+.twitterBtnSm:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.emailBtnSm {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.55rem 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.2s;
+}
+.emailBtnSm:hover {
+  background: rgba(16, 185, 129, 0.25);
+  color: #ffffff;
+}
+
 /* ── MODAL ── */
 .modalOverlay {
   position: fixed;
