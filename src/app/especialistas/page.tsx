@@ -23,6 +23,18 @@ interface Specialist {
     category?: string;
 }
 
+function slugify(text: string): string {
+    return (text || '')
+        .toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/[\s_]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+}
+
 function getInitials(name: string): string {
     return name.split(' ').filter(Boolean).slice(0, 2).map(n => n[0].toUpperCase()).join('');
 }
@@ -305,12 +317,21 @@ export default function EspecialistasPage() {
                                                 </div>
                                             )}
 
-                                            <Link
-                                                href={`/contacto?assunto=Solicitar+Mentoria+com+${encodeURIComponent(s.name)}`}
-                                                className={styles.mentorBtn}
-                                            >
-                                                Solicitar Mentoria
-                                            </Link>
+                                            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.8rem' }}>
+                                                <Link
+                                                    href={`/especialistas/${slugify(s.name)}`}
+                                                    style={{ flex: 1, minWidth: '130px', textAlign: 'center', background: '#f1f5f9', color: '#0f172a', border: '1px solid #cbd5e1', padding: '0.65rem 0.8rem', borderRadius: '10px', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none', transition: 'all 0.2s' }}
+                                                >
+                                                    👤 Ver Perfil
+                                                </Link>
+                                                <Link
+                                                    href={`/contacto?assunto=Solicitar+Mentoria+com+${encodeURIComponent(s.name)}`}
+                                                    className={styles.mentorBtn}
+                                                    style={{ flex: 1, minWidth: '130px', marginTop: 0 }}
+                                                >
+                                                    Mentoria →
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 );
