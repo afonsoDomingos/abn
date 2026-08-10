@@ -72,7 +72,7 @@ export default function AdminCursosPage() {
   const [editingLessonIdx, setEditingLessonIdx] = useState<number | null>(null);
 
   const [paymentInstructions, setPaymentInstructions] = useState(
-    '🏦 Dados Bancários ABN para Transferência:\nBanco: Millennium BIM\nConta (NIB): 0001-0000-0012-3456-1\nTitular: AfroBiz Network Lda.\n\n📱 M-Pesa: 84 123 4567\n\n* Por favor, realize a transferência e faça upload do comprovativo.'
+    '🏦 Dados Bancários & Pagamentos Móveis:\nTitular: Lizi Cristina Mulambo\n\n1️⃣ Millennium BIM\nConta: 5283397\nNIB: 0001 000000005283397 57\n\n2️⃣ Moza Banco\nConta: 0087656640001\nNIB: 0034 000008765664101 25\n\n📱 M-Pesa: 857670109\n📱 e-Mola: 876687082\n\n* Por favor, realize a transferência e faça upload do comprovativo.'
   );
 
   // Participants list states
@@ -212,7 +212,7 @@ export default function AdminCursosPage() {
     setCertPartnerLogos(initialLogos);
     setCertPartnerLogoUrl(initialLogos[0] || '');
 
-    setPaymentInstructions(course.paymentInstructions || '🏦 Dados Bancários ABN para Transferência:\nBanco: Millennium BIM\nConta (NIB): 0001-0000-0012-3456-1\nTitular: AfroBiz Network Lda.\n\n📱 M-Pesa: 84 123 4567\n\n* Por favor, realize a transferência e faça upload do comprovativo.');
+    setPaymentInstructions(course.paymentInstructions || '🏦 Dados Bancários & Pagamentos Móveis:\nTitular: Lizi Cristina Mulambo\n\n1️⃣ Millennium BIM\nConta: 5283397\nNIB: 0001 000000005283397 57\n\n2️⃣ Moza Banco\nConta: 0087656640001\nNIB: 0034 000008765664101 25\n\n📱 M-Pesa: 857670109\n📱 e-Mola: 876687082\n\n* Por favor, realize a transferência e faça upload do comprovativo.');
     setNewLessonTitle('');
     setNewLessonUrl('');
     setNewLessonPdfUrl('');
@@ -777,7 +777,7 @@ export default function AdminCursosPage() {
                           value={paymentInstructions}
                           onChange={e => setPaymentInstructions(e.target.value)}
                           rows={5}
-                          placeholder={'🏦 Dados Bancários ABN:\nBanco: Millennium BIM\nConta: ...\n\n📱 M-Pesa: ...'}
+                          placeholder={'🏦 Dados Bancários & Pagamentos Móveis:\nTitular: Lizi Cristina Mulambo\nMillennium BIM: 5283397 / NIB: 0001 000000005283397 57\nMoza Banco: 0087656640001 / NIB: 0034 000008765664101 25\nM-Pesa: 857670109 | e-Mola: 876687082'}
                           style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.88rem', outline: 'none', lineHeight: '1.6' }}
                         />
                       </div>

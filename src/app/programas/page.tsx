@@ -1494,12 +1494,18 @@ export default function ProgramasPage() {
 
                         {form.metodoPagamento === 'mpesa' && (
                           <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
-                            <p style={{ margin: 0 }}>Pagamento por M-Pesa. As instruções e os dados de confirmação serão disponibilizados pela equipa ABN após a submissão da candidatura.</p>
+                            <p style={{ margin: '0 0 0.3rem 0', fontWeight: 700, color: '#0f172a' }}>📱 Pagamento via M-Pesa:</p>
+                            <p style={{ margin: 0 }}><strong>Número M-Pesa:</strong> 857670109</p>
+                            <p style={{ margin: 0 }}><strong>Titular:</strong> Lizi Cristina Mulambo</p>
+                            <small style={{ color: '#64748b', display: 'block', marginTop: '0.2rem' }}>Pode efetuar a transferência direta para o número acima ou inserir o seu número abaixo para solicitação.</small>
                           </div>
                         )}
                         {form.metodoPagamento === 'emola' && (
                           <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
-                            <p style={{ margin: 0 }}>Pagamento por eMola. As instruções e os dados de confirmação serão disponibilizados pela equipa ABN após a submissão da candidatura.</p>
+                            <p style={{ margin: '0 0 0.3rem 0', fontWeight: 700, color: '#0f172a' }}>📱 Pagamento via e-Mola:</p>
+                            <p style={{ margin: 0 }}><strong>Número e-Mola:</strong> 876687082</p>
+                            <p style={{ margin: 0 }}><strong>Titular:</strong> Lizi Cristina Mulambo</p>
+                            <small style={{ color: '#64748b', display: 'block', marginTop: '0.2rem' }}>Pode efetuar a transferência direta para o número acima ou inserir o seu número abaixo para solicitação.</small>
                           </div>
                         )}
                         {form.metodoPagamento === 'cartao' && (
@@ -1508,8 +1514,14 @@ export default function ProgramasPage() {
                           </div>
                         )}
                         {form.metodoPagamento === 'banco' && (
-                          <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6' }}>
-                            <p style={{ margin: 0 }}>Transferência Bancária. Os dados da conta bancária oficial da ABN serão facultados diretamente pela equipa ABN.</p>
+                          <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            <p style={{ margin: 0, fontWeight: 700, color: '#0f172a' }}>🏛️ Dados para Transferência Bancária (Titular: Lizi Cristina Mulambo):</p>
+                            <div style={{ background: '#ffffff', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
+                              <div><strong>Millennium BIM:</strong> Conta 5283397 | NIB 0001 000000005283397 57</div>
+                            </div>
+                            <div style={{ background: '#ffffff', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
+                              <div><strong>Moza Banco:</strong> Conta 0087656640001 | NIB 0034 000008765664101 25</div>
+                            </div>
                           </div>
                         )}
 

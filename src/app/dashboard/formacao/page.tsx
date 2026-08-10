@@ -1057,12 +1057,24 @@ function FormacaoPageInner() {
                 selectedCourse.paymentInstructions
               ) : (
                 <>
-                  <strong style={{ color: '#0f172a' }}>🏦 Dados Bancários ABN para Transferência:</strong>
-                  <span><strong>Banco:</strong> Banco da África Ocidental (BAO)</span>
-                  <span><strong>Conta (NIB):</strong> 0012-9876-0026-NIB-ABN</span>
-                  <span><strong>Titular:</strong> AfroBiz Network Lda.</span>
+                  <strong style={{ color: '#0f172a' }}>🏦 Dados de Pagamento &amp; Transferência:</strong>
+                  <span><strong>Titular:</strong> Lizi Cristina Mulambo</span>
+                  <div style={{ background: '#ffffff', padding: '0.6rem 0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
+                    <div style={{ fontWeight: 700, color: '#0f172a' }}>1️⃣ Millennium BIM</div>
+                    <div><strong>Conta:</strong> 5283397</div>
+                    <div><strong>NIB:</strong> 0001 000000005283397 57</div>
+                  </div>
+                  <div style={{ background: '#ffffff', padding: '0.6rem 0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
+                    <div style={{ fontWeight: 700, color: '#0f172a' }}>2️⃣ Moza Banco</div>
+                    <div><strong>Conta:</strong> 0087656640001</div>
+                    <div><strong>NIB:</strong> 0034 000008765664101 25</div>
+                  </div>
+                  <div style={{ background: '#ffffff', padding: '0.6rem 0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <div>📱 <strong>M-Pesa:</strong> 857670109</div>
+                    <div>📱 <strong>e-Mola:</strong> 876687082</div>
+                  </div>
                   <span style={{ fontSize: '0.78rem', color: '#ff6b00', fontWeight: 600, display: 'block', marginTop: '0.3rem' }}>
-                    * Realize a transferência e submeta o comprovativo abaixo.
+                    * Realize o pagamento/transferência e submeta o comprovativo abaixo.
                   </span>
                 </>
               )}

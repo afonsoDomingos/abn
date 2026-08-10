@@ -74,6 +74,19 @@ export default function ContactPage() {
                     <a href="https://wa.me/258845773974" target="_blank" rel="noopener noreferrer">+258 84 577 3974</a>
                   </div>
                 </div>
+
+                <div className={styles.infoItem} style={{ marginTop: '1.5rem', paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                  <span className={styles.icon}>💳</span>
+                  <div>
+                    <strong>Dados de Pagamento Oficial</strong>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', lineHeight: '1.5', opacity: 0.9 }}>
+                      <strong>Titular:</strong> Lizi Cristina Mulambo<br />
+                      🏦 <strong>Millennium BIM:</strong> Conta 5283397 | NIB 0001 000000005283397 57<br />
+                      🏦 <strong>Moza Banco:</strong> Conta 0087656640001 | NIB 0034 000008765664101 25<br />
+                      📱 <strong>M-Pesa:</strong> 857670109 | 📱 <strong>e-Mola:</strong> 876687082
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 

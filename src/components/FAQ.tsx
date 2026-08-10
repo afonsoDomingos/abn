@@ -17,6 +17,10 @@ export default function FAQ() {
       answer: 'O nosso programa divide-se em fases: Ideação, Validação, Crescimento e Escala. Cada fase tem marcos específicos e suporte personalizado de mentores especialistas.'
     },
     {
+      question: 'Quais são os métodos de pagamento aceites e dados bancários?',
+      answer: 'Aceitamos pagamentos via M-Pesa (857670109), e-Mola (876687082), e transferência bancária para o Millennium BIM (Conta: 5283397 | NIB: 0001 000000005283397 57) ou Moza Banco (Conta: 0087656640001 | NIB: 0034 000008765664101 25) em nome de Lizi Cristina Mulambo.'
+    },
+    {
       question: 'Qualquer pessoa pode se juntar à rede?',
       answer: 'Sim, aceitamos empreendedores, startups, investidores e mentores que queiram contribuir para o ecossistema de negócios em África.'
     },
