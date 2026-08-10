@@ -171,78 +171,107 @@
   box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
 }
 
-.shareGroup {
+.shareBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 50px;
+  padding: 0.35rem 0.75rem;
+  margin-top: 0.35rem;
+}
+
+.shareLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  font-family: 'Outfit', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.shareIconsRow {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  margin-top: 0.25rem;
 }
 
-.copyBtn {
-  flex: 1;
-  background: #f1f5f9;
-  color: #334155;
-  border: 1px solid #cbd5e1;
-  border-radius: 20px;
-  padding: 0.4rem 0.6rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-}
-
-.copyBtn:hover {
-  background: #e2e8f0;
-  color: #0f172a;
-}
-
-.waBtn {
-  flex: 1;
-  background: #25d366;
-  color: #ffffff;
-  border: none;
-  border-radius: 20px;
-  padding: 0.4rem 0.6rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-}
-
-.waBtn:hover {
-  background: #1eb956;
-  transform: translateY(-1px);
-}
-
-.iconBtn {
-  width: 30px;
-  height: 30px;
+.shareIconBtn {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
-  font-size: 0.78rem;
   cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition: all 0.2s ease;
   flex-shrink: 0;
-  line-height: 1;
 }
 
-.iconBtn:hover {
-  transform: scale(1.15);
-  opacity: 0.9;
+.shareIconBtn:hover {
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.copyIconBtn {
+  background: #ffffff;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.copyIconBtn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+
+.waIconBtn {
+  background: #25d366;
+  color: #ffffff;
+}
+
+.waIconBtn:hover {
+  background: #1eb956;
+}
+
+.linkedinIconBtn {
+  background: #0a66c2;
+  color: #ffffff;
+}
+
+.linkedinIconBtn:hover {
+  background: #084e96;
+}
+
+.facebookIconBtn {
+  background: #1877f2;
+  color: #ffffff;
+}
+
+.facebookIconBtn:hover {
+  background: #0d5bbd;
+}
+
+.twitterIconBtn {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.twitterIconBtn:hover {
+  background: #1e293b;
+}
+
+.emailIconBtn {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.emailIconBtn:hover {
+  background: #059669;
 }
 
 @keyframes shimmer {
