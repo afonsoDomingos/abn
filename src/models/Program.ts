@@ -29,6 +29,8 @@ const ProgramSchema = new Schema({
   lema: { type: String, default: '' },
   isClub: { type: Boolean, default: false },
   province: { type: String, default: '' },
+  // Custom declaration text for this program
+  declaracao: { type: String, default: '' },
   // Custom questionnaire fields specific to this program
   customFields: [
     {

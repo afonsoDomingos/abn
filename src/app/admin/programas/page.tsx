@@ -42,6 +42,7 @@ interface Program {
   lema?: string;
   isClub?: boolean;
   province?: string;
+  declaracao?: string;
   customFields?: CustomField[];
 }
 
@@ -84,6 +85,7 @@ export default function AdminProgramasPage() {
   const [beneficiosMembros, setBeneficiosMembros] = useState('');
   const [compromissoMembros, setCompromissoMembros] = useState('');
   const [lema, setLema] = useState('');
+  const [declaracao, setDeclaracao] = useState('');
 
   useEffect(() => {
     fetchPrograms();
@@ -131,6 +133,7 @@ export default function AdminProgramasPage() {
     setBeneficiosMembros(prog.beneficiosMembros || '');
     setCompromissoMembros(prog.compromissoMembros || '');
     setLema(prog.lema || '');
+    setDeclaracao(prog.declaracao || '');
     setCustomFields(prog.customFields || []);
     setActiveTab('geral');
     setShowForm(true);
@@ -164,6 +167,7 @@ export default function AdminProgramasPage() {
     setBeneficiosMembros('');
     setCompromissoMembros('');
     setLema('');
+    setDeclaracao('');
     setCustomFields([]);
     setActiveTab('geral');
     setShowForm(true);
@@ -276,6 +280,7 @@ export default function AdminProgramasPage() {
       beneficiosMembros,
       compromissoMembros,
       lema,
+      declaracao,
       customFields,
     };
 
@@ -701,6 +706,17 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
 
           {activeTab === 'inquerito' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1rem 0' }}>
+              <div className={styles.field}>
+                <label>Texto da Declaração</label>
+                <span className={styles.fieldHint}>Texto que aparecerá na secção de declaração do formulário de inscrição. Se deixar vazio, será usada uma declaração padrão.</span>
+                <textarea
+                  rows={4}
+                  value={declaracao}
+                  onChange={e => setDeclaracao(e.target.value)}
+                  placeholder="Ex: Declaro que as informações prestadas neste inquérito são verdadeiras e completas..."
+                />
+              </div>
+
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                 <div>
                   <h4 style={{ margin: 0, color: 'var(--primary, #ff6b00)', fontSize: '1.1rem' }}>
