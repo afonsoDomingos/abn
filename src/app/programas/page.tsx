@@ -809,7 +809,7 @@ export default function ProgramasPage() {
                     )}
 
                     <p className={styles.successNote}>
-                      Os dados fornecidos são tratados exclusivamente para fins de gestão da sua adesão ao Clube dos Empreendedores, nos termos da Cláusula de Protecção de Dados.
+                      Os dados fornecidos são tratados exclusivamente para fins de gestão da sua {selectedProgram?.isClub ? 'adesão ao Clube dos Empreendedores' : 'candidatura ao ' + selectedProgram?.title}, nos termos da Cláusula de Protecção de Dados.
                     </p>
                     <div className={styles.successActions}>
                       <Link href="/programas" className={styles.successActionBtn} onClick={closeModal}>
@@ -915,11 +915,11 @@ export default function ProgramasPage() {
                 </div>
 
                 <p className={styles.formIntro}>
-                  {currentStep === 1 && 'Preencha os campos abaixo. Os dados fornecidos serão utilizados exclusivamente para fins de gestão da sua adesão ao Clube dos Empreendedores.'}
+                  {currentStep === 1 && `Preencha os campos abaixo. Os dados fornecidos serão utilizados exclusivamente para fins de gestão da sua ${selectedProgram?.isClub ? 'adesão ao Clube dos Empreendedores' : 'candidatura ao ' + selectedProgram?.title}.`}
                   {currentStep === 2 && 'Informações sobre o seu negócio ou actividade (opcional).'}
-                  {currentStep === 3 && 'Seleccione o nível de adesão pretendido e a periodicidade da quota.'}
-                  {currentStep === 4 && 'Seleccione as áreas de interesse (pode seleccionar múltiplas).'}
-                  {currentStep === 5 && 'Como conheceu o Clube dos Empreendedores?'}
+                  {currentStep === 3 && selectedProgram?.isClub ? 'Seleccione o nível de adesão pretendido e a periodicidade da quota.' : 'Seleccione a modalidade de participação pretendida.'}
+                  {currentStep === 4 && selectedProgram?.isClub ? 'Seleccione as áreas de interesse (pode seleccionar múltiplas).' : 'Responda às perguntas personalizadas do programa.'}
+                  {currentStep === 5 && selectedProgram?.isClub ? 'Como conheceu o Clube dos Empreendedores?' : ''}
                   {currentStep === 6 && 'Revise a declaração e assine para avançar para o checkout de pagamento.'}
                   {currentStep === 7 && 'Revise os seus dados, confira os valores calculados automaticamente e selecione a forma de pagamento para concluir.'}
                 </p>
@@ -1245,38 +1245,42 @@ export default function ProgramasPage() {
                         ))}
                       </div>
                     )}
-                    <div className={styles.checkGroup}>
-                      {[
-                        'Formação e capacitação empresarial',
-                        'Mentoria e coaching',
-                        'Incubação de negócio (ideia/arranque)',
-                        'Aceleração de negócio (negócio já validado)',
-                        'Networking empresarial e feiras',
-                        'Educação financeira',
-                        'Transformação digital para pequenos negócios',
-                        'Oportunidades de investimento e financiamento',
-                        'Parcerias institucionais',
-                        'Marketplace ABN / venda entre membros',
-                        'Programa Mentor Sénior (como mentor ou mentorado)',
-                        'Clube de Investidores',
-                      ].map(area => (
-                        <label key={area} className={styles.checkLabel}>
-                          <input
-                            type="checkbox"
-                            className={styles.checkInput}
-                            checked={form.areasInteresse.includes(area)}
-                            onChange={() => toggleInteresse(area)}
-                          />
-                          <span className={styles.checkBox}></span>
-                          {area}
-                        </label>
-                      ))}
-                    </div>
+
+                    {/* Áreas de Interesse - apenas para clubes */}
+                    {selectedProgram?.isClub && (
+                      <div className={styles.checkGroup}>
+                        {[
+                          'Formação e capacitação empresarial',
+                          'Mentoria e coaching',
+                          'Incubação de negócio (ideia/arranque)',
+                          'Aceleração de negócio (negócio já validado)',
+                          'Networking empresarial e feiras',
+                          'Educação financeira',
+                          'Transformação digital para pequenos negócios',
+                          'Oportunidades de investimento e financiamento',
+                          'Parcerias institucionais',
+                          'Marketplace ABN / venda entre membros',
+                          'Programa Mentor Sénior (como mentor ou mentorado)',
+                          'Clube de Investidores',
+                        ].map(area => (
+                          <label key={area} className={styles.checkLabel}>
+                            <input
+                              type="checkbox"
+                              className={styles.checkInput}
+                              checked={form.areasInteresse.includes(area)}
+                              onChange={() => toggleInteresse(area)}
+                            />
+                            <span className={styles.checkBox}></span>
+                            {area}
+                          </label>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
 
                 {/* ── SECÇÃO 5 ── */}
-                {currentStep === 5 && (
+                {currentStep === 5 && selectedProgram?.isClub && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
                       <span className={styles.formSectionNumber}>5</span>
