@@ -29,6 +29,9 @@ const ProgramSchema = new Schema({
   lema: { type: String, default: '' },
   isClub: { type: Boolean, default: false },
   province: { type: String, default: '' },
+  // Reference to independent questionnaire
+  questionnaireId: { type: Schema.Types.ObjectId, ref: 'Questionnaire', default: null },
+  // Keep customFields for backward compatibility (will be migrated)
   customFields: [
     {
       id: { type: String },
