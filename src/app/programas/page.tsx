@@ -1331,14 +1331,24 @@ export default function ProgramasPage() {
                       <span className={styles.formSectionNumber}>6</span>
                       <h3>Declaração</h3>
                     </div>
-                    <div className={styles.declaracaoBox}>
-                      <p>
-                        Declaro que as informações prestadas neste inquérito são verdadeiras e completas, e que tomei conhecimento
-                        dos <strong>Termos de Referência (TdR) do Clube dos Empreendedores</strong>, comprometendo-me a formalizar a minha adesão
-                        através da assinatura do Contrato de Adesão e do pagamento da taxa de inscrição e quota correspondentes ao
-                        nível seleccionado.
-                      </p>
-                    </div>
+                    {selectedProgram?.isClub ? (
+                      <div className={styles.declaracaoBox}>
+                        <p>
+                          Declaro que as informações prestadas neste inquérito são verdadeiras e completas, e que tomei conhecimento
+                          dos <strong>Termos de Referência (TdR) do Clube dos Empreendedores</strong>, comprometendo-me a formalizar a minha adesão
+                          através da assinatura do Contrato de Adesão e do pagamento da taxa de inscrição e quota correspondentes ao
+                          nível seleccionado.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className={styles.declaracaoBox}>
+                        <p>
+                          Declaro que as informações prestadas neste inquérito são verdadeiras e completas, e que tomei conhecimento
+                          dos <strong>Termos e Condições do Programa {selectedProgram?.title}</strong>, comprometendo-me a cumprir
+                          com os requisitos e obrigações estabelecidos.
+                        </p>
+                      </div>
+                    )}
                     <div className={styles.formGrid2}>
                       <div className={styles.formField}>
                         <label htmlFor="localData">Local e data</label>
@@ -1364,10 +1374,12 @@ export default function ProgramasPage() {
                         />
                       </div>
                     </div>
-                    <div className={styles.reservadoAbn}>
-                      <span>📌 Espaço reservado à ABN</span>
-                      <span>Nº de membro atribuído: ___________________________</span>
-                    </div>
+                    {selectedProgram?.isClub && (
+                      <div className={styles.reservadoAbn}>
+                        <span>📌 Espaço reservado à ABN</span>
+                        <span>Nº de membro atribuído: ___________________________</span>
+                      </div>
+                    )}
                   </div>
                 )}
 
