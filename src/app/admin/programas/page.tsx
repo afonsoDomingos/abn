@@ -42,20 +42,11 @@ interface Program {
   lema?: string;
   isClub?: boolean;
   province?: string;
-  questionnaireId?: string;
   customFields?: CustomField[];
-}
-
-interface Questionnaire {
-  _id: string;
-  title: string;
-  description: string;
-  status: string;
 }
 
 export default function AdminProgramasPage() {
   const [programs, setPrograms] = useState<Program[]>([]);
-  const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -64,7 +55,6 @@ export default function AdminProgramasPage() {
   const [msg, setMsg] = useState('');
   const [activeTab, setActiveTab] = useState<'geral' | 'conteudo' | 'selecao' | 'clube' | 'inquerito'>('geral');
   const [customFields, setCustomFields] = useState<CustomField[]>([]);
-  const [questionnaireId, setQuestionnaireId] = useState('');
 
   // Form states
   const [title, setTitle] = useState('');
@@ -97,17 +87,7 @@ export default function AdminProgramasPage() {
 
   useEffect(() => {
     fetchPrograms();
-    fetchQuestionnaires();
   }, []);
-
-  const fetchQuestionnaires = () => {
-    fetch('/api/questionnaires')
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) setQuestionnaires(data.questionnaires);
-      })
-      .catch(err => console.error(err));
-  };
 
   const fetchPrograms = () => {
     setLoading(true);
@@ -151,7 +131,6 @@ export default function AdminProgramasPage() {
     setBeneficiosMembros(prog.beneficiosMembros || '');
     setCompromissoMembros(prog.compromissoMembros || '');
     setLema(prog.lema || '');
-    setQuestionnaireId(prog.questionnaireId || '');
     setCustomFields(prog.customFields || []);
     setActiveTab('geral');
     setShowForm(true);
@@ -185,7 +164,6 @@ export default function AdminProgramasPage() {
     setBeneficiosMembros('');
     setCompromissoMembros('');
     setLema('');
-    setQuestionnaireId('');
     setCustomFields([]);
     setActiveTab('geral');
     setShowForm(true);
@@ -298,7 +276,6 @@ export default function AdminProgramasPage() {
       beneficiosMembros,
       compromissoMembros,
       lema,
-      questionnaireId: questionnaireId || null,
       customFields,
     };
 
@@ -724,49 +701,138 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
 
           {activeTab === 'inquerito' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1rem 0' }}>
-              <div>
-                <h4 style={{ margin: 0, color: 'var(--primary, #ff6b00)', fontSize: '1.1rem' }}>
-                  Inquérito do Programa
-                </h4>
-                <p style={{ margin: '0.2rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>
-                  Selecione um inquérito independente para este programa. Os inquéritos são geridos separadamente e podem ser reutilizados em múltiplos programas.
-                </p>
-              </div>
-
-              <div className={styles.field}>
-                <label>Inquérito Associado</label>
-                <select
-                  value={questionnaireId}
-                  onChange={e => setQuestionnaireId(e.target.value)}
-                >
-                  <option value="">Nenhum inquérito selecionado</option>
-                  {questionnaires.map(q => (
-                    <option key={q._id} value={q._id}>
-                      {q.title} {q.status === 'inativo' && '(Inativo)'}
-                    </option>
-                  ))}
-                </select>
-                <span className={styles.fieldHint}>
-                  {questionnaires.length === 0 
-                    ? 'Nenhum inquérito disponível. Crie inquéritos na página "Gestão de Inquéritos".'
-                    : `${questionnaires.length} inquérito(s) disponível(is)`
-                  }
-                </span>
-              </div>
-
-              {questionnaireId && (
-                <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '1rem' }}>
-                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b' }}>
-                    <strong>Inquérito selecionado:</strong> {questionnaires.find(q => q._id === questionnaireId)?.title}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <h4 style={{ margin: 0, color: 'var(--primary, #ff6b00)', fontSize: '1.1rem' }}>
+                    Formulário de Inquérito Personalizado
+                  </h4>
+                  <p style={{ margin: '0.2rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>
+                    Adicione perguntas específicas que os candidatos deverão responder ao inscreverem-se neste programa.
                   </p>
                 </div>
-              )}
-
-              <div style={{ background: '#fff7ed', border: '1px solid #ffedd5', borderRadius: '12px', padding: '1rem' }}>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: '#c2410c' }}>
-                  <strong>💡 Nota:</strong> Os inquéritos são agora independentes dos programas. Para criar ou editar inquéritos, aceda à página "Gestão de Inquéritos" no menu admin.
-                </p>
+                <button
+                  type="button"
+                  style={{ background: 'var(--primary, #ff6b00)', color: '#fff', border: 'none', padding: '0.65rem 1.3rem', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' }}
+                  onClick={() => {
+                    setCustomFields([
+                      ...customFields,
+                      { id: Date.now().toString(), label: '', type: 'text', options: [], required: false, placeholder: '' }
+                    ]);
+                  }}
+                >
+                  + Adicionar Pergunta / Campo
+                </button>
               </div>
+
+              {customFields.length === 0 ? (
+                <div style={{ background: '#f8fafc', border: '2px dashed #cbd5e1', borderRadius: '14px', padding: '3rem 1.5rem', textAlign: 'center', color: '#64748b' }}>
+                  <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>📋</div>
+                  <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: '#334155' }}>Nenhuma pergunta personalizada configurada para este programa.</p>
+                  <p style={{ margin: '0.3rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>Clique no botão "+ Adicionar Pergunta / Campo" acima para personalizar o inquérito.</p>
+                </div>
+              ) : (
+                customFields.map((field, idx) => (
+                  <div key={field.id || idx} style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '16px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.8rem' }}>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', letterSpacing: '0.05em' }}>
+                        PERGUNTA #{idx + 1}
+                      </span>
+                      <button
+                        type="button"
+                        style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', padding: '0.4rem 0.85rem', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}
+                        onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))}
+                      >
+                        🗑️ Remover Pergunta
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.2rem' }}>
+                      <div className={styles.field}>
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Título da Pergunta *</label>
+                        <input
+                          type="text"
+                          required
+                          value={field.label}
+                          onChange={e => {
+                            const updated = [...customFields];
+                            updated[idx].label = e.target.value;
+                            setCustomFields(updated);
+                          }}
+                          placeholder="Ex: Possui registo comercial (NUIT)?"
+                          style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
+                        />
+                      </div>
+
+                      <div className={styles.field}>
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Tipo de Resposta</label>
+                        <select
+                          value={field.type}
+                          onChange={e => {
+                            const updated = [...customFields];
+                            updated[idx].type = e.target.value as any;
+                            setCustomFields(updated);
+                          }}
+                          style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
+                        >
+                          <option value="text">Texto Curto</option>
+                          <option value="textarea">Texto Longo / Parágrafo</option>
+                          <option value="select">Escolha Única (Dropdown)</option>
+                          <option value="checkbox">Caixa de Seleção (Múltipla)</option>
+                          <option value="file">Upload de Ficheiro (PDF/Imagem)</option>
+                        </select>
+                      </div>
+
+                      <div className={styles.field} style={{ justifyContent: 'center' }}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', marginTop: '1.6rem' }}>
+                          <input
+                            type="checkbox"
+                            checked={field.required}
+                            onChange={e => {
+                              const updated = [...customFields];
+                              updated[idx].required = e.target.checked;
+                              setCustomFields(updated);
+                            }}
+                            style={{ width: '18px', height: '18px', accentColor: '#ff6b00' }}
+                          />
+                          <span style={{ fontSize: '0.85rem', color: '#0f172a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Resposta Obrigatória</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {(field.type === 'select' || field.type === 'checkbox') && (
+                      <div className={styles.field}>
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Opções de Seleção (separadas por vírgula)</label>
+                        <input
+                          type="text"
+                          value={field.options ? field.options.join(', ') : ''}
+                          onChange={e => {
+                            const updated = [...customFields];
+                            updated[idx].options = e.target.value.split(',').map(s => s.trim()).filter(Boolean);
+                            setCustomFields(updated);
+                          }}
+                          placeholder="Ex: Sim, Não, Em Processo de Formalização"
+                          style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
+                        />
+                      </div>
+                    )}
+
+                    <div className={styles.field}>
+                      <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Texto de Ajuda / Placeholder (opcional)</label>
+                      <input
+                        type="text"
+                        value={field.placeholder || ''}
+                        onChange={e => {
+                          const updated = [...customFields];
+                          updated[idx].placeholder = e.target.value;
+                          setCustomFields(updated);
+                        }}
+                        placeholder="Ex: Exemplo de resposta esperada..."
+                        style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
+                      />
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           )}
 

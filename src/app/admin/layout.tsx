@@ -30,8 +30,7 @@ import {
   Users as UsersIcon,
   UserCheck,
   Building,
-  Award,
-  FileQuestion
+  Award
 } from 'lucide-react';
 
 interface NavItem {
@@ -92,7 +91,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       items: [
         { href: '/admin/cursos', label: 'Cursos', icon: <BookOpen size={18} /> },
         { href: '/admin/programas', label: 'Programas', icon: <Rocket size={18} /> },
-        { href: '/admin/inqueritos', label: 'Inquéritos', icon: <FileQuestion size={18} /> },
         { href: '/admin/impacto', label: 'Impacto', icon: <BarChart3 size={18} /> },
         { href: '/admin/eventos', label: 'Eventos', icon: <CalendarDays size={18} /> },
         { href: '/admin/noticias', label: 'Notícias', icon: <Newspaper size={18} /> },
