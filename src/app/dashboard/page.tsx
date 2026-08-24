@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Rocket, Users, Target, CheckCircle2, XCircle, BarChart3, Star, Clock, Calendar, FileText, Download } from 'lucide-react';
+import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Dashboard.module.css';
 
 export default function DashboardPage() {
@@ -308,8 +309,8 @@ export default function DashboardPage() {
                 </div>
                 <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#ffffff' }}>
                   {userInscricoes && userInscricoes.length > 0
-                    ? `Clube ABN — ${userInscricoes[0].nivelAdesao?.toUpperCase() || 'Membro Oficial'}`
-                    : 'Clube dos Empreendedores ABN'}
+                    ? `${getClubStepTitle(userInscricoes[0].programaTitulo || 'Clube dos Empreendedores ABN')} — ${userInscricoes[0].nivelAdesao?.toUpperCase() || 'Membro Oficial'}`
+                    : getClubStepTitle('Clube dos Empreendedores ABN')}
                 </div>
               </div>
             </div>

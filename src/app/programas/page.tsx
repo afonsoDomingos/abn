@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { getClubStepTitle } from '@/lib/clubUtils';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -423,7 +424,7 @@ export default function ProgramasPage() {
     const payload = {
       ...form,
       programaId: selectedProgram?._id,
-      programaTitulo: selectedProgram?.title || 'Clube dos Empreendedores ABN',
+      programaTitulo: selectedProgram?.title || getClubStepTitle('Clube dos Empreendedores ABN'),
       respostasPersonalizadas,
       valorPago: `${calc.valorTotal} MT`,
       tipoPagamento,
@@ -762,7 +763,7 @@ export default function ProgramasPage() {
                   <p className={styles.modalSubtitle}>
                     {submitted && lastSubmission?.tipoPagamento === 'api_directo'
                       ? 'Confirmação com PIN no telemóvel M-Pesa / eMola'
-                      : 'Clube dos Empreendedores — ABN | AfroBiz Network'}
+                      : `${getClubStepTitle(selectedProgram?.title || 'Clube dos Empreendedores ABN')} — ABN | AfroBiz Network`}
                   </p>
                 </div>
               </div>
@@ -809,7 +810,7 @@ export default function ProgramasPage() {
                     )}
 
                     <p className={styles.successNote}>
-                      Os dados fornecidos são tratados exclusivamente para fins de gestão da sua {selectedProgram?.isClub ? 'adesão ao Clube dos Empreendedores' : 'candidatura ao ' + selectedProgram?.title}, nos termos da Cláusula de Protecção de Dados.
+                      Os dados fornecidos são tratados exclusivamente para fins de gestão da sua {selectedProgram?.isClub ? `adesão ao ${getClubStepTitle(selectedProgram?.title || 'Clube dos Empreendedores ABN')}` : 'candidatura ao ' + selectedProgram?.title}, nos termos da Cláusula de Protecção de Dados.
                     </p>
                     <div className={styles.successActions}>
                       <Link href="/programas" className={styles.successActionBtn} onClick={closeModal}>
@@ -915,11 +916,11 @@ export default function ProgramasPage() {
                 </div>
 
                 <p className={styles.formIntro}>
-                  {currentStep === 1 && `Preencha os campos abaixo. Os dados fornecidos serão utilizados exclusivamente para fins de gestão da sua ${selectedProgram?.isClub ? 'adesão ao Clube dos Empreendedores' : 'candidatura ao ' + selectedProgram?.title}.`}
+                  {currentStep === 1 && `Preencha os campos abaixo. Os dados fornecidos serão utilizados exclusivamente para fins de gestão da sua ${selectedProgram?.isClub ? `adesão ao ${getClubStepTitle(selectedProgram?.title || 'Clube dos Empreendedores ABN')}` : 'candidatura ao ' + selectedProgram?.title}.`}
                   {currentStep === 2 && 'Informações sobre o seu negócio ou actividade (opcional).'}
                   {currentStep === 3 && selectedProgram?.isClub ? 'Seleccione o nível de adesão pretendido e a periodicidade da quota.' : 'Seleccione a modalidade de participação pretendida.'}
                   {currentStep === 4 && selectedProgram?.isClub ? 'Seleccione as áreas de interesse (pode seleccionar múltiplas).' : 'Responda às perguntas personalizadas do programa.'}
-                  {currentStep === 5 && selectedProgram?.isClub ? 'Como conheceu o Clube dos Empreendedores?' : ''}
+                  {currentStep === 5 && selectedProgram?.isClub ? `Como conheceu o ${getClubStepTitle(selectedProgram?.title || 'Clube dos Empreendedores ABN')}?` : ''}
                   {currentStep === 6 && 'Revise a declaração e assine para avançar para o checkout de pagamento.'}
                   {currentStep === 7 && 'Revise os seus dados, confira os valores calculados automaticamente e selecione a forma de pagamento para concluir.'}
                 </p>
@@ -1284,7 +1285,7 @@ export default function ProgramasPage() {
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
                       <span className={styles.formSectionNumber}>5</span>
-                      <h3>Como conheceu o Clube dos Empreendedores?</h3>
+                      <h3>Como conheceu o {getClubStepTitle(selectedProgram?.title || 'Clube dos Empreendedores ABN')}?</h3>
                     </div>
                     <div className={styles.radioGroupCol}>
                       {[
@@ -1342,7 +1343,7 @@ export default function ProgramasPage() {
                           selectedProgram?.isClub ? (
                             <>
                               Declaro que as informações prestadas neste inquérito são verdadeiras e completas, e que tomei conhecimento
-                              dos <strong>Termos de Referência (TdR) do Clube dos Empreendedores</strong>, comprometendo-me a formalizar a minha adesão
+                              dos <strong>Termos de Referência (TdR) do {getClubStepTitle(selectedProgram?.title || 'Clube dos Empreendedores ABN')}</strong>, comprometendo-me a formalizar a minha adesão
                               através da assinatura do Contrato de Adesão e do pagamento da taxa de inscrição e quota correspondentes ao
                               nível seleccionado.
                             </>

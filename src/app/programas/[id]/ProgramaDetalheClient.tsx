@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { getClubStepTitle } from '@/lib/clubUtils';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -284,7 +285,7 @@ export default function ProgramaDetalheClient({ id, initialProgram }: { id: stri
                 <span className={styles.durationBadge}>⏱️ {program.duration}</span>
               )}
               {program.isClub && (
-                <span className={styles.clubBadge}>👑 Clube de Empreendedores</span>
+                <span className={styles.clubBadge}>👑 {getClubStepTitle(program.title)}</span>
               )}
             </div>
             <h1 className={styles.heroTitle}>{program.title}</h1>
@@ -410,13 +411,15 @@ export default function ProgramaDetalheClient({ id, initialProgram }: { id: stri
         {/* MODAL REDIRECT TO INSCRIÇÃO */}
         {showInscricao && (
           <div className={styles.modalOverlay} onClick={() => setShowInscricao(false)}>
-            <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-              <button className={styles.closeBtn} onClick={() => setShowInscricao(false)}>&times;</button>
-              <h3>Candidatura ao {program.title}</h3>
-              <p>Será redirecionado para o formulário de candidatura oficial da ABN.</p>
-              <div className={styles.modalActions}>
+            <div className={styles.modal} onClick={e => e.stopPropagation()}>
+              <div className={styles.modalHeader}>
+                <h2>Candidatura ao {program.title}</h2>
+                <button className={styles.modalClose} onClick={() => setShowInscricao(false)}>&times;</button>
+              </div>
+              <div className={styles.modalBody}>
+                <p>Será redirecionado para o formulário de candidatura oficial da ABN.</p>
                 <button
-                  className={styles.applyBtnHero}
+                  className={styles.modalApplyBtn}
                   onClick={() => {
                     setShowInscricao(false);
                     router.push('/programas#candidatura');

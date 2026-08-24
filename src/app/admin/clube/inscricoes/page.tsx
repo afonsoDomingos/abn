@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Inscricoes.module.css';
 
 interface Inscricao {
@@ -118,8 +119,8 @@ export default function AdminInscricoesClubePage() {
       {/* Header */}
       <div className={styles.pageHeader}>
         <div>
-          <h1 className={styles.pageTitle}>🏛️ Inscrições — Clube dos Empreendedores</h1>
-          <p className={styles.pageSubtitle}>Gestão de candidatos ao Clube dos Empreendedores ABN</p>
+          <h1 className={styles.pageTitle}>🏛️ Inscrições — {getClubStepTitle('Clube dos Empreendedores ABN')}</h1>
+          <p className={styles.pageSubtitle}>Gestão de candidatos ao {getClubStepTitle('Clube dos Empreendedores ABN')}</p>
         </div>
         <button className={styles.refreshBtn} onClick={fetchInscricoes}>↻ Atualizar</button>
       </div>

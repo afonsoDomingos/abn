@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './HomeClubeEmpreendedores.module.css';
 
 export default function HomeClubeEmpreendedores() {
@@ -105,7 +106,7 @@ export default function HomeClubeEmpreendedores() {
             <div className={styles.statsCardHeader}>
               <span className={styles.statsIcon}>🏛️</span>
               <div>
-                <p className={styles.statsCardTitle}>Clube dos Empreendedores</p>
+                <p className={styles.statsCardTitle}>{getClubStepTitle('Clube dos Empreendedores')}</p>
                 <p className={styles.statsCardSub}>ABN | AfroBiz Network</p>
               </div>
             </div>
@@ -140,7 +141,7 @@ export default function HomeClubeEmpreendedores() {
             <div className={styles.modalHeader}>
               <div>
                 <h3 className={styles.modalTitle}>🏛️ Inscrição Rápida</h3>
-                <p className={styles.modalSub}>Clube dos Empreendedores — ABN</p>
+                <p className={styles.modalSub}>{getClubStepTitle('Clube dos Empreendedores')} — ABN</p>
               </div>
               <button className={styles.closeBtn} onClick={close}>✕</button>
             </div>

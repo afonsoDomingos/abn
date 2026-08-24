@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Programas.module.css';
 
 export interface CustomField {
@@ -390,7 +391,7 @@ export default function AdminProgramasPage() {
               className={`${styles.tabBtn} ${activeTab === 'clube' ? styles.activeTabBtn : ''}`}
               onClick={() => setActiveTab('clube')}
             >
-              🏛️ Clube de Empreendedores
+              🏛️ {title ? getClubStepTitle(title) : 'Clube de Empreendedores'}
             </button>
             <button
               type="button"
@@ -459,7 +460,7 @@ export default function AdminProgramasPage() {
                 <label>Tipo de Programa</label>
                 <select value={isClub ? 'clube' : 'programa'} onChange={e => setIsClub(e.target.value === 'clube')}>
                   <option value="programa">Programa Regular</option>
-                  <option value="clube">Clube de Empreendedores</option>
+                  <option value="clube">Clube (Programa de Membros)</option>
                 </select>
               </div>
               <div className={`${styles.field} ${styles.fullWidth}`}>
