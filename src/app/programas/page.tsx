@@ -464,7 +464,9 @@ export default function ProgramasPage() {
 
   const canProceed = () => {
     if (currentStep === 1) {
-      return form.nomeCompleto.trim() !== '' && form.email.trim() !== '';
+      const nomeValido = form.nomeCompleto.trim() !== '';
+      const emailValido = form.email.trim() !== '' && form.email.includes('@');
+      return nomeValido && emailValido;
     }
     if (currentStep === 3) {
       return form.nivelAdesao.trim() !== '';

@@ -106,18 +106,31 @@
 
 @media (max-width: 768px) {
   .dockWrapper {
-    bottom: 16px;
-    left: 16px;
+    bottom: 12px;
+    left: 12px;
+    gap: 6px;
   }
   .socialBtn {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
+  }
+  .socialBtn svg {
+    width: 14px;
+    height: 14px;
   }
   .triggerBtn {
-    height: 34px;
-    padding: 0 10px 0 8px;
+    height: 28px;
+    padding: 0 8px 0 6px;
+  }
+  .triggerIcon {
+    font-size: 0.75rem;
   }
   .triggerBadge {
-    font-size: 0.72rem;
+    font-size: 0.65rem;
+  }
+  .tooltip {
+    font-size: 0.65rem;
+    padding: 4px 8px;
+    left: 36px;
   }
 }
