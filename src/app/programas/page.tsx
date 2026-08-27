@@ -355,49 +355,11 @@ export default function ProgramasPage() {
         descricaoQuota = 'Nível não encontrado';
       }
     } else {
-      // Usar níveis padrão do Clube
-      switch (form.nivelAdesao) {
-        case 'jovem':
-          taxaInscricao = 300;
-          valorQuotaBase = 1000;
-          descricaoQuota = 'Jovem / Estudante';
-          break;
-        case 'individual':
-          taxaInscricao = 500;
-          valorQuotaBase = 2400;
-          descricaoQuota = 'Individual';
-          break;
-        case 'empresa':
-          taxaInscricao = 1500;
-          valorQuotaBase = 6000;
-          descricaoQuota = 'Empresa / PME';
-          break;
-        case 'corp-gold':
-          taxaInscricao = 5000;
-          valorQuotaBase = 20000;
-          descricaoQuota = 'Corporate Gold';
-          break;
-        case 'corp-platinum':
-          taxaInscricao = 10000;
-          valorQuotaBase = 40000;
-          descricaoQuota = 'Corporate Platinum';
-          break;
-        case 'corp-founding':
-          taxaInscricao = 0;
-          valorQuotaBase = 0;
-          descricaoQuota = 'Corporate Founding Partner';
-          break;
-        case 'honorario':
-          taxaInscricao = 0;
-          valorQuotaBase = 0;
-          descricaoQuota = 'Honorário (Isento)';
-          break;
-        default:
-          taxaInscricao = 0;
-          valorQuotaBase = 0;
-          descricaoQuota = 'Padrão';
-          break;
-      }
+      // Sem níveis customizados configurados - sem opções disponíveis
+      taxaInscricao = 0;
+      valorQuotaBase = 0;
+      descricaoQuota = 'Configure níveis de adesão no admin';
+      showPeriodicity = false;
     }
 
     let quotaCobrada = 0;
@@ -559,7 +521,11 @@ export default function ProgramasPage() {
                     className={styles.clubeInscBtn}
                     onClick={() => {
                       setSelectedProgram(clube);
-                      setForm(f => ({ ...f, nivelAdesao: 'individual' }));
+                      // Use first custom level if available, otherwise empty
+                      const firstLevel = clube.adhesionLevels && clube.adhesionLevels.length > 0 
+                        ? clube.adhesionLevels[0].id 
+                        : '';
+                      setForm(f => ({ ...f, nivelAdesao: firstLevel }));
                       setShowInquerito(true);
                     }}
                   >
@@ -755,7 +721,11 @@ export default function ProgramasPage() {
                           onClick={() => {
                             setSelectedProgram(prog);
                             if (prog.isClub) {
-                              setForm(f => ({ ...f, nivelAdesao: 'individual' }));
+                              // Use first custom level if available, otherwise empty
+                              const firstLevel = prog.adhesionLevels && prog.adhesionLevels.length > 0 
+                                ? prog.adhesionLevels[0].id 
+                                : '';
+                              setForm(f => ({ ...f, nivelAdesao: firstLevel }));
                             } else {
                               setForm(f => ({ ...f, nivelAdesao: 'formacao-7d' }));
                             }
@@ -1121,15 +1091,7 @@ export default function ProgramasPage() {
                                 label: level.label,
                                 sub: level.subLabel || `Inscrição ${level.inscriptionFee} MT | Quota anual ${level.annualQuota} MT`
                               }))
-                            : [
-                                { val: 'jovem', label: 'Jovem / Estudante', sub: 'Inscrição 300 MT | Quota anual 1.000 MT' },
-                                { val: 'individual', label: 'Individual', sub: 'Inscrição 500 MT | Quota anual 2.400 MT' },
-                                { val: 'empresa', label: 'Empresa / PME', sub: 'Inscrição 1.500 MT | Quota anual 6.000 MT' },
-                                { val: 'corp-gold', label: 'Corporativo — Corporate Gold', sub: '20.000 MT/ano' },
-                                { val: 'corp-platinum', label: 'Corporativo — Corporate Platinum', sub: '40.000 MT/ano' },
-                                { val: 'corp-founding', label: 'Corporativo — Corporate Founding Partner', sub: 'Pacote personalizado' },
-                                { val: 'honorario', label: 'Honorário', sub: 'Por convite da Direcção da ABN (isento)' },
-                              ]
+                            : []
                         ).map(opt => (
                           <label key={opt.val} className={`${styles.radioLabel} ${form.nivelAdesao === opt.val ? styles.radioLabelActive : ''}`}>
                             <input
