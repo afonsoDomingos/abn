@@ -45,6 +45,17 @@ interface Program {
   province?: string;
   declaracao?: string;
   customFields?: CustomField[];
+  adhesionLevels?: AdhesionLevel[];
+}
+
+export interface AdhesionLevel {
+  id: string;
+  label: string;
+  subLabel: string;
+  inscriptionFee: number;
+  annualQuota: number;
+  showPeriodicity: boolean;
+  required: boolean;
 }
 
 export default function AdminProgramasPage() {
@@ -55,8 +66,9 @@ export default function AdminProgramasPage() {
   const [saving, setSaving] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [msg, setMsg] = useState('');
-  const [activeTab, setActiveTab] = useState<'geral' | 'conteudo' | 'selecao' | 'clube' | 'inquerito'>('geral');
+  const [activeTab, setActiveTab] = useState<'geral' | 'conteudo' | 'selecao' | 'clube' | 'inquerito' | 'adesao'>('geral');
   const [customFields, setCustomFields] = useState<CustomField[]>([]);
+  const [adhesionLevels, setAdhesionLevels] = useState<AdhesionLevel[]>([]);
 
   // Form states
   const [title, setTitle] = useState('');
@@ -136,6 +148,7 @@ export default function AdminProgramasPage() {
     setLema(prog.lema || '');
     setDeclaracao(prog.declaracao || '');
     setCustomFields(prog.customFields || []);
+    setAdhesionLevels(prog.adhesionLevels || []);
     setActiveTab('geral');
     setShowForm(true);
   };
@@ -170,6 +183,7 @@ export default function AdminProgramasPage() {
     setLema('');
     setDeclaracao('');
     setCustomFields([]);
+    setAdhesionLevels([]);
     setActiveTab('geral');
     setShowForm(true);
   };
@@ -283,6 +297,7 @@ export default function AdminProgramasPage() {
       lema,
       declaracao,
       customFields,
+      adhesionLevels,
     };
 
     try {
@@ -399,6 +414,13 @@ export default function AdminProgramasPage() {
               onClick={() => setActiveTab('inquerito')}
             >
               📝 Inquérito Personalizado
+            </button>
+            <button
+              type="button"
+              className={`${styles.tabBtn} ${activeTab === 'adesao' ? styles.activeTabBtn : ''}`}
+              onClick={() => setActiveTab('adesao')}
+            >
+              💰 Níveis de Adesão
             </button>
           </div>
 
@@ -846,6 +868,161 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
                         placeholder="Ex: Exemplo de resposta esperada..."
                         style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
                       />
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
+          {activeTab === 'adesao' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1rem 0' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <h4 style={{ margin: 0, color: 'var(--primary, #ff6b00)', fontSize: '1.1rem' }}>
+                    Níveis de Adesão Personalizados
+                  </h4>
+                  <p style={{ margin: '0.2rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>
+                    Configure os níveis de adesão disponíveis para este programa. Se deixar vazio, serão usados os níveis padrão.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  style={{ background: 'var(--primary, #ff6b00)', color: '#fff', border: 'none', padding: '0.65rem 1.3rem', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' }}
+                  onClick={() => {
+                    setAdhesionLevels([
+                      ...adhesionLevels,
+                      { 
+                        id: Date.now().toString(), 
+                        label: '', 
+                        subLabel: '', 
+                        inscriptionFee: 0, 
+                        annualQuota: 0, 
+                        showPeriodicity: true, 
+                        required: false 
+                      }
+                    ]);
+                  }}
+                >
+                  + Adicionar Nível de Adesão
+                </button>
+              </div>
+
+              {adhesionLevels.length === 0 ? (
+                <div style={{ background: '#f8fafc', border: '2px dashed #cbd5e1', borderRadius: '14px', padding: '3rem 1.5rem', textAlign: 'center', color: '#64748b' }}>
+                  <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>💰</div>
+                  <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: '#334155' }}>Nenhum nível de adesão personalizado configurado.</p>
+                  <p style={{ margin: '0.3rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>Clique no botão "+ Adicionar Nível de Adesão" acima para personalizar os níveis disponíveis.</p>
+                </div>
+              ) : (
+                adhesionLevels.map((level, idx) => (
+                  <div key={level.id || idx} style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '16px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.8rem' }}>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', letterSpacing: '0.05em' }}>
+                        NÍVEL DE ADESÃO #{idx + 1}
+                      </span>
+                      <button
+                        type="button"
+                        style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', padding: '0.4rem 0.85rem', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}
+                        onClick={() => setAdhesionLevels(adhesionLevels.filter((_, i) => i !== idx))}
+                      >
+                        🗑️ Remover Nível
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.2rem' }}>
+                      <div className={styles.field}>
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Nome do Nível *</label>
+                        <input
+                          type="text"
+                          required
+                          value={level.label}
+                          onChange={e => {
+                            const updated = [...adhesionLevels];
+                            updated[idx].label = e.target.value;
+                            setAdhesionLevels(updated);
+                          }}
+                          placeholder="Ex: Jovem / Estudante"
+                          style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
+                        />
+                      </div>
+
+                      <div className={styles.field}>
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Subtítulo / Descrição Curta</label>
+                        <input
+                          type="text"
+                          value={level.subLabel}
+                          onChange={e => {
+                            const updated = [...adhesionLevels];
+                            updated[idx].subLabel = e.target.value;
+                            setAdhesionLevels(updated);
+                          }}
+                          placeholder="Ex: Inscrição 300 MT | Quota anual 1.000 MT"
+                          style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
+                        />
+                      </div>
+
+                      <div className={styles.field}>
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Taxa de Inscrição (MT)</label>
+                        <input
+                          type="number"
+                          value={level.inscriptionFee}
+                          onChange={e => {
+                            const updated = [...adhesionLevels];
+                            updated[idx].inscriptionFee = Number(e.target.value);
+                            setAdhesionLevels(updated);
+                          }}
+                          placeholder="0"
+                          min="0"
+                          style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
+                        />
+                      </div>
+
+                      <div className={styles.field}>
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Quota Anual (MT)</label>
+                        <input
+                          type="number"
+                          value={level.annualQuota}
+                          onChange={e => {
+                            const updated = [...adhesionLevels];
+                            updated[idx].annualQuota = Number(e.target.value);
+                            setAdhesionLevels(updated);
+                          }}
+                          placeholder="0"
+                          min="0"
+                          style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer' }}>
+                        <input
+                          type="checkbox"
+                          checked={level.showPeriodicity}
+                          onChange={e => {
+                            const updated = [...adhesionLevels];
+                            updated[idx].showPeriodicity = e.target.checked;
+                            setAdhesionLevels(updated);
+                          }}
+                          style={{ width: '18px', height: '18px', accentColor: '#ff6b00' }}
+                        />
+                        <span style={{ fontSize: '0.85rem', color: '#0f172a', fontWeight: 700 }}>Mostrar opções de periodicidade (mensal/trimestral/anual)</span>
+                      </label>
+
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer' }}>
+                        <input
+                          type="checkbox"
+                          checked={level.required}
+                          onChange={e => {
+                            const updated = [...adhesionLevels];
+                            updated[idx].required = e.target.checked;
+                            setAdhesionLevels(updated);
+                          }}
+                          style={{ width: '18px', height: '18px', accentColor: '#ff6b00' }}
+                        />
+                        <span style={{ fontSize: '0.85rem', color: '#0f172a', fontWeight: 700 }}>Obrigatório selecionar este nível</span>
+                      </label>
                     </div>
                   </div>
                 ))

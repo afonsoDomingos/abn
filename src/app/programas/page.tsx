@@ -37,6 +37,17 @@ interface Program {
   province?: string;
   declaracao?: string;
   customFields?: any[];
+  adhesionLevels?: AdhesionLevel[];
+}
+
+interface AdhesionLevel {
+  id: string;
+  label: string;
+  subLabel: string;
+  inscriptionFee: number;
+  annualQuota: number;
+  showPeriodicity: boolean;
+  required: boolean;
 }
 
 const FALLBACK_PROGRAMS: Program[] = [
@@ -323,61 +334,79 @@ export default function ProgramasPage() {
       };
     }
 
-    // Caso seja o Clube dos Empreendedores ABN
+    // Caso seja o Clube dos Empreendedores ABN ou programa com níveis customizados
     let taxaInscricao = 0;
     let valorQuotaBase = 0;
     let descricaoQuota = '';
+    let showPeriodicity = true;
 
-    switch (form.nivelAdesao) {
-      case 'jovem':
-        taxaInscricao = 300;
-        valorQuotaBase = 1000;
-        descricaoQuota = 'Jovem / Estudante';
-        break;
-      case 'individual':
-        taxaInscricao = 500;
-        valorQuotaBase = 2400;
-        descricaoQuota = 'Individual';
-        break;
-      case 'empresa':
-        taxaInscricao = 1500;
-        valorQuotaBase = 6000;
-        descricaoQuota = 'Empresa / PME';
-        break;
-      case 'corp-gold':
-        taxaInscricao = 5000;
-        valorQuotaBase = 20000;
-        descricaoQuota = 'Corporate Gold';
-        break;
-      case 'corp-platinum':
-        taxaInscricao = 10000;
-        valorQuotaBase = 40000;
-        descricaoQuota = 'Corporate Platinum';
-        break;
-      case 'corp-founding':
+    // Verificar se existem níveis de adesão customizados
+    if (selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0) {
+      const customLevel = selectedProgram.adhesionLevels.find(level => level.id === form.nivelAdesao);
+      if (customLevel) {
+        taxaInscricao = customLevel.inscriptionFee;
+        valorQuotaBase = customLevel.annualQuota;
+        descricaoQuota = customLevel.label;
+        showPeriodicity = customLevel.showPeriodicity;
+      } else {
+        // Fallback para padrão se não encontrar o nível
         taxaInscricao = 0;
         valorQuotaBase = 0;
-        descricaoQuota = 'Corporate Founding Partner';
-        break;
-      case 'honorario':
-        taxaInscricao = 0;
-        valorQuotaBase = 0;
-        descricaoQuota = 'Honorário (Isento)';
-        break;
-      default:
-        taxaInscricao = 0;
-        valorQuotaBase = 0;
-        descricaoQuota = 'Padrão';
-        break;
+        descricaoQuota = 'Nível não encontrado';
+      }
+    } else {
+      // Usar níveis padrão do Clube
+      switch (form.nivelAdesao) {
+        case 'jovem':
+          taxaInscricao = 300;
+          valorQuotaBase = 1000;
+          descricaoQuota = 'Jovem / Estudante';
+          break;
+        case 'individual':
+          taxaInscricao = 500;
+          valorQuotaBase = 2400;
+          descricaoQuota = 'Individual';
+          break;
+        case 'empresa':
+          taxaInscricao = 1500;
+          valorQuotaBase = 6000;
+          descricaoQuota = 'Empresa / PME';
+          break;
+        case 'corp-gold':
+          taxaInscricao = 5000;
+          valorQuotaBase = 20000;
+          descricaoQuota = 'Corporate Gold';
+          break;
+        case 'corp-platinum':
+          taxaInscricao = 10000;
+          valorQuotaBase = 40000;
+          descricaoQuota = 'Corporate Platinum';
+          break;
+        case 'corp-founding':
+          taxaInscricao = 0;
+          valorQuotaBase = 0;
+          descricaoQuota = 'Corporate Founding Partner';
+          break;
+        case 'honorario':
+          taxaInscricao = 0;
+          valorQuotaBase = 0;
+          descricaoQuota = 'Honorário (Isento)';
+          break;
+        default:
+          taxaInscricao = 0;
+          valorQuotaBase = 0;
+          descricaoQuota = 'Padrão';
+          break;
+      }
     }
 
     let quotaCobrada = 0;
     let desconto = 0;
     let periodoLabel = '';
 
-    if (form.nivelAdesao === 'honorario' || form.nivelAdesao === 'corp-founding') {
-      quotaCobrada = 0;
-      periodoLabel = 'Isento / Sob Consulta';
+    if (!showPeriodicity || valorQuotaBase === 0) {
+      quotaCobrada = valorQuotaBase;
+      periodoLabel = valorQuotaBase === 0 ? 'Isento / Sob Consulta' : 'Pagamento Único';
     } else if (form.formaPagamento === 'mensal') {
       quotaCobrada = Math.round(valorQuotaBase / 12);
       periodoLabel = 'Quota Mensal';
@@ -1086,15 +1115,21 @@ export default function ProgramasPage() {
                             { val: 'certificacao', label: 'Certificação em Soft Skills & Liderança', sub: '10.000 MT' },
                             { val: 'corporativo-b2b', label: 'Formação Corporativa B2B (In-Company / Equipa)', sub: 'Pacote sob consulta com a Direcção ABN' },
                           ]
-                          : [
-                            { val: 'jovem', label: 'Jovem / Estudante', sub: 'Inscrição 300 MT | Quota anual 1.000 MT' },
-                            { val: 'individual', label: 'Individual', sub: 'Inscrição 500 MT | Quota anual 2.400 MT' },
-                            { val: 'empresa', label: 'Empresa / PME', sub: 'Inscrição 1.500 MT | Quota anual 6.000 MT' },
-                            { val: 'corp-gold', label: 'Corporativo — Corporate Gold', sub: '20.000 MT/ano' },
-                            { val: 'corp-platinum', label: 'Corporativo — Corporate Platinum', sub: '40.000 MT/ano' },
-                            { val: 'corp-founding', label: 'Corporativo — Corporate Founding Partner', sub: 'Pacote personalizado' },
-                            { val: 'honorario', label: 'Honorário', sub: 'Por convite da Direcção da ABN (isento)' },
-                          ]
+                          : selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0
+                            ? selectedProgram.adhesionLevels.map(level => ({
+                                val: level.id,
+                                label: level.label,
+                                sub: level.subLabel || `Inscrição ${level.inscriptionFee} MT | Quota anual ${level.annualQuota} MT`
+                              }))
+                            : [
+                                { val: 'jovem', label: 'Jovem / Estudante', sub: 'Inscrição 300 MT | Quota anual 1.000 MT' },
+                                { val: 'individual', label: 'Individual', sub: 'Inscrição 500 MT | Quota anual 2.400 MT' },
+                                { val: 'empresa', label: 'Empresa / PME', sub: 'Inscrição 1.500 MT | Quota anual 6.000 MT' },
+                                { val: 'corp-gold', label: 'Corporativo — Corporate Gold', sub: '20.000 MT/ano' },
+                                { val: 'corp-platinum', label: 'Corporativo — Corporate Platinum', sub: '40.000 MT/ano' },
+                                { val: 'corp-founding', label: 'Corporativo — Corporate Founding Partner', sub: 'Pacote personalizado' },
+                                { val: 'honorario', label: 'Honorário', sub: 'Por convite da Direcção da ABN (isento)' },
+                              ]
                         ).map(opt => (
                           <label key={opt.val} className={`${styles.radioLabel} ${form.nivelAdesao === opt.val ? styles.radioLabelActive : ''}`}>
                             <input
@@ -1115,31 +1150,42 @@ export default function ProgramasPage() {
                       </div>
                     </div>
 
-                    {(!selectedProgram || selectedProgram.isClub) && (
-                      <div className={styles.formField} style={{ marginTop: '1rem' }}>
-                        <label>Periodicidade da quota</label>
-                        <div className={styles.radioGroupRow}>
-                          {[
-                            { val: 'anual', label: 'Anual (com desconto de 10%)' },
-                            { val: 'trimestral', label: 'Trimestral' },
-                            { val: 'mensal', label: 'Mensal' },
-                          ].map(opt => (
-                            <label key={opt.val} className={`${styles.radioLabelRow} ${form.formaPagamento === opt.val ? styles.radioLabelRowActive : ''}`}>
-                              <input
-                                type="radio"
-                                name="formaPagamento"
-                                className={styles.radioInput}
-                                value={opt.val}
-                                checked={form.formaPagamento === opt.val}
-                                onChange={() => setForm(f => ({ ...f, formaPagamento: opt.val }))}
-                              />
-                              <span className={styles.radioCircle}></span>
-                              {opt.label}
-                            </label>
-                          ))}
+                    {(!selectedProgram || selectedProgram.isClub) && (() => {
+                      // Verificar se o nível selecionado tem periodicidade configurada
+                      let showPeriodicity = true;
+                      if (selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0) {
+                        const selectedLevel = selectedProgram.adhesionLevels.find(level => level.id === form.nivelAdesao);
+                        if (selectedLevel) {
+                          showPeriodicity = selectedLevel.showPeriodicity;
+                        }
+                      }
+                      
+                      return showPeriodicity ? (
+                        <div className={styles.formField} style={{ marginTop: '1rem' }}>
+                          <label>Periodicidade da quota</label>
+                          <div className={styles.radioGroupRow}>
+                            {[
+                              { val: 'anual', label: 'Anual (com desconto de 10%)' },
+                              { val: 'trimestral', label: 'Trimestral' },
+                              { val: 'mensal', label: 'Mensal' },
+                            ].map(opt => (
+                              <label key={opt.val} className={`${styles.radioLabelRow} ${form.formaPagamento === opt.val ? styles.radioLabelRowActive : ''}`}>
+                                <input
+                                  type="radio"
+                                  name="formaPagamento"
+                                  className={styles.radioInput}
+                                  value={opt.val}
+                                  checked={form.formaPagamento === opt.val}
+                                  onChange={() => setForm(f => ({ ...f, formaPagamento: opt.val }))}
+                                />
+                                <span className={styles.radioCircle}></span>
+                                {opt.label}
+                              </label>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      ) : null;
+                    })()}
                   </div>
                 )}
 

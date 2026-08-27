@@ -41,6 +41,18 @@ const ProgramSchema = new Schema({
       required: { type: Boolean, default: false },
       placeholder: { type: String, default: '' }
     }
+  ],
+  // Custom adhesion levels for this program (optional)
+  adhesionLevels: [
+    {
+      id: { type: String, required: true },
+      label: { type: String, required: true },
+      subLabel: { type: String, default: '' },
+      inscriptionFee: { type: Number, default: 0 },
+      annualQuota: { type: Number, default: 0 },
+      showPeriodicity: { type: Boolean, default: true },
+      required: { type: Boolean, default: false }
+    }
   ]
 });
 
