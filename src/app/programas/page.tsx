@@ -289,48 +289,31 @@ export default function ProgramasPage() {
   const calculateTotalValues = () => {
     // Caso seja um programa regular (ex: Mentalidade Empreendedora) e não o Clube
     if (selectedProgram && !selectedProgram.isClub) {
-      let valorTotal = 0;
-      let descricaoQuota = '';
-
-      switch (form.nivelAdesao) {
-        case 'formacao-7d':
-          valorTotal = 8000;
-          descricaoQuota = 'Formação Intensiva (7 dias)';
-          break;
-        case 'formacao-15d':
-          valorTotal = 15000;
-          descricaoQuota = 'Formação Completa (15 dias)';
-          break;
-        case 'coaching-individual':
-          valorTotal = 2500;
-          descricaoQuota = 'Sessão de Coaching Individual (60-90 min)';
-          break;
-        case 'coaching-pacote':
-          valorTotal = 12000;
-          descricaoQuota = 'Pacote Trimestral de Coaching (6 sessões)';
-          break;
-        case 'certificacao':
-          valorTotal = 10000;
-          descricaoQuota = 'Certificação em Soft Skills & Liderança';
-          break;
-        case 'corporativo-b2b':
-          valorTotal = 0;
-          descricaoQuota = 'Formação Corporativa B2B (Sob Consulta)';
-          break;
-        default:
-          valorTotal = 8000;
-          descricaoQuota = 'Formação Básica';
-          break;
+      // Verificar se existem níveis de adesão customizados
+      if (selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0) {
+        const customLevel = selectedProgram.adhesionLevels.find(level => level.id === form.nivelAdesao);
+        if (customLevel) {
+          return {
+            taxaInscricao: customLevel.inscriptionFee,
+            valorQuotaBase: customLevel.annualQuota,
+            quotaCobrada: customLevel.annualQuota,
+            desconto: 0,
+            valorTotal: customLevel.inscriptionFee + customLevel.annualQuota,
+            descricaoQuota: customLevel.label,
+            periodoLabel: 'Inscrição na Formação / Pagamento Único',
+          };
+        }
       }
-
+      
+      // Sem níveis customizados configurados
       return {
         taxaInscricao: 0,
-        valorQuotaBase: valorTotal,
-        quotaCobrada: valorTotal,
+        valorQuotaBase: 0,
+        quotaCobrada: 0,
         desconto: 0,
-        valorTotal,
-        descricaoQuota,
-        periodoLabel: 'Inscrição na Formação / Pagamento Único',
+        valorTotal: 0,
+        descricaoQuota: 'Configure níveis de adesão no admin',
+        periodoLabel: 'Pagamento Único',
       };
     }
 
@@ -720,15 +703,11 @@ export default function ProgramasPage() {
                           className={styles.applyBtn}
                           onClick={() => {
                             setSelectedProgram(prog);
-                            if (prog.isClub) {
-                              // Use first custom level if available, otherwise empty
-                              const firstLevel = prog.adhesionLevels && prog.adhesionLevels.length > 0 
-                                ? prog.adhesionLevels[0].id 
-                                : '';
-                              setForm(f => ({ ...f, nivelAdesao: firstLevel }));
-                            } else {
-                              setForm(f => ({ ...f, nivelAdesao: 'formacao-7d' }));
-                            }
+                            // Use first custom level if available, otherwise empty
+                            const firstLevel = prog.adhesionLevels && prog.adhesionLevels.length > 0 
+                              ? prog.adhesionLevels[0].id 
+                              : '';
+                            setForm(f => ({ ...f, nivelAdesao: firstLevel }));
                             setShowInquerito(true);
                           }}
                         >
@@ -1076,22 +1055,13 @@ export default function ProgramasPage() {
                     </div>
                     <div className={styles.formField}>
                       <div className={styles.radioGroup}>
-                        {(selectedProgram && !selectedProgram.isClub
-                          ? [
-                            { val: 'formacao-7d', label: 'Formação Intensiva (7 dias)', sub: 'Mindset & Soft Skills | 8.000 MT – 18.000 MT' },
-                            { val: 'formacao-15d', label: 'Formação Completa (15 dias)', sub: 'Desenvolvimento Comportamental | 15.000 MT – 35.000 MT' },
-                            { val: 'coaching-individual', label: 'Sessão de Coaching Individual (60–90 min)', sub: '2.500 MT / sessão' },
-                            { val: 'coaching-pacote', label: 'Pacote Trimestral de Coaching (6 sessões)', sub: '12.000 MT / pacote' },
-                            { val: 'certificacao', label: 'Certificação em Soft Skills & Liderança', sub: '10.000 MT' },
-                            { val: 'corporativo-b2b', label: 'Formação Corporativa B2B (In-Company / Equipa)', sub: 'Pacote sob consulta com a Direcção ABN' },
-                          ]
-                          : selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0
-                            ? selectedProgram.adhesionLevels.map(level => ({
-                                val: level.id,
-                                label: level.label,
-                                sub: level.subLabel || `Inscrição ${level.inscriptionFee} MT | Quota anual ${level.annualQuota} MT`
-                              }))
-                            : []
+                        {(selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0
+                          ? selectedProgram.adhesionLevels.map(level => ({
+                              val: level.id,
+                              label: level.label,
+                              sub: level.subLabel || `Inscrição ${level.inscriptionFee} MT | Quota anual ${level.annualQuota} MT`
+                            }))
+                          : []
                         ).map(opt => (
                           <label key={opt.val} className={`${styles.radioLabel} ${form.nivelAdesao === opt.val ? styles.radioLabelActive : ''}`}>
                             <input
@@ -1112,7 +1082,7 @@ export default function ProgramasPage() {
                       </div>
                     </div>
 
-                    {(!selectedProgram || selectedProgram.isClub) && (() => {
+                    {(() => {
                       // Verificar se o nível selecionado tem periodicidade configurada
                       let showPeriodicity = true;
                       if (selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0) {
