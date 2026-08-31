@@ -295,7 +295,7 @@ export default function AdminComunicacaoPage() {
   }, []);
 
   const loadUsers = () => {
-    fetch('/api/users')
+    fetch('/api/admin/users')
       .then(res => res.json())
       .then(data => {
         if (data.success && data.users) {
