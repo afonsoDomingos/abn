@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       }, { status: 500 });
     }
 
-    const fromEmail = process.env.RESEND_FROM_EMAIL || DEFAULT_FROM_EMAIL;
+    const fromEmail = DEFAULT_FROM_EMAIL;
 
     // Handle single test email
     if (recipientTarget === 'test') {

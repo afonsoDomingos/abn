@@ -4,7 +4,13 @@ const resendApiKey = process.env.RESEND_API_KEY;
 
 export const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
-export const DEFAULT_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'ABN - AfroBiz Network <noreply@abnafrobiznetwork.com>';
+export const DEFAULT_FROM_EMAIL = (() => {
+  const envEmail = process.env.RESEND_FROM_EMAIL;
+  if (envEmail && !envEmail.includes('resend.dev')) {
+    return envEmail;
+  }
+  return 'ABN - AfroBiz Network <noreply@abnafrobiznetwork.com>';
+})();
 
 interface SendEmailParams {
   to: string | string[];
