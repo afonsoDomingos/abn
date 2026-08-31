@@ -91,19 +91,17 @@ export default function AdminComunicacaoPage() {
 
           <!-- Footer -->
           <tr>
-            <td style="background-color: #f8fafc; padding: 22px 28px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b;">
-              <p style="margin: 0 0 6px 0; font-weight: 700; color: #475569; font-size: 12px;">ABN - AfroBiz Network</p>
-              <p style="margin: 0 0 10px 0; color: #64748b;">A acelerar e conectar o ecossistema empresarial africano e lusófono.</p>
-              <p style="margin: 0; color: #94a3b8; font-size: 11px;">
-                Mensagem enviada para a conta registada na AfroBiz Network.<br/>
+            <td style="background-color: #f8fafc; padding: 12px 28px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b;">
+              <p style="margin: 0 0 3px 0; font-weight: 700; color: #475569; font-size: 12px;">ABN - AfroBiz Network</p>
+              <p style="margin: 0 0 3px 0; color: #94a3b8; font-size: 11px;">
                 © ${new Date().getFullYear()} AfroBiz Network Lda. Todos os direitos reservados.
               </p>
               
-              <!-- Discreet Partner Credit -->
-              <div style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #e2e8f0; text-align: center;">
-                <a href="https://wehosthere.com" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-block; opacity: 0.65;">
-                  <span style="font-size: 9px; color: #94a3b8; letter-spacing: 0.5px; vertical-align: middle; margin-right: 6px;">Powered by</span>
-                  <img src="https://abnafrobiznetwork.com/wehosthere.png" alt="WeHosThere" width="42" style="vertical-align: middle; display: inline-block; border: 0;" />
+              <!-- Partner Credit -->
+              <div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e2e8f0; text-align: center;">
+                <a href="https://www.wehosthere.com/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; opacity: 0.7;">
+                  <span style="font-size: 9px; color: #94a3b8; letter-spacing: 0.5px; vertical-align: middle;">Hosted by</span>
+                  <img src="https://abnafrobiznetwork.com/wehosthere.png" alt="WeHosThere" width="38" style="display: inline-block; border: 0; vertical-align: middle;" />
                 </a>
               </div>
             </td>
