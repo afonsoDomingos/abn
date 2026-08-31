@@ -218,30 +218,37 @@ export default function ProgramasPage() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   const getActiveSteps = () => {
-    const defaultSteps = {
-      identificacao: true,
-      negocio: true,
-      adesao: Boolean(selectedProgram?.isClub || (selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0)),
-      interesses: true,
-      origem: Boolean(selectedProgram?.isClub),
-      declaracao: true,
-      checkout: selectedProgram?.price?.toLowerCase() !== 'gratuito' && selectedProgram?.paymentType !== 'free',
-    };
+    const isFree = selectedProgram?.price?.toLowerCase() === 'gratuito' || selectedProgram?.paymentType === 'free';
+    const isClubProg = Boolean(selectedProgram?.isClub);
 
-    const cfg = selectedProgram?.enabledSteps ? { ...defaultSteps, ...selectedProgram.enabledSteps } : defaultSteps;
+    // If program has explicit enabledSteps configured in admin:
+    if (selectedProgram?.enabledSteps && Object.keys(selectedProgram.enabledSteps).length > 0) {
+      const cfg = selectedProgram.enabledSteps;
+      const allSteps = [
+        { key: 'identificacao', label: 'Identificação' },
+        { key: 'negocio', label: 'Negócio' },
+        { key: 'adesao', label: 'Adesão' },
+        { key: 'interesses', label: 'Interesses' },
+        { key: 'origem', label: 'Origem' },
+        { key: 'declaracao', label: 'Declaração' },
+        { key: 'checkout', label: 'Checkout 💳' },
+      ];
+      const filtered = allSteps.filter(s => cfg[s.key as keyof typeof cfg] === true);
+      if (filtered.length > 0) return filtered;
+    }
 
-    const allSteps = [
-      { key: 'identificacao', origNum: 1, label: 'Identificação', icon: '1' },
-      { key: 'negocio', origNum: 2, label: 'Negócio', icon: '2' },
-      { key: 'adesao', origNum: 3, label: 'Adesão', icon: '3' },
-      { key: 'interesses', origNum: 4, label: 'Interesses', icon: '4' },
-      { key: 'origem', origNum: 5, label: 'Origem', icon: '5' },
-      { key: 'declaracao', origNum: 6, label: 'Declaração', icon: '6' },
-      { key: 'checkout', origNum: 7, label: 'Checkout 💳', icon: '7' },
+    // Default fallback when enabledSteps is not set:
+    const defaultSteps = [
+      { key: 'identificacao', label: 'Identificação' },
+      { key: 'negocio', label: 'Negócio' },
+      ...(isClubProg || (selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0) ? [{ key: 'adesao', label: 'Adesão' }] : []),
+      { key: 'interesses', label: 'Interesses' },
+      ...(isClubProg ? [{ key: 'origem', label: 'Origem' }] : []),
+      { key: 'declaracao', label: 'Declaração' },
+      ...(!isFree ? [{ key: 'checkout', label: 'Checkout 💳' }] : []),
     ];
 
-    const filtered = allSteps.filter(s => cfg[s.key as keyof typeof cfg] !== false);
-    return filtered.length > 0 ? filtered : allSteps;
+    return defaultSteps;
   };
 
   const activeSteps = getActiveSteps();
@@ -705,7 +712,7 @@ const canProceed = () => {
                   <div className={styles.clubeExpandedCTA}>
                     <button
                       className={styles.clubeInscBtn}
-                      onClick={() => setShowInquerito(true)}
+                      onClick={() => { setSelectedProgram(clube); setCurrentStepIndex(0); setShowInquerito(true); }}
                     >
                       Preencher Inquérito de Inscrição
                     </button>
@@ -1059,45 +1066,37 @@ const canProceed = () => {
                 {/* Progress Indicator */}
                 <div className={styles.wizardProgress}>
                   <div className={styles.progressSteps}>
-                    {Array.from({ length: totalSteps }, (_, i) => (
+                    {activeSteps.map((step, idx) => (
                       <div
-                        key={i + 1}
-                        className={`${styles.progressStep} ${currentStep === i + 1 ? styles.activeStep : ''} ${currentStep > i + 1 ? styles.completedStep : ''}`}
-                        onClick={() => currentStep > i + 1 && setCurrentStepIndex(i + 1)}
+                        key={step.key}
+                        className={`${styles.progressStep} ${currentStepIndex === idx ? styles.activeStep : ''} ${currentStepIndex > idx ? styles.completedStep : ''}`}
+                        onClick={() => currentStepIndex > idx && setCurrentStepIndex(idx)}
                       >
-                        <span className={styles.stepNumber}>{currentStep > i + 1 ? '✓' : i + 1}</span>
-                        <span className={styles.stepLabel}>
-                          {i + 1 === 1 && 'Identificação'}
-                          {i + 1 === 2 && 'Negócio'}
-                          {i + 1 === 3 && 'Adesão'}
-                          {i + 1 === 4 && 'Interesses'}
-                          {i + 1 === 5 && 'Origem'}
-                          {i + 1 === 6 && 'Declaração'}
-                          {i + 1 === 7 && 'Checkout 💳'}
-                        </span>
+                        <span className={styles.stepNumber}>{currentStepIndex > idx ? '✓' : idx + 1}</span>
+                        <span className={styles.stepLabel}>{step.label}</span>
                       </div>
                     ))}
                   </div>
                   <div className={styles.progressBar}>
-                    <div className={styles.progressFill} style={{ width: `${(currentStep / totalSteps) * 100}%` }}></div>
+                    <div className={styles.progressFill} style={{ width: `${((currentStepIndex + 1) / totalSteps) * 100}%` }}></div>
                   </div>
                 </div>
 
                 <p className={styles.formIntro}>
-                  {currentStep === 1 && `Preencha os campos abaixo. Os dados fornecidos serão utilizados exclusivamente para fins de gestão da sua ${selectedProgram?.isClub ? `adesão ao ${getClubStepTitle(selectedProgram?.title || 'Clube dos Empreendedores ABN')}` : 'candidatura ao ' + selectedProgram?.title}.`}
-                  {currentStep === 2 && 'Informações sobre o seu negócio ou actividade (opcional).'}
-                  {currentStep === 3 && selectedProgram?.isClub ? 'Seleccione o nível de adesão pretendido e a periodicidade da quota.' : 'Seleccione a modalidade de participação pretendida.'}
-                  {currentStep === 4 && selectedProgram?.isClub ? 'Seleccione as áreas de interesse (pode seleccionar múltiplas).' : 'Responda às perguntas personalizadas do programa.'}
-                  {currentStep === 5 && selectedProgram?.isClub ? `Como conheceu o ${getClubStepTitle(selectedProgram?.title || 'Clube dos Empreendedores ABN')}?` : ''}
-                  {currentStep === 6 && 'Revise a declaração e assine para avançar para o checkout de pagamento.'}
-                  {currentStep === 7 && 'Revise os seus dados, confira os valores calculados automaticamente e selecione a forma de pagamento para concluir.'}
+                  {currentActiveStep.key === 'identificacao' && `Preencha os campos abaixo. Os dados fornecidos serão utilizados exclusivamente para fins de gestão da sua ${selectedProgram?.isClub ? `adesão ao ${getClubStepTitle(selectedProgram?.title || 'Clube dos Empreendedores ABN')}` : 'candidatura ao ' + selectedProgram?.title}.`}
+                  {currentActiveStep.key === 'negocio' && 'Informações sobre o seu negócio ou actividade (opcional).'}
+                  {currentActiveStep.key === 'adesao' && (selectedProgram?.isClub ? 'Seleccione o nível de adesão pretendido e a periodicidade da quota.' : 'Seleccione a modalidade de participação pretendida.')}
+                  {currentActiveStep.key === 'interesses' && (selectedProgram?.isClub ? 'Seleccione as áreas de interesse (pode seleccionar múltiplas).' : 'Responda às perguntas personalizadas do programa.')}
+                  {currentActiveStep.key === 'origem' && `Como conheceu o ${getClubStepTitle(selectedProgram?.title || 'Clube dos Empreendedores ABN')}?`}
+                  {currentActiveStep.key === 'declaracao' && 'Revise a declaração e assine para concluir a sua inscrição.'}
+                  {currentActiveStep.key === 'checkout' && 'Revise os seus dados, confira os valores calculados e selecione a forma de pagamento para concluir.'}
                 </p>
 
                 {/* ── SECÇÃO 1 ── */}
                 {currentActiveStep.key === 'identificacao' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
-                      <span className={styles.formSectionNumber}>1</span>
+                      <span className={styles.formSectionNumber}>{currentStepIndex + 1}</span>
                       <h3>Dados de Identificação</h3>
                     </div>
                     <div className={styles.formGrid2}>
@@ -1166,7 +1165,7 @@ const canProceed = () => {
                 {currentActiveStep.key === 'negocio' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
-                      <span className={styles.formSectionNumber}>2</span>
+                      <span className={styles.formSectionNumber}>{currentStepIndex + 1}</span>
                       <h3>Dados do Negócio / Actividade <span className={styles.optional}>(quando aplicável)</span></h3>
                     </div>
                     <div className={styles.formGrid2}>
@@ -1234,7 +1233,7 @@ const canProceed = () => {
                 {currentActiveStep.key === 'adesao' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
-                      <span className={styles.formSectionNumber}>3</span>
+                      <span className={styles.formSectionNumber}>{currentStepIndex + 1}</span>
                       <h3>
                         {selectedProgram && !selectedProgram.isClub
                           ? `Modalidade de Formação / Participação (${selectedProgram.title})`
@@ -1313,7 +1312,7 @@ const canProceed = () => {
                 {currentActiveStep.key === 'interesses' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
-                      <span className={styles.formSectionNumber}>4</span>
+                      <span className={styles.formSectionNumber}>{currentStepIndex + 1}</span>
                       <h3>Áreas de Interesse &amp; Inquérito {selectedProgram ? `— ${selectedProgram.title}` : ''}</h3>
                     </div>
 
@@ -1452,7 +1451,7 @@ const canProceed = () => {
                 {currentActiveStep.key === 'origem' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
-                      <span className={styles.formSectionNumber}>5</span>
+                      <span className={styles.formSectionNumber}>{currentStepIndex + 1}</span>
                       <h3>Como conheceu o {getClubStepTitle(selectedProgram?.title || 'Clube dos Empreendedores ABN')}?</h3>
                     </div>
                     <div className={styles.radioGroupCol}>
@@ -1502,7 +1501,7 @@ const canProceed = () => {
                 {currentActiveStep.key === 'declaracao' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
-                      <span className={styles.formSectionNumber}>6</span>
+                      <span className={styles.formSectionNumber}>{currentStepIndex + 1}</span>
                       <h3>Declaração</h3>
                     </div>
                     <div className={styles.declaracaoBox}>
@@ -1565,7 +1564,7 @@ const canProceed = () => {
                   return (
                     <div className={styles.formSection}>
                       <div className={styles.formSectionHeader}>
-                        <span className={styles.formSectionNumber}>7</span>
+                        <span className={styles.formSectionNumber}>{currentStepIndex + 1}</span>
                         <h3>Resumo da Candidatura &amp; Checkout de Pagamento 💳</h3>
                       </div>
 
