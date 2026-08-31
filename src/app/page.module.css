@@ -7,7 +7,7 @@
 /* Footer Section Styling (3 levels matching Orange Corners) */
 .footer {
   padding: 0;
-  margin-top: 100px;
+  margin-top: 40px;
   width: 100%;
   border: none;
 }
@@ -21,7 +21,7 @@
 /* Level 1: Royal Blue Header Footer */
 .footerTop {
   background-color: var(--secondary);
-  padding: 5rem 2rem;
+  padding: 3rem 2rem;
   color: #ffffff;
 }
 
