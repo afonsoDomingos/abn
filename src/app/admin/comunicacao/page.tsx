@@ -31,6 +31,7 @@ export default function AdminComunicacaoPage() {
   const [userSearchTerm, setUserSearchTerm] = useState('');
   const [sending, setSending] = useState(false);
   const [sendingTest, setSendingTest] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error' | 'info' | ''; text: string }>({ type: '', text: '' });
   const [userStats, setUserStats] = useState<{ total: number; empreendedores: number; investidores: number; empresas: number }>({
     total: 0,
@@ -330,6 +331,14 @@ export default function AdminComunicacaoPage() {
     return userStats.total;
   };
 
+  const getTargetLabel = () => {
+    if (recipientTarget === 'single') return `Utilizador Específico (${specificEmail || 'Não definido'})`;
+    if (recipientTarget === 'empreendedor') return 'Empreendedores';
+    if (recipientTarget === 'investidor') return 'Investidores e Mentores';
+    if (recipientTarget === 'empresa') return 'Empresas e Parceiros';
+    return 'Todos os Utilizadores Registados';
+  };
+
   // Send test email
   const handleSendTest = async () => {
     if (!testEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(testEmail)) {
@@ -370,8 +379,8 @@ export default function AdminComunicacaoPage() {
     }
   };
 
-  // Broadcast or send to specific user
-  const handleBroadcast = async (e: React.FormEvent) => {
+  // Open custom modal validation
+  const handleOpenConfirm = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!subject.trim() || !html.trim()) {
@@ -386,19 +395,12 @@ export default function AdminComunicacaoPage() {
       }
     }
 
-    const count = getTargetCount();
-    const targetLabel = 
-      recipientTarget === 'single' ? `o utilizador (${specificEmail})` :
-      recipientTarget === 'empreendedor' ? 'Empreendedores' :
-      recipientTarget === 'investidor' ? 'Investidores' :
-      recipientTarget === 'empresa' ? 'Empresas' : 'todos os utilizadores';
+    setShowConfirmModal(true);
+  };
 
-    const confirmed = window.confirm(
-      `Confirma o envio desta mensagem para ${targetLabel} (${count} destinatário${count > 1 ? 's' : ''})?`
-    );
-
-    if (!confirmed) return;
-
+  // Execute broadcast or send to specific user after custom modal confirmation
+  const handleExecuteSend = async () => {
+    setShowConfirmModal(false);
     setSending(true);
     setStatusMsg({ type: 'info', text: 'A processar envio de mensagem...' });
 
@@ -788,7 +790,7 @@ export default function AdminComunicacaoPage() {
             {/* Final Broadcast Trigger Button */}
             <button
               type="button"
-              onClick={handleBroadcast}
+              onClick={handleOpenConfirm}
               disabled={sending}
               style={{
                 background: '#ff6b00',
@@ -915,6 +917,110 @@ export default function AdminComunicacaoPage() {
         </div>
 
       </div>
+
+      {/* Custom Confirmation Modal Dialog */}
+      {showConfirmModal && (
+        <div 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.65)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '20px'
+          }}
+          onClick={() => setShowConfirmModal(false)}
+        >
+          <div 
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              maxWidth: '520px',
+              width: '100%',
+              padding: '2rem',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+              border: '1px solid #e2e8f0',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.2rem'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div>
+              <h3 style={{ margin: '0 0 0.3rem 0', fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>
+                Confirmar Envio de Mensagem
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.88rem', color: '#64748b' }}>
+                Por favor, reveja os dados da transmissão antes de confirmar o disparo.
+              </p>
+            </div>
+
+            {/* Summary Details Box */}
+            <div style={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #edf2f7', paddingBottom: '6px' }}>
+                <span style={{ color: '#64748b' }}>Destinatário:</span>
+                <strong style={{ color: '#0f172a', textAlign: 'right' }}>{getTargetLabel()}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #edf2f7', paddingBottom: '6px' }}>
+                <span style={{ color: '#64748b' }}>Total de Envios:</span>
+                <strong style={{ color: '#ff6b00' }}>{getTargetCount()} destinatário{getTargetCount() > 1 ? 's' : ''}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #edf2f7', paddingBottom: '6px' }}>
+                <span style={{ color: '#64748b' }}>Assunto:</span>
+                <strong style={{ color: '#0f172a', maxWidth: '280px', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{subject}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>Remetente:</span>
+                <span style={{ color: '#475569', fontSize: '0.78rem' }}>noreply@abnafrobiznetwork.com</span>
+              </div>
+            </div>
+
+            <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4 }}>
+              Esta ação enviará os e-mails instantaneamente através da infraestrutura segura do Resend.
+            </div>
+
+            {/* Actions */}
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+              <button
+                type="button"
+                onClick={() => setShowConfirmModal(false)}
+                style={{
+                  padding: '10px 18px',
+                  borderRadius: '8px',
+                  border: '1px solid #cbd5e1',
+                  backgroundColor: '#ffffff',
+                  color: '#475569',
+                  fontSize: '0.88rem',
+                  fontWeight: 600,
+                  cursor: 'pointer'
+                }}
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleExecuteSend}
+                style={{
+                  padding: '10px 22px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  backgroundColor: '#ff6b00',
+                  color: '#ffffff',
+                  fontSize: '0.88rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(255, 107, 0, 0.25)'
+                }}
+              >
+                Confirmar e Enviar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
