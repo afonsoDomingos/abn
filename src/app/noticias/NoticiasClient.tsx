@@ -160,7 +160,7 @@ export default function NoticiasClient({ initialPosts }: NoticiasClientProps) {
           <input
             type="text"
             className={styles.searchInput}
-            placeholder="🔎 Procurar notícias, histórias ou comunicados..."
+            placeholder="Procurar notícias, histórias ou comunicados..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
@@ -182,7 +182,6 @@ export default function NoticiasClient({ initialPosts }: NoticiasClientProps) {
       <div className={styles.newsGrid}>
         {filteredPosts.length === 0 ? (
           <div className={styles.empty}>
-            <span>🔍</span>
             <p>Nenhuma publicação encontrada para os filtros selecionados.</p>
           </div>
         ) : (
@@ -191,15 +190,15 @@ export default function NoticiasClient({ initialPosts }: NoticiasClientProps) {
               <div className={styles.imgWrapper}>
                 <img src={p.imageUrl || '/articles/ambassador-day.png'} alt={p.title} className={styles.cardImg} />
                 <span className={styles.typeBadge}>{getLabelByType(p.type)}</span>
-                {p.location && <span className={styles.locationBadge}>📍 {p.location}</span>}
+                {p.location && <span className={styles.locationBadge}>{p.location}</span>}
               </div>
 
               <div className={styles.cardContent}>
                 <div className={styles.cardMeta}>
-                  <span>📅 {formatDateLong(p.date)}</span>
+                  <span>{formatDateLong(p.date)}</span>
                   <div className={styles.metaStats}>
-                    <span>👁️ {p.views}</span>
-                    <span>💬 {p.comments?.length || 0}</span>
+                    <span>{p.views} views</span>
+                    <span>{p.comments?.length || 0} comentários</span>
                   </div>
                 </div>
 
@@ -226,9 +225,9 @@ export default function NoticiasClient({ initialPosts }: NoticiasClientProps) {
                 <span className={styles.typeBadge} style={{ position: 'static' }}>
                   {getLabelByType(selectedPost.type)}
                 </span>
-                <span>📅 {formatDateLong(selectedPost.date)}</span>
-                {selectedPost.location && <span>📍 {selectedPost.location}</span>}
-                <span>👁️ {selectedPost.views} visualizações</span>
+                <span>{formatDateLong(selectedPost.date)}</span>
+                {selectedPost.location && <span>{selectedPost.location}</span>}
+                <span>{selectedPost.views} visualizações</span>
               </div>
               <h2>{selectedPost.title}</h2>
             </div>

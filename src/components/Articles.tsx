@@ -148,8 +148,8 @@ export default function Articles() {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                       <span className={styles.date} style={{ margin: 0 }}>{item.date}</span>
                       <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                        <span title="Visualizações" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>👁️ {viewsMap[item.title] || 0}</span>
-                        <span title="Comentários" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>💬 {(commentsMap[item.title] || []).length}</span>
+                        <span title="Visualizações" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>{viewsMap[item.title] || 0} visualizações</span>
+                        <span title="Comentários" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>{(commentsMap[item.title] || []).length} comentários</span>
                       </div>
                     </div>
                     <p className={styles.desc}>{desc}</p>

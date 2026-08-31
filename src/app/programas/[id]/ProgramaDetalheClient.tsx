@@ -223,7 +223,7 @@ export default function ProgramaDetalheClient({ id, initialProgram }: { id: stri
   const handleShareTwitter = () => {
     if (!program) return;
     const url = window.location.href;
-    const text = `Confira o programa *${program.title}* da AfroBiz Network (ABN)! 🚀`;
+    const text = `Confira o programa *${program.title}* da AfroBiz Network (ABN)!`;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
@@ -252,7 +252,6 @@ export default function ProgramaDetalheClient({ id, initialProgram }: { id: stri
       <>
         <Navbar />
         <main className={styles.notFoundPage}>
-          <span style={{ fontSize: '4rem' }}>🔍</span>
           <h1>Programa não encontrado</h1>
           <p>O programa que procura não existe ou foi removido.</p>
           <Link href="/programas" className={styles.backBtn}>← Ver todos os Programas</Link>
@@ -260,8 +259,6 @@ export default function ProgramaDetalheClient({ id, initialProgram }: { id: stri
       </>
     );
   }
-
-  const phaseIcon = phaseIcons[program.phase || ''] || '📋';
 
   return (
     <>
@@ -278,14 +275,14 @@ export default function ProgramaDetalheClient({ id, initialProgram }: { id: stri
             <div className={styles.heroBadges}>
               {program.phase && (
                 <span className={styles.phaseBadge}>
-                  {phaseIcon} {program.phase}
+                  {program.phase}
                 </span>
               )}
               {program.duration && (
-                <span className={styles.durationBadge}>⏱️ {program.duration}</span>
+                <span className={styles.durationBadge}>{program.duration}</span>
               )}
               {program.isClub && (
-                <span className={styles.clubBadge}>👑 {getClubStepTitle(program.title)}</span>
+                <span className={styles.clubBadge}>{getClubStepTitle(program.title)}</span>
               )}
             </div>
             <h1 className={styles.heroTitle}>{program.title}</h1>
@@ -295,10 +292,10 @@ export default function ProgramaDetalheClient({ id, initialProgram }: { id: stri
                 className={styles.applyBtnHero}
                 onClick={() => setShowInscricao(true)}
               >
-                ✍️ Candidatar-me a este Programa
+                Candidatar-me a este Programa
               </button>
               <button className={styles.shareBtnHero} onClick={handleCopyLink}>
-                {copied ? '✅ Link Copiado!' : '🔗 Copiar Link'}
+                {copied ? 'Link Copiado!' : 'Copiar Link'}
               </button>
             </div>
           </div>
@@ -324,42 +321,36 @@ export default function ProgramaDetalheClient({ id, initialProgram }: { id: stri
               <div className={styles.detailsGrid}>
                 {program.publicoAlvo && (
                   <div className={styles.detailCard}>
-                    <div className={styles.detailCardIcon}>🎯</div>
                     <h3>Público-Alvo</h3>
                     <p style={{ whiteSpace: 'pre-line' }}>{program.publicoAlvo}</p>
                   </div>
                 )}
                 {program.beneficios && (
                   <div className={styles.detailCard}>
-                    <div className={styles.detailCardIcon}>🎁</div>
                     <h3>Benefícios &amp; Oportunidades</h3>
                     <p style={{ whiteSpace: 'pre-line' }}>{program.beneficios}</p>
                   </div>
                 )}
                 {program.requisitos && (
                   <div className={styles.detailCard}>
-                    <div className={styles.detailCardIcon}>📋</div>
                     <h3>Requisitos de Elegibilidade</h3>
                     <p style={{ whiteSpace: 'pre-line' }}>{program.requisitos}</p>
                   </div>
                 )}
                 {program.investimento && (
                   <div className={styles.detailCard}>
-                    <div className={styles.detailCardIcon}>💎</div>
                     <h3>Investimento &amp; Custos</h3>
                     <p style={{ whiteSpace: 'pre-line' }}>{program.investimento}</p>
                   </div>
                 )}
                 {program.processoSelecao && (
                   <div className={styles.detailCard}>
-                    <div className={styles.detailCardIcon}>🔄</div>
                     <h3>Processo de Admissão</h3>
                     <p style={{ whiteSpace: 'pre-line' }}>{program.processoSelecao}</p>
                   </div>
                 )}
                 {program.criteriosSelecao && (
                   <div className={styles.detailCard}>
-                    <div className={styles.detailCardIcon}>⚖️</div>
                     <h3>Critérios de Seleção</h3>
                     <p style={{ whiteSpace: 'pre-line' }}>{program.criteriosSelecao}</p>
                   </div>
@@ -379,27 +370,27 @@ export default function ProgramaDetalheClient({ id, initialProgram }: { id: stri
                     className={styles.applyBtnLarge}
                     onClick={() => setShowInscricao(true)}
                   >
-                    ✍️ Candidatar-me Agora
+                    Candidatar-me Agora
                   </button>
                   <div className={styles.shareRow}>
                     <span className={styles.shareLabel}>Partilhar programa:</span>
                     <button className={styles.copyBtnSm} onClick={handleCopyLink} title="Copiar Link">
-                      {copied ? '✅ Copiado!' : '🔗 Copiar Link'}
+                      {copied ? 'Copiado!' : 'Copiar Link'}
                     </button>
                     <button className={styles.waBtnSm} onClick={handleShareWhatsApp} title="Partilhar no WhatsApp">
-                      📱 WhatsApp
+                      WhatsApp
                     </button>
                     <button className={styles.linkedinBtnSm} onClick={handleShareLinkedIn} title="Partilhar no LinkedIn">
-                      🔗 LinkedIn
+                      LinkedIn
                     </button>
                     <button className={styles.facebookBtnSm} onClick={handleShareFacebook} title="Partilhar no Facebook">
-                      📘 Facebook
+                      Facebook
                     </button>
                     <button className={styles.twitterBtnSm} onClick={handleShareTwitter} title="Partilhar no Twitter / X">
-                      𝕏 Twitter
+                      Twitter
                     </button>
                     <button className={styles.emailBtnSm} onClick={handleShareEmail} title="Enviar por E-mail">
-                      ✉️ E-mail
+                      E-mail
                     </button>
                   </div>
                 </div>

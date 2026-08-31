@@ -241,7 +241,6 @@ export default function EspecialistasPage() {
                         </div>
                     ) : filtered.length === 0 ? (
                         <div className={styles.empty}>
-                            <span style={{ fontSize: '3rem' }}>🔍</span>
                             <p>Nenhum especialista encontrado nesta categoria.</p>
                         </div>
                     ) : (
@@ -266,9 +265,9 @@ export default function EspecialistasPage() {
                                         <div className={styles.cardContent}>
                                             <div className={styles.badges}>
                                                 {s.category && <span className={styles.catBadge}>{s.category}</span>}
-                                                <span className={styles.countryBadge}>📍 {s.country || 'Moçambique'}</span>
+                                                <span className={styles.countryBadge}>{s.country || 'Moçambique'}</span>
                                                 <span className={styles.countryBadge} style={{ background: '#f8fafc', color: '#475569', border: '1px solid #cbd5e1' }}>
-                                                    👁️ {s.views || 0}
+                                                    {s.views || 0} views
                                                 </span>
                                             </div>
 
@@ -298,7 +297,7 @@ export default function EspecialistasPage() {
                                                     <div className={styles.expertiseLabel}>Áreas de Actuação</div>
                                                     <div className={styles.tags}>
                                                         {s.expertise.slice(0, 4).map((e, i) => (
-                                                            <span key={i} className={styles.tag}>{e}</span>
+                                                             <span key={i} className={styles.tag}>{e}</span>
                                                         ))}
                                                         {s.expertise.length > 4 && (
                                                             <span className={styles.tagMore}>+{s.expertise.length - 4}</span>
@@ -311,16 +310,16 @@ export default function EspecialistasPage() {
                                             {(s.linkedin || s.website || s.email || s.phone) && (
                                                 <div className={styles.socialRow}>
                                                     {s.linkedin && (
-                                                        <a href={s.linkedin} target="_blank" rel="noopener noreferrer" className={styles.socialBtn} style={{ color: '#0a66c2' }} title="LinkedIn">🔗 LinkedIn</a>
+                                                        <a href={s.linkedin} target="_blank" rel="noopener noreferrer" className={styles.socialBtn} style={{ color: '#0a66c2' }} title="LinkedIn">LinkedIn</a>
                                                     )}
                                                     {s.website && (
-                                                        <a href={s.website} target="_blank" rel="noopener noreferrer" className={styles.socialBtn} style={{ color: '#ff6b00' }} title="Portfólio">🌐 Portfólio</a>
+                                                        <a href={s.website} target="_blank" rel="noopener noreferrer" className={styles.socialBtn} style={{ color: '#ff6b00' }} title="Portfólio">Portfólio</a>
                                                     )}
                                                     {s.email && (
-                                                        <a href={`mailto:${s.email}`} className={styles.socialBtn} style={{ color: '#10b981' }} title="E-mail">✉️ E-mail</a>
+                                                        <a href={`mailto:${s.email}`} className={styles.socialBtn} style={{ color: '#10b981' }} title="E-mail">E-mail</a>
                                                     )}
                                                     {s.phone && (
-                                                        <a href={`https://wa.me/${s.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className={styles.socialBtn} style={{ color: '#25d366' }} title="WhatsApp">📱 WhatsApp</a>
+                                                        <a href={`https://wa.me/${s.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className={styles.socialBtn} style={{ color: '#25d366' }} title="WhatsApp">WhatsApp</a>
                                                     )}
                                                 </div>
                                             )}
@@ -330,7 +329,7 @@ export default function EspecialistasPage() {
                                                     href={`/especialistas/${slugify(s.name)}`}
                                                     style={{ flex: 1, minWidth: '130px', textAlign: 'center', background: '#f1f5f9', color: '#0f172a', border: '1px solid #cbd5e1', padding: '0.65rem 0.8rem', borderRadius: '10px', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none', transition: 'all 0.2s' }}
                                                 >
-                                                    👤 Ver Perfil
+                                                    Ver Perfil
                                                 </Link>
                                                 <Link
                                                     href={`/contacto?assunto=Solicitar+Mentoria+com+${encodeURIComponent(s.name)}`}

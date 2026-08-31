@@ -46,9 +46,9 @@ export default function HomeClubeEmpreendedores() {
         <div className={styles.container}>
           {/* Left — content */}
           <div className={styles.content}>
-            <span className={styles.badge}>⭐ Programa em Destaque</span>
+            <span className={styles.badge}>Programa em Destaque</span>
             <h2 className={styles.title}>
-              🏛️ Clube dos<br />
+              Clube dos<br />
               <span className={styles.titleGold}>Empreendedores</span>
             </h2>
             <p className={styles.lema}>
@@ -62,14 +62,12 @@ export default function HomeClubeEmpreendedores() {
             {/* Pillars */}
             <div className={styles.pillars}>
               <div className={styles.pillar}>
-                <span>🎯</span>
                 <div>
                   <strong>Missão</strong>
                   <p>Fomentar o ecossistema empresarial conectando empreendedores e gerando oportunidades de investimento sustentável.</p>
                 </div>
               </div>
               <div className={styles.pillar}>
-                <span>👁️</span>
                 <div>
                   <strong>Visão</strong>
                   <p>Ser o maior e mais dinâmico clube de empreendedores de África.</p>
@@ -93,7 +91,7 @@ export default function HomeClubeEmpreendedores() {
 
             <div className={styles.actions}>
               <button className={styles.btnPrimary} onClick={() => setShowModal(true)}>
-                ✍️ Inscrever-me Agora
+                Inscrever-me Agora
               </button>
               <Link href="/programas" className={styles.btnSecondary}>
                 Saber Mais →
@@ -104,7 +102,6 @@ export default function HomeClubeEmpreendedores() {
           {/* Right — stats card */}
           <div className={styles.statsCard}>
             <div className={styles.statsCardHeader}>
-              <span className={styles.statsIcon}>🏛️</span>
               <div>
                 <p className={styles.statsCardTitle}>{getClubStepTitle('Clube dos Empreendedores')}</p>
                 <p className={styles.statsCardSub}>ABN | AfroBiz Network</p>
@@ -112,22 +109,21 @@ export default function HomeClubeEmpreendedores() {
             </div>
             <div className={styles.statsGrid}>
               {[
-                { icon: '🤝', val: 'Networking', desc: 'Encontros mensais' },
-                { icon: '📚', val: 'Formação', desc: 'Masterclasses' },
-                { icon: '💼', val: 'B2B', desc: 'Matchmaking' },
-                { icon: '💰', val: 'Investimento', desc: 'Acesso a capital' },
-                { icon: '🌍', val: 'Nacional', desc: '& Internacional' },
-                { icon: '🏆', val: 'Certificado', desc: 'de membro' },
+                { val: 'Networking', desc: 'Encontros mensais' },
+                { val: 'Formação', desc: 'Masterclasses' },
+                { val: 'B2B', desc: 'Matchmaking' },
+                { val: 'Investimento', desc: 'Acesso a capital' },
+                { val: 'Nacional', desc: '& Internacional' },
+                { val: 'Certificado', desc: 'de membro' },
               ].map(s => (
                 <div key={s.val} className={styles.statItem}>
-                  <span className={styles.statIcon}>{s.icon}</span>
                   <span className={styles.statVal}>{s.val}</span>
                   <span className={styles.statDesc}>{s.desc}</span>
                 </div>
               ))}
             </div>
             <div className={styles.statsCardFooter}>
-              <span>📍 Nacional &amp; Internacional</span>
+              <span>Nacional &amp; Internacional</span>
               <span>Membro Contínuo</span>
             </div>
           </div>

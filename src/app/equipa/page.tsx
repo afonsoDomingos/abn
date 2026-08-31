@@ -372,7 +372,7 @@ export default function TeamPage() {
                         <p className={styles.department}>{member.department}</p>
                       )}
                       <p style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600, marginTop: '0.2rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        📍 {member.country || 'Moçambique'}
+                        {member.country || 'Moçambique'}
                       </p>
 
                       <div className={styles.divider} />
@@ -416,7 +416,7 @@ export default function TeamPage() {
                             className={styles.linkedinBtn}
                             title={`LinkedIn de ${member.name}`}
                           >
-                            🔗 LinkedIn
+                            LinkedIn
                           </a>
                         )}
                         {member.website && (
@@ -428,7 +428,7 @@ export default function TeamPage() {
                             style={{ background: 'rgba(255,107,0,0.1)', color: '#ff6b00', border: '1px solid rgba(255,107,0,0.3)' }}
                             title={`Website / Portfólio de ${member.name}`}
                           >
-                            🌐 Portfólio
+                            Portfólio
                           </a>
                         )}
                         {member.email && (
@@ -438,7 +438,7 @@ export default function TeamPage() {
                             style={{ background: 'rgba(16,185,129,0.1)', color: '#10b981', border: '1px solid rgba(16,185,129,0.3)' }}
                             title={`E-mail de ${member.name}`}
                           >
-                            ✉️ E-mail
+                            E-mail
                           </a>
                         )}
                         {member.phone && (
@@ -450,7 +450,7 @@ export default function TeamPage() {
                             style={{ background: 'rgba(37,211,102,0.1)', color: '#25d366', border: '1px solid rgba(37,211,102,0.3)' }}
                             title={`WhatsApp de ${member.name}`}
                           >
-                            📱 WhatsApp
+                            WhatsApp
                           </a>
                         )}
                       </div>

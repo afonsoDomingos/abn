@@ -94,7 +94,7 @@ export default function ImpactoClient({ stats, reports, cases, companies }: Impa
                     </p>
                     {cs.statsSnippet && (
                       <div className={styles.caseMetric}>
-                        📈 {cs.statsSnippet}
+                        {cs.statsSnippet}
                       </div>
                     )}
                     <div className={styles.caseFooter}>
@@ -147,7 +147,7 @@ export default function ImpactoClient({ stats, reports, cases, companies }: Impa
                     {c.icon && (c.icon.startsWith('http') || c.icon.startsWith('/')) ? (
                       <img src={c.icon} alt={c.name} />
                     ) : (
-                      <span style={{ fontSize: '1.8rem' }}>{c.icon || '🏢'}</span>
+                      <span style={{ fontSize: '1rem', fontWeight: 700, color: '#ff6b00' }}>{c.name.slice(0, 2).toUpperCase()}</span>
                     )}
                   </div>
                   <span className={styles.companyType}>
@@ -157,8 +157,8 @@ export default function ImpactoClient({ stats, reports, cases, companies }: Impa
                 <div className={styles.companyInfo}>
                   <h4>{c.name}</h4>
                   <div className={styles.companyMeta}>
-                    {c.location && <span>📍 {c.location}</span>}
-                    {c.phase && <span>🚀 {c.phase}</span>}
+                    {c.location && <span>{c.location}</span>}
+                    {c.phase && <span>{c.phase}</span>}
                   </div>
                 </div>
                 <p className={styles.companyDesc}>{c.desc}</p>
@@ -180,7 +180,6 @@ export default function ImpactoClient({ stats, reports, cases, companies }: Impa
             <div className={styles.reportsGrid}>
               {reports.map((report, i) => (
                 <div key={i} className={styles.reportCard}>
-                  <div className={styles.pdfIcon}>📕</div>
                   <h4>{report.title}</h4>
                   <span className={styles.reportYear}>{report.year}</span>
                   {report.fileUrl ? (
@@ -217,7 +216,7 @@ export default function ImpactoClient({ stats, reports, cases, companies }: Impa
 
             {activeCase.statsSnippet && (
               <div className={styles.caseMetric} style={{ marginBottom: '1.5rem' }}>
-                📈 Destaque de Impacto: {activeCase.statsSnippet}
+                Destaque de Impacto: {activeCase.statsSnippet}
               </div>
             )}
 

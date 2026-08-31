@@ -69,7 +69,7 @@ export default function Courses() {
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '4rem 1.5rem', color: '#0f172a', fontWeight: 600 }}>
-        ⏳ A carregar os cursos da Academia ABN...
+        A carregar os cursos da Academia ABN...
       </div>
     );
   }
@@ -117,9 +117,9 @@ export default function Courses() {
                   </p>
 
                   <div className={styles.meta}>
-                    <span className={styles.metaItem}>👨‍🏫 {course.instructor}</span>
-                    <span className={styles.metaItem}>⏱️ {course.duration}</span>
-                    <span className={styles.metaItem}>📚 {course.lessons} {language === 'pt' ? 'Aulas' : 'Lessons'}</span>
+                    <span className={styles.metaItem}>{course.instructor}</span>
+                    <span className={styles.metaItem}>{course.duration}</span>
+                    <span className={styles.metaItem}>{course.lessons} {language === 'pt' ? 'Aulas' : 'Lessons'}</span>
                   </div>
                 </div>
 
@@ -136,7 +136,7 @@ export default function Courses() {
                       onClick={() => handleCopyLink(course.title, course._id)}
                       title="Copiar link"
                     >
-                      {copiedId === course._id ? '✅ Copiado!' : '🔗 Copiar Link'}
+                      {copiedId === course._id ? 'Copiado!' : 'Copiar Link'}
                     </button>
 
                     <button
@@ -146,7 +146,7 @@ export default function Courses() {
                       onClick={() => handleShareWhatsApp(course)}
                       title="Partilhar no WhatsApp"
                     >
-                      📱 Partilhar
+                      Partilhar
                     </button>
                   </div>
                 </div>

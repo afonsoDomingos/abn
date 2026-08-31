@@ -48,7 +48,7 @@ export default function HomeEvents() {
         {/* Header */}
         <div className={styles.header}>
           <span className={styles.badge}>
-            📅 {language === 'pt' ? 'Agenda de Eventos' : 'Events Calendar'}
+            {language === 'pt' ? 'Agenda de Eventos' : 'Events Calendar'}
           </span>
           <h2 className={styles.title}>
             {language === 'pt' ? 'Próximos Eventos & Summits' : 'Upcoming Events & Summits'}
@@ -95,7 +95,7 @@ export default function HomeEvents() {
 
                 <div className={styles.body}>
                   <div className={styles.dateRow}>
-                    <span>📅 {formattedDate}</span>
+                    <span>{formattedDate}</span>
                   </div>
 
                   <h3 className={styles.cardTitle}>{ev.title}</h3>
@@ -105,7 +105,7 @@ export default function HomeEvents() {
                   </p>
 
                   <div className={styles.cardFooter}>
-                    <span className={styles.location}>📍 {ev.location}</span>
+                    <span className={styles.location}>{ev.location}</span>
                     <Link href="/eventos" className={styles.detailsBtn}>
                       {language === 'pt' ? 'Detalhes →' : 'Details →'}
                     </Link>

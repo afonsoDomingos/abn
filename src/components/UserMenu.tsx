@@ -105,7 +105,7 @@ export default function UserMenu() {
 
   const isManagement = user.role === 'admin' || user.role === 'collaborator' || user.role === 'colaborador';
   const dashboardPath = isManagement ? '/admin' : '/dashboard';
-  const dashboardLabel = isManagement ? (user.role === 'admin' ? '⚡ Painel Admin' : '👤 Painel Operacional') : '📊 O Meu Painel';
+  const dashboardLabel = isManagement ? (user.role === 'admin' ? 'Painel Admin' : 'Painel Operacional') : 'O Meu Painel';
   const profilePath = isManagement ? '/admin/perfil' : '/dashboard/perfil';
 
   const rawName = (user.name && user.name !== 'Membro') ? user.name : (user.role === 'admin' ? 'Administrador' : 'Utilizador');
@@ -150,11 +150,11 @@ export default function UserMenu() {
             onClick={() => setIsOpen(false)}
             className={styles.menuItem}
           >
-            👤 Editar Meu Perfil &amp; Foto
+            Editar Meu Perfil &amp; Foto
           </Link>
           <div className={styles.separator}></div>
           <button onClick={handleLogout} className={`${styles.menuItem} ${styles.logout}`}>
-            🚪 Terminar Sessão
+            Terminar Sessão
           </button>
         </div>
       )}

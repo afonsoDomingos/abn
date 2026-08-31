@@ -68,7 +68,7 @@ export default function Navbar() {
   const closeMenu = () => setMenuOpen(false);
 
   const dashboardPath = currentUser?.role === 'admin' ? '/admin' : '/dashboard';
-  const dashboardLabel = currentUser?.role === 'admin' ? '👑 Painel Admin' : '📊 Ir para o Meu Painel';
+  const dashboardLabel = currentUser?.role === 'admin' ? 'Painel Admin' : 'Ir para o Meu Painel';
 
   return (
     <>
@@ -89,10 +89,10 @@ export default function Navbar() {
                 {language === 'pt' ? 'Programas & Soluções' : 'Programs & Solutions'} <span className={styles.arrow}>▼</span>
               </span>
               <div className={styles.dropdownMenu}>
-                <Link href="/incubacao" onClick={closeMenu}>🚀 {t.nav.incubator}</Link>
-                <Link href="/marketplace" onClick={closeMenu}>💼 {t.nav.marketplace}</Link>
-                <Link href="/oportunidades" onClick={closeMenu}>💰 Oportunidades &amp; Bolsas</Link>
-                <Link href="/#cursos" onClick={closeMenu}>📚 Academia &amp; Cursos</Link>
+                <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
+                <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
+                <Link href="/oportunidades" onClick={closeMenu}>Oportunidades &amp; Bolsas</Link>
+                <Link href="/#cursos" onClick={closeMenu}>Academia &amp; Cursos</Link>
               </div>
             </div>
 
@@ -102,10 +102,10 @@ export default function Navbar() {
                 {language === 'pt' ? 'Mídia & Conteúdo' : 'Media & Content'} <span className={styles.arrow}>▼</span>
               </span>
               <div className={styles.dropdownMenu}>
-                <Link href="/noticias" onClick={closeMenu}>📰 Notícias &amp; Atualidades</Link>
-                <Link href="/eventos" onClick={closeMenu}>📅 Eventos &amp; Summits</Link>
-                <Link href="/galeria" onClick={closeMenu}>🖼️ Galeria de Fotos</Link>
-                <Link href="/#artigos" onClick={closeMenu}>📢 A Voz do Empreendedor</Link>
+                <Link href="/noticias" onClick={closeMenu}>Notícias &amp; Atualidades</Link>
+                <Link href="/eventos" onClick={closeMenu}>Eventos &amp; Summits</Link>
+                <Link href="/galeria" onClick={closeMenu}>Galeria de Fotos</Link>
+                <Link href="/#artigos" onClick={closeMenu}>A Voz do Empreendedor</Link>
               </div>
             </div>
 
@@ -115,14 +115,14 @@ export default function Navbar() {
                 {language === 'pt' ? 'Sobre ABN' : 'About ABN'} <span className={styles.arrow}>▼</span>
               </span>
               <div className={styles.dropdownMenu}>
-                <Link href="/impacto" onClick={closeMenu}>🌟 {t.nav.impact}</Link>
-                <Link href="/mensagem-do-presidente" onClick={closeMenu}>📜 Mensagem do Presidente</Link>
-                <Link href="/equipa" onClick={closeMenu}>👥 Equipa Executiva</Link>
-                <Link href="/especialistas" onClick={closeMenu}>👨‍🏫 Especialistas &amp; Mentores</Link>
-                <Link href="/parceiros" onClick={closeMenu}>🤝 {t.nav.connections}</Link>
+                <Link href="/impacto" onClick={closeMenu}>{t.nav.impact}</Link>
+                <Link href="/mensagem-do-presidente" onClick={closeMenu}>Mensagem do Presidente</Link>
+                <Link href="/equipa" onClick={closeMenu}>Equipa Executiva</Link>
+                <Link href="/especialistas" onClick={closeMenu}>Especialistas &amp; Mentores</Link>
+                <Link href="/parceiros" onClick={closeMenu}>{t.nav.connections}</Link>
                 <div className={styles.divider}></div>
                 <div className={styles.dropdownHeader}>
-                  📍 {language === 'pt' ? 'Delegações / Hubs' : 'Hubs'}
+                  {language === 'pt' ? 'Delegações / Hubs' : 'Hubs'}
                 </div>
                 {hubs.length === 0 ? (
                   <Link href="/country/quinebissau" onClick={closeMenu}>
@@ -199,7 +199,7 @@ export default function Navbar() {
               )}
               <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '4px', minWidth: 0 }}>
                 <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  👋 Olá, {(currentUser.name || 'Membro').split(' ')[0]}
+                  Olá, {(currentUser.name || 'Membro').split(' ')[0]}
                 </span>
                 <Link
                   href={dashboardPath}
@@ -222,27 +222,27 @@ export default function Navbar() {
             </div>
           )}
 
-          <div className={styles.drawerSectionTitle}>🚀 Programas &amp; Soluções</div>
-          <Link href="/incubacao" onClick={closeMenu}>🚀 {t.nav.incubator}</Link>
-          <Link href="/marketplace" onClick={closeMenu}>💼 {t.nav.marketplace}</Link>
-          <Link href="/oportunidades" onClick={closeMenu}>💰 Oportunidades &amp; Bolsas</Link>
-          <Link href="/#cursos" onClick={closeMenu}>📚 Academia &amp; Cursos</Link>
+          <div className={styles.drawerSectionTitle}>Programas &amp; Soluções</div>
+          <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
+          <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
+          <Link href="/oportunidades" onClick={closeMenu}>Oportunidades &amp; Bolsas</Link>
+          <Link href="/#cursos" onClick={closeMenu}>Academia &amp; Cursos</Link>
 
-          <div className={styles.drawerSectionTitle}>📰 Mídia &amp; Conteúdo</div>
-          <Link href="/noticias" onClick={closeMenu}>📰 Notícias &amp; Atualidades</Link>
-          <Link href="/eventos" onClick={closeMenu}>📅 Eventos &amp; Summits</Link>
-          <Link href="/galeria" onClick={closeMenu}>🖼️ Galeria de Fotos</Link>
-          <Link href="/#artigos" onClick={closeMenu}>📢 A Voz do Empreendedor</Link>
+          <div className={styles.drawerSectionTitle}>Mídia &amp; Conteúdo</div>
+          <Link href="/noticias" onClick={closeMenu}>Notícias &amp; Atualidades</Link>
+          <Link href="/eventos" onClick={closeMenu}>Eventos &amp; Summits</Link>
+          <Link href="/galeria" onClick={closeMenu}>Galeria de Fotos</Link>
+          <Link href="/#artigos" onClick={closeMenu}>A Voz do Empreendedor</Link>
 
-          <div className={styles.drawerSectionTitle}>🏛️ Sobre ABN</div>
-          <Link href="/impacto" onClick={closeMenu}>🌟 {t.nav.impact}</Link>
-          <Link href="/mensagem-do-presidente" onClick={closeMenu}>📜 Mensagem do Presidente</Link>
-          <Link href="/equipa" onClick={closeMenu}>👥 Equipa Executiva</Link>
-          <Link href="/especialistas" onClick={closeMenu}>👨‍🏫 Especialistas &amp; Mentores</Link>
-          <Link href="/parceiros" onClick={closeMenu}>🤝 {t.nav.connections}</Link>
+          <div className={styles.drawerSectionTitle}>Sobre ABN</div>
+          <Link href="/impacto" onClick={closeMenu}>{t.nav.impact}</Link>
+          <Link href="/mensagem-do-presidente" onClick={closeMenu}>Mensagem do Presidente</Link>
+          <Link href="/equipa" onClick={closeMenu}>Equipa Executiva</Link>
+          <Link href="/especialistas" onClick={closeMenu}>Especialistas &amp; Mentores</Link>
+          <Link href="/parceiros" onClick={closeMenu}>{t.nav.connections}</Link>
 
           <div className={styles.drawerSectionTitle}>
-            📍 {language === 'pt' ? 'Delegações' : language === 'fr' ? 'Délégations' : 'Hubs'}
+            {language === 'pt' ? 'Delegações' : language === 'fr' ? 'Délégations' : 'Hubs'}
           </div>
           <div className={styles.drawerHubsList}>
             {hubs.length === 0 ? (
@@ -258,7 +258,7 @@ export default function Navbar() {
             )}
           </div>
 
-          <Link href="/contacto" onClick={closeMenu} style={{ fontWeight: 800, color: 'var(--primary)', marginTop: '0.5rem' }}>📞 Contacto</Link>
+          <Link href="/contacto" onClick={closeMenu} style={{ fontWeight: 800, color: 'var(--primary)', marginTop: '0.5rem' }}>Contacto</Link>
         </nav>
 
         <div className={styles.drawerActions}>

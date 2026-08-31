@@ -210,7 +210,7 @@ export default function HomeSpecialists() {
                     <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '0.4rem' }}>
                       <span className={styles.categoryBadge}>{item.category}</span>
                       <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-                        📍 {item.country || 'Moçambique'}
+                        {item.country || 'Moçambique'}
                       </span>
                     </div>
                     <h3 className={styles.name}>
@@ -249,7 +249,7 @@ export default function HomeSpecialists() {
                           title="LinkedIn"
                           style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#0a66c2', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
                         >
-                          🔗 LinkedIn
+                          LinkedIn
                         </a>
                       )}
                       {item.website && (
@@ -260,7 +260,7 @@ export default function HomeSpecialists() {
                           title="Website / Portfólio"
                           style={{ background: '#fff7ed', border: '1px solid #ffedd5', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#c2410c', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
                         >
-                          🌐 Portfólio
+                          Portfólio
                         </a>
                       )}
                       {item.email && (
@@ -269,7 +269,7 @@ export default function HomeSpecialists() {
                           title="Email"
                           style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#047857', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
                         >
-                          ✉️ E-mail
+                          E-mail
                         </a>
                       )}
                       {item.phone && (
@@ -280,7 +280,7 @@ export default function HomeSpecialists() {
                           title="WhatsApp"
                           style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '5px 9px', borderRadius: '8px', fontSize: '0.78rem', textDecoration: 'none', color: '#15803d', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
                         >
-                          📱 WhatsApp
+                          WhatsApp
                         </a>
                       )}
                     </div>
@@ -288,7 +288,7 @@ export default function HomeSpecialists() {
 
                   <div className={styles.actionRow}>
                     <Link href={`/especialistas/${profileSlug}`} className={styles.profileBtn}>
-                      👤 Ver Perfil
+                      Ver Perfil
                     </Link>
                     <Link href={`/contacto?assunto=Mentoria+com+${encodeURIComponent(item.name)}`} className={styles.contactBtn}>
                       {language === 'pt' ? 'Mentoria →' : 'Mentorship →'}

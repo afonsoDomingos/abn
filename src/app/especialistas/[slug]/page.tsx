@@ -189,7 +189,7 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
         <Navbar />
         <main className={styles.main} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
           <div style={{ textAlign: 'center', color: '#0f172a', fontWeight: 600 }}>
-            ⏳ A carregar perfil do especialista…
+            A carregar perfil do especialista…
           </div>
         </main>
       </>
@@ -202,7 +202,6 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
         <Navbar />
         <main className={styles.main} style={{ padding: '4rem 1.5rem', textAlign: 'center' }}>
           <div style={{ maxWidth: '500px', margin: 'auto', background: '#ffffff', padding: '3rem 2rem', borderRadius: '20px', border: '1px solid #e2e8f0', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
-            <span style={{ fontSize: '3.5rem', display: 'block', marginBottom: '1rem' }}>🔍</span>
             <h2 style={{ fontFamily: 'Outfit', color: '#0f172a', margin: '0 0 0.5rem 0' }}>Especialista Não Encontrado</h2>
             <p style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
               Não foi possível localizar o perfil solicitado. O especialista pode ter atualizado as informações.
@@ -240,8 +239,8 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
             <div className={styles.heroDetails}>
               <div className={styles.badges}>
                 {specialist.category && <span className={styles.catBadge}>{specialist.category}</span>}
-                <span className={styles.countryBadge}>📍 {specialist.country || 'Moçambique'}</span>
-                <span className={styles.viewsBadge}>👁️ {viewsCount} {viewsCount === 1 ? 'Visualização' : 'Visualizações'}</span>
+                <span className={styles.countryBadge}>{specialist.country || 'Moçambique'}</span>
+                <span className={styles.viewsBadge}>{viewsCount} {viewsCount === 1 ? 'Visualização' : 'Visualizações'}</span>
               </div>
               <h1 className={styles.name}>{specialist.name}</h1>
               <p className={styles.role}>{specialist.role}</p>
@@ -259,7 +258,7 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
 
             {/* Bio Card */}
             <div className={styles.card}>
-              <h2 className={styles.sectionTitle}>👨‍💼 Biografia & Perfil Profissional</h2>
+              <h2 className={styles.sectionTitle}>Biografia & Perfil Profissional</h2>
               <p className={styles.bioText}>
                 {specialist.bio || `${specialist.name} é especialista na área de ${specialist.department || specialist.role}, prestando mentoria e consultoria aos membros do ecossistema ABN.`}
               </p>
@@ -268,7 +267,7 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
             {/* Expertise Tags */}
             {specialist.expertise && specialist.expertise.length > 0 && (
               <div className={styles.card}>
-                <h2 className={styles.sectionTitle}>⚡ Áreas de Actuação & Competências</h2>
+                <h2 className={styles.sectionTitle}>Áreas de Actuação & Competências</h2>
                 <div className={styles.tags}>
                   {specialist.expertise.map((item, idx) => (
                     <span key={idx} className={styles.tag}>
@@ -284,7 +283,7 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
           <div className={styles.rightColumn}>
             {/* Action Card */}
             <div className={styles.card}>
-              <h2 className={styles.sectionTitle}>🤝 Mentoria & Contacto</h2>
+              <h2 className={styles.sectionTitle}>Mentoria & Contacto</h2>
               <p style={{ fontSize: '0.88rem', color: '#64748b', marginBottom: '1.2rem', lineHeight: '1.5' }}>
                 Solicite uma sessão de mentoria ou consultoria diretamente com {specialist.name.split(' ')[0]}.
               </p>
@@ -293,11 +292,11 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
                 href={`/contacto?assunto=Solicitar+Mentoria+com+${encodeURIComponent(specialist.name)}`}
                 className={styles.ctaBtnPrimary}
               >
-                📅 Agendar Mentoria
+                Agendar Mentoria
               </Link>
 
               <button className={styles.shareBtn} onClick={handleCopyLink}>
-                🔗 Copiar Link deste Perfil
+                Copiar Link deste Perfil
               </button>
 
               {copied && (
@@ -310,26 +309,26 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
             {/* Social / Contact Links Card */}
             {(specialist.linkedin || specialist.website || specialist.email || specialist.phone) && (
               <div className={styles.card}>
-                <h2 className={styles.sectionTitle}>🌐 Ligações Diretas</h2>
+                <h2 className={styles.sectionTitle}>Ligações Diretas</h2>
                 <div className={styles.socialList}>
                   {specialist.linkedin && (
                     <a href={specialist.linkedin} target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>
-                      <span>🔗</span> LinkedIn
+                      LinkedIn
                     </a>
                   )}
                   {specialist.website && (
                     <a href={specialist.website} target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>
-                      <span>🌐</span> Portfólio / Website
+                      Portfólio / Website
                     </a>
                   )}
                   {specialist.email && (
                     <a href={`mailto:${specialist.email}`} className={styles.socialBtn}>
-                      <span>✉️</span> E-mail Direto
+                      E-mail Direto
                     </a>
                   )}
                   {specialist.phone && (
                     <a href={`https://wa.me/${specialist.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>
-                      <span>📱</span> WhatsApp Directo
+                      WhatsApp Directo
                     </a>
                   )}
                 </div>

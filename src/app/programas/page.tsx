@@ -499,7 +499,7 @@ export default function ProgramasPage() {
                   )}
                 </div>
                 <div className={styles.clubeHeaderRight}>
-                  <button
+                    <button
                     id="btn-inscrever-clube"
                     className={styles.clubeInscBtn}
                     onClick={() => {
@@ -512,7 +512,7 @@ export default function ProgramasPage() {
                       setShowInquerito(true);
                     }}
                   >
-                    ✍️ Inscrever-me no Clube
+                    Inscrever-me no Clube
                   </button>
                   <button
                     className={styles.clubeDetailBtn}
@@ -529,21 +529,18 @@ export default function ProgramasPage() {
               <div className={styles.clubePillars}>
                 {clube.missao && (
                   <div className={styles.clubePillar}>
-                    <span className={styles.clubePillarIcon}>🎯</span>
                     <h4>Missão</h4>
                     <p>{clube.missao}</p>
                   </div>
                 )}
                 {clube.visao && (
                   <div className={styles.clubePillar}>
-                    <span className={styles.clubePillarIcon}>👁️</span>
                     <h4>Visão</h4>
                     <p>{clube.visao}</p>
                   </div>
                 )}
                 {clube.valores && (
                   <div className={styles.clubePillar}>
-                    <span className={styles.clubePillarIcon}>💎</span>
                     <h4>Valores</h4>
                     <p style={{ whiteSpace: 'pre-line' }}>{clube.valores}</p>
                   </div>
@@ -556,37 +553,37 @@ export default function ProgramasPage() {
                   <div className={styles.clubeExpandedGrid}>
                     {clube.objectivos && (
                       <div className={styles.clubeDetailBlock}>
-                        <h4>📊 Objectivos</h4>
+                        <h4>Objectivos</h4>
                         <p style={{ whiteSpace: 'pre-line' }}>{clube.objectivos}</p>
                       </div>
                     )}
                     {clube.publicoAlvo && (
                       <div className={styles.clubeDetailBlock}>
-                        <h4>👥 Público-Alvo</h4>
+                        <h4>Público-Alvo</h4>
                         <p style={{ whiteSpace: 'pre-line' }}>{clube.publicoAlvo}</p>
                       </div>
                     )}
                     {clube.areasActuacao && (
                       <div className={styles.clubeDetailBlock}>
-                        <h4>🗺️ Áreas de Actuação</h4>
+                        <h4>Áreas de Actuação</h4>
                         <p style={{ whiteSpace: 'pre-line' }}>{clube.areasActuacao}</p>
                       </div>
                     )}
                     {clube.actividades && (
                       <div className={styles.clubeDetailBlock}>
-                        <h4>📅 Actividades</h4>
+                        <h4>Actividades</h4>
                         <p style={{ whiteSpace: 'pre-line' }}>{clube.actividades}</p>
                       </div>
                     )}
                     {(clube.beneficiosMembros || clube.beneficios) && (
                       <div className={styles.clubeDetailBlock}>
-                        <h4>🎁 Benefícios para Membros</h4>
+                        <h4>Benefícios para Membros</h4>
                         <p style={{ whiteSpace: 'pre-line' }}>{clube.beneficiosMembros || clube.beneficios}</p>
                       </div>
                     )}
                     {clube.investimento && (
                       <div className={styles.clubeDetailBlock}>
-                        <h4>💰 Investimento & Quotas</h4>
+                        <h4>Investimento & Quotas</h4>
                         <p style={{ whiteSpace: 'pre-line' }}>{clube.investimento}</p>
                       </div>
                     )}
@@ -596,7 +593,7 @@ export default function ProgramasPage() {
                       className={styles.clubeInscBtn}
                       onClick={() => setShowInquerito(true)}
                     >
-                      ✍️ Preencher Inquérito de Inscrição
+                      Preencher Inquérito de Inscrição
                     </button>
                   </div>
                 </div>
@@ -620,7 +617,6 @@ export default function ProgramasPage() {
               </div>
             ) : otherPrograms.length === 0 ? (
               <div className={styles.empty}>
-                <span style={{ fontSize: '3rem' }}>📋</span>
                 <p>Nenhum programa disponível de momento.</p>
               </div>
             ) : (
@@ -638,10 +634,10 @@ export default function ProgramasPage() {
                             </span>
                           )}
                           {prog.duration && (
-                            <span className={styles.durationBadge}>⏱️ {prog.duration}</span>
+                            <span className={styles.durationBadge}>{prog.duration}</span>
                           )}
                           {prog.price && (
-                            <span className={styles.durationBadge} style={{ color: '#ff6b00', borderColor: 'rgba(255,107,0,0.3)', fontWeight: 800 }}>💳 {prog.price}</span>
+                            <span className={styles.durationBadge} style={{ color: '#ff6b00', borderColor: 'rgba(255,107,0,0.3)', fontWeight: 800 }}>{prog.price}</span>
                           )}
                         </div>
                         <h2 className={styles.cardTitle}>{prog.title}</h2>
@@ -654,31 +650,31 @@ export default function ProgramasPage() {
                         <div className={styles.cardDetails}>
                           {prog.publicoAlvo && (
                             <div className={styles.detailBlock}>
-                              <h4>👥 Público-Alvo</h4>
+                              <h4>Público-Alvo</h4>
                               <p style={{ whiteSpace: 'pre-line' }}>{prog.publicoAlvo}</p>
                             </div>
                           )}
                           {prog.beneficios && (
                             <div className={styles.detailBlock}>
-                              <h4>🎁 Benefícios</h4>
+                              <h4>Benefícios</h4>
                               <p style={{ whiteSpace: 'pre-line' }}>{prog.beneficios}</p>
                             </div>
                           )}
                           {prog.requisitos && (
                             <div className={styles.detailBlock}>
-                              <h4>📋 Requisitos</h4>
+                              <h4>Requisitos</h4>
                               <p style={{ whiteSpace: 'pre-line' }}>{prog.requisitos}</p>
                             </div>
                           )}
                           {prog.investimento && (
                             <div className={styles.detailBlock}>
-                              <h4>💰 Investimento</h4>
+                              <h4>Investimento</h4>
                               <p style={{ whiteSpace: 'pre-line' }}>{prog.investimento}</p>
                             </div>
                           )}
                           {prog.processoSelecao && (
                             <div className={styles.detailBlock}>
-                              <h4>🔍 Processo de Seleção</h4>
+                              <h4>Processo de Seleção</h4>
                               <p style={{ whiteSpace: 'pre-line' }}>{prog.processoSelecao}</p>
                             </div>
                           )}
@@ -697,7 +693,7 @@ export default function ProgramasPage() {
                           className={styles.shareLinkBtn}
                           title="Ver página do programa (link partilhável)"
                         >
-                          🔗 Partilhar
+                          Partilhar
                         </Link>
                         <button
                           className={styles.applyBtn}

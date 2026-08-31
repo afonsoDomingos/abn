@@ -112,7 +112,6 @@ export default function OportunidadesClient({ initialOpportunities }: Oportunida
       <div className={styles.grid}>
         {filteredOpportunities.length === 0 ? (
           <div className={styles.empty}>
-            <span>💼</span>
             <p>Nenhuma oportunidade encontrada nesta categoria no momento.</p>
           </div>
         ) : (
@@ -122,7 +121,7 @@ export default function OportunidadesClient({ initialOpportunities }: Oportunida
               <div key={opp._id} className={styles.card}>
                 <div className={styles.cardHeader}>
                   <span className={styles.categoryBadge}>{opp.category}</span>
-                  <span className={styles.amount}>💰 {opp.amount}</span>
+                  <span className={styles.amount}>{opp.amount}</span>
                 </div>
 
                 <h3 className={styles.cardTitle}>{opp.title}</h3>
@@ -130,19 +129,19 @@ export default function OportunidadesClient({ initialOpportunities }: Oportunida
 
                 <div className={styles.cardMeta}>
                   <div className={styles.metaItem}>
-                    <span>📅 Prazo:</span>
+                    <span>Prazo:</span>
                     <strong>{formatDateLong(opp.deadline)}</strong>
                     <span className={styles.countdown} style={badge.style}>{badge.text}</span>
                   </div>
                   {opp.provider && (
                     <div className={styles.metaItem}>
-                      <span>🏢 Entidade:</span>
+                      <span>Entidade:</span>
                       <span>{opp.provider}</span>
                     </div>
                   )}
                   {opp.location && (
                     <div className={styles.metaItem}>
-                      <span>📍 Formato/Local:</span>
+                      <span>Formato/Local:</span>
                       <span>{opp.location}</span>
                     </div>
                   )}
@@ -173,14 +172,14 @@ export default function OportunidadesClient({ initialOpportunities }: Oportunida
             <div className={styles.modalHeader}>
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                 <span className={styles.categoryBadge}>{selectedOpp.category}</span>
-                <span className={styles.amount} style={{ fontSize: '1.05rem' }}>💰 {selectedOpp.amount}</span>
+                <span className={styles.amount} style={{ fontSize: '1.05rem' }}>{selectedOpp.amount}</span>
               </div>
               <h2>{selectedOpp.title}</h2>
             </div>
 
             <div className={styles.cardMeta} style={{ marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '1rem' }}>
               <div className={styles.metaItem}>
-                <span>📅 Limite de Candidatura:</span>
+                <span>Limite de Candidatura:</span>
                 <strong>{formatDateLong(selectedOpp.deadline)}</strong>
                 <span className={styles.countdown} style={getDeadlineBadge(selectedOpp.deadline).style}>
                   {getDeadlineBadge(selectedOpp.deadline).text}
@@ -188,13 +187,13 @@ export default function OportunidadesClient({ initialOpportunities }: Oportunida
               </div>
               {selectedOpp.provider && (
                 <div className={styles.metaItem}>
-                  <span>🏢 Promotor da Oportunidade:</span>
+                  <span>Promotor da Oportunidade:</span>
                   <span>{selectedOpp.provider}</span>
                 </div>
               )}
               {selectedOpp.location && (
                 <div className={styles.metaItem}>
-                  <span>📍 Localização:</span>
+                  <span>Localização:</span>
                   <span>{selectedOpp.location}</span>
                 </div>
               )}

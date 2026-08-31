@@ -157,7 +157,7 @@ export default function Services() {
                     <path className={styles.checkmarkCheck} fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
                   </svg>
                 </div>
-                <h4>Solicitação enviada! ✅</h4>
+                <h4>Solicitação enviada!</h4>
                 <p>Recebemos o seu pedido. A nossa equipa entrará em contacto em breve via email ou WhatsApp.</p>
                 {isLoggedIn ? (
                   <div style={{
@@ -169,7 +169,7 @@ export default function Services() {
                     textAlign: 'left'
                   }}>
                     <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 700, color: '#1e3a8a' }}>
-                      📊 Acompanhe a sua solicitação
+                      Acompanhe a sua solicitação
                     </p>
                     <p style={{ margin: '6px 0 0 0', fontSize: '0.82rem', color: '#4b5563', lineHeight: 1.5 }}>
                       Como já está autenticado, pode acompanhar o progresso deste pedido diretamente no seu <Link href="/dashboard/servicos" style={{ color: '#2a4fa6', fontWeight: 700, textDecoration: 'underline' }}>Dashboard → Serviços</Link>.
@@ -185,7 +185,7 @@ export default function Services() {
                     textAlign: 'left'
                   }}>
                     <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 700, color: '#1e3a8a' }}>
-                      📊 Quer acompanhar o estado do pedido?
+                      Quer acompanhar o estado do pedido?
                     </p>
                     <p style={{ margin: '6px 0 0 0', fontSize: '0.82rem', color: '#4b5563', lineHeight: 1.5 }}>
                       <Link href="/registro" style={{ color: '#2a4fa6', fontWeight: 700, textDecoration: 'underline' }}>Crie a sua conta gratuita aqui</Link> com o <strong style={{ color: '#111827' }}>mesmo email</strong> ({formData.email}) para acompanhar este pedido em tempo real no seu Dashboard (Pendente → Em Análise → Aprovado).

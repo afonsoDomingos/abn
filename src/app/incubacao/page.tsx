@@ -117,32 +117,26 @@ const defaultPrograms = [
 
 const criteriaItems = [
   {
-    icon: '🇲🇿',
     title: 'Residência & Nacionalidade',
     desc: 'Todos os jovens moçambicanos e/ou residentes em Maputo.'
   },
   {
-    icon: '📅',
     title: 'Faixa Etária',
     desc: 'Com idades compreendidas entre os 18 aos 60 anos.'
   },
   {
-    icon: '🎓',
     title: 'Perfil Académico',
     desc: 'Estudantes finalistas e recém graduados (licenciatura ou mestrado).'
   },
   {
-    icon: '💡',
     title: 'Conceito de Negócio',
     desc: 'Possuidores de uma ideia de negócio, projecto para concretizar, ou start-up na fase nascente com menos de 2 anos (formalizada ou não).'
   },
   {
-    icon: '🚀',
     title: 'Inovação & Potencial',
     desc: 'Conceitos com inovação, impacto, equipa talentosa, exequibilidade, e um encaixe claro entre o problema identificado e a solução.'
   },
   {
-    icon: '🤝',
     title: 'Perfil do Candidato',
     desc: 'Candidatos com abertura para feedback, curiosidade, responsabilidade, compromisso, motivação e disponibilidade total.'
   }
@@ -215,9 +209,6 @@ export default async function Incubacao() {
           <div className={styles.criteriaGrid}>
             {criteriaItems.map((item, idx) => (
               <div key={idx} className={styles.criteriaCard}>
-                <div className={styles.criteriaIcon}>
-                  {item.icon}
-                </div>
                 <h4>{item.title}</h4>
                 <p>{item.desc}</p>
               </div>

@@ -126,7 +126,7 @@ export default function ProgramsList({ initialPrograms }: ProgramsListProps) {
                   {p.description.length > 160 ? `${p.description.substring(0, 160)}...` : p.description}
                 </p>
                 <div className={styles.meta}>
-                  <span>⏱ {p.duration || 'Contínuo'}</span>
+                  <span>{p.duration || 'Contínuo'}</span>
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
                     <button className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.85rem' }} onClick={() => handleOpenDetails(p)}>
                       Saber Mais
@@ -153,7 +153,7 @@ export default function ProgramsList({ initialPrograms }: ProgramsListProps) {
                 <div className={styles.modalHeader}>
                   <div className={styles.badgeGroup}>
                     {selectedProgram.phase && <span className={styles.modalPhase}>{selectedProgram.phase}</span>}
-                    {selectedProgram.duration && <span className={styles.modalDuration}>⏱ {selectedProgram.duration}</span>}
+                    {selectedProgram.duration && <span className={styles.modalDuration}>{selectedProgram.duration}</span>}
                   </div>
                   <h2 className="text-gradient-gold">{selectedProgram.title}</h2>
                 </div>

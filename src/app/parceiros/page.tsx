@@ -24,12 +24,12 @@ export default function Parceiros() {
   const [errorMsg, setErrorMsg] = useState('');
 
   const partnersLogos = [
-    { name: 'African Union', logo: '🌍' },
-    { name: 'AfDB', logo: '🏦' },
-    { name: 'UNDP', logo: '🇺🇳' },
-    { name: 'TechHub Luanda', logo: '💻' },
-    { name: 'Startup Moçambique', logo: '🚀' },
-    { name: 'Global Invest', logo: '📈' },
+    { name: 'African Union', logo: '' },
+    { name: 'AfDB', logo: '' },
+    { name: 'UNDP', logo: '' },
+    { name: 'TechHub Luanda', logo: '' },
+    { name: 'Startup Moçambique', logo: '' },
+    { name: 'Global Invest', logo: '' },
   ];
 
   const defaultSupportedCompanies = [
@@ -37,21 +37,21 @@ export default function Parceiros() {
       name: 'TechAfrica Solutions',
       location: 'Luanda, Angola',
       desc: 'Especialistas em transformar processos analógicos em experiências digitais de alta performance.',
-      icon: '💻',
+      icon: '',
       phase: 'Crescimento'
     },
     {
       name: 'AgroEco Moçambique',
       location: 'Maputo, Moçambique',
       desc: 'Soluções sustentáveis e inovadoras para pequenos e médios produtores agrícolas.',
-      icon: '🌱',
+      icon: '',
       phase: 'Validação'
     },
     {
       name: 'AfroStyle Fashion',
       location: 'Maputo, Moçambique',
       desc: 'Design de moda contemporânea inspirado em tecidos e padrões tradicionais africanos.',
-      icon: '👕',
+      icon: '',
       phase: 'Ideação'
     }
   ];
@@ -629,7 +629,6 @@ ${formData.msg}`;
             <form onSubmit={handleSubmit} className={styles.form}>
               {sent ? (
                 <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-                  <span style={{ fontSize: '3rem' }}>🎉</span>
                   <h3 style={{ color: 'var(--primary)', marginTop: '1rem', marginBottom: '0.5rem' }}>{currentContent.formBtnSuccess}</h3>
                   <p style={{ color: 'var(--text-muted)' }}>
                     {language === 'pt' ? 'Agradecemos o seu contacto. A nossa equipa analisará os dados em breve.' : 'Thank you. Our team will review your application soon.'}

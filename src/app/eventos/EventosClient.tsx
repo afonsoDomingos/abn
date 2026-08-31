@@ -156,7 +156,6 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
 
       {filteredEvents.length === 0 ? (
         <div className={styles.empty}>
-          <span>📅</span>
           <p>Nenhum evento registrado nesta categoria no momento.</p>
         </div>
       ) : (
@@ -182,11 +181,11 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
                   
                   <div className={styles.cardMeta}>
                     <div className={styles.metaItem}>
-                      <span>📅</span>
+                      <span>Data:</span>
                       <strong>{formatDateLong(ev.date)}</strong>
                     </div>
                     <div className={styles.metaItem}>
-                      <span>📍</span>
+                      <span>Local:</span>
                       <span>{ev.location}</span>
                     </div>
                   </div>
@@ -231,11 +230,11 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
 
             <div className={styles.cardMeta} style={{ marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.75rem' }}>
               <div className={styles.metaItem}>
-                <span>📅 Data:</span>
+                <span>Data:</span>
                 <strong>{formatDateLong(selectedEvent.date)}</strong>
               </div>
               <div className={styles.metaItem}>
-                <span>📍 Local / Formato:</span>
+                <span>Local / Formato:</span>
                 <span>{selectedEvent.location}</span>
               </div>
             </div>
@@ -269,7 +268,6 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
             
             {inscriptionSubmitted ? (
               <div style={{ textAlign: 'center', padding: '2rem' }}>
-                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>✅</div>
                 <h2 style={{ marginBottom: '1rem' }}>Inscrição Recebida!</h2>
                 <p style={{ color: 'rgba(255,255,255,0.8)', marginBottom: '2rem' }}>
                   Obrigado, <strong>{nomeCompleto}</strong>! A sua inscrição para <strong>{selectedEvent.title}</strong> foi recebida com sucesso.

@@ -77,7 +77,6 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
       <div className={styles.galleryGrid}>
         {filteredItems.length === 0 ? (
           <div className={styles.empty}>
-            <span>🖼️</span>
             <p>Nenhum item nesta categoria no momento.</p>
           </div>
         ) : (
@@ -90,7 +89,7 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
                     <img src={item.imageUrl || '/articles/gala.png'} alt={item.title} />
                     <div className={styles.photoOverlay}>
                       <h4>{item.title}</h4>
-                      <span>📍 {item.location || 'Ecossistema'} | {item.date}</span>
+                      <span>{item.location || 'Ecossistema'} | {item.date}</span>
                     </div>
                   </div>
                 </div>
@@ -120,7 +119,7 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
                     <h4>{item.title}</h4>
                     <p>{item.content}</p>
                     <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>
-                      📅 {item.date} {item.location && `| 📍 ${item.location}`}
+                      {item.date} {item.location && `| ${item.location}`}
                     </div>
                   </div>
                 </div>
@@ -141,7 +140,7 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
                   <div className={styles.audioPlaceholder}>
                     {isSoundcloud ? (
                       <a href={item.mediaUrl} target="_blank" rel="noopener noreferrer" className="btn-outline styles.podcastBtn">
-                        🎧 Ouvir no SoundCloud
+                        Ouvir no SoundCloud
                       </a>
                     ) : item.mediaUrl?.startsWith('http') ? (
                       <audio controls className={styles.audioPlayer}>
@@ -150,12 +149,12 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
                       </audio>
                     ) : (
                       <a href={item.mediaUrl || '#'} target="_blank" rel="noopener noreferrer" className="btn-primary styles.podcastBtn">
-                        🎧 Ouvir Episódio
+                        Ouvir Episódio
                       </a>
                     )}
                   </div>
                   <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', marginTop: '0.25rem' }}>
-                    📅 {item.date} {item.location && `| 📍 ${item.location}`}
+                    {item.date} {item.location && `| ${item.location}`}
                   </div>
                 </div>
               );
@@ -165,7 +164,6 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
             if (item.type === 'publication') {
               return (
                 <div key={item._id} className={styles.pubCard}>
-                  <div className={styles.pdfIcon}>📕</div>
                   <h4>{item.title}</h4>
                   <p>{item.content}</p>
                   {item.mediaUrl ? (
@@ -184,7 +182,7 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
                     </button>
                   )}
                   <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)' }}>
-                    📅 Publicado em: {item.date}
+                    Publicado em: {item.date}
                   </div>
                 </div>
               );
@@ -203,7 +201,7 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
             <img src={activePhoto.imageUrl} alt={activePhoto.title} className={styles.lightboxImg} />
             <div className={styles.lightboxCaption}>
               <h3>{activePhoto.title}</h3>
-              <p>{activePhoto.content} {activePhoto.location && `| 📍 ${activePhoto.location}`} | {activePhoto.date}</p>
+              <p>{activePhoto.content} {activePhoto.location && `| ${activePhoto.location}`} | {activePhoto.date}</p>
             </div>
           </div>
         </div>

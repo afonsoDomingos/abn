@@ -49,7 +49,7 @@ export default function HomePrograms() {
 
   const handleShareTwitter = (prog: Program) => {
     const url = `${window.location.origin}/programas/${prog._id}`;
-    const text = `Confira o programa *${prog.title}* da AfroBiz Network! 🚀`;
+    const text = `Confira o programa *${prog.title}* da AfroBiz Network!`;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
@@ -92,7 +92,7 @@ export default function HomePrograms() {
         {/* Header */}
         <div className={styles.header}>
           <span className={styles.badge}>
-            🚀 {language === 'pt' ? 'Programas ABN' : 'ABN Programs'}
+            {language === 'pt' ? 'Programas ABN' : 'ABN Programs'}
           </span>
           <h2 className={styles.title}>
             {language === 'pt' ? 'Programas de Incubação & Aceleração' : 'Incubation & Acceleration Programs'}
@@ -126,7 +126,7 @@ export default function HomePrograms() {
                       </span>
                     )}
                     {prog.duration && (
-                      <span className={styles.durationBadge}>⏱️ {prog.duration}</span>
+                      <span className={styles.durationBadge}>{prog.duration}</span>
                     )}
                   </div>
                   <h3 className={styles.cardTitle}>{prog.title}</h3>

@@ -17,13 +17,13 @@ interface Opportunity {
   applyLink?: string;
 }
 
-const catColors: Record<string, { color: string; icon: string }> = {
-  'Financiamento': { color: '#2ecc71', icon: '💰' },
-  'Bolsa de Estudo': { color: '#3498db', icon: '🎓' },
-  'Concurso': { color: '#e67e22', icon: '🏆' },
-  'Aceleração': { color: '#d4af37', icon: '🚀' },
-  'Emprego': { color: '#9b59b6', icon: '💼' },
-  'Edital': { color: '#e74c3c', icon: '📋' },
+const catColors: Record<string, { color: string }> = {
+  'Financiamento': { color: '#2ecc71' },
+  'Bolsa de Estudo': { color: '#3498db' },
+  'Concurso': { color: '#e67e22' },
+  'Aceleração': { color: '#d4af37' },
+  'Emprego': { color: '#9b59b6' },
+  'Edital': { color: '#e74c3c' },
 };
 
 export default function HomeOpportunities() {
@@ -47,7 +47,7 @@ export default function HomeOpportunities() {
         {/* Header */}
         <div className={styles.header}>
           <span className={styles.badge}>
-            💼 {language === 'pt' ? 'Oportunidades' : 'Opportunities'}
+            {language === 'pt' ? 'Oportunidades' : 'Opportunities'}
           </span>
           <h2 className={styles.title}>
             {language === 'pt' ? 'Oportunidades em Destaque' : 'Featured Opportunities'}
@@ -62,7 +62,7 @@ export default function HomeOpportunities() {
         {/* Cards list */}
         <div className={styles.list}>
           {opps.map(opp => {
-            const cat = catColors[opp.category] || { color: '#d4af37', icon: '📌' };
+            const cat = catColors[opp.category] || { color: '#d4af37' };
             return (
               <div
                 key={opp._id}
@@ -76,15 +76,6 @@ export default function HomeOpportunities() {
                   (e.currentTarget as HTMLElement).style.transform = 'translateX(0)';
                 }}
               >
-                <div
-                  className={styles.iconBox}
-                  style={{
-                    background: `${cat.color}15`,
-                    border: `1px solid ${cat.color}30`
-                  }}
-                >
-                  {cat.icon}
-                </div>
                 <div className={styles.content}>
                   <div className={styles.metaRow}>
                     <span
@@ -94,7 +85,7 @@ export default function HomeOpportunities() {
                       {opp.category}
                     </span>
                     {opp.location && (
-                      <span className={styles.location}>📍 {opp.location}</span>
+                      <span className={styles.location}>{opp.location}</span>
                     )}
                   </div>
                   <h3 className={styles.itemTitle}>{opp.title}</h3>
