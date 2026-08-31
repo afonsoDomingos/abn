@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, models, model } from 'mongoose';
+﻿import mongoose, { Schema, Document, models, model } from 'mongoose';
 
 export interface IInscricaoClube extends Document {
   nomeCompleto: string;
@@ -11,13 +11,13 @@ export interface IInscricaoClube extends Document {
   alvara?: string;
   sector?: string[];
   sectorOutro?: string;
-  nivelAdesao: string;
+  nivelAdesao?: string;
   formaPagamento?: string;
   comprovativoUrl?: string;
   valorPago?: string;
   statusPagamento?: string;
   telefonePagamento?: string;
-  tipoPagamento?: string; // 'api_directo' | 'comprovativo_manual'
+  tipoPagamento?: string; // 'api_directo' | 'comprovativo_manual' | 'gratuito'
   areasInteresse?: string[];
   comoConheceu?: string;
   comoConheceuOutro?: string;
@@ -41,7 +41,7 @@ const InscricaoClubeSchema = new Schema<IInscricaoClube>({
   alvara: String,
   sector: [String],
   sectorOutro: String,
-  nivelAdesao: { type: String, required: true },
+  nivelAdesao: { type: String, default: 'Geral' },
   formaPagamento: String,
   comprovativoUrl: String,
   valorPago: String,

@@ -13,6 +13,16 @@ export interface CustomField {
   placeholder?: string;
 }
 
+export interface EnabledStepsConfig {
+  identificacao?: boolean;
+  negocio?: boolean;
+  adesao?: boolean;
+  interesses?: boolean;
+  origem?: boolean;
+  declaracao?: boolean;
+  checkout?: boolean;
+}
+
 interface Program {
   _id: string;
   title: string;
@@ -44,6 +54,7 @@ interface Program {
   isClub?: boolean;
   province?: string;
   declaracao?: string;
+  enabledSteps?: EnabledStepsConfig;
   customFields?: CustomField[];
   adhesionLevels?: AdhesionLevel[];
 }
@@ -69,6 +80,17 @@ export default function AdminProgramasPage() {
   const [activeTab, setActiveTab] = useState<'geral' | 'conteudo' | 'selecao' | 'clube' | 'inquerito' | 'adesao'>('geral');
   const [customFields, setCustomFields] = useState<CustomField[]>([]);
   const [adhesionLevels, setAdhesionLevels] = useState<AdhesionLevel[]>([]);
+
+  // Enabled steps configuration
+  const [enabledSteps, setEnabledSteps] = useState<Required<EnabledStepsConfig>>({
+    identificacao: true,
+    negocio: true,
+    adesao: true,
+    interesses: true,
+    origem: true,
+    declaracao: true,
+    checkout: true,
+  });
 
   // Form states
   const [title, setTitle] = useState('');
@@ -149,6 +171,15 @@ export default function AdminProgramasPage() {
     setDeclaracao(prog.declaracao || '');
     setCustomFields(prog.customFields || []);
     setAdhesionLevels(prog.adhesionLevels || []);
+    setEnabledSteps({
+      identificacao: prog.enabledSteps?.identificacao !== false,
+      negocio: prog.enabledSteps?.negocio !== false,
+      adesao: prog.enabledSteps?.adesao !== false,
+      interesses: prog.enabledSteps?.interesses !== false,
+      origem: prog.enabledSteps?.origem !== false,
+      declaracao: prog.enabledSteps?.declaracao !== false,
+      checkout: prog.enabledSteps?.checkout !== false,
+    });
     setActiveTab('geral');
     setShowForm(true);
   };
@@ -184,6 +215,15 @@ export default function AdminProgramasPage() {
     setDeclaracao('');
     setCustomFields([]);
     setAdhesionLevels([]);
+    setEnabledSteps({
+      identificacao: true,
+      negocio: true,
+      adesao: true,
+      interesses: true,
+      origem: true,
+      declaracao: true,
+      checkout: true,
+    });
     setActiveTab('geral');
     setShowForm(true);
   };
@@ -224,13 +264,11 @@ export default function AdminProgramasPage() {
       if (paragraphs.length < 3) {
         // If less than 3 paragraphs, split by sentences
         const sentences = description.split(/[.!?]+/).filter(s => s.trim().length > 0);
-        if (sentences.length >= 3) {
-          const columnSize = Math.ceil(sentences.length / 3);
-          const column1 = sentences.slice(0, columnSize).join('. ').trim() + '.';
-          const column2 = sentences.slice(columnSize, columnSize * 2).join('. ').trim() + '.';
-          const column3 = sentences.slice(columnSize * 2).join('. ').trim() + '.';
-          setDescription(`${column1}\n\n${column2}\n\n${column3}`);
-        }
+        const columnSize = Math.ceil(sentences.length / 3);
+        const column1 = sentences.slice(0, columnSize).join('. ').trim() + '.';
+        const column2 = sentences.slice(columnSize, columnSize * 2).join('. ').trim() + '.';
+        const column3 = sentences.slice(columnSize * 2).join('. ').trim() + '.';
+        setDescription(`${column1}\n\n---\n\n${column2}\n\n---\n\n${column3}`);
       } else {
         // Distribute paragraphs into 3 columns
         const columnSize = Math.ceil(paragraphs.length / 3);
@@ -263,7 +301,7 @@ export default function AdminProgramasPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !description.trim()) {
-      alert('Título e Descrição/O que é? são obrigatórios.');
+      alert('Título e Descrição/O que É? são obrigatórios.');
       return;
     }
 
@@ -296,6 +334,7 @@ export default function AdminProgramasPage() {
       compromissoMembros,
       lema,
       declaracao,
+      enabledSteps,
       customFields,
       adhesionLevels,
     };
@@ -313,61 +352,56 @@ export default function AdminProgramasPage() {
 
       const data = await res.json();
       if (data.success) {
-        setMsg(editingId ? '✅ Programa atualizado com sucesso!' : '✅ Programa criado com sucesso!');
+        setMsg(editingId ? 'Programa atualizado com sucesso!' : 'Programa criado com sucesso!');
         fetchPrograms();
         setShowForm(false);
         setTimeout(() => setMsg(''), 3000);
       } else {
         alert(data.error || 'Erro ao guardar programa.');
       }
-    } catch (err: any) {
-      alert(err.message || 'Erro de rede.');
+    } catch {
+      alert('Erro de conexão ao guardar programa.');
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Tem a certeza que deseja remover este programa? Esta ação não pode ser desfeita.')) return;
+    if (!confirm('Tem a certeza que deseja eliminar este programa?')) return;
     try {
-      const res = await fetch('/api/programs', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
-      });
+      const res = await fetch(`/api/programs?id=${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
-        setPrograms(prev => prev.filter(p => p._id !== id));
-        setMsg('🗑️ Programa removido com sucesso!');
+        setMsg('Programa eliminado com sucesso.');
+        fetchPrograms();
         setTimeout(() => setMsg(''), 3000);
       } else {
-        alert(data.error || 'Erro ao remover programa.');
+        alert(data.error || 'Erro ao eliminar programa.');
       }
-    } catch (err: any) {
-      alert(err.message || 'Erro de rede.');
+    } catch {
+      alert('Erro de conexão ao eliminar.');
     }
   };
 
-  const statusColor: Record<string, string> = {
-    ativo: '#2e8b57',
-    inativo: '#e74c3c',
-  };
-
-  // Helper helper count list lines
   const countItems = (text?: string) => {
     if (!text) return 0;
-    return text.split('\n').filter(line => line.trim().length > 0).length;
+    return text.split('\n').filter(l => l.trim().length > 0).length;
+  };
+
+  const statusColor: Record<string, string> = {
+    ativo: '#22c55e',
+    inativo: '#ef4444',
   };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.pageHeader}>
+    <div className={styles.container}>
+      <div className={styles.header}>
         <div>
           <h1 className="text-gradient-gold">Gestão de Programas</h1>
           <p className={styles.subtitle}>{programs.length} programas no ecossistema</p>
         </div>
         <button className={`btn-primary ${styles.addBtn}`} onClick={() => showForm ? setShowForm(false) : handleCreateClick()}>
-          {showForm ? '✕ Cancelar' : '+ Novo Programa'}
+          {showForm ? 'Cancelar' : '+ Novo Programa'}
         </button>
       </div>
 
@@ -385,42 +419,42 @@ export default function AdminProgramasPage() {
               className={`${styles.tabBtn} ${activeTab === 'geral' ? styles.activeTabBtn : ''}`}
               onClick={() => setActiveTab('geral')}
             >
-              ℹ️ Informações Gerais
+              Informações Gerais
             </button>
             <button
               type="button"
               className={`${styles.tabBtn} ${activeTab === 'conteudo' ? styles.activeTabBtn : ''}`}
               onClick={() => setActiveTab('conteudo')}
             >
-              🎯 Conteúdo & Requisitos
+              Conteúdo &amp; Pilares
             </button>
             <button
               type="button"
               className={`${styles.tabBtn} ${activeTab === 'selecao' ? styles.activeTabBtn : ''}`}
               onClick={() => setActiveTab('selecao')}
             >
-              🤝 Seleção & Critérios
+              Critérios &amp; Custos
             </button>
             <button
               type="button"
               className={`${styles.tabBtn} ${activeTab === 'clube' ? styles.activeTabBtn : ''}`}
               onClick={() => setActiveTab('clube')}
             >
-              🏛️ {title ? getClubStepTitle(title) : 'Clube de Empreendedores'}
+              {title ? getClubStepTitle(title) : 'Clube de Empreendedores'}
             </button>
             <button
               type="button"
               className={`${styles.tabBtn} ${activeTab === 'inquerito' ? styles.activeTabBtn : ''}`}
               onClick={() => setActiveTab('inquerito')}
             >
-              📝 Inquérito Personalizado
+              Inquérito &amp; Etapas
             </button>
             <button
               type="button"
               className={`${styles.tabBtn} ${activeTab === 'adesao' ? styles.activeTabBtn : ''}`}
               onClick={() => setActiveTab('adesao')}
             >
-              💰 Níveis de Adesão
+              Níveis de Adesão
             </button>
           </div>
 
@@ -448,157 +482,129 @@ export default function AdminProgramasPage() {
                 <input
                   value={duration}
                   onChange={e => setDuration(e.target.value)}
-                  placeholder="Ex: 8 Semanas, Contínuo"
+                  placeholder="Ex: 6 Meses (180 Dias), Contínuo"
                 />
               </div>
               <div className={styles.field}>
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                  <div style={{ flex: 1 }} className={styles.field}>
-                    <label>Ordem de Exibição</label>
-                    <input
-                      type="number"
-                      value={order}
-                      onChange={e => setOrder(Number(e.target.value))}
-                    />
-                  </div>
-                  <div style={{ flex: 1 }} className={styles.field}>
-                    <label>Estado</label>
-                    <select value={status} onChange={e => setStatus(e.target.value)}>
-                      <option value="ativo">Ativo</option>
-                      <option value="inativo">Inativo</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.field}>
-                <label>Preço / Taxa de Inscrição (MT ou Gratuito) 💳</label>
-                <input
-                  value={price}
-                  onChange={e => setPrice(e.target.value)}
-                  placeholder="Ex: 5.000 MT, 500 MT/mês ou Gratuito"
-                />
-              </div>
-              <div className={styles.field}>
-                <label>Tipo de Programa</label>
-                <select value={isClub ? 'clube' : 'programa'} onChange={e => setIsClub(e.target.value === 'clube')}>
-                  <option value="programa">Programa Regular</option>
-                  <option value="clube">Clube (Programa de Membros)</option>
+                <label>Estado</label>
+                <select value={status} onChange={e => setStatus(e.target.value)}>
+                  <option value="ativo">Ativo</option>
+                  <option value="inativo">Inativo</option>
                 </select>
               </div>
-              <div className={`${styles.field} ${styles.fullWidth}`}>
-                <label>Instruções de Pagamento (M-Pesa / eMola / IBAN Bancário)</label>
-                <textarea
-                  value={paymentInstructions}
-                  onChange={e => setPaymentInstructions(e.target.value)}
-                  placeholder="Introduza as instruções de pagamento específicas deste programa (M-Pesa, eMola, Conta Bancária)"
-                  rows={2}
+              <div className={styles.field}>
+                <label>Ordem de Exibição</label>
+                <input
+                  type="number"
+                  value={order}
+                  onChange={e => setOrder(Number(e.target.value))}
+                  placeholder="0"
                 />
               </div>
-              <div className={`${styles.field} ${styles.fullWidth}`}>
-                <label>Foto de Capa do Programa (URL ou Upload)</label>
+              <div className={styles.field}>
+                <label>Imagem de Capa (URL)</label>
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                   <input
                     value={image}
                     onChange={e => setImage(e.target.value)}
-                    placeholder="URL da foto de capa (ex: /hero_entrepreneurs.png)"
+                    placeholder="/programas/startup180.jpg ou URL externa"
                     style={{ flex: 1 }}
                   />
-                  <label style={{ cursor: 'pointer', padding: '10px 14px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontSize: '0.9rem' }}>
-                    {uploadingImage ? '⏳...' : '📁 Subir Capa'}
+                  <label className="btn-outline" style={{ cursor: 'pointer', padding: '8px 12px', fontSize: '0.85rem' }}>
+                    {uploadingImage ? 'A carregar...' : 'Upload'}
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={e => {
-                        const file = e.target.files?.[0];
-                        if (file) handleImageUpload(file);
-                      }}
                       style={{ display: 'none' }}
+                      onChange={e => e.target.files?.[0] && handleImageUpload(e.target.files[0])}
                     />
                   </label>
                 </div>
-                {image && (
-                  <div style={{ marginTop: '8px', width: '120px', height: '70px', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.2)' }}>
-                    <img src={image} alt="Preview Capa" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </div>
-                )}
               </div>
-
-              <div className={`${styles.field} ${styles.fullWidth}`}>
-                <label>Descrição / O que é? *</label>
-                <span className={styles.fieldHint}>Descreva o programa de forma clara e detalhada. Pode usar parágrafos e formatação livre.</span>
-                <div className={styles.descriptionActions}>
-                  <button
-                    type="button"
-                    onClick={formatDescriptionAuto}
-                    className={styles.formatBtn}
-                    disabled={description.length < 150}
-                  >
-                    📊 Formatar Automaticamente
-                  </button>
-                  <span className={styles.formatHint}>
-                    {description.length < 150 ? 'Mínimo 150 caracteres' : description.length < 400 ? 'Será formatado em 2 colunas' : 'Será formatado em 3 colunas'}
-                  </span>
-                </div>
-                <textarea
-                  required
-                  rows={12}
-                  value={description}
-                  onChange={e => setDescription(e.target.value)}
-                  placeholder="Descreva o programa em detalhe...
-
-Exemplo:
-O ABN Startup 180 é o programa de incubação, desenvolvimento e aceleração de Negócios da Afrobiz Network (ABN).
-
-O programa foi concebido para apoiar empreendedores desde a fase da ideia até ao crescimento sustentável do negócio, através de formação, mentoria, networking, acompanhamento técnico e acesso a oportunidades."
-                  className={styles.descriptionTextarea}
-                />
-                <div className={styles.fieldCounter}>
-                  Caracteres: {description.length} | Palavras: {description.split(/\s+/).filter(w => w.length > 0).length}
-                </div>
+              <div className={styles.field}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={isClub}
+                    onChange={e => setIsClub(e.target.checked)}
+                    style={{ width: '18px', height: '18px', accentColor: '#ff6b00' }}
+                  />
+                  <span>É um Clube de Empreendedores?</span>
+                </label>
               </div>
+              {isClub && (
+                <div className={styles.field}>
+                  <label>Província / Âmbito</label>
+                  <input
+                    value={province}
+                    onChange={e => setProvince(e.target.value)}
+                    placeholder="Ex: Luanda, Maputo, Nacional &amp; Internacional"
+                  />
+                </div>
+              )}
             </div>
           )}
 
           {activeTab === 'conteudo' && (
             <div className={styles.formGrid}>
-              <div className={styles.field}>
-                <label>Público-alvo</label>
-                <span className={styles.fieldHint}>Um item por linha</span>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                  <label style={{ margin: 0 }}>Descrição / O que É? *</label>
+                  <button
+                    type="button"
+                    onClick={formatDescriptionAuto}
+                    style={{
+                      background: 'rgba(255, 107, 0, 0.1)',
+                      color: 'var(--primary, #ff6b00)',
+                      border: '1px solid rgba(255, 107, 0, 0.3)',
+                      padding: '4px 12px',
+                      borderRadius: '6px',
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                    }}
+                  >
+                    Formatar em Colunas Automaticamente
+                  </button>
+                </div>
+                <span className={styles.fieldHint}>Explicação geral sobre o programa. Use `---` numa linha separada para dividir o texto em colunas (2 ou 3 colunas).</span>
                 <textarea
-                  rows={4}
+                  required
+                  rows={8}
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
+                  placeholder="Primeira coluna de texto...&#10;&#10;---&#10;&#10;Segunda coluna de texto...&#10;&#10;---&#10;&#10;Terceira coluna de texto..."
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Público-alvo</label>
+                <span className={styles.fieldHint}>Um item por linha (comece com `-` ou `•`)</span>
+                <textarea
+                  rows={5}
                   value={publicoAlvo}
                   onChange={e => setPublicoAlvo(e.target.value)}
-                  placeholder="- Empreendedores com ideias de negócio&#10;- Startups em fase inicial"
+                  placeholder="- Startups em fase de ideação&#10;- Empreendedores individuais&#10;- PMEs com potencial de escala"
                 />
               </div>
-              <div className={styles.field}>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
                 <label>Benefícios</label>
-                <span className={styles.fieldHint}>Um item por linha</span>
+                <span className={styles.fieldHint}>Um benefício por linha</span>
                 <textarea
-                  rows={4}
+                  rows={5}
                   value={beneficios}
                   onChange={e => setBeneficios(e.target.value)}
-                  placeholder="- Formação prática&#10;- Mentoria especializada"
+                  placeholder="- Mentoria especializada com fundadores seniores&#10;- Acesso a investidores e capital semente&#10;- Espaço de coworking gratuito"
                 />
               </div>
-              <div className={styles.field}>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
                 <label>Requisitos</label>
-                <span className={styles.fieldHint}>Um item por linha</span>
+                <span className={styles.fieldHint}>Um requisito por linha</span>
                 <textarea
-                  rows={4}
+                  rows={5}
                   value={requisitos}
                   onChange={e => setRequisitos(e.target.value)}
-                  placeholder="- Ter idade igual ou superior a 16 anos&#10;- Interesse em empreendedorismo"
-                />
-              </div>
-              <div className={styles.field}>
-                <label>Investimento / Custos</label>
-                <span className={styles.fieldHint}>Informações sobre inscrição, propinas, etc.</span>
-                <textarea
-                  rows={4}
-                  value={investimento}
-                  onChange={e => setInvestimento(e.target.value)}
-                  placeholder="Inscrição: Gratuita&#10;Formação: Conforme cada edição"
+                  placeholder="- Ter uma ideia de negócio ou MVP&#10;- Dedicação de pelo menos 10h semanais&#10;- Equipa de 1 a 4 elementos"
                 />
               </div>
             </div>
@@ -607,23 +613,50 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
           {activeTab === 'selecao' && (
             <div className={styles.formGrid}>
               <div className={styles.field}>
-                <label>Processo de Seleção</label>
-                <span className={styles.fieldHint}>Como ocorre a seleção (um por linha ou parágrafos)</span>
-                <textarea
-                  rows={6}
-                  value={processoSelecao}
-                  onChange={e => setProcessoSelecao(e.target.value)}
-                  placeholder="A seleção pode ocorrer através de:&#10;- Formulário oficial&#10;- Rota de Empreendedores"
+                <label>Preço / Taxa de Participação</label>
+                <input
+                  value={price}
+                  onChange={e => setPrice(e.target.value)}
+                  placeholder="Ex: Gratuito, 5.000 MT/mês, Sob Consulta"
                 />
               </div>
-              <div className={styles.field}>
-                <label>Critérios de Seleção</label>
-                <span className={styles.fieldHint}>Quais são os critérios (um por linha ou parágrafos)</span>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Investimento &amp; Custos (Detalhes)</label>
+                <span className={styles.fieldHint}>Detalhe os custos, bolsas disponíveis ou modalidades de pagamento</span>
                 <textarea
-                  rows={6}
+                  rows={4}
+                  value={investimento}
+                  onChange={e => setInvestimento(e.target.value)}
+                  placeholder="Ex: Programa gratuito para startups selecionadas. Financiamento com apoio de parceiros..."
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Instruções de Pagamento (opcional)</label>
+                <textarea
+                  rows={3}
+                  value={paymentInstructions}
+                  onChange={e => setPaymentInstructions(e.target.value)}
+                  placeholder="Ex: Pagamento por M-Pesa para o número 84... com a referência do programa."
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Processo de Seleção / Admissão</label>
+                <span className={styles.fieldHint}>Descreva as etapas do processo (ex: 1. Candidatura, 2. Entrevista...)</span>
+                <textarea
+                  rows={4}
+                  value={processoSelecao}
+                  onChange={e => setProcessoSelecao(e.target.value)}
+                  placeholder="1. Submissão do formulário online&#10;2. Avaliação pelo comitê técnico&#10;3. Entrevista com os fundadores&#10;4. Comunicação dos selecionados"
+                />
+              </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Critérios de Seleção</label>
+                <span className={styles.fieldHint}>Critérios de avaliação das candidaturas</span>
+                <textarea
+                  rows={4}
                   value={criteriosSelecao}
                   onChange={e => setCriteriosSelecao(e.target.value)}
-                  placeholder="- Potencial de impacto&#10;- Grau de inovação"
+                  placeholder="- Grau de inovação da solução&#10;- Potencial de mercado e escalabilidade&#10;- Perfil e comprometimento da equipa"
                 />
               </div>
             </div>
@@ -631,20 +664,12 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
 
           {activeTab === 'clube' && (
             <div className={styles.formGrid}>
-              <div className={styles.field}>
-                <label>Província</label>
-                <input
-                  value={province}
-                  onChange={e => setProvince(e.target.value)}
-                  placeholder="Ex: Sofala, Gaza, Maputo"
-                />
-              </div>
-              <div className={styles.field}>
-                <label>Lema</label>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label>Lema / Slogan do Clube</label>
                 <input
                   value={lema}
                   onChange={e => setLema(e.target.value)}
-                  placeholder="Ex: Unidos pelo Empreendedorismo"
+                  placeholder="Ex: 'Conectando mentes, impulsionando negócios e transformando África.'"
                 />
               </div>
               <div className={`${styles.field} ${styles.fullWidth}`}>
@@ -728,7 +753,100 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
           )}
 
           {activeTab === 'inquerito' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1rem 0' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', padding: '1rem 0' }}>
+              
+              {/* ── ETAPAS ATIVAS DO FORMULÁRIO ── */}
+              <div style={{ background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '16px', padding: '1.75rem', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
+                  <div>
+                    <h4 style={{ margin: 0, color: '#0f172a', fontSize: '1.15rem', fontWeight: 800 }}>
+                      ⚙️ Visibilidade das Etapas do Inquérito
+                    </h4>
+                    <p style={{ margin: '0.3rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>
+                      Ative ou oculte as etapas do formulário de inscrição. Desative a etapa de <strong>Checkout</strong> e <strong>Adesão</strong> para programas gratuitos.
+                    </p>
+                  </div>
+
+                  {/* Predefinições Rápidas */}
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => setEnabledSteps({ identificacao: true, negocio: false, adesao: false, interesses: true, origem: false, declaracao: true, checkout: false })}
+                      style={{ background: '#ecfdf5', color: '#059669', border: '1px solid #a7f3d0', padding: '6px 12px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer' }}
+                    >
+                      🆓 Programa Gratuito
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEnabledSteps({ identificacao: true, negocio: true, adesao: true, interesses: true, origem: true, declaracao: true, checkout: true })}
+                      style={{ background: '#eff6ff', color: '#2563eb', border: '1px solid #bfdbfe', padding: '6px 12px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer' }}
+                    >
+                      🏢 Completo (7 Etapas)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEnabledSteps({ identificacao: true, negocio: true, adesao: false, interesses: true, origem: false, declaracao: true, checkout: false })}
+                      style={{ background: '#fff7ed', color: '#ea580c', border: '1px solid #fed7aa', padding: '6px 12px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer' }}
+                    >
+                      ⚡ Inscrição Direta
+                    </button>
+                  </div>
+                </div>
+
+                {/* Grid das Etapas */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+                  {[
+                    { key: 'identificacao', num: '1', title: 'Identificação', desc: 'Dados Pessoais (Nome, Email, WhatsApp...)', required: true },
+                    { key: 'negocio', num: '2', title: 'Negócio / Ideia', desc: 'Nome do Negócio, Setor e Estágio' },
+                    { key: 'adesao', num: '3', title: 'Adesão / Planos', desc: 'Níveis de Adesão e Periodicidade' },
+                    { key: 'interesses', num: '4', title: 'Interesses & Perguntas', desc: 'Áreas de Interesse e Campos Customizados' },
+                    { key: 'origem', num: '5', title: 'Origem', desc: 'Como conheceu a ABN' },
+                    { key: 'declaracao', num: '6', title: 'Declaração', desc: 'Termos, Assinatura e Consentimento' },
+                    { key: 'checkout', num: '7', title: 'Checkout & Pagamento', desc: 'M-Pesa / eMola / Comprovativo (Desative se Grátis)' },
+                  ].map(step => {
+                    const isChecked = enabledSteps[step.key as keyof EnabledStepsConfig];
+                    return (
+                      <label
+                        key={step.key}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: '0.75rem',
+                          background: isChecked ? '#ffffff' : '#f1f5f9',
+                          border: `1.5px solid ${isChecked ? '#ff6b00' : '#cbd5e1'}`,
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s',
+                          opacity: isChecked ? 1 : 0.65,
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={e => {
+                            setEnabledSteps(prev => ({
+                              ...prev,
+                              [step.key]: e.target.checked,
+                            }));
+                          }}
+                          style={{ width: '18px', height: '18px', accentColor: '#ff6b00', marginTop: '2px' }}
+                        />
+                        <div style={{ flex: 1 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#ff6b00' }}>#{step.num}</span>
+                            <strong style={{ fontSize: '0.9rem', color: '#0f172a' }}>{step.title}</strong>
+                          </div>
+                          <p style={{ margin: '3px 0 0', fontSize: '0.78rem', color: '#64748b', lineHeight: '1.4' }}>
+                            {step.desc}
+                          </p>
+                        </div>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div className={styles.field}>
                 <label>Texto da Declaração</label>
                 <span className={styles.fieldHint}>Texto que aparecerá na secção de declaração do formulário de inscrição. Se deixar vazio, será usada uma declaração padrão.</span>
@@ -833,42 +951,29 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
                             }}
                             style={{ width: '18px', height: '18px', accentColor: '#ff6b00' }}
                           />
-                          <span style={{ fontSize: '0.85rem', color: '#0f172a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Resposta Obrigatória</span>
+                          <span style={{ fontSize: '0.85rem', color: '#0f172a', fontWeight: 700 }}>Resposta Obrigatória</span>
                         </label>
                       </div>
                     </div>
 
                     {(field.type === 'select' || field.type === 'checkbox') && (
                       <div className={styles.field}>
-                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Opções de Seleção (separadas por vírgula)</label>
-                        <input
-                          type="text"
-                          value={field.options ? field.options.join(', ') : ''}
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                          Opções de Escolha (uma opção por linha)
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={field.options?.join('\n') || ''}
                           onChange={e => {
                             const updated = [...customFields];
-                            updated[idx].options = e.target.value.split(',').map(s => s.trim()).filter(Boolean);
+                            updated[idx].options = e.target.value.split('\n').filter(o => o.trim().length > 0);
                             setCustomFields(updated);
                           }}
-                          placeholder="Ex: Sim, Não, Em Processo de Formalização"
+                          placeholder="Opção 1&#10;Opção 2&#10;Opção 3"
                           style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
                         />
                       </div>
                     )}
-
-                    <div className={styles.field}>
-                      <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Texto de Ajuda / Placeholder (opcional)</label>
-                      <input
-                        type="text"
-                        value={field.placeholder || ''}
-                        onChange={e => {
-                          const updated = [...customFields];
-                          updated[idx].placeholder = e.target.value;
-                          setCustomFields(updated);
-                        }}
-                        placeholder="Ex: Exemplo de resposta esperada..."
-                        style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
-                      />
-                    </div>
                   </div>
                 ))
               )}
@@ -880,10 +985,10 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                 <div>
                   <h4 style={{ margin: 0, color: 'var(--primary, #ff6b00)', fontSize: '1.1rem' }}>
-                    Níveis de Adesão Personalizados
+                    Níveis / Planos de Adesão Personalizados
                   </h4>
                   <p style={{ margin: '0.2rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>
-                    Configure os níveis de adesão disponíveis para este programa. Se deixar vazio, serão usados os níveis padrão.
+                    Se configurado, o candidato escolherá entre estes níveis no formulário de inscrição em vez dos planos padrão.
                   </p>
                 </div>
                 <button
@@ -892,15 +997,7 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
                   onClick={() => {
                     setAdhesionLevels([
                       ...adhesionLevels,
-                      { 
-                        id: Date.now().toString(), 
-                        label: '', 
-                        subLabel: '', 
-                        inscriptionFee: 0, 
-                        annualQuota: 0, 
-                        showPeriodicity: true, 
-                        required: false 
-                      }
+                      { id: Date.now().toString(), label: '', subLabel: '', inscriptionFee: 0, annualQuota: 0, showPeriodicity: true, required: false }
                     ]);
                   }}
                 >
@@ -910,29 +1007,29 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
 
               {adhesionLevels.length === 0 ? (
                 <div style={{ background: '#f8fafc', border: '2px dashed #cbd5e1', borderRadius: '14px', padding: '3rem 1.5rem', textAlign: 'center', color: '#64748b' }}>
-                  <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>💰</div>
-                  <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: '#334155' }}>Nenhum nível de adesão personalizado configurado.</p>
-                  <p style={{ margin: '0.3rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>Clique no botão "+ Adicionar Nível de Adesão" acima para personalizar os níveis disponíveis.</p>
+                  <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>💳</div>
+                  <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: '#334155' }}>Nenhum nível personalizado configurado.</p>
+                  <p style={{ margin: '0.3rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>Serão usados os níveis padrão do Clube ou taxas padrão do programa.</p>
                 </div>
               ) : (
                 adhesionLevels.map((level, idx) => (
                   <div key={level.id || idx} style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '16px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.8rem' }}>
                       <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', letterSpacing: '0.05em' }}>
-                        NÍVEL DE ADESÃO #{idx + 1}
+                        PLANO / NÍVEL #{idx + 1}
                       </span>
                       <button
                         type="button"
                         style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', padding: '0.4rem 0.85rem', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}
                         onClick={() => setAdhesionLevels(adhesionLevels.filter((_, i) => i !== idx))}
                       >
-                        🗑️ Remover Nível
+                        🗑️ Remover Plano
                       </button>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.2rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.2rem' }}>
                       <div className={styles.field}>
-                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Nome do Nível *</label>
+                        <label style={{ color: '#475569', fontWeight: 700, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Nome do Plano / Nível *</label>
                         <input
                           type="text"
                           required
@@ -942,7 +1039,7 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
                             updated[idx].label = e.target.value;
                             setAdhesionLevels(updated);
                           }}
-                          placeholder="Ex: Jovem / Estudante"
+                          placeholder="Ex: Membro Individual, Startup, Estudante"
                           style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
                         />
                       </div>
@@ -1048,7 +1145,6 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
         </div>
       ) : programs.length === 0 ? (
         <div className={styles.empty}>
-          <span>🚀</span>
           <p>Nenhum programa cadastrado no momento.</p>
           <button className="btn-primary" onClick={handleCreateClick}>Criar Primeiro Programa</button>
         </div>
@@ -1063,17 +1159,17 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
               )}
               <div className={styles.cardHeader}>
                 <div className={styles.badgeGroup}>
-                  {prog.isClub && <span className={styles.phase}>🏛️ Clube</span>}
-                  {prog.isClub && prog.province && <span className={styles.duration}>📍 {prog.province}</span>}
+                  {prog.isClub && <span className={styles.phase}>Clube</span>}
+                  {prog.isClub && prog.province && <span className={styles.duration}>{prog.province}</span>}
                   {!prog.isClub && prog.phase && <span className={styles.phase}>{prog.phase}</span>}
-                  {!prog.isClub && prog.duration && <span className={styles.duration}>⏱ {prog.duration}</span>}
+                  {!prog.isClub && prog.duration && <span className={styles.duration}>{prog.duration}</span>}
                 </div>
                 <span
                   className={styles.statusBadge}
                   style={{
                     background: statusColor[prog.status] + '22',
                     color: statusColor[prog.status],
-                    border: `1px solid ${statusColor[prog.status]}44`,
+                    border: `1.5px solid ${statusColor[prog.status]}44`,
                   }}
                 >
                   {prog.status}
@@ -1111,10 +1207,10 @@ O programa foi concebido para apoiar empreendedores desde a fase da ideia até a
 
               <div className={styles.cardFooter}>
                 <button className={styles.editBtn} onClick={() => handleEditClick(prog)}>
-                  ✏️ Editar
+                  Editar
                 </button>
                 <button className={styles.deleteBtn} onClick={() => handleDelete(prog._id)}>
-                  🗑️
+                  Eliminar
                 </button>
               </div>
             </div>

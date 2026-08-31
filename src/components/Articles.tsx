@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import styles from './Articles.module.css';
@@ -104,7 +104,7 @@ export default function Articles() {
 
         {loading ? (
           <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-muted)' }}>
-            <p>A carregar notícias do banco de dados…</p>
+            <p>A carregar notícias do banco de dados...</p>
           </div>
         ) : articles.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-muted)' }}>
@@ -135,9 +135,15 @@ export default function Articles() {
                     </span>
                     <img 
                       src={imgPath} 
-                      alt={title} 
+                      alt="" 
                       className={styles.image} 
                       loading="lazy"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (!target.src.includes('ambassador-day.png')) {
+                          target.src = '/articles/ambassador-day.png';
+                        }
+                      }}
                     />
                   </div>
                   <div className={styles.content}>
@@ -173,8 +179,14 @@ export default function Articles() {
             <button className={styles.closeBtn} onClick={() => setSelectedArticle(null)}>&times;</button>
             <img 
               src={selectedArticle.img || '/articles/ambassador-day.png'} 
-              alt={selectedArticle.translatedTitle || selectedArticle.title} 
+              alt="" 
               className={styles.modalImg} 
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.includes('ambassador-day.png')) {
+                  target.src = '/articles/ambassador-day.png';
+                }
+              }}
             />
             <div className={styles.modalBody}>
               <span className={styles.location}>{selectedArticle.translatedLocation || selectedArticle.location}</span>

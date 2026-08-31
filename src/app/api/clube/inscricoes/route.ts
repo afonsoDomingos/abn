@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import dbConnect from '@/lib/mongodb';
 import InscricaoClube from '@/models/InscricaoClube';
 
 export const dynamic = 'force-dynamic';
 
-// GET — listar inscrições (admin)
+// GET – listar inscrições (admin)
 export async function GET(req: NextRequest) {
   try {
     const cookieStore = await cookies();
@@ -23,16 +23,17 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// POST — criar inscrição (público)
+// POST – criar inscrição (público)
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    if (!body.nomeCompleto || !body.email || !body.nivelAdesao) {
-      return NextResponse.json({ error: 'Campos obrigatórios em falta' }, { status: 400 });
+    if (!body.nomeCompleto || !body.email) {
+      return NextResponse.json({ error: 'Campos obrigatórios em falta (Nome Completo e Email)' }, { status: 400 });
     }
     await dbConnect();
     const inscricao = await InscricaoClube.create({
       ...body,
+      nivelAdesao: body.nivelAdesao || 'Geral / Candidatura',
       status: 'pendente',
     });
     return NextResponse.json({ success: true, inscricao }, { status: 201 });

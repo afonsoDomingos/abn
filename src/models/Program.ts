@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models } from 'mongoose';
+﻿import mongoose, { Schema, model, models } from 'mongoose';
 
 const ProgramSchema = new Schema({
   title: { type: String, required: true },
@@ -31,6 +31,16 @@ const ProgramSchema = new Schema({
   province: { type: String, default: '' },
   // Custom declaration text for this program
   declaracao: { type: String, default: '' },
+  // Step visibility / custom workflow
+  enabledSteps: {
+    identificacao: { type: Boolean, default: true },
+    negocio: { type: Boolean, default: true },
+    adesao: { type: Boolean, default: true },
+    interesses: { type: Boolean, default: true },
+    origem: { type: Boolean, default: true },
+    declaracao: { type: Boolean, default: true },
+    checkout: { type: Boolean, default: true },
+  },
   // Custom questionnaire fields specific to this program
   customFields: [
     {

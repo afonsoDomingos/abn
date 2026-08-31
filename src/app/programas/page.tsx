@@ -22,6 +22,7 @@ interface Program {
   criteriosSelecao?: string;
   phase?: string;
   duration?: string;
+  image?: string;
   status: string;
   order: number;
   missao?: string;
@@ -36,6 +37,16 @@ interface Program {
   isClub?: boolean;
   province?: string;
   declaracao?: string;
+  paymentType?: string;
+  enabledSteps?: {
+    identificacao?: boolean;
+    negocio?: boolean;
+    adesao?: boolean;
+    interesses?: boolean;
+    origem?: boolean;
+    declaracao?: boolean;
+    checkout?: boolean;
+  };
   customFields?: any[];
   adhesionLevels?: AdhesionLevel[];
 }
@@ -204,8 +215,39 @@ export default function ProgramasPage() {
   const [submitted, setSubmitted] = useState(false);
   const [lastSubmission, setLastSubmission] = useState<{ tipoPagamento: string; comprovativoUrl?: string; telefonePagamento?: string; valorPago?: string } | null>(null);
   const [clubeExpanded, setClubeExpanded] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 7;
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+
+  const getActiveSteps = () => {
+    const defaultSteps = {
+      identificacao: true,
+      negocio: true,
+      adesao: Boolean(selectedProgram?.isClub || (selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0)),
+      interesses: true,
+      origem: Boolean(selectedProgram?.isClub),
+      declaracao: true,
+      checkout: selectedProgram?.price?.toLowerCase() !== 'gratuito' && selectedProgram?.paymentType !== 'free',
+    };
+
+    const cfg = selectedProgram?.enabledSteps ? { ...defaultSteps, ...selectedProgram.enabledSteps } : defaultSteps;
+
+    const allSteps = [
+      { key: 'identificacao', origNum: 1, label: 'Identificação', icon: '1' },
+      { key: 'negocio', origNum: 2, label: 'Negócio', icon: '2' },
+      { key: 'adesao', origNum: 3, label: 'Adesão', icon: '3' },
+      { key: 'interesses', origNum: 4, label: 'Interesses', icon: '4' },
+      { key: 'origem', origNum: 5, label: 'Origem', icon: '5' },
+      { key: 'declaracao', origNum: 6, label: 'Declaração', icon: '6' },
+      { key: 'checkout', origNum: 7, label: 'Checkout 💳', icon: '7' },
+    ];
+
+    const filtered = allSteps.filter(s => cfg[s.key as keyof typeof cfg] !== false);
+    return filtered.length > 0 ? filtered : allSteps;
+  };
+
+  const activeSteps = getActiveSteps();
+  const totalSteps = activeSteps.length;
+  const currentStep = Math.min(Math.max(1, currentStepIndex + 1), totalSteps);
+  const currentActiveStep = activeSteps[currentStep - 1] || activeSteps[0];
 
   useEffect(() => {
     fetch('/api/programs')
@@ -377,30 +419,46 @@ export default function ProgramasPage() {
     };
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (currentStep < totalSteps) {
-      setCurrentStep(prev => prev + 1);
+    if (currentStepIndex < totalSteps - 1) {
+      handleNext();
       return;
     }
 
     // Validate required fields before submission
-    if (!form.nomeCompleto.trim() || !form.email.trim() || !form.nivelAdesao.trim()) {
-      alert('Por favor, preencha todos os campos obrigatórios: Nome, Email e Nível de Adesão.');
+    if (!form.nomeCompleto.trim() || !form.email.trim()) {
+      alert('Por favor, preencha o Nome Completo e o Email.');
+      return;
+    }
+
+    const hasAdhesionStep = activeSteps.some(s => s.key === 'adesao');
+    if (hasAdhesionStep && selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0 && !form.nivelAdesao?.trim()) {
+      alert('Por favor, selecione uma modalidade / nível de adesão.');
       return;
     }
 
     const calc = calculateTotalValues();
+    const hasCheckoutStep = currentActiveStep.key === 'checkout';
     const isManualProof = Boolean(form.comprovativoUrl && form.comprovativoUrl.trim() !== '');
-    const tipoPagamento = isManualProof ? 'comprovativo_manual' : 'api_directo';
-    const statusPagamento = isManualProof ? 'em_verificacao' : 'aguardando_pin';
+    
+    let tipoPagamento = 'gratuito';
+    let statusPagamento = 'concluido';
+    let valorFinal = '0 MT (Gratuito)';
+
+    if (hasCheckoutStep) {
+      tipoPagamento = isManualProof ? 'comprovativo_manual' : 'api_directo';
+      statusPagamento = isManualProof ? 'em_verificacao' : 'aguardando_pin';
+      valorFinal = `${calc.valorTotal} MT`;
+    }
 
     const payload = {
       ...form,
       programaId: selectedProgram?._id,
       programaTitulo: selectedProgram?.title || getClubStepTitle('Clube dos Empreendedores ABN'),
+      nivelAdesao: form.nivelAdesao || 'Geral / Candidatura',
       respostasPersonalizadas,
-      valorPago: `${calc.valorTotal} MT`,
+      valorPago: valorFinal,
       tipoPagamento,
       statusPagamento,
       origem: selectedProgram ? selectedProgram.title : 'programas',
@@ -420,7 +478,7 @@ export default function ProgramasPage() {
           tipoPagamento,
           comprovativoUrl: form.comprovativoUrl,
           telefonePagamento: form.telefonePagamento,
-          valorPago: `${calc.valorTotal} MT`,
+          valorPago: valorFinal,
         });
         setSubmitted(true);
       } else {
@@ -438,7 +496,7 @@ export default function ProgramasPage() {
       e.stopPropagation();
     }
 
-    if (currentStep === 1) {
+    if (currentActiveStep.key === 'identificacao') {
       if (!form.nomeCompleto || !form.nomeCompleto.trim()) {
         alert('Por favor, introduza o seu Nome Completo.');
         return;
@@ -449,8 +507,7 @@ export default function ProgramasPage() {
       }
     }
 
-    if (currentStep === 3) {
-      // Only require nivelAdesao if the program actually has adhesion levels to choose from
+    if (currentActiveStep.key === 'adesao') {
       const hasLevels = selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0;
       if (hasLevels && (!form.nivelAdesao || !form.nivelAdesao.trim())) {
         alert('Por favor, selecione uma modalidade / nível de adesão.');
@@ -458,15 +515,15 @@ export default function ProgramasPage() {
       }
     }
 
-    if (currentStep === 6) {
+    if (currentActiveStep.key === 'declaracao') {
       if (!form.assinatura || !form.assinatura.trim()) {
         alert('Por favor, escreva o seu nome no campo de assinatura.');
         return;
       }
     }
 
-    if (currentStep < totalSteps) {
-      setCurrentStep(prev => Math.min(totalSteps, prev + 1));
+    if (currentStepIndex < totalSteps - 1) {
+      setCurrentStepIndex(prev => prev + 1);
       setTimeout(() => {
         const modalContainer = document.querySelector(`.${styles.modal}`);
         if (modalContainer) {
@@ -481,28 +538,29 @@ export default function ProgramasPage() {
       e.preventDefault();
       e.stopPropagation();
     }
-    setCurrentStep(prev => Math.max(1, prev - 1));
-    setTimeout(() => {
-      const modalContainer = document.querySelector(`.${styles.modal}`);
-      if (modalContainer) {
-        modalContainer.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    }, 50);
+    if (currentStepIndex > 0) {
+      setCurrentStepIndex(prev => prev - 1);
+      setTimeout(() => {
+        const modalContainer = document.querySelector(`.${styles.modal}`);
+        if (modalContainer) {
+          modalContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 50);
+    }
   };
 
-  const canProceed = () => {
-    if (currentStep === 1) {
+const canProceed = () => {
+    if (currentActiveStep.key === 'identificacao') {
       const nomeValido = form.nomeCompleto && form.nomeCompleto.trim() !== '';
       const emailValido = form.email && form.email.trim() !== '' && form.email.includes('@');
       return nomeValido && emailValido;
     }
-    if (currentStep === 3) {
-      // Only require nivelAdesao if there are levels to choose from
+    if (currentActiveStep.key === 'adesao') {
       const hasLevels = selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0;
       return !hasLevels || (form.nivelAdesao !== undefined && form.nivelAdesao.trim() !== '');
     }
-    if (currentStep === 6) {
-      return form.assinatura && form.assinatura.trim() !== '';
+    if (currentActiveStep.key === 'declaracao') {
+      return !!form.assinatura && form.assinatura.trim() !== '';
     }
     return true;
   };
@@ -513,7 +571,7 @@ export default function ProgramasPage() {
     setForm(initialForm);
     setSelectedProgram(null);
     setRespostasPersonalizadas({});
-    setCurrentStep(1);
+    setCurrentStepIndex(0);
   };
 
   return (
@@ -804,7 +862,26 @@ export default function ProgramasPage() {
 
             {submitted ? (
               <div className={styles.successState}>
-                {lastSubmission?.tipoPagamento === 'comprovativo_manual' ? (
+                {lastSubmission?.tipoPagamento === 'gratuito' ? (
+                  <div style={{ textAlign: 'center', padding: '1rem 0' }}>
+                    <div className={styles.successIcon} style={{ background: '#ecfdf5', color: '#059669', border: '2px solid #10b981', margin: '0 auto 1.25rem' }}>✅</div>
+                    <span style={{ background: '#ecfdf5', color: '#047857', fontWeight: 800, padding: '5px 16px', borderRadius: '20px', fontSize: '0.82rem', display: 'inline-block', marginBottom: '0.75rem' }}>
+                      Inscrição Concluída com Sucesso!
+                    </span>
+                    <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.4rem' }}>Candidatura Registada!</h3>
+                    <p style={{ margin: '0 0 1.25rem 0', color: '#334155', lineHeight: '1.6', fontSize: '0.95rem' }}>
+                      Obrigado, <strong>{form.nomeCompleto || 'candidato'}</strong>! A sua inscrição gratuita no programa <strong>{selectedProgram?.title}</strong> foi registada com sucesso. A equipa da ABN entrará em contacto consigo em breve.
+                    </p>
+                    <div className={styles.successActions} style={{ justifyContent: 'center' }}>
+                      <Link href="/programas" className={styles.successActionBtn} onClick={closeModal}>
+                        Ver mais programas
+                      </Link>
+                      <Link href="/cursos" className={styles.successActionBtn} onClick={closeModal}>
+                        Ver cursos
+                      </Link>
+                    </div>
+                  </div>
+                ) : lastSubmission?.tipoPagamento === 'comprovativo_manual' ? (
                   <>
                     <div className={styles.successIcon} style={{ background: '#fef3c7', color: '#d97706', border: '2px solid #f59e0b' }}>⏳</div>
                     <span style={{ background: '#fef3c7', color: '#b45309', fontWeight: 800, padding: '4px 14px', borderRadius: '20px', fontSize: '0.8rem', display: 'inline-block', marginBottom: '0.75rem' }}>
@@ -908,7 +985,7 @@ export default function ProgramasPage() {
                         type="button"
                         onClick={() => {
                           setSubmitted(false);
-                          setCurrentStep(7);
+                          setCurrentStepIndex(totalSteps - 1);
                         }}
                         style={{ width: '100%', padding: '10px 18px', borderRadius: '10px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fca5a5', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', transition: 'all 0.2s' }}
                       >
@@ -927,7 +1004,7 @@ export default function ProgramasPage() {
                       <div
                         key={i + 1}
                         className={`${styles.progressStep} ${currentStep === i + 1 ? styles.activeStep : ''} ${currentStep > i + 1 ? styles.completedStep : ''}`}
-                        onClick={() => currentStep > i + 1 && setCurrentStep(i + 1)}
+                        onClick={() => currentStep > i + 1 && setCurrentStepIndex(i + 1)}
                       >
                         <span className={styles.stepNumber}>{currentStep > i + 1 ? '✓' : i + 1}</span>
                         <span className={styles.stepLabel}>
@@ -958,7 +1035,7 @@ export default function ProgramasPage() {
                 </p>
 
                 {/* ── SECÇÃO 1 ── */}
-                {currentStep === 1 && (
+                {currentActiveStep.key === 'identificacao' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
                       <span className={styles.formSectionNumber}>1</span>
@@ -1027,7 +1104,7 @@ export default function ProgramasPage() {
                 )}
 
                 {/* ── SECÇÃO 2 ── */}
-                {currentStep === 2 && (
+                {currentActiveStep.key === 'negocio' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
                       <span className={styles.formSectionNumber}>2</span>
@@ -1095,7 +1172,7 @@ export default function ProgramasPage() {
                 )}
 
                 {/* ── SECÇÃO 3 ── */}
-                {currentStep === 3 && (
+                {currentActiveStep.key === 'adesao' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
                       <span className={styles.formSectionNumber}>3</span>
@@ -1174,7 +1251,7 @@ export default function ProgramasPage() {
                 )}
 
                 {/* ── SECÇÃO 4 ── */}
-                {currentStep === 4 && (
+                {currentActiveStep.key === 'interesses' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
                       <span className={styles.formSectionNumber}>4</span>
@@ -1313,7 +1390,7 @@ export default function ProgramasPage() {
                 )}
 
                 {/* ── SECÇÃO 5 ── */}
-                {currentStep === 5 && selectedProgram?.isClub && (
+                {currentActiveStep.key === 'origem' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
                       <span className={styles.formSectionNumber}>5</span>
@@ -1363,7 +1440,7 @@ export default function ProgramasPage() {
                 )}
 
                 {/* ── SECÇÃO 6 ── */}
-                {currentStep === 6 && (
+                {currentActiveStep.key === 'declaracao' && (
                   <div className={styles.formSection}>
                     <div className={styles.formSectionHeader}>
                       <span className={styles.formSectionNumber}>6</span>
@@ -1424,7 +1501,7 @@ export default function ProgramasPage() {
                 )}
 
                 {/* ── SECÇÃO 7: CHECKOUT FINAL & PAGAMENTO ── */}
-                {currentStep === 7 && (() => {
+                {currentActiveStep.key === 'checkout' && (() => {
                   const calc = calculateTotalValues();
                   return (
                     <div className={styles.formSection}>
@@ -1444,7 +1521,7 @@ export default function ProgramasPage() {
                           <div style={{ background: '#ffffff', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
                               <strong style={{ color: '#475569', fontSize: '0.75rem', textTransform: 'uppercase' }}>1. Identificação</strong>
-                              <button type="button" onClick={() => setCurrentStep(1)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
+                              <button type="button" onClick={() => setCurrentStepIndex(0)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
                             </div>
                             <p style={{ margin: '0 0 0.2rem 0', fontWeight: 700, color: '#0f172a' }}>{form.nomeCompleto || 'N/A'}</p>
                             <p style={{ margin: 0, color: '#64748b', fontSize: '0.82rem' }}>{form.email}</p>
@@ -1453,7 +1530,7 @@ export default function ProgramasPage() {
                           <div style={{ background: '#ffffff', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
                               <strong style={{ color: '#475569', fontSize: '0.75rem', textTransform: 'uppercase' }}>2. Negócio</strong>
-                              <button type="button" onClick={() => setCurrentStep(2)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
+                              <button type="button" onClick={() => setCurrentStepIndex(1)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
                             </div>
                             <p style={{ margin: '0 0 0.2rem 0', fontWeight: 700, color: '#0f172a' }}>{form.nomeNegocio || 'Não especificado'}</p>
                             {form.sector.length > 0 && <p style={{ margin: 0, color: '#64748b', fontSize: '0.82rem' }}>{form.sector.filter(s => s !== 'outro').join(', ')}</p>}
@@ -1462,7 +1539,7 @@ export default function ProgramasPage() {
                           <div style={{ background: '#ffffff', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
                               <strong style={{ color: '#475569', fontSize: '0.75rem', textTransform: 'uppercase' }}>3. Adesão Escolhida</strong>
-                              <button type="button" onClick={() => setCurrentStep(3)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
+                              <button type="button" onClick={() => setCurrentStepIndex(2)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
                             </div>
                             <p style={{ margin: '0 0 0.2rem 0', fontWeight: 700, color: '#0f172a' }}>{calc.descricaoQuota}</p>
                             <p style={{ margin: 0, color: '#64748b', fontSize: '0.82rem', textTransform: 'capitalize' }}>Periodicidade: {form.formaPagamento || 'Anual'}</p>
@@ -1471,7 +1548,7 @@ export default function ProgramasPage() {
                           <div style={{ background: '#ffffff', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
                               <strong style={{ color: '#475569', fontSize: '0.75rem', textTransform: 'uppercase' }}>6. Assinatura</strong>
-                              <button type="button" onClick={() => setCurrentStep(6)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
+                              <button type="button" onClick={() => setCurrentStepIndex(5)} style={{ border: 'none', background: 'none', color: '#ff6b00', fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem' }}>✏️ Retificar</button>
                             </div>
                             <p style={{ margin: '0 0 0.2rem 0', fontWeight: 700, color: '#d4af37', fontStyle: 'italic' }}>{form.assinatura}</p>
                             <p style={{ margin: 0, color: '#64748b', fontSize: '0.82rem' }}>{form.localData || 'Hoje'}</p>
@@ -1646,7 +1723,7 @@ export default function ProgramasPage() {
                       type="submit"
                       className={`${styles.wizardBtn} ${styles.wizardBtnNext}`}
                     >
-                      Finalizar Candidatura 💳
+                      {currentActiveStep.key === 'checkout' ? 'Finalizar Candidatura & Pagar 💳' : 'Concluir Inscrição ✅'}
                     </button>
                   )}
                 </div>

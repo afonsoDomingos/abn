@@ -1,24 +1,24 @@
-.dockWrapper {
+﻿.dockWrapper {
   position: fixed;
-  bottom: 22px;
-  left: 22px;
+  bottom: 16px;
+  left: 16px;
   right: auto;
   z-index: 9999;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 4px;
 }
 
 .socialStack {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   align-items: flex-start;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(10px) scale(0.95);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateY(6px) scale(0.95);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .stackOpen {
@@ -29,73 +29,81 @@
 
 .socialBtn {
   position: relative;
-  width: 36px;
-  height: 36px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  transition: all 0.2s ease;
   text-decoration: none;
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .socialBtn:hover {
-  transform: scale(1.15);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+  transform: scale(1.18);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.socialBtn svg {
+  width: 12px;
+  height: 12px;
 }
 
 .triggerBtn {
   position: relative;
-  height: 36px;
-  padding: 0 12px 0 9px;
+  height: 24px;
+  padding: 0 8px 0 6px;
   background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
   color: #ffffff;
   border-radius: 50px;
-  border: 1.5px solid #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.8);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.4);
-  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(255, 107, 0, 0.35);
+  transition: all 0.25s ease;
 }
 
 .triggerBtn:hover {
   transform: scale(1.05);
-  box-shadow: 0 10px 22px rgba(255, 107, 0, 0.55);
+  box-shadow: 0 5px 14px rgba(255, 107, 0, 0.45);
 }
 
 .triggerIcon {
-  font-size: 0.9rem;
-  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  line-height: 1;
 }
 
 .triggerBadge {
   font-family: 'Outfit', sans-serif;
-  font-weight: 800;
-  font-size: 0.75rem;
+  font-weight: 700;
+  font-size: 0.65rem;
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
 
 .tooltip {
   position: absolute;
-  left: 46px;
+  left: 32px;
   right: auto;
   background: #0f172a;
   color: #ffffff;
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 0.75rem;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-size: 0.65rem;
   font-weight: 600;
   white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   opacity: 0;
-  transform: translateX(-6px);
-  transition: all 0.2s ease;
+  transform: translateX(-4px);
+  transition: all 0.18s ease;
   pointer-events: none;
 }
 
@@ -106,31 +114,34 @@
 
 @media (max-width: 768px) {
   .dockWrapper {
-    bottom: 12px;
-    left: 12px;
-    gap: 6px;
+    bottom: 10px;
+    left: 10px;
+    gap: 3px;
+  }
+  .socialStack {
+    gap: 3px;
   }
   .socialBtn {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
   }
   .socialBtn svg {
-    width: 14px;
-    height: 14px;
+    width: 10px;
+    height: 10px;
   }
   .triggerBtn {
-    height: 28px;
-    padding: 0 8px 0 6px;
+    height: 20px;
+    padding: 0 6px 0 4px;
   }
   .triggerIcon {
-    font-size: 0.75rem;
+    font-size: 0.55rem;
   }
   .triggerBadge {
-    font-size: 0.65rem;
+    font-size: 0.55rem;
   }
   .tooltip {
-    font-size: 0.65rem;
-    padding: 4px 8px;
-    left: 36px;
+    font-size: 0.55rem;
+    padding: 2px 5px;
+    left: 26px;
   }
 }
