@@ -16,6 +16,15 @@ export default function OurMission() {
   const langKey = (language === 'pt' || language === 'en' || language === 'fr') ? language : 'pt';
   const tContent = translations[langKey].essence;
 
+  // Typewriter for tagline words
+  const TAGLINE_WORDS_PT = ['CONECTAMOS.', 'IMPULSIONAMOS.', 'TRANSFORMAMOS.'];
+  const TAGLINE_WORDS_EN = ['WE CONNECT.', 'WE EMPOWER.', 'WE TRANSFORM.'];
+  const [wordIndex, setWordIndex] = useState(0);
+  const [typedWord, setTypedWord] = useState('');
+  const [wordCharIdx, setWordCharIdx] = useState(0);
+  const [wordDeleting, setWordDeleting] = useState(false);
+  const [cursorOn, setCursorOn] = useState(true);
+
   useEffect(() => {
     fetch('/api/config')
       .then(res => res.json())
@@ -25,6 +34,28 @@ export default function OurMission() {
         }
       });
   }, []);
+
+  useEffect(() => {
+    const blink = setInterval(() => setCursorOn(v => !v), 530);
+    return () => clearInterval(blink);
+  }, []);
+
+  useEffect(() => {
+    const words = langKey === 'pt' ? TAGLINE_WORDS_PT : TAGLINE_WORDS_EN;
+    const word = words[wordIndex];
+    let t: ReturnType<typeof setTimeout>;
+    if (!wordDeleting && wordCharIdx < word.length) {
+      t = setTimeout(() => { setTypedWord(word.slice(0, wordCharIdx + 1)); setWordCharIdx(i => i + 1); }, 60);
+    } else if (!wordDeleting && wordCharIdx === word.length) {
+      t = setTimeout(() => setWordDeleting(true), 1800);
+    } else if (wordDeleting && wordCharIdx > 0) {
+      t = setTimeout(() => { setTypedWord(word.slice(0, wordCharIdx - 1)); setWordCharIdx(i => i - 1); }, 35);
+    } else if (wordDeleting && wordCharIdx === 0) {
+      setWordDeleting(false);
+      setWordIndex(i => (i + 1) % words.length);
+    }
+    return () => clearTimeout(t);
+  }, [wordCharIdx, wordDeleting, wordIndex, langKey]);
 
   useEffect(() => {
     if (missionImages.length <= 1) return;
@@ -146,7 +177,18 @@ export default function OurMission() {
 
             {/* Tagline Stamp */}
             <div className={styles.tagline}>
-              {tContent.tagline}
+              <span>{typedWord}</span>
+              <span style={{
+                display: 'inline-block',
+                width: '3px',
+                height: '0.85em',
+                backgroundColor: '#ff6b00',
+                marginLeft: '3px',
+                verticalAlign: 'middle',
+                borderRadius: '1px',
+                opacity: cursorOn ? 1 : 0,
+                transition: 'opacity 0.1s',
+              }} />
             </div>
           </motion.div>
         </div>
