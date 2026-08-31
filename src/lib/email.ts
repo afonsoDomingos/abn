@@ -84,6 +84,14 @@ function emailLayout(content: string, title?: string) {
           <p style="margin: 0 0 8px 0; font-weight: 600; color: #475569;">ABN - AfroBiz Network</p>
           <p style="margin: 0 0 12px 0;">A acelerar e conectar o ecossistema empresarial africano e lusófono.</p>
           <p style="margin: 0; color: #94a3b8;">© ${new Date().getFullYear()} AfroBiz Network Lda. Todos os direitos reservados.</p>
+          
+          <!-- Discreet Partner Credit -->
+          <div style="margin-top: 16px; padding-top: 12px; border-top: 1px dashed #e2e8f0; text-align: center;">
+            <a href="https://wehosthere.com" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-block; opacity: 0.65;">
+              <span style="font-size: 9px; color: #94a3b8; letter-spacing: 0.5px; vertical-align: middle; margin-right: 6px;">Powered by</span>
+              <img src="https://abnafrobiznetwork.com/wehosthere.png" alt="WeHosThere" width="42" style="vertical-align: middle; display: inline-block; border: 0;" />
+            </a>
+          </div>
         </div>
       </div>
     </div>

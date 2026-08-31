@@ -97,6 +97,14 @@ export default function AdminComunicacaoPage() {
                 Mensagem enviada para a conta registada na AfroBiz Network.<br/>
                 © ${new Date().getFullYear()} AfroBiz Network Lda. Todos os direitos reservados.
               </p>
+              
+              <!-- Discreet Partner Credit -->
+              <div style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #e2e8f0; text-align: center;">
+                <a href="https://wehosthere.com" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: inline-block; opacity: 0.65;">
+                  <span style="font-size: 9px; color: #94a3b8; letter-spacing: 0.5px; vertical-align: middle; margin-right: 6px;">Powered by</span>
+                  <img src="https://abnafrobiznetwork.com/wehosthere.png" alt="WeHosThere" width="42" style="vertical-align: middle; display: inline-block; border: 0;" />
+                </a>
+              </div>
             </td>
           </tr>
 
