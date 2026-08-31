@@ -224,9 +224,9 @@ export default function Services() {
                         onChange={e => setFormData({...formData, email: e.target.value})}
                         placeholder="O seu email principal"
                       />
-                      <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', marginTop: '5px', display: 'block', lineHeight: 1.5 }}>
-                        📌 Use o mesmo email da sua conta ABN para acompanhar o estado do pedido no Dashboard.
-                      </span>
+                       <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', marginTop: '5px', display: 'block', lineHeight: 1.5 }}>
+                         Use o mesmo email da sua conta ABN para acompanhar o estado do pedido no Dashboard.
+                       </span>
                     </div>
                     <div className={styles.formGroup}>
                       <label>WhatsApp / Telefone *</label>

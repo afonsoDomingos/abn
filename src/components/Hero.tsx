@@ -115,8 +115,7 @@ export default function Hero() {
 
             {/* Quick Search Bar */}
             <div className={styles.searchContainer}>
-              <div className={styles.searchShell}>
-                <span className={styles.searchIcon}>🔍</span>
+            <div className={styles.searchShell}>
                 <input
                   type="text"
                   value={searchQuery}

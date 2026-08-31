@@ -136,7 +136,7 @@ export default function HomeClubeEmpreendedores() {
           <div className={styles.modal}>
             <div className={styles.modalHeader}>
               <div>
-                <h3 className={styles.modalTitle}>🏛️ Inscrição Rápida</h3>
+                <h3 className={styles.modalTitle}>Inscrição Rápida</h3>
                 <p className={styles.modalSub}>{getClubStepTitle('Clube dos Empreendedores')} — ABN</p>
               </div>
               <button className={styles.closeBtn} onClick={close}>✕</button>
@@ -144,7 +144,7 @@ export default function HomeClubeEmpreendedores() {
 
             {submitted ? (
               <div className={styles.success}>
-                <div className={styles.successIcon}>✅</div>
+                <div className={styles.successIcon}>✓</div>
                 <h4>Inscrição recebida!</h4>
                 <p>Obrigado, <strong>{nome}</strong>! A nossa equipa entrará em contacto brevemente. Para o inquérito completo visite a página de Programas.</p>
                 <div className={styles.successActions}>

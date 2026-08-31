@@ -339,19 +339,19 @@ export default function RegisterPage() {
                 <div className={styles.infoBox}>
                   {role === 'investidor' ? (
                     <>
-                      💼 <strong>Investidor:</strong> Aceda a startups qualificadas, consulte pitch decks detalhados e envie propostas de financiamento na nossa plataforma.
+                      <strong>Investidor:</strong> Aceda a startups qualificadas, consulte pitch decks detalhados e envie propostas de financiamento na nossa plataforma.
                     </>
                   ) : role === 'mentor' ? (
                     <>
-                      🤝 <strong>Mentor:</strong> Ofereça mentoria estratégica e smart money, acompanhe o crescimento de startups e contribua para o ecossistema ABN.
+                      <strong>Mentor:</strong> Ofereça mentoria estratégica e smart money, acompanhe o crescimento de startups e contribua para o ecossistema ABN.
                     </>
                   ) : role === 'startup' ? (
                     <>
-                      🏢 <strong>Startup:</strong> Registe o seu negócio, aceda a oportunidades de investimento, cursos certificados exclusivos e aumente o seu ABN Score.
+                      <strong>Startup:</strong> Registe o seu negócio, aceda a oportunidades de investimento, cursos certificados exclusivos e aumente o seu ABN Score.
                     </>
                   ) : (
                     <>
-                      🚀 <strong>Empreendedor:</strong> Desenvolva as suas ideias, aceda a cursos certificados, candidate-se a programas de incubação e solicite mentorias no ABN Hub.
+                      <strong>Empreendedor:</strong> Desenvolva as suas ideias, aceda a cursos certificados, candidate-se a programas de incubação e solicite mentorias no ABN Hub.
                     </>
                   )}
                 </div>
@@ -683,7 +683,7 @@ export default function RegisterPage() {
                   disabled={loading}
                   style={{ padding: '14px 20px', fontSize: '0.92rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}
                 >
-                  {loading ? 'A criar conta...' : 'Criar Conta Gratuita 🚀'}
+                  {loading ? 'A criar conta...' : 'Criar Conta Gratuita'}
                 </button>
               </div>
             </div>

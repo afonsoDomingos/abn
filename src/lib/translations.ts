@@ -26,7 +26,7 @@ export const translations = {
       consult: "Falar com Consultor"
     },
     hero: {
-      badge: "Acelere o seu negócio africano 🌍",
+      badge: "Acelere o seu negócio africano",
       title: "Impulsionando Startups e PMEs em África",
       desc: "A ABN – AfroBiz Network é o principal ecossistema de negócios e empreendedorismo para o mercado africano e afrodescendente. Conectamos startups, PMEs, mentores, investidores e parceiros estratégicos para impulsionar o crescimento de impacto global.",
       start: "Começar Agora",
@@ -225,7 +225,7 @@ export const translations = {
       consult: "Talk to a Consultant"
     },
     hero: {
-      badge: "Accelerate your African business 🌍",
+      badge: "Accelerate your African business",
       title: "Empowering Startups and SMEs in Africa",
       desc: "ABN – AfroBiz Network is the leading business and entrepreneurship ecosystem for the African and Afro-descendant market. We connect startups, SMEs, mentors, investors, and strategic partners to drive global impact growth.",
       start: "Get Started",
@@ -424,7 +424,7 @@ export const translations = {
       consult: "Parler à um consultant"
     },
     hero: {
-      badge: "Accélérez votre entreprise africaine 🌍",
+      badge: "Accélérez votre entreprise africaine",
       title: "Propulser les startups et les PME en Afrique",
       desc: "ABN – AfroBiz Network est le premier écosystème d'affaires et d'entrepreneuriat pour le marché africain et afro-descendant. Nous connectons les startups, les PME, les mentors, les investisseurs et les partenaires stratégiques pour stimuler une croissance à impact mondial.",
       start: "Commencer maintenant",

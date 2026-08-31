@@ -36,7 +36,7 @@ export default function PromoBanner() {
                     data.programs.filter((p: any) => p.status === 'ativo').slice(0, 2).forEach((prog: any) => {
                         items.push({
                             id: prog._id,
-                            badge: language === 'pt' ? '🚀 Programa em Destaque' : '🚀 Featured Program',
+                            badge: language === 'pt' ? 'Programa em Destaque' : 'Featured Program',
                             title: prog.title,
                             description: prog.description ? prog.description.slice(0, 105) + '...' : '',
                             link: `/programas/${prog._id}`,
@@ -53,7 +53,7 @@ export default function PromoBanner() {
                     const opp = dataOpp.opportunities[0];
                     items.push({
                         id: opp._id || 'opp-1',
-                        badge: language === 'pt' ? '💰 Oportunidade & Bolsa' : '💰 Opportunity & Grant',
+                        badge: language === 'pt' ? 'Oportunidade & Bolsa' : 'Opportunity & Grant',
                         title: opp.title,
                         description: opp.description ? opp.description.slice(0, 105) + '...' : '',
                         link: '/oportunidades',
@@ -65,7 +65,7 @@ export default function PromoBanner() {
             // Add default high-converting promos if list is short
             items.push({
                 id: 'clube-abn',
-                badge: language === 'pt' ? '👑 Clube Empreendedores' : '👑 Entrepreneur Club',
+                badge: language === 'pt' ? 'Clube Empreendedores' : 'Entrepreneur Club',
                 title: language === 'pt' ? 'Acesso Exclusivo à Rede ABN' : 'Exclusive Access to ABN Network',
                 description: language === 'pt'
                     ? 'Conecte a sua startup a mentores internacionais, investidores e eventos V.I.P.'

@@ -450,7 +450,9 @@ export default function ProgramasPage() {
     }
 
     if (currentStep === 3) {
-      if (!form.nivelAdesao || !form.nivelAdesao.trim()) {
+      // Only require nivelAdesao if the program actually has adhesion levels to choose from
+      const hasLevels = selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0;
+      if (hasLevels && (!form.nivelAdesao || !form.nivelAdesao.trim())) {
         alert('Por favor, selecione uma modalidade / nível de adesão.');
         return;
       }
@@ -495,7 +497,9 @@ export default function ProgramasPage() {
       return nomeValido && emailValido;
     }
     if (currentStep === 3) {
-      return form.nivelAdesao && form.nivelAdesao.trim() !== '';
+      // Only require nivelAdesao if there are levels to choose from
+      const hasLevels = selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0;
+      return !hasLevels || (form.nivelAdesao !== undefined && form.nivelAdesao.trim() !== '');
     }
     if (currentStep === 6) {
       return form.assinatura && form.assinatura.trim() !== '';
