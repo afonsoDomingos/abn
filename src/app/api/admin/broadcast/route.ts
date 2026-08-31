@@ -29,7 +29,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Acesso negado. Apenas administradores podem enviar comunicações.' }, { status: 403 });
     }
 
-    const { subject, html, recipientTarget = 'all', testEmail } = await request.json();
+    const { subject, html, recipientTarget = 'all', testEmail, specificEmail } = await request.json();
 
     if (!subject || !html) {
       return NextResponse.json({ success: false, error: 'O assunto e o corpo do e-mail são obrigatórios.' }, { status: 400 });
@@ -71,6 +71,35 @@ export async function POST(request: Request) {
         });
       } catch (err: any) {
         return NextResponse.json({ success: false, error: err.message || 'Erro ao enviar e-mail de teste.' }, { status: 500 });
+      }
+    }
+
+    // Handle sending to a single specific user
+    if (recipientTarget === 'single') {
+      if (!specificEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(specificEmail)) {
+        return NextResponse.json({ success: false, error: 'Por favor, selecione ou introduza um e-mail de destinatário válido.' }, { status: 400 });
+      }
+
+      try {
+        const { data, error } = await resend.emails.send({
+          from: fromEmail,
+          to: specificEmail,
+          subject: subject,
+          html: html,
+        });
+
+        if (error) {
+          return NextResponse.json({ success: false, error: error.message }, { status: 400 });
+        }
+
+        return NextResponse.json({ 
+          success: true, 
+          sentCount: 1, 
+          totalUsers: 1,
+          message: `E-mail enviado com sucesso para ${specificEmail}`
+        });
+      } catch (err: any) {
+        return NextResponse.json({ success: false, error: err.message || 'Erro ao enviar e-mail para o utilizador.' }, { status: 500 });
       }
     }
 

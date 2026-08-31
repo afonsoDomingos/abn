@@ -1,18 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { 
-  Mail, 
-  Send, 
-  Eye, 
-  Smartphone, 
-  Monitor, 
-  CheckCircle2, 
-  AlertCircle, 
-  Users, 
-  RefreshCw,
-  SendHorizontal
-} from 'lucide-react';
 
 interface Template {
   id: string;
@@ -23,14 +11,24 @@ interface Template {
   html: string;
 }
 
+interface UserItem {
+  _id: string;
+  name: string;
+  email: string;
+  role?: string;
+}
+
 export default function AdminComunicacaoPage() {
   const [subject, setSubject] = useState('');
   const [html, setHtml] = useState('');
   const [recipientTarget, setRecipientTarget] = useState('all');
   const [testEmail, setTestEmail] = useState('');
+  const [specificEmail, setSpecificEmail] = useState('');
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('todos');
   
+  const [usersList, setUsersList] = useState<UserItem[]>([]);
+  const [userSearchTerm, setUserSearchTerm] = useState('');
   const [sending, setSending] = useState(false);
   const [sendingTest, setSendingTest] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error' | 'info' | ''; text: string }>({ type: '', text: '' });
@@ -221,7 +219,7 @@ export default function AdminComunicacaoPage() {
         `<p>Prezado(a) Membro,</p>
         <p>Temos a honra de convidá-lo(a) para participar na nossa próxima sessão temática online, focada no desenvolvimento e expansão de negócios.</p>
         
-        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 16px; margin: 22px 0; border-radius: 6px;">
+        <div style="background-color: #f8fafc; border-left: 4px solid #ff6b00; padding: 16px; margin: 22px 0; border-radius: 6px;">
           <table width="100%" border="0" cellpadding="4" cellspacing="0" style="font-size: 14px; color: #334155;">
             <tr>
               <td width="28%" style="font-weight: 700; color: #475569;">Data:</td>
@@ -293,15 +291,16 @@ export default function AdminComunicacaoPage() {
   ];
 
   useEffect(() => {
-    loadUserStats();
+    loadUsers();
   }, []);
 
-  const loadUserStats = () => {
+  const loadUsers = () => {
     fetch('/api/users')
       .then(res => res.json())
       .then(data => {
         if (data.success && data.users) {
-          const all = data.users;
+          const all: UserItem[] = data.users;
+          setUsersList(all);
           const empreendedores = all.filter((u: any) => u.role === 'empreendedor' || !u.role).length;
           const investidores = all.filter((u: any) => u.role === 'investidor').length;
           const empresas = all.filter((u: any) => u.role === 'empresa' || u.role === 'collaborator').length;
@@ -324,6 +323,7 @@ export default function AdminComunicacaoPage() {
   };
 
   const getTargetCount = () => {
+    if (recipientTarget === 'single') return 1;
     if (recipientTarget === 'empreendedor') return userStats.empreendedores;
     if (recipientTarget === 'investidor') return userStats.investidores;
     if (recipientTarget === 'empresa') return userStats.empresas;
@@ -370,7 +370,7 @@ export default function AdminComunicacaoPage() {
     }
   };
 
-  // Broadcast to audience
+  // Broadcast or send to specific user
   const handleBroadcast = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -379,20 +379,28 @@ export default function AdminComunicacaoPage() {
       return;
     }
 
+    if (recipientTarget === 'single') {
+      if (!specificEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(specificEmail)) {
+        setStatusMsg({ type: 'error', text: 'Selecione ou introduza um e-mail válido para o utilizador específico.' });
+        return;
+      }
+    }
+
     const count = getTargetCount();
     const targetLabel = 
+      recipientTarget === 'single' ? `o utilizador (${specificEmail})` :
       recipientTarget === 'empreendedor' ? 'Empreendedores' :
       recipientTarget === 'investidor' ? 'Investidores' :
       recipientTarget === 'empresa' ? 'Empresas' : 'todos os utilizadores';
 
     const confirmed = window.confirm(
-      `Confirma o envio desta mensagem para ${targetLabel} (${count} destinatários estimados)?`
+      `Confirma o envio desta mensagem para ${targetLabel} (${count} destinatário${count > 1 ? 's' : ''})?`
     );
 
     if (!confirmed) return;
 
     setSending(true);
-    setStatusMsg({ type: 'info', text: 'A processar envio de mensagens...' });
+    setStatusMsg({ type: 'info', text: 'A processar envio de mensagem...' });
 
     try {
       const res = await fetch('/api/admin/broadcast', {
@@ -402,6 +410,7 @@ export default function AdminComunicacaoPage() {
           subject,
           html,
           recipientTarget,
+          specificEmail: specificEmail.trim(),
         })
       });
 
@@ -409,10 +418,12 @@ export default function AdminComunicacaoPage() {
       if (data.success) {
         setStatusMsg({ 
           type: 'success', 
-          text: `Transmissão concluída com sucesso (${data.sentCount} e-mails enviados).` 
+          text: recipientTarget === 'single'
+            ? `E-mail enviado com sucesso para ${specificEmail}.`
+            : `Transmissão concluída com sucesso (${data.sentCount} e-mails enviados).` 
         });
       } else {
-        setStatusMsg({ type: 'error', text: data.error || 'Erro ao processar envio em massa.' });
+        setStatusMsg({ type: 'error', text: data.error || 'Erro ao processar envio.' });
       }
     } catch {
       setStatusMsg({ type: 'error', text: 'Erro de comunicação com o servidor.' });
@@ -435,6 +446,16 @@ export default function AdminComunicacaoPage() {
   const filteredTemplates = selectedCategory === 'todos' 
     ? templates 
     : templates.filter(t => t.category === selectedCategory);
+
+  const filteredUsers = usersList.filter(u => {
+    if (!userSearchTerm.trim()) return true;
+    const term = userSearchTerm.toLowerCase();
+    return (
+      (u.name && u.name.toLowerCase().includes(term)) ||
+      (u.email && u.email.toLowerCase().includes(term)) ||
+      (u.role && u.role.toLowerCase().includes(term))
+    );
+  });
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
@@ -556,6 +577,7 @@ export default function AdminComunicacaoPage() {
                   { id: 'empreendedor', label: 'Empreendedores', count: userStats.empreendedores },
                   { id: 'investidor', label: 'Investidores e Mentores', count: userStats.investidores },
                   { id: 'empresa', label: 'Empresas e Parceiros', count: userStats.empresas },
+                  { id: 'single', label: 'Utilizador Específico', count: 1 },
                 ].map(target => (
                   <button
                     key={target.id}
@@ -573,16 +595,79 @@ export default function AdminComunicacaoPage() {
                       justifyContent: 'space-between',
                       fontSize: '0.82rem',
                       fontWeight: 600,
+                      gridColumn: target.id === 'single' ? 'span 2' : 'auto'
                     }}
                   >
                     <span>{target.label}</span>
                     <span style={{ background: recipientTarget === target.id ? '#ffedd5' : '#e2e8f0', padding: '2px 8px', borderRadius: '10px', fontSize: '0.72rem', fontWeight: 700 }}>
-                      {target.count}
+                      {target.id === 'single' ? (specificEmail ? specificEmail : 'Selecionar') : target.count}
                     </span>
                   </button>
                 ))}
               </div>
             </div>
+
+            {/* If Single User is selected, show dropdown and search */}
+            {recipientTarget === 'single' && (
+              <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>
+                  Selecionar Utilizador Cadastrado ou Introduzir E-mail
+                </div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <input
+                    type="text"
+                    placeholder="Pesquisar por nome ou e-mail..."
+                    value={userSearchTerm}
+                    onChange={e => setUserSearchTerm(e.target.value)}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.85rem',
+                      color: '#0f172a'
+                    }}
+                  />
+                  
+                  <select
+                    value={specificEmail}
+                    onChange={e => setSpecificEmail(e.target.value)}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.85rem',
+                      color: '#0f172a',
+                      background: '#ffffff'
+                    }}
+                  >
+                    <option value="">-- Escolha um utilizador da lista --</option>
+                    {filteredUsers.map(u => (
+                      <option key={u._id} value={u.email}>
+                        {u.name} ({u.email}) - {u.role || 'membro'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Ou digite diretamente o e-mail de destino:</span>
+                  <input
+                    type="email"
+                    value={specificEmail}
+                    onChange={e => setSpecificEmail(e.target.value)}
+                    placeholder="destinatario@dominio.com"
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.85rem',
+                      color: '#0f172a'
+                    }}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Subject input */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
@@ -718,7 +803,9 @@ export default function AdminComunicacaoPage() {
                 marginTop: '0.5rem',
               }}
             >
-              {sending ? `A enviar transmissão (${getTargetCount()} destinatários)...` : `Enviar E-mail para ${getTargetCount()} Destinatários`}
+              {sending 
+                ? (recipientTarget === 'single' ? 'A enviar e-mail...' : `A enviar transmissão (${getTargetCount()} destinatários)...`)
+                : (recipientTarget === 'single' ? `Enviar E-mail para ${specificEmail || 'Utilizador'}` : `Enviar E-mail para ${getTargetCount()} Destinatários`)}
             </button>
 
           </div>
@@ -779,6 +866,11 @@ export default function AdminComunicacaoPage() {
             <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px' }}>
               De: ABN - AfroBiz Network &lt;noreply@abnafrobiznetwork.com&gt;
             </div>
+            {recipientTarget === 'single' && specificEmail && (
+              <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>
+                Para: <strong>{specificEmail}</strong>
+              </div>
+            )}
           </div>
 
           {/* Device Frame Viewport */}
