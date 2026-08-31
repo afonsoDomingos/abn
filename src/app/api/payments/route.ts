@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import dbConnect from '@/lib/mongodb';
 import Payment from '@/models/Payment';
 import Notification from '@/models/Notification';
-import { sendCourseApprovalEmail } from '@/lib/email';
+import { sendCourseApprovalEmail, sendCourseEnrollmentPendingEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -98,6 +98,19 @@ export async function POST(request: Request) {
       company: company || '',
       status: initialStatus
     });
+
+    // Send Automated Email to Student
+    if (session.email) {
+      if (initialStatus === 'aprovado') {
+        sendCourseApprovalEmail(session.email, session.name || 'Aluno', payment.itemName).catch(err => {
+          console.error('[Resend] Erro ao enviar email de aprovação de curso:', err);
+        });
+      } else {
+        sendCourseEnrollmentPendingEmail(session.email, session.name || 'Aluno', payment.itemName, payment.price).catch(err => {
+          console.error('[Resend] Erro ao enviar email de receção de inscrição:', err);
+        });
+      }
+    }
 
     // Create Notification if auto-approved
     if (initialStatus === 'aprovado') {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import dbConnect from '@/lib/mongodb';
 import EventInscription from '@/models/EventInscription';
+import { sendEventRegistrationEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -44,6 +45,13 @@ export async function POST(req: NextRequest) {
       ...body,
       status: 'pendente',
     });
+
+    // Send automated confirmation email
+    const eventTitle = body.eventTitle || 'Evento Oficial ABN';
+    sendEventRegistrationEmail(inscricao.email, inscricao.nomeCompleto, eventTitle).catch(err => {
+      console.error('[Resend] Erro ao enviar email de inscrição em evento:', err);
+    });
+
     return NextResponse.json({ success: true, inscricao }, { status: 201 });
   } catch (e) {
     return NextResponse.json({ error: 'Erro ao guardar inscrição' }, { status: 500 });

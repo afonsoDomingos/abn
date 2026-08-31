@@ -1,7 +1,8 @@
-﻿import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import dbConnect from '@/lib/mongodb';
 import InscricaoClube from '@/models/InscricaoClube';
+import { sendClubMembershipReceivedEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,6 +37,12 @@ export async function POST(req: NextRequest) {
       nivelAdesao: body.nivelAdesao || 'Geral / Candidatura',
       status: 'pendente',
     });
+
+    // Send automated confirmation email
+    sendClubMembershipReceivedEmail(inscricao.email, inscricao.nomeCompleto, inscricao.nivelAdesao).catch(err => {
+      console.error('[Resend] Erro ao enviar email de inscrição no clube:', err);
+    });
+
     return NextResponse.json({ success: true, inscricao }, { status: 201 });
   } catch (e) {
     return NextResponse.json({ error: 'Erro ao guardar inscrição' }, { status: 500 });

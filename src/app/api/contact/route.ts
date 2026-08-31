@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import dbConnect from '@/lib/mongodb';
 import Contact from '@/models/Contact';
+import { sendProgramApplicationReceivedEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,6 +23,15 @@ export async function POST(request: Request) {
     }
 
     const contact = await Contact.create({ name, email, message });
+
+    // Send automated email if this is a program application
+    if (message.includes('CANDIDATURA AO PROGRAMA:')) {
+      const match = message.match(/CANDIDATURA AO PROGRAMA:\s*([^\]\n]+)/i);
+      const programTitle = match ? match[1].trim() : 'Programa ABN';
+      sendProgramApplicationReceivedEmail(email, name, programTitle).catch(err => {
+        console.error('[Resend] Erro ao enviar email de candidatura a programa:', err);
+      });
+    }
 
     return NextResponse.json({ success: true, contact }, { status: 201 });
   } catch (error: any) {
