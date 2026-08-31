@@ -35,11 +35,11 @@ const ProgramSchema = new Schema({
   enabledSteps: {
     identificacao: { type: Boolean, default: true },
     negocio: { type: Boolean, default: true },
-    adesao: { type: Boolean, default: true },
+    adesao: { type: Boolean, default: false },
     interesses: { type: Boolean, default: true },
     origem: { type: Boolean, default: true },
     declaracao: { type: Boolean, default: true },
-    checkout: { type: Boolean, default: true },
+    checkout: { type: Boolean, default: false },
   },
   // Custom questionnaire fields specific to this program
   customFields: [

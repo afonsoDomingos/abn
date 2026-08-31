@@ -217,11 +217,8 @@ export default function ProgramasPage() {
   const [clubeExpanded, setClubeExpanded] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
-  const getActiveSteps = () => {
-    const isFree = selectedProgram?.price?.toLowerCase() === 'gratuito' || selectedProgram?.paymentType === 'free';
-    const isClubProg = Boolean(selectedProgram?.isClub);
-
-    // If program has explicit enabledSteps configured in admin:
+    const getActiveSteps = () => {
+    // If program has explicit enabledSteps:
     if (selectedProgram?.enabledSteps && Object.keys(selectedProgram.enabledSteps).length > 0) {
       const cfg = selectedProgram.enabledSteps;
       const allSteps = [
@@ -233,22 +230,24 @@ export default function ProgramasPage() {
         { key: 'declaracao', label: 'Declaração' },
         { key: 'checkout', label: 'Checkout 💳' },
       ];
-      const filtered = allSteps.filter(s => cfg[s.key as keyof typeof cfg] === true);
+      // By default: adesao & checkout must be explicitly true
+      const filtered = allSteps.filter(s => {
+        if (s.key === 'adesao' || s.key === 'checkout') {
+          return cfg[s.key as keyof typeof cfg] === true;
+        }
+        return cfg[s.key as keyof typeof cfg] !== false;
+      });
       if (filtered.length > 0) return filtered;
     }
 
-    // Default fallback when enabledSteps is not set:
-    const defaultSteps = [
+    // Default fallback when enabledSteps is not set: adesao & checkout are OFF by default
+    return [
       { key: 'identificacao', label: 'Identificação' },
       { key: 'negocio', label: 'Negócio' },
-      ...(isClubProg || (selectedProgram?.adhesionLevels && selectedProgram.adhesionLevels.length > 0) ? [{ key: 'adesao', label: 'Adesão' }] : []),
       { key: 'interesses', label: 'Interesses' },
-      ...(isClubProg ? [{ key: 'origem', label: 'Origem' }] : []),
+      { key: 'origem', label: 'Origem' },
       { key: 'declaracao', label: 'Declaração' },
-      ...(!isFree ? [{ key: 'checkout', label: 'Checkout 💳' }] : []),
     ];
-
-    return defaultSteps;
   };
 
   const activeSteps = getActiveSteps();

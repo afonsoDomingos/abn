@@ -85,11 +85,11 @@ export default function AdminProgramasPage() {
   const [enabledSteps, setEnabledSteps] = useState<Required<EnabledStepsConfig>>({
     identificacao: true,
     negocio: true,
-    adesao: true,
+    adesao: false,
     interesses: true,
     origem: true,
     declaracao: true,
-    checkout: true,
+    checkout: false,
   });
 
   // Form states
@@ -172,13 +172,13 @@ export default function AdminProgramasPage() {
     setCustomFields(prog.customFields || []);
     setAdhesionLevels(prog.adhesionLevels || []);
     setEnabledSteps({
-      identificacao: prog.enabledSteps?.identificacao !== false,
-      negocio: prog.enabledSteps?.negocio !== false,
-      adesao: prog.enabledSteps?.adesao !== false,
-      interesses: prog.enabledSteps?.interesses !== false,
-      origem: prog.enabledSteps?.origem !== false,
-      declaracao: prog.enabledSteps?.declaracao !== false,
-      checkout: prog.enabledSteps?.checkout !== false,
+      identificacao: prog.enabledSteps ? prog.enabledSteps.identificacao !== false : true,
+      negocio: prog.enabledSteps ? prog.enabledSteps.negocio !== false : true,
+      adesao: Boolean(prog.enabledSteps?.adesao === true),
+      interesses: prog.enabledSteps ? prog.enabledSteps.interesses !== false : true,
+      origem: prog.enabledSteps ? prog.enabledSteps.origem !== false : true,
+      declaracao: prog.enabledSteps ? prog.enabledSteps.declaracao !== false : true,
+      checkout: Boolean(prog.enabledSteps?.checkout === true),
     });
     setActiveTab('geral');
     setShowForm(true);
@@ -218,11 +218,11 @@ export default function AdminProgramasPage() {
     setEnabledSteps({
       identificacao: true,
       negocio: true,
-      adesao: true,
+      adesao: false,
       interesses: true,
       origem: true,
       declaracao: true,
-      checkout: true,
+      checkout: false,
     });
     setActiveTab('geral');
     setShowForm(true);
