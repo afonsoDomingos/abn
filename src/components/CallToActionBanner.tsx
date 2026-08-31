@@ -4,9 +4,60 @@ import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 import styles from './CallToActionBanner.module.css';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 export default function CallToActionBanner() {
   const { language } = useLanguage();
+
+  // Typewriter for CTA title
+  const TITLES_PT = [
+    'Tens uma Ideia ou Startup? Transforma o teu Negócio!',
+    'Acelera o teu Projeto com Mentores Especializados!',
+    'Conecta-te a Investidores e Parceiros Estratégicos!',
+  ];
+  const TITLES_EN = [
+    'Have an Idea or Startup? Scale Your Business Today!',
+    'Accelerate Your Project with Expert Mentors!',
+    'Connect to Investors and Strategic Partners!',
+  ];
+
+  const [phraseIdx, setPhraseIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [typedTitle, setTypedTitle] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const [cursorOn, setCursorOn] = useState(true);
+
+  // Cursor blink
+  useEffect(() => {
+    const blink = setInterval(() => setCursorOn(v => !v), 520);
+    return () => clearInterval(blink);
+  }, []);
+
+  // Typewriter logic
+  useEffect(() => {
+    const phrases = language === 'pt' ? TITLES_PT : TITLES_EN;
+    const phrase = phrases[phraseIdx];
+    let t: ReturnType<typeof setTimeout>;
+
+    if (!deleting && charIdx < phrase.length) {
+      t = setTimeout(() => {
+        setTypedTitle(phrase.slice(0, charIdx + 1));
+        setCharIdx(i => i + 1);
+      }, 45);
+    } else if (!deleting && charIdx === phrase.length) {
+      t = setTimeout(() => setDeleting(true), 2500);
+    } else if (deleting && charIdx > 0) {
+      t = setTimeout(() => {
+        setTypedTitle(phrase.slice(0, charIdx - 1));
+        setCharIdx(i => i - 1);
+      }, 22);
+    } else if (deleting && charIdx === 0) {
+      setDeleting(false);
+      setPhraseIdx(i => (i + 1) % phrases.length);
+    }
+
+    return () => clearTimeout(t);
+  }, [charIdx, deleting, phraseIdx, language]);
 
   return (
     <section className={styles.section}>
@@ -28,9 +79,18 @@ export default function CallToActionBanner() {
             </span>
 
             <h2 className={styles.title}>
-              {language === 'pt'
-                ? 'Tens uma Ideia ou Startup? Transforma o teu Negócio!'
-                : 'Have an Idea or Startup? Scale Your Business Today!'}
+              {typedTitle}
+              <span style={{
+                display: 'inline-block',
+                width: '3px',
+                height: '0.85em',
+                backgroundColor: '#ff6b00',
+                marginLeft: '4px',
+                verticalAlign: 'middle',
+                borderRadius: '1px',
+                opacity: cursorOn ? 1 : 0,
+                transition: 'opacity 0.1s',
+              }} />
             </h2>
 
             <p className={styles.description}>
