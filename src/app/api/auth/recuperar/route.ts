@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
+import { sendPasswordResetEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,9 +30,12 @@ export async function POST(request: Request) {
     const token = Buffer.from(`${user._id}:${Date.now()}`).toString('base64url');
     const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/recuperar/nova-senha?token=${token}&id=${user._id}`;
 
-    // In production, send an email here (e.g. via Resend, SendGrid, Nodemailer)
-    // For now, we log it to the console for testing
-    console.log(`[PASSWORD RESET] Link for ${email}: ${resetLink}`);
+    // Send email with Resend
+    try {
+      await sendPasswordResetEmail(user.email, user.name, resetLink);
+    } catch (emailErr) {
+      console.error('[Resend] Erro ao enviar email de recuperação:', emailErr);
+    }
 
     // Store token on user (optional, for server-side validation)
     await User.findByIdAndUpdate(user._id, {

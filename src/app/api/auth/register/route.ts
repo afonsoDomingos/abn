@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
+import { sendWelcomeEmail } from '@/lib/email';
 
 export async function POST(request: Request) {
   try {
@@ -45,6 +46,11 @@ export async function POST(request: Request) {
       passportPhoto: passportPhoto || '',
       educationLevel: educationLevel || '',
       howHeardAboutUs: howHeardAboutUs || '',
+    });
+
+    // Enviar email de boas-vindas via Resend (assíncrono)
+    sendWelcomeEmail(user.email, user.name).catch((err) => {
+      console.error('[Resend] Erro ao enviar email de boas-vindas:', err);
     });
 
     const userData = { id: String(user._id), name: user.name, email: user.email, role: user.role };

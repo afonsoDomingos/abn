@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import dbConnect from '@/lib/mongodb';
 import Payment from '@/models/Payment';
 import Notification from '@/models/Notification';
+import { sendCourseApprovalEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -192,45 +193,9 @@ export async function PUT(request: Request) {
           const paymentWithUser = await Payment.findById(paymentId).populate('user', 'name email');
           if (paymentWithUser && paymentWithUser.user) {
             const userObj = paymentWithUser.user as any;
-            const resendApiKey = process.env.RESEND_API_KEY;
-            
-            if (resendApiKey && userObj.email) {
-              const fromEmail = process.env.RESEND_FROM_EMAIL || 'ABN - AfroBiz Network <onboarding@resend.dev>';
-              const emailSubject = `Inscrição Confirmada: ${paymentWithUser.itemName}! 🎓`;
-              const emailHtml = `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 12px; color: #333;">
-                  <h2 style="color: #ff6b00; text-align: center;">Inscrição Confirmada!</h2>
-                  <p>Olá, <strong>${userObj.name}</strong>,</p>
-                  <p>Temos o prazer de informar que a sua inscrição no curso <strong>${paymentWithUser.itemName}</strong> foi confirmada com sucesso!</p>
-                  <p>O acesso a todo o conteúdo programático, incluindo a lista completa de aulas e vídeos estruturados, já se encontra totalmente disponível e desbloqueado na sua Dashboard.</p>
-                  <div style="background: #fdf2e9; border-left: 4px solid #ff6b00; padding: 15px; margin: 20px 0; border-radius: 6px; font-size: 0.9rem;">
-                    <strong>📚 Como aceder:</strong><br/>
-                    1. Faça login na plataforma;<br/>
-                    2. Vá para a secção <strong>Formação</strong> → <strong>Minhas Formações</strong>;<br/>
-                    3. Clique em <strong>🎥 Assistir Aulas</strong> para iniciar a sua aprendizagem.
-                  </div>
-                  <p style="text-align: center; margin: 30px 0;">
-                    <a href="https://abnafrobiznetwork.com/login" style="background: #ff6b00; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block;">Iniciar Aulas Agora</a>
-                  </p>
-                  <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;" />
-                  <p style="font-size: 0.8rem; color: #888; text-align: center;">AfroBiz Network Lda. Todos os direitos reservados.</p>
-                </div>
-              `;
-
-              fetch('https://api.resend.com/emails', {
-                method: 'POST',
-                headers: {
-                  'Authorization': `Bearer ${resendApiKey}`,
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  from: fromEmail,
-                  to: userObj.email,
-                  subject: emailSubject,
-                  html: emailHtml
-                })
-              }).catch(err => {
-                console.error('Network error sending enrollment email:', err);
+            if (userObj.email) {
+              sendCourseApprovalEmail(userObj.email, userObj.name, paymentWithUser.itemName).catch(err => {
+                console.error('[Resend] Erro ao enviar email de confirmação de curso:', err);
               });
             }
           }

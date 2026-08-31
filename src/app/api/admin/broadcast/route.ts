@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
+import { resend, DEFAULT_FROM_EMAIL } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,33 +26,69 @@ export async function POST(request: Request) {
     }
 
     if (session.role !== 'admin') {
-      return NextResponse.json({ success: false, error: 'Acesso negado.' }, { status: 403 });
+      return NextResponse.json({ success: false, error: 'Acesso negado. Apenas administradores podem enviar comunicações.' }, { status: 403 });
     }
 
-    const { subject, html } = await request.json();
+    const { subject, html, recipientTarget = 'all', testEmail } = await request.json();
 
     if (!subject || !html) {
       return NextResponse.json({ success: false, error: 'O assunto e o corpo do e-mail são obrigatórios.' }, { status: 400 });
     }
 
-    const resendApiKey = process.env.RESEND_API_KEY;
-    if (!resendApiKey) {
+    if (!resend) {
       return NextResponse.json({ 
         success: false, 
-        error: 'A chave da API do Resend (RESEND_API_KEY) não está configurada no servidor (.env.local).' 
+        error: 'A chave da API do Resend (RESEND_API_KEY) não está configurada no servidor.' 
       }, { status: 500 });
     }
 
-    // Get all users with valid emails
-    const users = await User.find({ email: { $exists: true } }).select('email name');
+    const fromEmail = process.env.RESEND_FROM_EMAIL || DEFAULT_FROM_EMAIL;
+
+    // Handle single test email
+    if (recipientTarget === 'test') {
+      if (!testEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(testEmail)) {
+        return NextResponse.json({ success: false, error: 'Por favor, forneça um endereço de e-mail de teste válido.' }, { status: 400 });
+      }
+
+      try {
+        const { data, error } = await resend.emails.send({
+          from: fromEmail,
+          to: testEmail,
+          subject: `[TESTE] ${subject}`,
+          html: html,
+        });
+
+        if (error) {
+          return NextResponse.json({ success: false, error: error.message }, { status: 400 });
+        }
+
+        return NextResponse.json({ 
+          success: true, 
+          sentCount: 1, 
+          totalUsers: 1,
+          isTest: true,
+          message: `E-mail de teste enviado com sucesso para ${testEmail}`
+        });
+      } catch (err: any) {
+        return NextResponse.json({ success: false, error: err.message || 'Erro ao enviar e-mail de teste.' }, { status: 500 });
+      }
+    }
+
+    // Build database query based on target
+    const filter: any = { email: { $exists: true, $ne: '' } };
+    if (recipientTarget && recipientTarget !== 'all') {
+      filter.role = recipientTarget;
+    }
+
+    const users = await User.find(filter).select('email name');
     const emails: string[] = users.map(u => u.email).filter(Boolean);
 
     if (emails.length === 0) {
-      return NextResponse.json({ success: false, error: 'Nenhum utilizador com e-mail registado encontrado.' }, { status: 400 });
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Nenhum utilizador encontrado para o público-alvo selecionado.' 
+      }, { status: 400 });
     }
-
-    const fromEmail = process.env.RESEND_FROM_EMAIL || 'ABN - AfroBiz Network <onboarding@resend.dev>';
-    const toEmail = process.env.RESEND_TO_EMAIL || 'comunicacao@afrobiznet.com';
 
     // Broadcast logic using BCC in chunks of 50 (Resend limits)
     const batchSize = 50;
@@ -62,25 +99,16 @@ export async function POST(request: Request) {
       const chunk = emails.slice(i, i + batchSize);
       
       try {
-        const response = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${resendApiKey}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            from: fromEmail,
-            to: toEmail,
-            bcc: chunk,
-            subject: subject,
-            html: html
-          })
+        const { data, error } = await resend.emails.send({
+          from: fromEmail,
+          to: fromEmail.includes('<') ? fromEmail.split('<')[1].replace('>', '').trim() : fromEmail,
+          bcc: chunk,
+          subject: subject,
+          html: html,
         });
 
-        const resData = await response.json();
-        
-        if (!response.ok) {
-          errors.push(resData.message || `Erro HTTP ${response.status}`);
+        if (error) {
+          errors.push(error.message);
         } else {
           sentCount += chunk.length;
         }
@@ -92,7 +120,7 @@ export async function POST(request: Request) {
     if (errors.length > 0 && sentCount === 0) {
       return NextResponse.json({ 
         success: false, 
-        error: `Erro ao enviar e-mails: ${errors.join(', ')}. Certifique-se de que configurou um domínio verificado no Resend se estiver a enviar para terceiros.`
+        error: `Erro ao enviar e-mails: ${errors.join(', ')}.` 
       }, { status: 400 });
     }
 
@@ -104,6 +132,7 @@ export async function POST(request: Request) {
     });
 
   } catch (error: any) {
+    console.error('Error in POST /api/admin/broadcast:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
