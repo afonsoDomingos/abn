@@ -61,10 +61,11 @@ export default function AdminComunicacaoPage() {
           <!-- Header -->
           <tr>
             <td style="background-color: #0f172a; padding: 32px 28px; text-align: center; border-bottom: 4px solid #ff6b00;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 800; letter-spacing: 1px;">
-                AFROBIZ <span style="color: #ff6b00;">NETWORK</span>
+              <img src="https://abnafrobiznetwork.com/abn-symbol.png" alt="ABN Logo" width="56" style="display: block; margin: 0 auto 12px auto; height: auto;" />
+              <h1 style="margin: 0; color: #ffffff; font-size: 22px; font-weight: 800; letter-spacing: 1.5px;">
+                ABN <span style="color: #ff6b00;">AFROBIZ NETWORK</span>
               </h1>
-              <p style="margin: 6px 0 0 0; color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">
+              <p style="margin: 6px 0 0 0; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">
                 Plataforma de Aceleração e Negócios
               </p>
             </td>

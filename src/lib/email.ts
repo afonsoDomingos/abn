@@ -68,10 +68,13 @@ function emailLayout(content: string, title?: string) {
       <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
         <!-- Header -->
         <div style="background: linear-gradient(135deg, #111827 0%, #1f2937 100%); padding: 32px 24px; text-align: center; border-bottom: 3px solid #ff6b00;">
-          <h1 style="margin: 0; color: #ffffff; font-size: 24px; letter-spacing: 1px; font-weight: 800;">
-            AFROBIZ <span style="color: #ff6b00;">NETWORK</span>
+          <img src="https://abnafrobiznetwork.com/abn-symbol.png" alt="ABN Logo" width="56" style="display: block; margin: 0 auto 12px auto; height: auto;" />
+          <h1 style="margin: 0; color: #ffffff; font-size: 22px; letter-spacing: 1.5px; font-weight: 800;">
+            ABN <span style="color: #ff6b00;">AFROBIZ NETWORK</span>
           </h1>
-          ${title ? `<p style="margin: 8px 0 0 0; color: #94a3b8; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">${title}</p>` : ''}
+          <p style="margin: 6px 0 0 0; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">
+            Plataforma de Aceleração e Negócios
+          </p>
         </div>
 
         <!-- Body -->
