@@ -15,6 +15,25 @@ export default function Hero() {
   const [loading, setLoading] = useState(true);
   const [currentBanner, setCurrentBanner] = useState(0);
 
+  // Typewriter effect
+  const PHRASES_PT = [
+    'Empreendedorismo para um mundo melhor',
+    'Conectamos startups a investidores',
+    'Acelere o seu negócio em África',
+    'Rede de oportunidades empresariais',
+  ];
+  const PHRASES_EN = [
+    'Entrepreneurship for a better world',
+    'Connecting startups to investors',
+    'Accelerate your business in Africa',
+    'A network of business opportunities',
+  ];
+  const [typedText, setTypedText] = useState('');
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showCursor, setShowCursor] = useState(true);
+
   // Search Bar state
   const [searchQuery, setSearchQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
@@ -50,6 +69,38 @@ export default function Hero() {
   }, []);
 
   const displayDesc = (language === 'pt' && content.description) ? content.description : t.hero.desc;
+
+  // Cursor blink
+  useEffect(() => {
+    const blink = setInterval(() => setShowCursor(v => !v), 500);
+    return () => clearInterval(blink);
+  }, []);
+
+  // Typewriter logic
+  useEffect(() => {
+    const phrases = language === 'pt' ? PHRASES_PT : PHRASES_EN;
+    const currentPhrase = phrases[phraseIndex];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (!isDeleting && charIndex < currentPhrase.length) {
+      timeout = setTimeout(() => {
+        setTypedText(currentPhrase.slice(0, charIndex + 1));
+        setCharIndex(c => c + 1);
+      }, 48);
+    } else if (!isDeleting && charIndex === currentPhrase.length) {
+      timeout = setTimeout(() => setIsDeleting(true), 2000);
+    } else if (isDeleting && charIndex > 0) {
+      timeout = setTimeout(() => {
+        setTypedText(currentPhrase.slice(0, charIndex - 1));
+        setCharIndex(c => c - 1);
+      }, 24);
+    } else if (isDeleting && charIndex === 0) {
+      setIsDeleting(false);
+      setPhraseIndex(i => (i + 1) % phrases.length);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [charIndex, isDeleting, phraseIndex, language]);
 
   useEffect(() => {
     if (content.banners && content.banners.length > 1) {
@@ -102,7 +153,18 @@ export default function Hero() {
         <div className={styles.blueCard}>
           <div className={styles.blueCardContent}>
             <h1 className={styles.title}>
-              {language === 'pt' ? 'Empreendedorismo para um mundo melhor' : 'Entrepreneurship for a better world'}
+              {typedText}
+              <span style={{
+                display: 'inline-block',
+                width: '3px',
+                height: '0.9em',
+                backgroundColor: '#ff6b00',
+                marginLeft: '4px',
+                verticalAlign: 'middle',
+                borderRadius: '1px',
+                opacity: showCursor ? 1 : 0,
+                transition: 'opacity 0.1s',
+              }} />
             </h1>
             <p className={styles.description}>
               {displayDesc}
