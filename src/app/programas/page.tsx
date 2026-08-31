@@ -863,102 +863,72 @@ const canProceed = () => {
             {submitted ? (
               <div className={styles.successState}>
                 {lastSubmission?.tipoPagamento === 'gratuito' ? (
-                    <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
-                      <div className={styles.successIcon} style={{ background: '#ecfdf5', color: '#059669', border: '2px solid #10b981', margin: '0 auto 1rem' }}>✅</div>
-                      <span style={{ background: '#ecfdf5', color: '#047857', fontWeight: 800, padding: '5px 16px', borderRadius: '20px', fontSize: '0.82rem', display: 'inline-block', marginBottom: '0.5rem' }}>
-                        Inscrição Gratuita Registada!
+                    <div style={{ textAlign: 'center', padding: '1rem 0' }}>
+                      <div className={styles.successIcon} style={{ background: '#ecfdf5', color: '#059669', border: '2px solid #10b981', margin: '0 auto 1.25rem' }}>✓</div>
+                      <span style={{ background: '#ecfdf5', color: '#047857', fontWeight: 800, padding: '4px 14px', borderRadius: '20px', fontSize: '0.8rem', display: 'inline-block', marginBottom: '0.6rem' }}>
+                        Inscrição Gratuita Concluída
                       </span>
-                      <h3 style={{ margin: '0 0 0.4rem 0', fontSize: '1.4rem' }}>Candidatura Concluída com Sucesso!</h3>
-                      <p style={{ margin: '0 auto 1.25rem', color: '#475569', lineHeight: '1.5', fontSize: '0.92rem', maxWidth: '520px' }}>
-                        Obrigado, <strong>{form.nomeCompleto || 'candidato'}</strong>! A sua inscrição no programa <strong>{selectedProgram?.title}</strong> foi recebida.
+                      <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.35rem' }}>Candidatura Registada com Sucesso!</h3>
+                      <p style={{ margin: '0 auto 1.5rem', color: '#475569', lineHeight: '1.5', fontSize: '0.92rem', maxWidth: '480px' }}>
+                        Obrigado, <strong>{form.nomeCompleto || 'candidato'}</strong>! A sua inscrição no programa <strong>{selectedProgram?.title}</strong> foi enviada. A equipa entrará em contacto em breve.
                       </p>
 
-                      {/* ── CARD DE ENGAJAMENTO SOCIAL ── */}
+                      {/* ── SEGUIR REDES (DESIGN DISCRETO & LIMPO) ── */}
                       <div style={{
-                        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-                        border: '1px solid rgba(255, 107, 0, 0.3)',
-                        borderRadius: '18px',
-                        padding: '1.5rem 1.25rem',
-                        margin: '0 auto 1.75rem',
-                        maxWidth: '560px',
-                        color: '#ffffff',
-                        textAlign: 'center',
-                        boxShadow: '0 10px 30px rgba(0,0,0,0.15)'
+                        background: '#f8fafc',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '14px',
+                        padding: '1.1rem 1.25rem',
+                        margin: '0 auto 1.5rem',
+                        maxWidth: '440px',
+                        textAlign: 'center'
                       }}>
-                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,107,0,0.15)', border: '1px solid rgba(255,107,0,0.4)', padding: '4px 14px', borderRadius: '20px', fontSize: '0.78rem', color: '#ff9838', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
-                          📢 Passo Importante: Siga a ABN
-                        </div>
-                        <h4 style={{ margin: '0 0 0.4rem 0', fontSize: '1.15rem', color: '#ffffff', fontWeight: 800 }}>
-                          Acompanhe as Convocatórias &amp; Avisos
-                        </h4>
-                        <p style={{ margin: '0 0 1.25rem 0', fontSize: '0.84rem', color: '#cbd5e1', lineHeight: '1.45' }}>
-                          Todas as atualizações, datas de workshops e listas de selecionados são divulgadas nas nossas redes sociais oficiais. Conecte-se já para não perder nada:
+                        <p style={{ margin: '0 0 0.75rem 0', fontSize: '0.82rem', color: '#64748b', fontWeight: 600 }}>
+                          Acompanhe os avisos e resultados:
                         </p>
-
-                        {/* Botões de Redes Sociais */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.65rem', marginBottom: '1.25rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
                           <a
                             href="https://wa.me/258845773974"
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#25d366', color: '#ffffff', textDecoration: 'none', padding: '10px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 700, transition: 'transform 0.2s' }}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              background: '#25d366',
+                              color: '#ffffff',
+                              textDecoration: 'none',
+                              padding: '7px 14px',
+                              borderRadius: '8px',
+                              fontSize: '0.8rem',
+                              fontWeight: 700,
+                            }}
                           >
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                            WhatsApp ABN
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                            WhatsApp
                           </a>
 
                           <a
                             href="https://www.instagram.com/abnafrobiznetwork?igsh=dTlvYndmcXA4NmVh"
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)', color: '#ffffff', textDecoration: 'none', padding: '10px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 700, transition: 'transform 0.2s' }}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+                              color: '#ffffff',
+                              textDecoration: 'none',
+                              padding: '7px 14px',
+                              borderRadius: '8px',
+                              fontSize: '0.8rem',
+                              fontWeight: 700,
+                            }}
                           >
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                             Instagram
                           </a>
-
-                          <a
-                            href="https://www.facebook.com/profile.php?id=61574066674222"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#1877f2', color: '#ffffff', textDecoration: 'none', padding: '10px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 700, transition: 'transform 0.2s' }}
-                          >
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-                            Facebook
-                          </a>
-
-                          <a
-                            href="https://www.linkedin.com/in/abn-afrobiz-network-43967a367"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#0a66c2', color: '#ffffff', textDecoration: 'none', padding: '10px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 700, transition: 'transform 0.2s' }}
-                          >
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                            LinkedIn
-                          </a>
                         </div>
-
-                        {/* Botão de Partilha Rápida WhatsApp */}
-                        <a
-                          href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Acabei de me inscrever no programa gratuito ${selectedProgram?.title || 'ABN'} na AfroBiz Network! Inscreva-te também: https://afrobiznetwork.com/programas`)}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            background: 'rgba(255,255,255,0.08)',
-                            border: '1px dashed rgba(255,255,255,0.3)',
-                            color: '#f8fafc',
-                            textDecoration: 'none',
-                            padding: '8px 16px',
-                            borderRadius: '20px',
-                            fontSize: '0.78rem',
-                            fontWeight: 600,
-                          }}
-                        >
-                          <span>📲 Partilhar este programa com um amigo no WhatsApp</span>
-                        </a>
                       </div>
 
                       <div className={styles.successActions} style={{ justifyContent: 'center' }}>
@@ -966,7 +936,7 @@ const canProceed = () => {
                           Ver outros programas
                         </Link>
                         <Link href="/cursos" className={styles.successActionBtn} onClick={closeModal}>
-                          Explorar Cursos ABN
+                          Ver cursos
                         </Link>
                       </div>
                     </div>
