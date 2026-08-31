@@ -24,7 +24,7 @@ export default function CallToActionBanner() {
 
           <div className={styles.content}>
             <span className={styles.badge}>
-              🚀 {language === 'pt' ? 'CANDIDATURAS ABERTAS' : 'APPLICATIONS OPEN'}
+              {language === 'pt' ? 'CANDIDATURAS ABERTAS' : 'APPLICATIONS OPEN'}
             </span>
 
             <h2 className={styles.title}>
@@ -41,15 +41,15 @@ export default function CallToActionBanner() {
 
             <div className={styles.highlights}>
               <div className={styles.highlightItem}>
-                <span className={styles.highlightIcon}>✨</span>
+                <span className={styles.highlightIcon}>→</span>
                 <span>{language === 'pt' ? 'Incubação & Aceleração' : 'Incubation & Acceleration'}</span>
               </div>
               <div className={styles.highlightItem}>
-                <span className={styles.highlightIcon}>👨‍🏫</span>
+                <span className={styles.highlightIcon}>→</span>
                 <span>{language === 'pt' ? 'Mentoria com Especialistas' : 'Expert Mentorship'}</span>
               </div>
               <div className={styles.highlightItem}>
-                <span className={styles.highlightIcon}>💰</span>
+                <span className={styles.highlightIcon}>→</span>
                 <span>{language === 'pt' ? 'Acesso a Oportunidades & Capital' : 'Access to Funding & Capital'}</span>
               </div>
             </div>

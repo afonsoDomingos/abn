@@ -523,7 +523,7 @@ export default function ProgramasPage() {
         >
           <div className={styles.heroOverlay} />
           <div className={styles.heroContent}>
-            <span className={styles.heroBadge}>🚀 Nossos Programas</span>
+            <span className={styles.heroBadge}>Nossos Programas</span>
             <h1>Programas de Incubação &amp; Aceleração</h1>
             <p>Descubra os programas da ABN desenhados para transformar ideias em negócios de impacto em África.</p>
             <Link href="/incubacao" className={styles.heroBtn}>Ver Incubação &amp; Aceleração</Link>
@@ -536,7 +536,7 @@ export default function ProgramasPage() {
             <div className={styles.clubeContainer}>
               <div className={styles.clubeHeader}>
                 <div className={styles.clubeHeaderLeft}>
-                  <span className={styles.clubeFeaturedBadge}>⭐ Programa em Destaque</span>
+                  <span className={styles.clubeFeaturedBadge}>Programa em Destaque</span>
                   <div className={styles.clubeIconRow}>
                     <span className={styles.clubeIcon}>🏛️</span>
                     <div>

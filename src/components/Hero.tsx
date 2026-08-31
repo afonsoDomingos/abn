@@ -20,14 +20,14 @@ export default function Hero() {
   const [showResults, setShowResults] = useState(false);
 
   const SEARCH_ITEMS = [
-    { title: language === 'pt' ? 'ABN Startup 180 (Incubação & Aceleração)' : 'ABN Startup 180 (Incubation)', type: language === 'pt' ? 'Programa' : 'Program', link: '/incubacao', icon: '🚀' },
-    { title: language === 'pt' ? 'Mentalidade Empreendedora' : 'Entrepreneurial Mindset', type: language === 'pt' ? 'Capacitação' : 'Training', link: '/incubacao', icon: '🧠' },
-    { title: language === 'pt' ? 'Clube dos Empreendedores & Network' : 'Entrepreneurs Club & Network', type: language === 'pt' ? 'Comunidade' : 'Community', link: '/incubacao', icon: '🏛️' },
-    { title: language === 'pt' ? 'Bolsas de Estudo e Financiamentos' : 'Grants & Funding Opportunities', type: language === 'pt' ? 'Oportunidade' : 'Opportunity', link: '/oportunidades', icon: '💰' },
-    { title: language === 'pt' ? 'Rede de Mentores e Especialistas' : 'Mentor & Expert Network', type: language === 'pt' ? 'Mentoria' : 'Mentorship', link: '/especialistas', icon: '👨‍🏫' },
-    { title: language === 'pt' ? 'Cursos Certificados e Bootcamps' : 'Certified Courses & Bootcamps', type: language === 'pt' ? 'Academia' : 'Academy', link: '/dashboard/formacao', icon: '📚' },
-    { title: language === 'pt' ? 'Próximos Eventos & Summits' : 'Upcoming Events & Summits', type: language === 'pt' ? 'Eventos' : 'Events', link: '/eventos', icon: '📅' },
-    { title: language === 'pt' ? 'Marketplace de Serviços Empresariais' : 'Business Services Marketplace', type: language === 'pt' ? 'Serviços' : 'Services', link: '/marketplace', icon: '💼' },
+    { title: language === 'pt' ? 'ABN Startup 180 (Incubação & Aceleração)' : 'ABN Startup 180 (Incubation)', type: language === 'pt' ? 'Programa' : 'Program', link: '/incubacao' },
+    { title: language === 'pt' ? 'Mentalidade Empreendedora' : 'Entrepreneurial Mindset', type: language === 'pt' ? 'Capacitação' : 'Training', link: '/incubacao' },
+    { title: language === 'pt' ? 'Clube dos Empreendedores & Network' : 'Entrepreneurs Club & Network', type: language === 'pt' ? 'Comunidade' : 'Community', link: '/incubacao' },
+    { title: language === 'pt' ? 'Bolsas de Estudo e Financiamentos' : 'Grants & Funding Opportunities', type: language === 'pt' ? 'Oportunidade' : 'Opportunity', link: '/oportunidades' },
+    { title: language === 'pt' ? 'Rede de Mentores e Especialistas' : 'Mentor & Expert Network', type: language === 'pt' ? 'Mentoria' : 'Mentorship', link: '/especialistas' },
+    { title: language === 'pt' ? 'Cursos Certificados e Bootcamps' : 'Certified Courses & Bootcamps', type: language === 'pt' ? 'Academia' : 'Academy', link: '/dashboard/formacao' },
+    { title: language === 'pt' ? 'Próximos Eventos & Summits' : 'Upcoming Events & Summits', type: language === 'pt' ? 'Eventos' : 'Events', link: '/eventos' },
+    { title: language === 'pt' ? 'Marketplace de Serviços Empresariais' : 'Business Services Marketplace', type: language === 'pt' ? 'Serviços' : 'Services', link: '/marketplace' },
   ];
 
   const filteredSearch = searchQuery.trim() === ''
@@ -149,34 +149,34 @@ export default function Hero() {
 
               {/* Quick Tags / Suggestions */}
               <div className={styles.quickChips}>
-                <span className={styles.chipLabel}>⚡ {language === 'pt' ? 'Populares:' : 'Popular:'}</span>
+                <span className={styles.chipLabel}>{language === 'pt' ? 'Populares:' : 'Popular:'}</span>
                 <button
                   type="button"
                   className={styles.chip}
                   onClick={() => { setSearchQuery('Incubação'); setShowResults(true); }}
                 >
-                  🚀 {language === 'pt' ? 'Incubação' : 'Incubation'}
+                  {language === 'pt' ? 'Incubação' : 'Incubation'}
                 </button>
                 <button
                   type="button"
                   className={styles.chip}
                   onClick={() => { setSearchQuery('Mentores'); setShowResults(true); }}
                 >
-                  🧠 {language === 'pt' ? 'Mentoria' : 'Mentorship'}
+                  {language === 'pt' ? 'Mentoria' : 'Mentorship'}
                 </button>
                 <button
                   type="button"
                   className={styles.chip}
                   onClick={() => { setSearchQuery('Bolsas'); setShowResults(true); }}
                 >
-                  💰 {language === 'pt' ? 'Oportunidades' : 'Grants'}
+                  {language === 'pt' ? 'Oportunidades' : 'Grants'}
                 </button>
                 <button
                   type="button"
                   className={styles.chip}
                   onClick={() => { setSearchQuery('Eventos'); setShowResults(true); }}
                 >
-                  📅 {language === 'pt' ? 'Eventos' : 'Events'}
+                  {language === 'pt' ? 'Eventos' : 'Events'}
                 </button>
               </div>
 
@@ -207,7 +207,6 @@ export default function Hero() {
                           onMouseEnter={e => (e.currentTarget.style.background = '#f8fafc')}
                           onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                         >
-                          <span style={{ fontSize: '1.3rem', width: '28px', textAlign: 'center' }}>{item.icon}</span>
                           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                             <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#0f172a' }}>{item.title}</span>
                             <span style={{ fontSize: '0.7rem', color: '#ff6b00', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{item.type}</span>

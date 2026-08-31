@@ -98,7 +98,7 @@ export default function Stats() {
       <div className={styles.container}>
         <div className={styles.header}>
           <span className={styles.badge}>
-            📊 {language === 'pt' ? 'Dados em Tempo Real' : 'Real-Time Data'}
+            {language === 'pt' ? 'Dados em Tempo Real' : 'Real-Time Data'}
           </span>
           <h2 className={styles.title}>
             {language === 'pt' ? 'Nosso Impacto' : 'Our Impact'}
