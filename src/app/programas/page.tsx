@@ -432,21 +432,73 @@ export default function ProgramasPage() {
     }
   };
 
-  const handlePrevious = () => {
+  const handleNext = (e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (currentStep === 1) {
+      if (!form.nomeCompleto || !form.nomeCompleto.trim()) {
+        alert('Por favor, introduza o seu Nome Completo.');
+        return;
+      }
+      if (!form.email || !form.email.trim() || !form.email.includes('@')) {
+        alert('Por favor, introduza um endereço de E-mail válido.');
+        return;
+      }
+    }
+
+    if (currentStep === 3) {
+      if (!form.nivelAdesao || !form.nivelAdesao.trim()) {
+        alert('Por favor, selecione uma modalidade / nível de adesão.');
+        return;
+      }
+    }
+
+    if (currentStep === 6) {
+      if (!form.assinatura || !form.assinatura.trim()) {
+        alert('Por favor, escreva o seu nome no campo de assinatura.');
+        return;
+      }
+    }
+
+    if (currentStep < totalSteps) {
+      setCurrentStep(prev => Math.min(totalSteps, prev + 1));
+      setTimeout(() => {
+        const modalContainer = document.querySelector(`.${styles.modal}`);
+        if (modalContainer) {
+          modalContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 50);
+    }
+  };
+
+  const handlePrevious = (e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     setCurrentStep(prev => Math.max(1, prev - 1));
+    setTimeout(() => {
+      const modalContainer = document.querySelector(`.${styles.modal}`);
+      if (modalContainer) {
+        modalContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 50);
   };
 
   const canProceed = () => {
     if (currentStep === 1) {
-      const nomeValido = form.nomeCompleto.trim() !== '';
-      const emailValido = form.email.trim() !== '' && form.email.includes('@');
+      const nomeValido = form.nomeCompleto && form.nomeCompleto.trim() !== '';
+      const emailValido = form.email && form.email.trim() !== '' && form.email.includes('@');
       return nomeValido && emailValido;
     }
     if (currentStep === 3) {
-      return form.nivelAdesao.trim() !== '';
+      return form.nivelAdesao && form.nivelAdesao.trim() !== '';
     }
     if (currentStep === 6) {
-      return form.assinatura.trim() !== '';
+      return form.assinatura && form.assinatura.trim() !== '';
     }
     return true;
   };
@@ -1569,17 +1621,30 @@ export default function ProgramasPage() {
                 {/* Wizard Navigation */}
                 <div className={styles.wizardNavigation}>
                   {currentStep > 1 && (
-                    <button type="button" className={styles.wizardBtn} onClick={handlePrevious}>
+                    <button 
+                      type="button" 
+                      className={`${styles.wizardBtn} ${styles.wizardBtnPrev}`} 
+                      onClick={handlePrevious}
+                    >
                       ← Anterior
                     </button>
                   )}
-                  <button
-                    type="submit"
-                    className={styles.wizardBtn}
-                    disabled={!canProceed()}
-                  >
-                    {currentStep === totalSteps ? 'Finalizar Candidatura 💳' : 'Próximo →'}
-                  </button>
+                  {currentStep < totalSteps ? (
+                    <button
+                      type="button"
+                      className={`${styles.wizardBtn} ${styles.wizardBtnNext}`}
+                      onClick={handleNext}
+                    >
+                      Próximo →
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className={`${styles.wizardBtn} ${styles.wizardBtnNext}`}
+                    >
+                      Finalizar Candidatura 💳
+                    </button>
+                  )}
                 </div>
               </form>
             )}
