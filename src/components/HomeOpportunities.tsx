@@ -17,13 +17,13 @@ interface Opportunity {
   applyLink?: string;
 }
 
-const catColors: Record<string, { color: string }> = {
-  'Financiamento': { color: '#2ecc71' },
-  'Bolsa de Estudo': { color: '#3498db' },
-  'Concurso': { color: '#e67e22' },
-  'Aceleração': { color: '#d4af37' },
-  'Emprego': { color: '#9b59b6' },
-  'Edital': { color: '#e74c3c' },
+const catColors: Record<string, { color: string; bg: string }> = {
+  'Financiamento': { color: '#22c55e', bg: 'rgba(34, 197, 94, 0.12)' },
+  'Bolsa de Estudo': { color: '#38bdf8', bg: 'rgba(56, 189, 248, 0.12)' },
+  'Concurso': { color: '#fb923c', bg: 'rgba(251, 146, 60, 0.12)' },
+  'Aceleração': { color: '#ff6b00', bg: 'rgba(255, 107, 0, 0.12)' },
+  'Emprego': { color: '#a855f7', bg: 'rgba(168, 85, 247, 0.12)' },
+  'Edital': { color: '#f43f5e', bg: 'rgba(244, 63, 94, 0.12)' },
 };
 
 export default function HomeOpportunities() {
@@ -62,35 +62,32 @@ export default function HomeOpportunities() {
         {/* Cards list */}
         <div className={styles.list}>
           {opps.map(opp => {
-            const cat = catColors[opp.category] || { color: '#d4af37' };
+            const cat = catColors[opp.category] || { color: '#ff6b00', bg: 'rgba(255, 107, 0, 0.12)' };
             return (
               <div
                 key={opp._id}
                 className={styles.item}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.borderColor = `${cat.color}50`;
-                  (e.currentTarget as HTMLElement).style.transform = 'translateX(4px)';
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateX(0)';
+                style={{
+                  borderLeft: `4px solid ${cat.color}`
                 }}
               >
                 <div className={styles.content}>
                   <div className={styles.metaRow}>
                     <span
                       className={styles.catBadge}
-                      style={{ color: cat.color, background: `${cat.color}12` }}
+                      style={{ color: cat.color, background: cat.bg, borderColor: `${cat.color}35` }}
                     >
                       {opp.category}
                     </span>
                     {opp.location && (
-                      <span className={styles.location}>{opp.location}</span>
+                      <span className={styles.location}>
+                        📍 {opp.location}
+                      </span>
                     )}
                   </div>
                   <h3 className={styles.itemTitle}>{opp.title}</h3>
                   <p className={styles.itemDesc}>
-                    {opp.description.slice(0, 120)}...
+                    {opp.description.slice(0, 140)}...
                   </p>
                 </div>
                 <div className={styles.actionBox}>
@@ -105,7 +102,10 @@ export default function HomeOpportunities() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className={styles.applyLinkBtn}
-                      style={{ background: cat.color, color: '#000' }}
+                      style={{
+                        background: `linear-gradient(135deg, ${cat.color} 0%, ${cat.color}dd 100%)`,
+                        color: '#ffffff'
+                      }}
                     >
                       {language === 'pt' ? 'Candidatar →' : 'Apply →'}
                     </a>

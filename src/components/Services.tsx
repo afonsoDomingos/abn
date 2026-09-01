@@ -116,29 +116,37 @@ export default function Services() {
           {services.map((service, index) => (
             <motion.div 
               key={service._id}
-              className={`${styles.card} glass`}
+              className={styles.card}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
             >
               <div className={styles.cardHeader}>
                 <span className={styles.category}>{service.category}</span>
-                <div className={styles.dot}></div>
+                <div className={styles.statusIndicator}>
+                  <span className={styles.dot}></span>
+                </div>
               </div>
               <h3 className={styles.serviceName}>{service.name}</h3>
               <p className={styles.description}>{service.description}</p>
               <div className={styles.footer}>
-                <span className={styles.price}>{service.price}</span>
-                <button className={styles.btn} onClick={() => setSelectedService(service)}>{t.services.request}</button>
+                <div className={styles.priceTag}>
+                  <span className={styles.priceLabel}>Investimento</span>
+                  <span className={styles.price}>{service.price}</span>
+                </div>
+                <button className={styles.btn} onClick={() => setSelectedService(service)}>
+                  {t.services.request} →
+                </button>
               </div>
             </motion.div>
           ))}
         </div>
         
         <div className={styles.more}>
-          <button className="btn-outline">{t.services.viewAll}</button>
+          <Link href="/marketplace" className={styles.catalogBtn}>
+            {t.services.viewAll}
+          </Link>
         </div>
       </div>
 
