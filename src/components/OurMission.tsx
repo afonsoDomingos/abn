@@ -9,8 +9,9 @@ import { motion } from 'framer-motion';
 export default function OurMission() {
   const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState<'about' | 'mission' | 'vision'>('about');
-  const [missionImages, setMissionImages] = useState<string[]>(['/mission_team.png']);
+  const [missionImages, setMissionImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageLoading, setImageLoading] = useState(true);
 
   // Safely get translations for current language, fallback to 'pt' if needed
   const langKey = (language === 'pt' || language === 'en' || language === 'fr') ? language : 'pt';
@@ -29,10 +30,14 @@ export default function OurMission() {
     fetch('/api/config')
       .then(res => res.json())
       .then(data => {
-        if (data.configs && data.configs.mission_images) {
+        if (data.configs && data.configs.mission_images && data.configs.mission_images.length > 0) {
           setMissionImages(data.configs.mission_images);
+        } else {
+          setMissionImages(['/mission_team.png']);
         }
-      });
+      })
+      .catch(() => setMissionImages(['/mission_team.png']))
+      .finally(() => setImageLoading(false));
   }, []);
 
   useEffect(() => {
@@ -81,25 +86,44 @@ export default function OurMission() {
               <div className={styles.wavyPattern}></div>
             </div>
             <div className={styles.imageWrapper}>
-              {missionImages.map((imgUrl, idx) => (
-                <img 
-                  key={idx}
-                  src={imgUrl} 
-                  alt={tContent.title} 
-                  className={styles.image}
-                  style={{
-                    position: idx === 0 ? 'relative' : 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    opacity: idx === currentImageIndex ? 1 : 0,
-                    transition: 'opacity 1s ease-in-out',
-                    zIndex: idx === currentImageIndex ? 2 : 1
-                  }}
-                />
-              ))}
+              {imageLoading ? (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
+                  minHeight: '320px',
+                }}>
+                  <div style={{
+                    width: '44px',
+                    height: '44px',
+                    border: '4px solid rgba(255,107,0,0.2)',
+                    borderTopColor: '#ff6b00',
+                    borderRadius: '50%',
+                    animation: 'spin 0.9s linear infinite',
+                  }} />
+                </div>
+              ) : (
+                missionImages.map((imgUrl, idx) => (
+                  <img 
+                    key={idx}
+                    src={imgUrl} 
+                    alt={tContent.title} 
+                    className={styles.image}
+                    style={{
+                      position: idx === 0 ? 'relative' : 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      opacity: idx === currentImageIndex ? 1 : 0,
+                      transition: 'opacity 1s ease-in-out',
+                      zIndex: idx === currentImageIndex ? 2 : 1
+                    }}
+                  />
+                ))
+              )}
             </div>
           </motion.div>
 
