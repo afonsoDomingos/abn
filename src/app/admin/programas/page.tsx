@@ -54,6 +54,7 @@ interface Program {
   isClub?: boolean;
   province?: string;
   declaracao?: string;
+  whatsappGroupUrl?: string;
   enabledSteps?: EnabledStepsConfig;
   customFields?: CustomField[];
   adhesionLevels?: AdhesionLevel[];
@@ -121,6 +122,7 @@ export default function AdminProgramasPage() {
   const [compromissoMembros, setCompromissoMembros] = useState('');
   const [lema, setLema] = useState('');
   const [declaracao, setDeclaracao] = useState('');
+  const [whatsappGroupUrl, setWhatsappGroupUrl] = useState('');
 
   useEffect(() => {
     fetchPrograms();
@@ -169,6 +171,7 @@ export default function AdminProgramasPage() {
     setCompromissoMembros(prog.compromissoMembros || '');
     setLema(prog.lema || '');
     setDeclaracao(prog.declaracao || '');
+    setWhatsappGroupUrl(prog.whatsappGroupUrl || '');
     setCustomFields(prog.customFields || []);
     setAdhesionLevels(prog.adhesionLevels || []);
     setEnabledSteps({
@@ -213,6 +216,7 @@ export default function AdminProgramasPage() {
     setCompromissoMembros('');
     setLema('');
     setDeclaracao('');
+    setWhatsappGroupUrl('');
     setCustomFields([]);
     setAdhesionLevels([]);
     setEnabledSteps({
@@ -334,6 +338,7 @@ export default function AdminProgramasPage() {
       compromissoMembros,
       lema,
       declaracao,
+      whatsappGroupUrl,
       enabledSteps,
       customFields,
       adhesionLevels,
@@ -521,6 +526,26 @@ export default function AdminProgramasPage() {
                   </label>
                 </div>
               </div>
+              <div className={`${styles.field} ${styles.fullWidth}`}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ fontSize: '1.1rem' }}>💬</span>
+                  <span style={{ color: '#0f172a', fontWeight: 800 }}>Link do Grupo de WhatsApp (Manual)</span>
+                </label>
+                <span className={styles.fieldHint}>
+                  Adicione manualmente o link de convite do grupo de WhatsApp exclusivo para este programa (ex: <code>https://chat.whatsapp.com/ABCxyz123</code>). Os candidatos que concluírem o inquérito receberão o botão direto para entrar no grupo!
+                </span>
+                <input
+                  type="url"
+                  value={whatsappGroupUrl}
+                  onChange={e => setWhatsappGroupUrl(e.target.value)}
+                  placeholder="Ex: https://chat.whatsapp.com/ABCxyz12345"
+                  style={{
+                    borderColor: whatsappGroupUrl ? '#22c55e' : undefined,
+                    background: whatsappGroupUrl ? '#f0fdf4' : undefined,
+                  }}
+                />
+              </div>
+
               <div className={styles.field}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
                   <input
@@ -1201,6 +1226,12 @@ export default function AdminProgramasPage() {
                   <div className={styles.detailItem}>
                     <span>Investimento:</span>
                     <strong>Definido</strong>
+                  </div>
+                )}
+                {prog.whatsappGroupUrl && (
+                  <div className={styles.detailItem} style={{ color: '#16a34a' }}>
+                    <span>WhatsApp:</span>
+                    <strong style={{ color: '#16a34a' }}>Grupo Ativo ✓</strong>
                   </div>
                 )}
               </div>

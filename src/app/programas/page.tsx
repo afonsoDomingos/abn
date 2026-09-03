@@ -37,6 +37,7 @@ interface Program {
   isClub?: boolean;
   province?: string;
   declaracao?: string;
+  whatsappGroupUrl?: string;
   paymentType?: string;
   enabledSteps?: {
     identificacao?: boolean;
@@ -879,6 +880,50 @@ const canProceed = () => {
                         Obrigado, <strong>{form.nomeCompleto || 'candidato'}</strong>! A sua inscrição no programa <strong>{selectedProgram?.title}</strong> foi enviada. A equipa entrará em contacto em breve.
                       </p>
 
+                      {/* ── GRUPO DE WHATSAPP DO PROGRAMA (SE CONFIGURADO) ── */}
+                      {selectedProgram?.whatsappGroupUrl && (
+                        <div style={{
+                          background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+                          border: '2px solid #22c55e',
+                          borderRadius: '16px',
+                          padding: '1.25rem',
+                          margin: '0 auto 1.5rem',
+                          maxWidth: '460px',
+                          textAlign: 'center',
+                          boxShadow: '0 8px 24px rgba(34, 197, 94, 0.18)'
+                        }}>
+                          <div style={{ fontSize: '2rem', marginBottom: '0.3rem' }}>💬</div>
+                          <h4 style={{ margin: '0 0 0.35rem', fontSize: '1.1rem', color: '#15803d', fontWeight: 800 }}>
+                            Grupo de WhatsApp do Programa
+                          </h4>
+                          <p style={{ margin: '0 0 1rem', fontSize: '0.86rem', color: '#166534', lineHeight: '1.45' }}>
+                            Entre no grupo oficial de <strong>{selectedProgram.title}</strong> para receber comunicados em primeira mão, networking e novidades:
+                          </p>
+                          <a
+                            href={selectedProgram.whatsappGroupUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '8px',
+                              background: '#22c55e',
+                              color: '#ffffff',
+                              textDecoration: 'none',
+                              padding: '11px 22px',
+                              borderRadius: '10px',
+                              fontSize: '0.92rem',
+                              fontWeight: 800,
+                              boxShadow: '0 4px 14px rgba(34, 197, 94, 0.35)',
+                            }}
+                          >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                            Entrar no Grupo de WhatsApp ➔
+                          </a>
+                        </div>
+                      )}
+
                       {/* ── SEGUIR REDES (DESIGN DISCRETO & LIMPO) ── */}
                       <div style={{
                         background: '#f8fafc',
@@ -957,6 +1002,45 @@ const canProceed = () => {
                       Obrigado, <strong>{form.nomeCompleto || 'candidato'}</strong>. O seu comprovativo de pagamento no valor de <strong>{lastSubmission.valorPago}</strong> foi recebido com sucesso.
                       A equipa ABN irá analisar o comprovativo e aprovar a sua adesão brevemente.
                     </p>
+
+                    {/* Grupo de WhatsApp do programa para adesão manual */}
+                    {selectedProgram?.whatsappGroupUrl && (
+                      <div style={{
+                        background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+                        border: '2px solid #22c55e',
+                        borderRadius: '14px',
+                        padding: '1.1rem',
+                        margin: '0 auto 1.25rem',
+                        maxWidth: '460px',
+                        textAlign: 'center',
+                      }}>
+                        <h4 style={{ margin: '0 0 0.3rem', fontSize: '1rem', color: '#15803d', fontWeight: 800 }}>
+                          💬 Junte-se já ao Grupo de WhatsApp do Programa
+                        </h4>
+                        <p style={{ margin: '0 0 0.8rem', fontSize: '0.84rem', color: '#166534' }}>
+                          Enquanto validamos o seu comprovativo, entre já no grupo oficial:
+                        </p>
+                        <a
+                          href={selectedProgram.whatsappGroupUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            background: '#22c55e',
+                            color: '#ffffff',
+                            textDecoration: 'none',
+                            padding: '9px 18px',
+                            borderRadius: '8px',
+                            fontSize: '0.88rem',
+                            fontWeight: 800,
+                          }}
+                        >
+                          Entrar no Grupo de WhatsApp ➔
+                        </a>
+                      </div>
+                    )}
 
                     {/* Preview Visual do Comprovativo Anexado */}
                     {lastSubmission.comprovativoUrl && (

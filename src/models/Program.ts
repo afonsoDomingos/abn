@@ -1,4 +1,4 @@
-﻿import mongoose, { Schema, model, models } from 'mongoose';
+import mongoose, { Schema, model, models } from 'mongoose';
 
 const ProgramSchema = new Schema({
   title: { type: String, required: true },
@@ -31,6 +31,8 @@ const ProgramSchema = new Schema({
   province: { type: String, default: '' },
   // Custom declaration text for this program
   declaracao: { type: String, default: '' },
+  // Link to official WhatsApp group (manually set by admin)
+  whatsappGroupUrl: { type: String, default: '' },
   // Step visibility / custom workflow
   enabledSteps: {
     identificacao: { type: Boolean, default: true },
