@@ -17,7 +17,7 @@ export default async function PublicNoticiasPage() {
   await dbConnect();
   
   const bannerConfig = await Config.findOne({ key: 'page_banners' }).lean();
-  const bannerUrl = bannerConfig?.value?.noticias || '/articles/ambassador-day.png';
+  const bannerUrl = bannerConfig?.value?.noticias || '';
 
   const rawPosts = await Post.find({ section: 'news' }).sort({ date: -1, createdAt: -1 }).lean();
 

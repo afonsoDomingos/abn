@@ -398,7 +398,21 @@ export default function AdminEventosPage() {
           {events.map(ev => (
             <div key={ev._id} className={styles.card}>
               <div className={styles.cardImgWrapper}>
-                <img src={ev.imageUrl || '/articles/nilza.png'} alt={ev.title} className={ev.imageUrl ? styles.cardImg : `${styles.cardImg} style-placeholder`} />
+                <img 
+                  src={ev.imageUrl || '/abn-logo.png'} 
+                  alt="" 
+                  className={styles.cardImg} 
+                  style={!ev.imageUrl ? { objectFit: 'contain', padding: '20px', background: 'rgba(255, 255, 255, 0.03)' } : {}}
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (!target.src.includes('abn-logo.png')) {
+                      target.src = '/abn-logo.png';
+                      target.style.objectFit = 'contain';
+                      target.style.padding = '20px';
+                      target.style.background = 'rgba(255, 255, 255, 0.03)';
+                    }
+                  }}
+                />
                 <span className={styles.categoryBadge}>{ev.category}</span>
                 <span 
                   className={styles.statusBadge}

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useEffect, useState } from 'react';
 import styles from './Articles.module.css';
@@ -37,7 +37,7 @@ export default function Articles() {
             title: p.title,
             date: p.date ? (typeof p.date === 'string' ? p.date.split('T')[0] : p.date) : 'Recente',
             desc: p.content || '',
-            img: p.imageUrl || '/articles/ambassador-day.png',
+            img: p.imageUrl || '',
             views: p.views || 0,
             comments: p.comments || []
           }));
@@ -117,7 +117,7 @@ export default function Articles() {
               const desc = item.desc;
               const location = item.location || 'África';
               
-              const imgPath = item.img || '/articles/ambassador-day.png';
+              const imgPath = item.img || '';
               const badgeClass = badgeStyleMap[item.type] || styles.badgeNews;
               
               let typeLabel = item.type;
@@ -134,14 +134,14 @@ export default function Articles() {
                       {typeLabel}
                     </span>
                     <img 
-                      src={imgPath} 
-                      alt="" 
+                      src={imgPath || '/noticiadefautl.png'} 
+                      alt={title} 
                       className={styles.image} 
                       loading="lazy"
                       onError={(e) => {
                         const target = e.currentTarget;
-                        if (!target.src.includes('ambassador-day.png')) {
-                          target.src = '/articles/ambassador-day.png';
+                        if (!target.src.includes('noticiadefautl.png')) {
+                          target.src = '/noticiadefautl.png';
                         }
                       }}
                     />
@@ -178,13 +178,13 @@ export default function Articles() {
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <button className={styles.closeBtn} onClick={() => setSelectedArticle(null)}>&times;</button>
             <img 
-              src={selectedArticle.img || '/articles/ambassador-day.png'} 
+              src={selectedArticle.img || '/noticiadefautl.png'} 
               alt="" 
               className={styles.modalImg} 
               onError={(e) => {
                 const target = e.currentTarget;
-                if (!target.src.includes('ambassador-day.png')) {
-                  target.src = '/articles/ambassador-day.png';
+                if (!target.src.includes('noticiadefautl.png')) {
+                  target.src = '/noticiadefautl.png';
                 }
               }}
             />

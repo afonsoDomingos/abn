@@ -165,7 +165,21 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
             return (
               <div key={ev._id} className={styles.eventCard}>
                 <div className={styles.imgWrapper}>
-                  <img src={ev.imageUrl || '/articles/nilza.png'} alt={ev.title} className={styles.eventImg} />
+                  <img 
+                    src={ev.imageUrl || '/abn-logo.png'} 
+                    alt="" 
+                    className={styles.eventImg} 
+                    style={!ev.imageUrl ? { objectFit: 'contain', padding: '24px', background: '#0d1322' } : {}}
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (!target.src.includes('abn-logo.png')) {
+                        target.src = '/abn-logo.png';
+                        target.style.objectFit = 'contain';
+                        target.style.padding = '24px';
+                        target.style.background = '#0d1322';
+                      }
+                    }}
+                  />
                   <span className={styles.categoryBadge}>{ev.category}</span>
                   <div className={styles.dateBadge}>
                     <span className={styles.dateDay}>{dateParts.day}</span>

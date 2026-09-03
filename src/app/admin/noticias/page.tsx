@@ -310,7 +310,17 @@ export default function AdminNoticiasPage() {
           {filteredPosts.map(p => (
             <div key={p._id} className={styles.card}>
               <div className={styles.cardImgWrapper}>
-                <img src={p.imageUrl || '/articles/ambassador-day.png'} alt={p.title} className={styles.cardImg} />
+                <img 
+                  src={p.imageUrl || '/noticiadefautl.png'} 
+                  alt={p.title} 
+                  className={styles.cardImg} 
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (!target.src.includes('noticiadefautl.png')) {
+                      target.src = '/noticiadefautl.png';
+                    }
+                  }}
+                />
                 <span className={styles.categoryBadge}>{getLabelByType(p.type)}</span>
               </div>
               <div className={styles.cardContent}>

@@ -188,7 +188,17 @@ export default function NoticiasClient({ initialPosts }: NoticiasClientProps) {
           filteredPosts.map(p => (
             <article key={p._id} className={styles.card}>
               <div className={styles.imgWrapper}>
-                <img src={p.imageUrl || '/articles/ambassador-day.png'} alt={p.title} className={styles.cardImg} />
+                <img 
+                  src={p.imageUrl || '/noticiadefautl.png'} 
+                  alt={p.title} 
+                  className={styles.cardImg} 
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (!target.src.includes('noticiadefautl.png')) {
+                      target.src = '/noticiadefautl.png';
+                    }
+                  }}
+                />
                 <span className={styles.typeBadge}>{getLabelByType(p.type)}</span>
                 {p.location && <span className={styles.locationBadge}>{p.location}</span>}
               </div>
@@ -232,9 +242,17 @@ export default function NoticiasClient({ initialPosts }: NoticiasClientProps) {
               <h2>{selectedPost.title}</h2>
             </div>
 
-            {selectedPost.imageUrl && (
-              <img src={selectedPost.imageUrl} alt={selectedPost.title} className={styles.modalImg} />
-            )}
+            <img 
+              src={selectedPost.imageUrl || '/noticiadefautl.png'} 
+              alt={selectedPost.title} 
+              className={styles.modalImg} 
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.includes('noticiadefautl.png')) {
+                  target.src = '/noticiadefautl.png';
+                }
+              }}
+            />
 
             <div className={styles.modalBodyText}>{selectedPost.content}</div>
 

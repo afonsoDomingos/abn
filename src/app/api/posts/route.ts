@@ -39,7 +39,7 @@ export async function GET(request: Request) {
           type: 'news',
           date: '2026-06-02',
           location: 'Moçambique',
-          imageUrl: '/articles/ambassador-day.png',
+          imageUrl: '',
           views: 120
         },
         {
@@ -79,7 +79,7 @@ export async function GET(request: Request) {
           type: 'video',
           date: '2026-04-10',
           location: 'Online',
-          imageUrl: '/articles/ambassador-day.png',
+          imageUrl: '',
           mediaUrl: 'https://www.youtube.com/watch?v=BI1wkCFnuGY',
           views: 310
         },
