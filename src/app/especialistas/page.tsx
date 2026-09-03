@@ -251,26 +251,24 @@ export default function EspecialistasPage() {
                                     <div key={s._id} className={styles.card} style={{ animationDelay: `${idx * 55}ms` }}>
                                         {/* Avatar */}
                                         <Link href={`/especialistas/${slugify(s.name)}`} className={styles.imageWrapper} title={`Ver Perfil de ${s.name}`}>
-                                            {s.image ? (
-                                                <img
-                                                    src={s.image}
-                                                    alt={s.name}
-                                                    className={styles.image}
-                                                    onError={(e) => {
-                                                        const target = e.currentTarget as HTMLImageElement;
-                                                        if (!target.src.includes('abn-logo.png')) {
-                                                            target.src = '/abn-logo.png';
-                                                            target.style.objectFit = 'contain';
-                                                            target.style.padding = '24px';
-                                                            target.style.background = '#0d1322';
-                                                        }
-                                                    }}
-                                                />
-                                            ) : (
-                                                <div className={styles.placeholderImage}>
-                                                    <div className={styles.placeholderInitials}>{getInitials(s.name)}</div>
-                                                </div>
-                                            )}
+                                            <img
+                                                src={s.image && s.image.trim() ? s.image : '/abn-logo.png'}
+                                                alt=""
+                                                className={styles.image}
+                                                style={
+                                                    !s.image || !s.image.trim()
+                                                        ? { objectFit: 'contain', padding: '16px', background: '#0d1322' }
+                                                        : { objectFit: 'cover' }
+                                                }
+                                                onError={(e) => {
+                                                    const target = e.currentTarget as HTMLImageElement;
+                                                    target.onerror = null;
+                                                    target.src = '/abn-logo.png';
+                                                    target.style.objectFit = 'contain';
+                                                    target.style.padding = '16px';
+                                                    target.style.background = '#0d1322';
+                                                }}
+                                            />
                                             <div className={styles.imageGradient} />
                                         </Link>
 

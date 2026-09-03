@@ -198,26 +198,24 @@ export default function HomeSpecialists() {
               <div key={item._id} className={styles.card}>
                 <div className={styles.cardTop}>
                   <Link href={`/especialistas/${profileSlug}`} className={styles.avatarWrapper} title={`Ver Perfil de ${item.name}`}>
-                    {item.image ? (
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className={styles.avatarImg}
-                        onError={(e) => {
-                          const target = e.currentTarget as HTMLImageElement;
-                          if (!target.src.includes('abn-logo.png')) {
-                            target.src = '/abn-logo.png';
-                            target.style.objectFit = 'contain';
-                            target.style.padding = '8px';
-                            target.style.background = '#fff7ed';
-                          }
-                        }}
-                      />
-                    ) : (
-                      <div className={styles.avatarInitials}>
-                        {getInitials(item.name)}
-                      </div>
-                    )}
+                    <img
+                      src={item.image && item.image.trim() ? item.image : '/abn-logo.png'}
+                      alt=""
+                      className={styles.avatarImg}
+                      style={
+                        !item.image || !item.image.trim()
+                          ? { objectFit: 'contain', padding: '10px', background: '#fff7ed' }
+                          : { objectFit: 'cover' }
+                      }
+                      onError={(e) => {
+                        const target = e.currentTarget as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = '/abn-logo.png';
+                        target.style.objectFit = 'contain';
+                        target.style.padding = '10px';
+                        target.style.background = '#fff7ed';
+                      }}
+                    />
                   </Link>
                   <div className={styles.headerInfo}>
                     <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '0.4rem' }}>

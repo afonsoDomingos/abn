@@ -487,13 +487,28 @@ export default function AdminEspecialistasPage() {
                     <tr key={item._id}>
                       <td>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                          {item.image ? (
-                            <img src={item.image} alt={item.name} style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #ff6b00', flexShrink: 0 }} />
-                          ) : (
-                            <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#ff6b00', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.8rem', flexShrink: 0 }}>
-                              {item.name.substring(0, 2).toUpperCase()}
-                            </div>
-                          )}
+                          <img
+                            src={item.image && item.image.trim() ? item.image : '/abn-logo.png'}
+                            alt=""
+                            style={{
+                              width: '38px',
+                              height: '38px',
+                              borderRadius: '50%',
+                              objectFit: item.image && item.image.trim() ? 'cover' : 'contain',
+                              padding: item.image && item.image.trim() ? 0 : '4px',
+                              background: item.image && item.image.trim() ? undefined : '#fff7ed',
+                              border: '1.5px solid #ff6b00',
+                              flexShrink: 0
+                            }}
+                            onError={(e) => {
+                              const target = e.currentTarget as HTMLImageElement;
+                              target.onerror = null;
+                              target.src = '/abn-logo.png';
+                              target.style.objectFit = 'contain';
+                              target.style.padding = '4px';
+                              target.style.background = '#fff7ed';
+                            }}
+                          />
                           <div>
                             <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.9rem' }}>{item.name}</div>
                             <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)' }}>{item.role}</div>
@@ -584,13 +599,27 @@ export default function AdminEspecialistasPage() {
                 <div key={item._id} className={styles.mobileCard}>
                   <div className={styles.mobileCardHeader}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      {item.image ? (
-                        <img src={item.image} alt={item.name} style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #ff6b00' }} />
-                      ) : (
-                        <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#ff6b00', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem' }}>
-                          {item.name.substring(0, 2).toUpperCase()}
-                        </div>
-                      )}
+                      <img
+                        src={item.image && item.image.trim() ? item.image : '/abn-logo.png'}
+                        alt=""
+                        style={{
+                          width: '42px',
+                          height: '42px',
+                          borderRadius: '50%',
+                          objectFit: item.image && item.image.trim() ? 'cover' : 'contain',
+                          padding: item.image && item.image.trim() ? 0 : '4px',
+                          background: item.image && item.image.trim() ? undefined : '#fff7ed',
+                          border: '1.5px solid #ff6b00'
+                        }}
+                        onError={(e) => {
+                          const target = e.currentTarget as HTMLImageElement;
+                          target.onerror = null;
+                          target.src = '/abn-logo.png';
+                          target.style.objectFit = 'contain';
+                          target.style.padding = '4px';
+                          target.style.background = '#fff7ed';
+                        }}
+                      />
                       <div>
                         <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.95rem' }}>{item.name}</div>
                         <div style={{ fontSize: '0.8rem', color: '#ff8c00', fontWeight: 600 }}>{item.role}</div>
