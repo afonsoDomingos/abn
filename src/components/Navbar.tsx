@@ -186,17 +186,17 @@ export default function Navbar() {
         <nav className={styles.drawerNav}>
           {currentUser && (
             <div style={{ background: '#fff7ed', border: '1px solid #ffedd5', padding: '12px 14px', borderRadius: '12px', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              {(currentUser.profileImage || currentUser.avatar) ? (
-                <img
-                  src={currentUser.profileImage || currentUser.avatar}
-                  alt={currentUser.name || 'User'}
-                  style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ff6b00', flexShrink: 0 }}
-                />
-              ) : (
-                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.9rem', flexShrink: 0 }}>
-                  {(currentUser.name || 'Membro').substring(0, 2).toUpperCase()}
-                </div>
-              )}
+              <img
+                src={currentUser.profileImage || currentUser.avatar || '/abn-logo.png'}
+                alt={currentUser.name || 'User'}
+                style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ff6b00', flexShrink: 0 }}
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = '/abn-logo.png';
+                  (e.currentTarget as HTMLImageElement).style.objectFit = 'contain';
+                  (e.currentTarget as HTMLImageElement).style.padding = '4px';
+                  (e.currentTarget as HTMLImageElement).style.background = '#fff7ed';
+                }}
+              />
               <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '4px', minWidth: 0 }}>
                 <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   Olá, {(currentUser.name || 'Membro').split(' ')[0]}

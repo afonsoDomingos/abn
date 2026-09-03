@@ -285,15 +285,21 @@ export default function ServicosPage() {
             {filteredFreelancers.map((free) => (
               <div key={free._id} style={{ background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.04)', padding: '2rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                  <div 
-                    style={{ 
-                      width: '60px', 
-                      height: '60px', 
-                      borderRadius: '50%', 
-                      backgroundImage: `url(${free.user?.profileImage || '/default-avatar.png'})`, 
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
+                  <img
+                    src={free.user?.profileImage || '/abn-logo.png'}
+                    alt={free.user?.name || 'Freelancer'}
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
                       border: '2px solid #e2e8f0'
+                    }}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = '/abn-logo.png';
+                      (e.currentTarget as HTMLImageElement).style.objectFit = 'contain';
+                      (e.currentTarget as HTMLImageElement).style.padding = '6px';
+                      (e.currentTarget as HTMLImageElement).style.background = '#fff7ed';
                     }}
                   />
                   <div>

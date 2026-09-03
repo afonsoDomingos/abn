@@ -119,21 +119,18 @@ export default function UserMenu() {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '4px' }}>
           <span className={styles.userName}>{displayName}</span>
         </div>
-        {avatarSrc ? (
-          <img
-            src={avatarSrc}
-            alt={displayName}
-            className={styles.avatar}
-            style={{ objectFit: 'cover' }}
-            onError={(e) => {
-              (e.target as HTMLElement).style.display = 'none';
-            }}
-          />
-        ) : (
-          <div className={styles.avatarInitials}>
-            {initials}
-          </div>
-        )}
+        <img
+          src={avatarSrc || '/abn-logo.png'}
+          alt={displayName}
+          className={styles.avatar}
+          style={{ objectFit: avatarSrc ? 'cover' : 'contain', padding: avatarSrc ? 0 : '2px', background: avatarSrc ? undefined : '#fff7ed' }}
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = '/abn-logo.png';
+            (e.currentTarget as HTMLImageElement).style.objectFit = 'contain';
+            (e.currentTarget as HTMLImageElement).style.padding = '2px';
+            (e.currentTarget as HTMLImageElement).style.background = '#fff7ed';
+          }}
+        />
       </div>
 
       {isOpen && (

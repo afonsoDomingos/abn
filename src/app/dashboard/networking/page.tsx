@@ -210,17 +210,23 @@ export default function NetworkingPage() {
                 }}
               >
                 {/* Profile Avatar */}
-                <div 
-                  style={{ 
-                    width: '86px', 
-                    height: '86px', 
-                    borderRadius: '50%', 
-                    backgroundImage: `url(${avatarImg})`, 
-                    backgroundSize: 'cover', 
-                    backgroundPosition: 'center', 
+                <img
+                  src={avatarImg}
+                  alt={profile.name}
+                  style={{
+                    width: '86px',
+                    height: '86px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
                     border: '3px solid #ff6b00',
                     boxShadow: '0 4px 12px rgba(255,107,0,0.18)',
                     flexShrink: 0
+                  }}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/abn-logo.png';
+                    (e.currentTarget as HTMLImageElement).style.objectFit = 'contain';
+                    (e.currentTarget as HTMLImageElement).style.padding = '8px';
+                    (e.currentTarget as HTMLImageElement).style.background = '#fff7ed';
                   }}
                 />
 

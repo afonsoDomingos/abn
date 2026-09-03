@@ -270,9 +270,15 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
               <div className={styles.representativeWrapper}>
                 <div className={`${styles.representativeCard} glass`}>
                   <img 
-                    src={hub.representative.image || '/default-avatar.png'} 
+                    src={hub.representative.image || '/abn-logo.png'} 
                     alt={hub.representative.name} 
                     className={styles.repAvatar}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = '/abn-logo.png';
+                      (e.currentTarget as HTMLImageElement).style.objectFit = 'contain';
+                      (e.currentTarget as HTMLImageElement).style.padding = '6px';
+                      (e.currentTarget as HTMLImageElement).style.background = '#fff7ed';
+                    }}
                   />
                   <div className={styles.repInfo}>
                     <span className={styles.repBadge}>Representante Local</span>
@@ -293,9 +299,15 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
                 {hub.team.map((member: any, idx: number) => (
                   <div key={idx} className={`${styles.teamCard} glass`}>
                     <img 
-                      src={member.image || '/default-avatar.png'} 
+                      src={member.image || '/abn-logo.png'} 
                       alt={member.name} 
                       className={styles.teamAvatar}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = '/abn-logo.png';
+                        (e.currentTarget as HTMLImageElement).style.objectFit = 'contain';
+                        (e.currentTarget as HTMLImageElement).style.padding = '6px';
+                        (e.currentTarget as HTMLImageElement).style.background = '#fff7ed';
+                      }}
                     />
                     <h4>{member.name}</h4>
                     <p>{member.role}</p>

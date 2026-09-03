@@ -347,10 +347,18 @@ export default function DashboardLayout({
                   </span>
                 </div>
                 {user.profileImage ? (
-                  <div 
+                  <img
                     className={styles.avatar}
-                    style={{ backgroundImage: `url('${user.profileImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-                  ></div>
+                    src={user.profileImage}
+                    alt={user.name || 'User'}
+                    style={{ objectFit: 'cover' }}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = '/abn-logo.png';
+                      (e.currentTarget as HTMLImageElement).style.objectFit = 'contain';
+                      (e.currentTarget as HTMLImageElement).style.padding = '4px';
+                      (e.currentTarget as HTMLImageElement).style.background = '#fff7ed';
+                    }}
+                  />
                 ) : (
                   <div className={styles.avatarInitials}>
                     {user.name ? user.name.charAt(0).toUpperCase() : 'E'}

@@ -44,7 +44,7 @@ export async function GET() {
         name: u.name,
         email: u.email,
         role: u.role,
-        profileImage: u.profileImage || '/default-avatar.png',
+        profileImage: u.profileImage || '/abn-logo.png',
         description: u.description || '',
         isFollowing: followingIds.includes(String(u._id)),
         startupName: startup ? startup.name : null,
