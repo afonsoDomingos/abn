@@ -238,9 +238,22 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
               <h2>{selectedEvent.title}</h2>
             </div>
 
-            {selectedEvent.imageUrl && (
-              <img src={selectedEvent.imageUrl} alt={selectedEvent.title} className={styles.modalImg} />
-            )}
+            <img
+              src={selectedEvent.imageUrl || '/abn-logo.png'}
+              alt={selectedEvent.title}
+              className={styles.modalImg}
+              style={!selectedEvent.imageUrl ? { objectFit: 'contain', maxHeight: '240px', padding: '24px', background: '#0d1322' } : {}}
+              onError={(e) => {
+                const target = e.currentTarget as HTMLImageElement;
+                if (!target.src.includes('abn-logo.png')) {
+                  target.src = '/abn-logo.png';
+                  target.style.objectFit = 'contain';
+                  target.style.maxHeight = '240px';
+                  target.style.padding = '24px';
+                  target.style.background = '#0d1322';
+                }
+              }}
+            />
 
             <div className={styles.cardMeta} style={{ marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.75rem' }}>
               <div className={styles.metaItem}>

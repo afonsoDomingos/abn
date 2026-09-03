@@ -354,7 +354,20 @@ export default function AdminOportunidadesPage() {
             <div key={opp._id} className={styles.card}>
               {opp.imageUrl && (
                 <div style={{ height: '140px', overflow: 'hidden', borderRadius: '16px 16px 0 0', margin: '-1.5rem -1.5rem 1rem -1.5rem', width: 'calc(100% + 3rem)' }}>
-                  <img src={opp.imageUrl} alt={opp.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img
+                    src={opp.imageUrl}
+                    alt={opp.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={(e) => {
+                      const target = e.currentTarget as HTMLImageElement;
+                      if (!target.src.includes('abn-logo.png')) {
+                        target.src = '/abn-logo.png';
+                        target.style.objectFit = 'contain';
+                        target.style.padding = '16px';
+                        target.style.background = '#fff7ed';
+                      }
+                    }}
+                  />
                 </div>
               )}
               <div className={styles.cardHeader}>

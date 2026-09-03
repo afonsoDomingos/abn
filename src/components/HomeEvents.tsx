@@ -84,14 +84,26 @@ export default function HomeEvents() {
                 }}
               >
                 {/* Event Image */}
-                {ev.imageUrl && (
-                  <div className={styles.imageBox}>
-                    <img src={ev.imageUrl} alt={ev.title} className={styles.image} />
-                    <span className={styles.catTag}>
-                      {ev.category}
-                    </span>
-                  </div>
-                )}
+                <div className={styles.imageBox}>
+                  <img
+                    src={ev.imageUrl || '/abn-logo.png'}
+                    alt={ev.title}
+                    className={styles.image}
+                    style={!ev.imageUrl ? { objectFit: 'contain', padding: '24px', background: '#0d1322' } : {}}
+                    onError={(e) => {
+                      const target = e.currentTarget as HTMLImageElement;
+                      if (!target.src.includes('abn-logo.png')) {
+                        target.src = '/abn-logo.png';
+                        target.style.objectFit = 'contain';
+                        target.style.padding = '24px';
+                        target.style.background = '#0d1322';
+                      }
+                    }}
+                  />
+                  <span className={styles.catTag}>
+                    {ev.category}
+                  </span>
+                </div>
 
                 <div className={styles.body}>
                   <div className={styles.dateRow}>

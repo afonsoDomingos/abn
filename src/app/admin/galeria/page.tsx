@@ -353,7 +353,21 @@ export default function AdminGaleriaPage() {
           {filteredItems.map(item => (
             <div key={item._id} className={styles.card}>
               <div className={styles.cardImgWrapper}>
-                <img src={item.imageUrl || '/articles/gala.png'} alt={item.title} className={styles.cardImg} />
+                <img
+                  src={item.imageUrl || '/abn-logo.png'}
+                  alt={item.title}
+                  className={styles.cardImg}
+                  style={!item.imageUrl ? { objectFit: 'contain', padding: '16px', background: '#0d1322' } : {}}
+                  onError={(e) => {
+                    const target = e.currentTarget as HTMLImageElement;
+                    if (!target.src.includes('abn-logo.png')) {
+                      target.src = '/abn-logo.png';
+                      target.style.objectFit = 'contain';
+                      target.style.padding = '16px';
+                      target.style.background = '#0d1322';
+                    }
+                  }}
+                />
                 <span className={styles.categoryBadge}>{getLabelByType(item.type)}</span>
               </div>
               <div className={styles.cardContent}>

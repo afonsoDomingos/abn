@@ -86,7 +86,20 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
               return (
                 <div key={item._id} className={styles.photoCard} onClick={() => setActivePhoto(item)}>
                   <div className={styles.photoWrapper}>
-                    <img src={item.imageUrl || '/articles/gala.png'} alt={item.title} />
+                    <img
+                      src={item.imageUrl || '/abn-logo.png'}
+                      alt={item.title}
+                      style={!item.imageUrl ? { objectFit: 'contain', padding: '24px', background: '#0d1322' } : {}}
+                      onError={(e) => {
+                        const target = e.currentTarget as HTMLImageElement;
+                        if (!target.src.includes('abn-logo.png')) {
+                          target.src = '/abn-logo.png';
+                          target.style.objectFit = 'contain';
+                          target.style.padding = '24px';
+                          target.style.background = '#0d1322';
+                        }
+                      }}
+                    />
                     <div className={styles.photoOverlay}>
                       <h4>{item.title}</h4>
                       <span>{item.location || 'Ecossistema'} | {item.date}</span>
@@ -132,7 +145,20 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
               return (
                 <div key={item._id} className={styles.podcastCard}>
                   <div className={styles.podcastCover}>
-                    <img src={item.imageUrl || '/articles/nilza.png'} alt={item.title} />
+                    <img
+                      src={item.imageUrl || '/abn-logo.png'}
+                      alt={item.title}
+                      style={!item.imageUrl ? { objectFit: 'contain', padding: '16px', background: '#0d1322' } : {}}
+                      onError={(e) => {
+                        const target = e.currentTarget as HTMLImageElement;
+                        if (!target.src.includes('abn-logo.png')) {
+                          target.src = '/abn-logo.png';
+                          target.style.objectFit = 'contain';
+                          target.style.padding = '16px';
+                          target.style.background = '#0d1322';
+                        }
+                      }}
+                    />
                   </div>
                   <h4 className={styles.podcastTitle}>{item.title}</h4>
                   <p className={styles.podcastDesc}>{item.content}</p>
@@ -198,7 +224,18 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
         <div className={styles.lightboxOverlay} onClick={() => setActivePhoto(null)}>
           <div className={styles.lightboxContent} onClick={e => e.stopPropagation()}>
             <button className={styles.closeBtn} onClick={() => setActivePhoto(null)}>✕</button>
-            <img src={activePhoto.imageUrl} alt={activePhoto.title} className={styles.lightboxImg} />
+            <img
+              src={activePhoto.imageUrl || '/abn-logo.png'}
+              alt={activePhoto.title}
+              className={styles.lightboxImg}
+              onError={(e) => {
+                const target = e.currentTarget as HTMLImageElement;
+                if (!target.src.includes('abn-logo.png')) {
+                  target.src = '/abn-logo.png';
+                  target.style.objectFit = 'contain';
+                }
+              }}
+            />
             <div className={styles.lightboxCaption}>
               <h3>{activePhoto.title}</h3>
               <p>{activePhoto.content} {activePhoto.location && `| ${activePhoto.location}`} | {activePhoto.date}</p>
