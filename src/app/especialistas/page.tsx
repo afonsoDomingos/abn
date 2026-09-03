@@ -252,7 +252,20 @@ export default function EspecialistasPage() {
                                         {/* Avatar */}
                                         <Link href={`/especialistas/${slugify(s.name)}`} className={styles.imageWrapper} title={`Ver Perfil de ${s.name}`}>
                                             {s.image ? (
-                                                <img src={s.image} alt={s.name} className={styles.image} />
+                                                <img
+                                                    src={s.image}
+                                                    alt={s.name}
+                                                    className={styles.image}
+                                                    onError={(e) => {
+                                                        const target = e.currentTarget as HTMLImageElement;
+                                                        if (!target.src.includes('abn-logo.png')) {
+                                                            target.src = '/abn-logo.png';
+                                                            target.style.objectFit = 'contain';
+                                                            target.style.padding = '24px';
+                                                            target.style.background = '#0d1322';
+                                                        }
+                                                    }}
+                                                />
                                             ) : (
                                                 <div className={styles.placeholderImage}>
                                                     <div className={styles.placeholderInitials}>{getInitials(s.name)}</div>

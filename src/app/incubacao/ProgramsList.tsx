@@ -114,7 +114,20 @@ export default function ProgramsList({ initialPrograms }: ProgramsListProps) {
             <div key={p._id} className={`${styles.programCard} glass`} style={{ overflow: 'hidden', padding: 0 }}>
               {p.image && (
                 <div style={{ width: '100%', height: '180px', overflow: 'hidden' }}>
-                  <img src={p.image} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={(e) => {
+                      const target = e.currentTarget as HTMLImageElement;
+                      if (!target.src.includes('abn-logo.png')) {
+                        target.src = '/abn-logo.png';
+                        target.style.objectFit = 'contain';
+                        target.style.padding = '20px';
+                        target.style.background = '#0d1322';
+                      }
+                    }}
+                  />
                 </div>
               )}
               <div style={{ padding: '1.5rem' }}>

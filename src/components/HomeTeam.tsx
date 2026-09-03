@@ -217,7 +217,20 @@ export default function HomeTeam() {
                     {/* Photo */}
                     <div className={styles.imageWrapper}>
                       {member.image ? (
-                        <img src={member.image} alt={member.name} className={styles.image} />
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className={styles.image}
+                          onError={(e) => {
+                            const target = e.currentTarget as HTMLImageElement;
+                            if (!target.src.includes('abn-logo.png')) {
+                              target.src = '/abn-logo.png';
+                              target.style.objectFit = 'contain';
+                              target.style.padding = '24px';
+                              target.style.background = '#0d1322';
+                            }
+                          }}
+                        />
                       ) : (
                         <div className={styles.placeholder}>
                           <div className={styles.initials}>{getInitials(member.name)}</div>

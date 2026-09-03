@@ -344,7 +344,20 @@ export default function TeamPage() {
                     {/* Image */}
                     <div className={styles.imageWrapper}>
                       {member.image ? (
-                        <img src={member.image} alt={member.name} className={styles.image} />
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className={styles.image}
+                          onError={(e) => {
+                            const target = e.currentTarget as HTMLImageElement;
+                            if (!target.src.includes('abn-logo.png')) {
+                              target.src = '/abn-logo.png';
+                              target.style.objectFit = 'contain';
+                              target.style.padding = '24px';
+                              target.style.background = '#0d1322';
+                            }
+                          }}
+                        />
                       ) : (
                         <div className={styles.placeholderImage}>
                           <div className={styles.placeholderInitials}>

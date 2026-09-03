@@ -350,7 +350,20 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
               {activeEvents.map((evt: any, idx: number) => (
                 <div key={idx} className={`${styles.eventCard} glass`} style={{ padding: evt.image ? '0 0 2rem 0' : '2.5rem', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                   {evt.image && (
-                    <img src={evt.image} alt={evt.title} style={{ width: '100%', height: '200px', objectFit: 'cover', display: 'block', marginBottom: '1.5rem' }} />
+                    <img
+                      src={evt.image}
+                      alt={evt.title}
+                      style={{ width: '100%', height: '200px', objectFit: 'cover', display: 'block', marginBottom: '1.5rem' }}
+                      onError={(e) => {
+                        const target = e.currentTarget as HTMLImageElement;
+                        if (!target.src.includes('abn-logo.png')) {
+                          target.src = '/abn-logo.png';
+                          target.style.objectFit = 'contain';
+                          target.style.padding = '24px';
+                          target.style.background = '#0d1322';
+                        }
+                      }}
+                    />
                   )}
                   <div style={{ padding: evt.image ? '0 2rem' : '0', display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1 }}>
                     <div className={styles.eventBadge}>

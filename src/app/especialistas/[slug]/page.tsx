@@ -228,7 +228,20 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
           <div className={styles.heroContainer}>
             <div className={styles.avatarWrapper}>
               {specialist.image ? (
-                <img src={specialist.image} alt={specialist.name} className={styles.avatarImg} />
+                <img
+                  src={specialist.image}
+                  alt={specialist.name}
+                  className={styles.avatarImg}
+                  onError={(e) => {
+                    const target = e.currentTarget as HTMLImageElement;
+                    if (!target.src.includes('abn-logo.png')) {
+                      target.src = '/abn-logo.png';
+                      target.style.objectFit = 'contain';
+                      target.style.padding = '12px';
+                      target.style.background = '#0d1322';
+                    }
+                  }}
+                />
               ) : (
                 <div className={styles.placeholderAvatar}>
                   {getInitials(specialist.name)}

@@ -199,7 +199,20 @@ export default function HomeSpecialists() {
                 <div className={styles.cardTop}>
                   <Link href={`/especialistas/${profileSlug}`} className={styles.avatarWrapper} title={`Ver Perfil de ${item.name}`}>
                     {item.image ? (
-                      <img src={item.image} alt={item.name} className={styles.avatarImg} />
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className={styles.avatarImg}
+                        onError={(e) => {
+                          const target = e.currentTarget as HTMLImageElement;
+                          if (!target.src.includes('abn-logo.png')) {
+                            target.src = '/abn-logo.png';
+                            target.style.objectFit = 'contain';
+                            target.style.padding = '8px';
+                            target.style.background = '#fff7ed';
+                          }
+                        }}
+                      />
                     ) : (
                       <div className={styles.avatarInitials}>
                         {getInitials(item.name)}

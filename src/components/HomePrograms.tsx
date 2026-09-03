@@ -112,7 +112,19 @@ export default function HomePrograms() {
               <div key={prog._id} className={styles.card}>
                 {prog.image && (
                   <div className={styles.cardImage}>
-                    <img src={prog.image} alt={prog.title} />
+                    <img
+                      src={prog.image}
+                      alt={prog.title}
+                      onError={(e) => {
+                        const target = e.currentTarget as HTMLImageElement;
+                        if (!target.src.includes('abn-logo.png')) {
+                          target.src = '/abn-logo.png';
+                          target.style.objectFit = 'contain';
+                          target.style.padding = '20px';
+                          target.style.background = '#0d1322';
+                        }
+                      }}
+                    />
                   </div>
                 )}
                 <div className={styles.cardContent}>
