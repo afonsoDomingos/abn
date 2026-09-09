@@ -22,7 +22,13 @@ import {
   Layers,
   ArrowRight,
   Award,
-  Sparkles
+  Sparkles,
+  TrendingUp,
+  DollarSign,
+  AlertCircle,
+  Zap,
+  BarChart2,
+  Globe
 } from 'lucide-react';
 import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Dashboard.module.css';
@@ -58,6 +64,8 @@ export default function DashboardPage() {
   const [userServicos, setUserServicos] = useState<any[]>([]);
   const [loadingInscricoes, setLoadingInscricoes] = useState(true);
   const [clientTab, setClientTab] = useState<'programas' | 'cursos' | 'servicos'>('programas');
+  const [startupData, setStartupData] = useState<any>(null);
+  const [loadingStartup, setLoadingStartup] = useState(false);
 
   // Modal para Recursos Recomendados
   const [activeResource, setActiveResource] = useState<{
@@ -184,10 +192,37 @@ export default function DashboardPage() {
         }
       } catch (e) {}
 
+      // 6. Fetch startup data if role includes startup
+      try {
+        const userStr2 = localStorage.getItem('user');
+        if (userStr2) {
+          const u2 = JSON.parse(userStr2);
+          const rolesCheck: string[] = Array.isArray(u2.roles) && u2.roles.length > 0 ? u2.roles : [u2.role || 'empreendedor'];
+          if (rolesCheck.includes('startup') || (u2.role || '').toLowerCase() === 'startup') {
+            await fetchStartupData();
+          }
+        }
+      } catch (e) {}
+
     } catch (e) {
       console.error(e);
     } finally {
       setLoadingInscricoes(false);
+    }
+  };
+
+  const fetchStartupData = async () => {
+    setLoadingStartup(true);
+    try {
+      const res = await fetch('/api/user/startup');
+      const data = await res.json();
+      if (data.success && data.business) {
+        setStartupData(data.business);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoadingStartup(false);
     }
   };
 
@@ -472,9 +507,140 @@ export default function DashboardPage() {
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-         4. EMPRESA / PME & PARCEIRO VIEW
+         4a. EMPRESA / PME DASHBOARD — Sofisticado
       ───────────────────────────────────────────────────────────── */}
-      {(activeRole === 'empresa' || activeRole === 'parceiro') && (
+      {activeRole === 'empresa' && (
+        <>
+          {/* Hero Banner PME */}
+          <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0c4a6e 100%)', borderRadius: '24px', padding: '2rem', marginBottom: '2rem', border: '1px solid rgba(14,165,233,0.2)', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(14,165,233,0.08)', pointerEvents: 'none' }} />
+            <div style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(14,165,233,0.25)', color: '#7dd3fc', padding: '3px 10px', borderRadius: '20px', textTransform: 'uppercase', letterSpacing: '0.8px', border: '1px solid rgba(14,165,233,0.35)' }}>🏢 Empresa / PME</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(16,185,129,0.2)', color: '#6ee7b7', padding: '3px 10px', borderRadius: '20px', border: '1px solid rgba(16,185,129,0.3)' }}>🟢 Verificada</span>
+                </div>
+                <h2 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 900, color: '#ffffff', fontFamily: 'Outfit, sans-serif', lineHeight: 1.2 }}>
+                  {business?.name || 'Minha Empresa'}
+                </h2>
+                <p style={{ margin: '0.4rem 0 0 0', color: '#94a3b8', fontSize: '0.9rem' }}>
+                  Comércio & Indústria · PME · {business?.location || 'Guiné-Bissau'}
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <Link href="/dashboard/empresa" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#0ea5e9', color: '#ffffff', padding: '10px 18px', borderRadius: '12px', fontWeight: 800, fontSize: '0.85rem', textDecoration: 'none', border: '1px solid rgba(14,165,233,0.5)' }}>
+                  <Globe size={16} /> Business Connect
+                </Link>
+                <Link href="/dashboard/negocios" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.08)', color: '#e2e8f0', padding: '10px 18px', borderRadius: '12px', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.15)' }}>
+                  <Building2 size={16} /> Gerir Negócio
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* KPI Tiles */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(155px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+            {[
+              { label: 'Clientes Ativos', value: business?.clients?.length || 12, icon: '👤', bg: 'rgba(14,165,233,0.08)' },
+              { label: 'Projetos', value: business?.stats?.projects || 8, icon: '📂', bg: 'rgba(99,102,241,0.08)' },
+              { label: 'Fornecedores', value: business?.suppliers?.length || 5, icon: '📦', bg: 'rgba(16,185,129,0.08)' },
+              { label: 'Pedidos Connect', value: 2, icon: '🔗', bg: 'rgba(245,158,11,0.08)' },
+              { label: 'Mercados', value: '3 países', icon: '🌍', bg: 'rgba(139,92,246,0.08)' },
+            ].map(kpi => (
+              <div key={kpi.label} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1.25rem', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: kpi.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', marginBottom: '0.5rem' }}>{kpi.icon}</div>
+                <div style={{ fontSize: '1.4rem', fontWeight: 900, color: '#0f172a', fontFamily: 'Outfit' }}>{kpi.value}</div>
+                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.4px' }}>{kpi.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Business Connect Panel */}
+          <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '1.75rem', marginBottom: '2rem', boxShadow: '0 4px 20px rgba(15,23,42,0.04)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Globe size={20} color="#0ea5e9" /> Business Connect — Pedidos Ativos
+                </h3>
+                <p style={{ margin: '4px 0 0 0', fontSize: '0.82rem', color: '#64748b' }}>Publique necessidades comerciais. A ABN procura correspondências na rede.</p>
+              </div>
+              <Link href="/dashboard/empresa" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#0ea5e9', color: '#fff', padding: '8px 16px', borderRadius: '10px', fontWeight: 800, fontSize: '0.82rem', textDecoration: 'none' }}>
+                + Publicar Pedido
+              </Link>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1rem' }}>
+              {[
+                { icon: '🏪', label: 'Procuro Distribuidor', title: 'Procuro distribuidor em Angola', country: 'Angola', status: 'ativo', responses: 3, color: '#6366f1' },
+                { icon: '💻', label: 'Procuro Parceiro Tecnológico', title: 'Digitalização e ERP — parceiro tecnológico', country: 'Portugal / GB', status: 'em_negociacao', responses: 7, color: '#8b5cf6' },
+              ].map((c, i) => (
+                <div key={i} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '1rem 1.25rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: `${c.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', flexShrink: 0 }}>{c.icon}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                      <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0f172a' }}>{c.title}</span>
+                      <span style={{ fontSize: '0.68rem', fontWeight: 800, background: c.status === 'ativo' ? '#dcfce7' : '#fef3c7', color: c.status === 'ativo' ? '#15803d' : '#d97706', padding: '2px 8px', borderRadius: '12px' }}>
+                        {c.status === 'ativo' ? 'Ativo' : 'Em Negociação'}
+                      </span>
+                    </div>
+                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>🌍 {c.country} · 💬 {c.responses} respostas ABN</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Link href="/dashboard/empresa" style={{ fontSize: '0.82rem', fontWeight: 700, color: '#0ea5e9', textDecoration: 'none' }}>
+              Ver todos os pedidos e respostas →
+            </Link>
+          </div>
+
+          {/* Desenvolvimento Empresarial */}
+          <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '1.75rem', marginBottom: '2rem', boxShadow: '0 4px 20px rgba(15,23,42,0.04)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+              <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <ArrowRight size={20} color="#6366f1" /> Desenvolvimento Empresarial
+              </h3>
+              <Link href="/dashboard/empresa" style={{ fontSize: '0.82rem', fontWeight: 700, color: '#6366f1', textDecoration: 'none' }}>Ver tudo →</Link>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.85rem' }}>
+              {[
+                { icon: '🎯', label: 'Consultoria', color: 'rgba(99,102,241,0.08)' },
+                { icon: '🌐', label: 'Internacionalização', color: 'rgba(14,165,233,0.08)' },
+                { icon: '📢', label: 'Marketing', color: 'rgba(245,158,11,0.08)' },
+                { icon: '🎓', label: 'Formação', color: 'rgba(16,185,129,0.08)' },
+                { icon: '🧭', label: 'Mentoria', color: 'rgba(139,92,246,0.08)' },
+                { icon: '♟️', label: 'Estratégia', color: 'rgba(239,68,68,0.08)' },
+                { icon: '👥', label: 'Recursos Humanos', color: 'rgba(255,107,0,0.08)' },
+                { icon: '🚀', label: 'Aceleração', color: 'rgba(15,23,42,0.06)' },
+              ].map(item => (
+                <Link key={item.label} href="/dashboard/empresa" style={{ textDecoration: 'none' }}>
+                  <div style={{ background: item.color, borderRadius: '14px', padding: '1rem', textAlign: 'center', border: '1px solid transparent', transition: 'all 0.2s', cursor: 'pointer' }}>
+                    <div style={{ fontSize: '1.6rem', marginBottom: '4px' }}>{item.icon}</div>
+                    <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>{item.label}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA Full Dashboard */}
+          <div style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)', border: '1.5px solid #bae6fd', borderRadius: '20px', padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(14,165,233,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>🏢</div>
+              <div>
+                <div style={{ fontWeight: 800, fontSize: '1rem', color: '#0c4a6e' }}>Painel Completo da Empresa</div>
+                <div style={{ fontSize: '0.82rem', color: '#0369a1' }}>Dados, equipa, clientes, fornecedores, projetos e Business Connect.</div>
+              </div>
+            </div>
+            <Link href="/dashboard/empresa" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#0ea5e9', color: '#ffffff', padding: '10px 20px', borderRadius: '12px', fontWeight: 800, fontSize: '0.85rem', textDecoration: 'none' }}>
+              <Building2 size={16} /> Gerir Empresa →
+            </Link>
+          </div>
+        </>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+         4b. PARCEIRO VIEW
+      ───────────────────────────────────────────────────────────── */}
+      {activeRole === 'parceiro' && (
         <>
           <div className={styles.progressGrid}>
             <div className={styles.progressCard}>
@@ -567,9 +733,276 @@ export default function DashboardPage() {
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-         6. DEFAULT / EMPREENDEDOR / STARTUP DASHBOARD
+         6a. STARTUP DASHBOARD — Sofisticado (apenas activeRole === 'startup')
       ───────────────────────────────────────────────────────────── */}
-      {(activeRole === 'empreendedor' || activeRole === 'startup') && (
+      {activeRole === 'startup' && (
+        <>
+          {/* Hero Banner da Startup */}
+          <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #312e81 100%)', borderRadius: '24px', padding: '2rem', marginBottom: '2rem', border: '1px solid rgba(99,102,241,0.3)', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(99,102,241,0.12)', pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', bottom: '-30px', left: '30%', width: '120px', height: '120px', borderRadius: '50%', background: 'rgba(251,191,36,0.08)', pointerEvents: 'none' }} />
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
+                    <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(99,102,241,0.3)', color: '#a5b4fc', padding: '3px 10px', borderRadius: '20px', textTransform: 'uppercase', letterSpacing: '0.8px', border: '1px solid rgba(99,102,241,0.4)' }}>
+                      💡 Startup
+                    </span>
+                    <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(16,185,129,0.2)', color: '#6ee7b7', padding: '3px 10px', borderRadius: '20px', border: '1px solid rgba(16,185,129,0.3)' }}>
+                      🟢 Ativo
+                    </span>
+                  </div>
+                  <h2 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 900, color: '#ffffff', fontFamily: 'Outfit, sans-serif', lineHeight: 1.2 }}>
+                    {startupData?.name || 'Minha Startup'}
+                  </h2>
+                  <p style={{ margin: '0.4rem 0 0 0', color: '#94a3b8', fontSize: '0.9rem', fontWeight: 500 }}>
+                    {startupData?.startupProfile?.sector || 'Tecnologia'} · {startupData?.startupProfile?.stage || 'MVP'} · {startupData?.startupProfile?.businessModel || 'B2B SaaS'}
+                  </p>
+                </div>
+                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  <Link href="/dashboard/captacao" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#6366f1', color: '#ffffff', padding: '10px 18px', borderRadius: '12px', fontWeight: 800, fontSize: '0.85rem', textDecoration: 'none', border: '1px solid rgba(99,102,241,0.5)', transition: 'all 0.2s' }}>
+                    <TrendingUp size={16} /> Captação 🚀
+                  </Link>
+                  <Link href="/dashboard/negocios" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.08)', color: '#e2e8f0', padding: '10px 18px', borderRadius: '12px', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.15)' }}>
+                    <Building2 size={16} /> Gerir Startup
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── STARTUP SCORE CARD ── */}
+          <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '1.75rem', marginBottom: '2rem', boxShadow: '0 4px 20px rgba(15,23,42,0.04)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <Award size={20} color="#6366f1" />
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit' }}>
+                    Startup Score ABN
+                  </h3>
+                </div>
+                <p style={{ margin: 0, fontSize: '0.82rem', color: '#64748b', fontWeight: 500 }}>
+                  Avaliação diagnóstica da plataforma baseada em 7 critérios.
+                </p>
+              </div>
+              {/* Overall score circle */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '90px' }}>
+                <div style={{ position: 'relative', width: '90px', height: '90px' }}>
+                  <svg viewBox="0 0 90 90" style={{ transform: 'rotate(-90deg)', width: '90px', height: '90px' }}>
+                    <circle cx="45" cy="45" r="38" fill="none" stroke="#f1f5f9" strokeWidth="8" />
+                    <circle
+                      cx="45" cy="45" r="38" fill="none"
+                      stroke="#6366f1" strokeWidth="8"
+                      strokeDasharray={`${2 * Math.PI * 38}`}
+                      strokeDashoffset={`${2 * Math.PI * 38 * (1 - (startupData?.startupScore?.total || 84) / 100)}`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>{startupData?.startupScore?.total || 84}</span>
+                    <span style={{ fontSize: '0.6rem', color: '#64748b', fontWeight: 700 }}>/100</span>
+                  </div>
+                </div>
+                <span style={{ fontSize: '0.72rem', color: '#6366f1', fontWeight: 800, marginTop: '4px' }}>Bom</span>
+              </div>
+            </div>
+
+            {/* 7-Pillar Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.85rem', marginBottom: '1.25rem' }}>
+              {[
+                { label: 'Equipa', key: 'team', icon: '👥', color: '#6366f1' },
+                { label: 'Produto', key: 'product', icon: '🛠️', color: '#8b5cf6' },
+                { label: 'Mercado', key: 'market', icon: '🌍', color: '#0ea5e9' },
+                { label: 'Tração', key: 'traction', icon: '📈', color: '#10b981' },
+                { label: 'Modelo de Negócio', key: 'businessModel', icon: '💼', color: '#f59e0b' },
+                { label: 'Governança', key: 'governance', icon: '🏛️', color: '#ef4444' },
+                { label: 'Potencial de Crescimento', key: 'growthPotential', icon: '🚀', color: '#ff6b00' }
+              ].map(pillar => {
+                const val = startupData?.startupScore?.[pillar.key] ?? 80;
+                return (
+                  <div key={pillar.key} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '14px', padding: '0.9rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '1rem' }}>{pillar.icon}</span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>{pillar.label}</span>
+                      </div>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 900, color: pillar.color }}>{val}</span>
+                    </div>
+                    <div style={{ height: '6px', background: '#e2e8f0', borderRadius: '99px', overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${val}%`, background: pillar.color, borderRadius: '99px', transition: 'width 1s ease' }} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Disclaimer */}
+            <div style={{ background: '#fefce8', border: '1px solid #fef08a', borderRadius: '12px', padding: '0.75rem 1rem', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <AlertCircle size={16} color="#ca8a04" style={{ flexShrink: 0, marginTop: '1px' }} />
+              <p style={{ margin: 0, fontSize: '0.78rem', color: '#713f12', lineHeight: 1.5 }}>
+                <strong>Aviso importante:</strong> O Startup Score é uma ferramenta diagnóstica interna da ABN e não constitui garantia de investimento, recomendação financeira, nem aval institucional. A pontuação é calculada automaticamente com base nos dados submetidos na plataforma e destina-se exclusivamente a fins de autoavaliação.
+              </p>
+            </div>
+          </div>
+
+          {/* ── KPIs de TRAÇÃO ── */}
+          <div style={{ marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <BarChart2 size={20} color="#10b981" /> Métricas de Tração em Tempo Real
+              </h3>
+              <Link href="/dashboard/captacao" style={{ fontSize: '0.8rem', fontWeight: 700, color: '#6366f1', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                Atualizar KPIs →
+              </Link>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
+              {[
+                { label: 'MRR', value: startupData?.traction?.mrr || '$5,000', icon: '💵', color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
+                { label: 'ARR', value: startupData?.traction?.arr || '$60,000', icon: '📊', color: '#6366f1', bg: 'rgba(99,102,241,0.08)' },
+                { label: 'Runway', value: `${startupData?.traction?.runwayMonths || 14} meses`, icon: '⏳', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)' },
+                { label: 'Burn Rate', value: startupData?.traction?.burnRate || '$3,500/mês', icon: '🔥', color: '#ef4444', bg: 'rgba(239,68,68,0.08)' },
+                { label: 'Clientes Ativos', value: `${startupData?.traction?.activeClients || 45}`, icon: '👤', color: '#0ea5e9', bg: 'rgba(14,165,233,0.08)' },
+                { label: 'Crescimento MoM', value: startupData?.traction?.momGrowth || '18%', icon: '📈', color: '#ff6b00', bg: 'rgba(255,107,0,0.08)' }
+              ].map(kpi => (
+                <div key={kpi.label} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1.25rem', boxShadow: '0 2px 8px rgba(15,23,42,0.04)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: kpi.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>
+                    {kpi.icon}
+                  </div>
+                  <div style={{ fontSize: '1.3rem', fontWeight: 900, color: '#0f172a', fontFamily: 'Outfit' }}>{kpi.value}</div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.4px' }}>{kpi.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── RODADA DE CAPTAÇÃO ATIVA ── */}
+          <div style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)', border: '1.5px solid #bbf7d0', borderRadius: '20px', padding: '1.5rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(16,185,129,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', flexShrink: 0 }}>
+                💰
+              </div>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '4px' }}>
+                  <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: '#064e3b' }}>Rodada de Captação Ativa</h4>
+                  <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#10b981', color: '#ffffff', padding: '2px 8px', borderRadius: '12px' }}>
+                    {startupData?.fundraising?.roundStatus || 'Aberta'}
+                  </span>
+                </div>
+                <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.82rem', color: '#065f46', fontWeight: 600 }}>
+                    💵 Procura: <strong>{startupData?.fundraising?.seekingAmount || '$150,000'}</strong>
+                  </span>
+                  <span style={{ fontSize: '0.82rem', color: '#065f46', fontWeight: 600 }}>
+                    📊 Valuation: <strong>{startupData?.fundraising?.valuation || '$1.5M Pre-Money'}</strong>
+                  </span>
+                  <span style={{ fontSize: '0.82rem', color: '#065f46', fontWeight: 600 }}>
+                    🎯 Estágio: <strong>{startupData?.fundraising?.stage || 'Seed'}</strong>
+                  </span>
+                  <span style={{ fontSize: '0.82rem', color: startupData?.fundraising?.pitchDeckUrl ? '#065f46' : '#b45309', fontWeight: 600 }}>
+                    {startupData?.fundraising?.pitchDeckUrl ? '✅ Pitch Deck carregado' : '⚠️ Pitch Deck em falta'}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <Link href="/dashboard/captacao" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#10b981', color: '#ffffff', padding: '10px 20px', borderRadius: '12px', fontWeight: 800, fontSize: '0.85rem', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              <DollarSign size={16} /> Gerir Captação
+            </Link>
+          </div>
+
+          {/* ── PROGRAMA DE ACELERAÇÃO ── */}
+          <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', marginBottom: '2rem', boxShadow: '0 4px 16px rgba(15,23,42,0.03)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Zap size={20} color="#6366f1" /> Programa de Aceleração
+              </h3>
+              <Link href="/dashboard/captacao" style={{ fontSize: '0.8rem', fontWeight: 700, color: '#6366f1', textDecoration: 'none' }}>
+                Ver Detalhes →
+              </Link>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#334155' }}>
+                {startupData?.acceleration?.programName || 'ABN Cohort Aceleração Global'}
+              </span>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#6366f1' }}>
+                {startupData?.acceleration?.progress || 45}% concluído
+              </span>
+            </div>
+            <div style={{ height: '10px', background: '#f1f5f9', borderRadius: '99px', overflow: 'hidden', marginBottom: '1.25rem' }}>
+              <div style={{ height: '100%', width: `${startupData?.acceleration?.progress || 45}%`, background: 'linear-gradient(90deg, #6366f1, #8b5cf6)', borderRadius: '99px', transition: 'width 1s ease' }} />
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.85rem' }}>
+              <div style={{ background: '#f8fafc', borderRadius: '14px', padding: '1rem', border: '1px solid #f1f5f9' }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#6366f1', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>Mentores Atribuídos</div>
+                {(startupData?.acceleration?.mentors?.length > 0 ? startupData.acceleration.mentors.slice(0, 2) : [
+                  { name: 'Dr. Carlos Mendes', role: 'Serial Entrepreneur' },
+                  { name: 'Ana Fernandes', role: 'VC Partner' }
+                ]).map((m: any, i: number) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
+                    <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 800, flexShrink: 0 }}>
+                      {m.name?.charAt(0) || 'M'}
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>{m.name}</div>
+                      <div style={{ fontSize: '0.7rem', color: '#64748b' }}>{m.role}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ background: '#f8fafc', borderRadius: '14px', padding: '1rem', border: '1px solid #f1f5f9' }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>Próxima Sessão</div>
+                {(startupData?.acceleration?.sessions?.length > 0 ? startupData.acceleration.sessions.filter((s: any) => s.status === 'Agendada').slice(0, 1) : [
+                  { title: 'Estratégia de Go-to-Market', mentorName: 'Dr. Carlos Mendes', date: 'Amanhã, 14h00', status: 'Agendada' }
+                ]).map((s: any, i: number) => (
+                  <div key={i} style={{ marginTop: '6px' }}>
+                    <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#0f172a' }}>{s.title}</div>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>com {s.mentorName}</div>
+                    <div style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 700, marginTop: '2px' }}>{s.date}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ background: '#f8fafc', borderRadius: '14px', padding: '1rem', border: '1px solid #f1f5f9' }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>Workshops</div>
+                {(startupData?.acceleration?.workshops?.length > 0 ? startupData.acceleration.workshops.slice(0, 2) : [
+                  { title: 'Fundraising & Term Sheets', instructor: 'Pedro Gomes', date: 'Sáb, 10h00' },
+                  { title: 'Growth Hacking Avançado', instructor: 'Maria Silva', date: 'Dom, 11h00' }
+                ]).map((w: any, i: number) => (
+                  <div key={i} style={{ marginTop: '6px', paddingBottom: '6px', borderBottom: i === 0 ? '1px solid #e2e8f0' : 'none' }}>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0f172a' }}>{w.title}</div>
+                    <div style={{ fontSize: '0.7rem', color: '#64748b' }}>{w.instructor} · {w.date}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* ── QUICK ACTIONS para STARTUP ── */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+            {[
+              { href: '/dashboard/captacao', icon: '🎯', label: 'Data Room', desc: 'Gerir documentos para investidores', color: '#6366f1', bg: 'rgba(99,102,241,0.08)' },
+              { href: '/dashboard/captacao', icon: '🤝', label: 'Solicitar Introdução', desc: 'Conectar com investidores ABN', color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
+              { href: '/dashboard/networking', icon: '🌍', label: 'Procurar Investidores', desc: 'Explorar o ecossistema ABN', color: '#0ea5e9', bg: 'rgba(14,165,233,0.08)' },
+              { href: '/dashboard/perfil', icon: '✏️', label: 'Atualizar Perfil', desc: 'Setor, modelo, equipa e produto', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)' }
+            ].map(action => (
+              <Link key={action.label} href={action.href} style={{ textDecoration: 'none' }}>
+                <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1.25rem', boxShadow: '0 2px 8px rgba(15,23,42,0.03)', transition: 'all 0.2s', cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: action.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', flexShrink: 0 }}>
+                    {action.icon}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0f172a', marginBottom: '3px' }}>{action.label}</div>
+                    <div style={{ fontSize: '0.78rem', color: '#64748b', lineHeight: 1.4 }}>{action.desc}</div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+         6b. EMPREENDEDOR DASHBOARD
+      ───────────────────────────────────────────────────────────── */}
+      {activeRole === 'empreendedor' && (
         <>
           {/* Active Membership Banner Card */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem', marginBottom: '2.5rem' }}>

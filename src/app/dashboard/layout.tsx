@@ -21,7 +21,9 @@ import {
   ChevronLeft,
   Bell,
   ClipboardList,
-  Building2
+  Building2,
+  TrendingUp,
+  DollarSign
 } from 'lucide-react';
 import styles from './Dashboard.module.css';
 
@@ -193,6 +195,18 @@ export default function DashboardLayout({
             <Link href="/dashboard/investimentos" className={isActive('/dashboard/investimentos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Investimentos' : undefined}>
               <CalendarDays size={18} />
               {!collapsed && <span>Investimentos</span>}
+            </Link>
+          )}
+          {(user.roles.includes('startup') || activeRole === 'startup') && (
+            <Link href="/dashboard/captacao" className={isActive('/dashboard/captacao') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Captação de Investimento' : undefined} style={{ background: isActive('/dashboard/captacao') ? undefined : 'linear-gradient(135deg, rgba(255,107,0,0.06) 0%, rgba(251,191,36,0.06) 100%)', border: isActive('/dashboard/captacao') ? undefined : '1px solid rgba(255,107,0,0.15)', color: isActive('/dashboard/captacao') ? undefined : '#b45309' }}>
+              <TrendingUp size={18} />
+              {!collapsed && <span>Captação 🚀</span>}
+            </Link>
+          )}
+          {(user.roles.includes('empresa') || activeRole === 'empresa') && (
+            <Link href="/dashboard/empresa" className={isActive('/dashboard/empresa') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Business Connect' : undefined} style={{ background: isActive('/dashboard/empresa') ? undefined : 'linear-gradient(135deg, rgba(14,165,233,0.07) 0%, rgba(99,102,241,0.07) 100%)', border: isActive('/dashboard/empresa') ? undefined : '1px solid rgba(14,165,233,0.18)', color: isActive('/dashboard/empresa') ? undefined : '#0369a1' }}>
+              <DollarSign size={18} />
+              {!collapsed && <span>Business Connect 🌐</span>}
             </Link>
           )}
           <Link href="/dashboard/cursos" className={isActive('/dashboard/cursos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Cursos' : undefined}>
