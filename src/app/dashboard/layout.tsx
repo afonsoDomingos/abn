@@ -20,7 +20,8 @@ import {
   ChevronRight,
   ChevronLeft,
   Bell,
-  ClipboardList
+  ClipboardList,
+  Building2
 } from 'lucide-react';
 import styles from './Dashboard.module.css';
 
@@ -29,7 +30,13 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState({ name: 'Empreendedor', profileImage: '', role: 'user' });
+  const [user, setUser] = useState<{
+    name: string;
+    profileImage: string;
+    role: string;
+    roles: string[];
+  }>({ name: 'Empreendedor', profileImage: '', role: 'empreendedor', roles: ['empreendedor'] });
+  const [activeRole, setActiveRole] = useState<string>('empreendedor');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -49,10 +56,22 @@ export default function DashboardLayout({
           window.location.href = '/admin';
           return;
         }
+
+        const userRoles: string[] = Array.isArray(parsed.roles) && parsed.roles.length > 0
+          ? parsed.roles
+          : [parsed.role || 'empreendedor'];
+
+        const storedActiveRole = localStorage.getItem('abn_active_role');
+        const currentActive = storedActiveRole && userRoles.includes(storedActiveRole)
+          ? storedActiveRole
+          : userRoles[0];
+
+        setActiveRole(currentActive);
         setUser({
           name: parsed.name || 'Empreendedor',
           profileImage: parsed.profileImage || '',
-          role: parsed.role || 'user'
+          role: currentActive,
+          roles: userRoles
         });
       } catch (e) {}
     }
@@ -150,6 +169,10 @@ export default function DashboardLayout({
             <UserIcon size={18} />
             {!collapsed && <span>Perfil</span>}
           </Link>
+          <Link href="/dashboard/negocios" className={isActive('/dashboard/negocios') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Negócios' : undefined}>
+            <Building2 size={18} />
+            {!collapsed && <span>Negócios</span>}
+          </Link>
           <Link href="/dashboard/projetos" className={isActive('/dashboard/projetos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Projetos' : undefined}>
             <Rocket size={18} />
             {!collapsed && <span>Projetos</span>}
@@ -166,7 +189,7 @@ export default function DashboardLayout({
             <Briefcase size={18} />
             {!collapsed && <span>Serviços</span>}
           </Link>
-          {(user.role === 'investidor' || user.role === 'mentor') && (
+          {(user.roles.includes('investidor') || user.roles.includes('mentor') || activeRole === 'investidor' || activeRole === 'mentor') && (
             <Link href="/dashboard/investimentos" className={isActive('/dashboard/investimentos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Investimentos' : undefined}>
               <CalendarDays size={18} />
               {!collapsed && <span>Investimentos</span>}
@@ -236,10 +259,39 @@ export default function DashboardLayout({
               {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
             <div className={styles.search}>
-              <input type="text" placeholder="Pesquisar recursos, mentores..." />
+              <input type="text" placeholder="Pesquisar recursos, oportunidades, membros..." />
             </div>
           </div>
           <div className={styles.userArea}>
+            {/* Seletor Rápido de Papel (Multi-Perfil) */}
+            {user.roles && user.roles.length > 1 && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f8fafc', border: '1px solid #e2e8f0', padding: '5px 10px', borderRadius: '12px' }}>
+                <span style={{ color: '#64748b', fontSize: '0.75rem', fontWeight: 700 }}>Visão:</span>
+                <select
+                  value={activeRole}
+                  onChange={(e) => {
+                    const nextRole = e.target.value;
+                    setActiveRole(nextRole);
+                    localStorage.setItem('abn_active_role', nextRole);
+                    window.dispatchEvent(new Event('abn_role_changed'));
+                  }}
+                  style={{
+                    border: 'none',
+                    background: 'transparent',
+                    color: '#ff6b00',
+                    fontWeight: 800,
+                    fontSize: '0.8rem',
+                    cursor: 'pointer',
+                    outline: 'none',
+                    textTransform: 'capitalize'
+                  }}
+                >
+                  {user.roles.map(r => (
+                    <option key={r} value={r}>{r}</option>
+                  ))}
+                </select>
+              </div>
+            )}
             {/* 3. SININHO DE NOTIFICAÇÕES EM TEMPO REAL */}
             <div style={{ position: 'relative' }}>
               <button

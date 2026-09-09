@@ -1,13 +1,49 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Rocket, Users, Target, CheckCircle2, XCircle, BarChart3, Star, Clock, Calendar, FileText, Download } from 'lucide-react';
+import Link from 'next/link';
+import { 
+  Rocket, 
+  Users, 
+  Target, 
+  CheckCircle2, 
+  XCircle, 
+  BarChart3, 
+  Star, 
+  Clock, 
+  Calendar, 
+  FileText, 
+  Download, 
+  ShieldCheck, 
+  Briefcase, 
+  GraduationCap, 
+  Building2, 
+  ExternalLink,
+  Layers,
+  ArrowRight,
+  Award,
+  Sparkles
+} from 'lucide-react';
 import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Dashboard.module.css';
 
+const ROLE_LABELS: Record<string, { title: string; icon: string; desc: string }> = {
+  empreendedor: { title: 'Empreendedor', icon: '🚀', desc: 'Acompanhe a aceleração de ideias, pipeline de incubação e cursos.' },
+  startup: { title: 'Startup', icon: '💡', desc: 'Gestão de negócio escalável, captação de investimento e programas.' },
+  empresa: { title: 'Empresa / PME', icon: '🏢', desc: 'Oportunidades de expansão, inovação aberta e conexões B2B.' },
+  investidor: { title: 'Investidor', icon: '💰', desc: 'Portfólio de investimento, análise de risco e startups qualificadas.' },
+  mentor: { title: 'Mentor', icon: '🧭', desc: 'Orientação de fundadores, doação de horas e sessões estratégicas.' },
+  consultor: { title: 'Consultor / Especialista', icon: '🎯', desc: 'Demandas técnicas, consultorias especializadas e diagnósticos.' },
+  parceiro: { title: 'Parceiro', icon: '🤝', desc: 'Alianças comerciais, soluções corporativas e cooperação institucional.' },
+  universidade: { title: 'Universidade / Academia', icon: '🎓', desc: 'Projetos de I&D, polos científicos e ligação universidade-empresa.' },
+  incubadora: { title: 'Incubadora / Aceleradora', icon: '🏛️', desc: 'Hub de incubação, capacitação e acompanhamento de cohortes.' },
+  organizacao: { title: 'Organização / Instituição', icon: '🌐', desc: 'Programas de fomento, desenvolvimento socioeconómico e parcerias.' }
+};
+
 export default function DashboardPage() {
   const [userName, setUserName] = useState('Empreendedor');
-  const [role, setRole] = useState('empreendedor');
+  const [userRoles, setUserRoles] = useState<string[]>(['empreendedor']);
+  const [activeRole, setActiveRole] = useState('empreendedor');
   const [business, setBusiness] = useState<any>(null);
   const [score, setScore] = useState(0);
   const [checklist, setChecklist] = useState({
@@ -34,27 +70,57 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchDashboardData();
+
+    const handleRoleChange = () => {
+      const storedActiveRole = localStorage.getItem('abn_active_role');
+      if (storedActiveRole) {
+        setActiveRole(storedActiveRole);
+      }
+    };
+
+    window.addEventListener('abn_role_changed', handleRoleChange);
+    return () => window.removeEventListener('abn_role_changed', handleRoleChange);
   }, []);
+
+  const switchActiveRole = (newRole: string) => {
+    setActiveRole(newRole);
+    localStorage.setItem('abn_active_role', newRole);
+    window.dispatchEvent(new Event('abn_role_changed'));
+  };
 
   const fetchDashboardData = async () => {
     try {
-      // 1. Get user details
+      // 1. Get user details from localStorage
       const userStr = localStorage.getItem('user');
       let hasProfileDesc = false;
       let userRole = 'empreendedor';
       let userEmail = '';
+      let rolesArr: string[] = ['empreendedor'];
 
       if (userStr) {
         const u = JSON.parse(userStr);
-        setUserName(u.name || 'Empreendedor');
+        setUserName(u.name || 'Membro');
         userRole = u.role || 'empreendedor';
         userEmail = u.email || '';
-        setRole(userRole);
+        
+        rolesArr = Array.isArray(u.roles) && u.roles.length > 0 
+          ? u.roles 
+          : [userRole];
+        
+        setUserRoles(rolesArr);
+
         const r = userRole.toLowerCase();
         if (r === 'admin' || r === 'collaborator' || r === 'colaborador') {
           window.location.href = '/admin';
           return;
         }
+
+        const storedActive = localStorage.getItem('abn_active_role');
+        const currentActive = storedActive && rolesArr.includes(storedActive)
+          ? storedActive
+          : rolesArr[0];
+
+        setActiveRole(currentActive);
         hasProfileDesc = !!u.description || !!u.email;
       }
 
@@ -125,59 +191,143 @@ export default function DashboardPage() {
     }
   };
 
+  const currentRoleInfo = ROLE_LABELS[activeRole] || {
+    title: activeRole.toUpperCase(),
+    icon: '⚡',
+    desc: 'Bem-vindo ao seu painel na ABN.'
+  };
+
   return (
     <div className={styles.dashboard}>
+      
       {/* ─────────────────────────────────────────────────────────────
-         1. INVESTOR DASHBOARD
+         BARRA SUPERIOR: BOAS-VINDAS MULTI-PERFIL & SELETOR DE VISÃO
       ───────────────────────────────────────────────────────────── */}
-      {role === 'investidor' && (
-        <>
-          <div className={styles.welcome}>
-            <h1>Olá, <span className="text-gradient-gold">{userName}</span> 👋</h1>
-            <p>Bem-vindo ao seu painel de investimento. Acompanhe a evolução de startups incubadas no ABN Hub.</p>
+      <div style={{
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+        color: '#ffffff',
+        borderRadius: '24px',
+        padding: '1.75rem 2rem',
+        marginBottom: '2rem',
+        boxShadow: '0 10px 30px rgba(15, 23, 42, 0.12)',
+        border: '1px solid rgba(255, 107, 0, 0.25)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1.25rem'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <span style={{ fontSize: '0.74rem', fontWeight: 800, background: 'rgba(255,107,0,0.2)', color: '#ff6b00', padding: '3px 10px', borderRadius: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                ABN Dashboard
+              </span>
+              <span style={{ fontSize: '0.72rem', fontWeight: 800, background: 'rgba(16,185,129,0.2)', color: '#34d399', padding: '3px 10px', borderRadius: '12px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <ShieldCheck size={13} /> Perfil Verificado
+              </span>
+            </div>
+            <h1 style={{ margin: '0 0 0.35rem 0', fontSize: '1.85rem', fontWeight: 800, color: '#ffffff', fontFamily: 'Outfit' }}>
+              Olá, <span className="text-gradient-gold">{userName}</span> 👋
+            </h1>
+            <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.9rem' }}>
+              {currentRoleInfo.desc}
+            </p>
           </div>
 
+          {/* Badge Perfil Ativo */}
+          <div style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '16px', padding: '0.85rem 1.25rem', textAlign: 'right' }}>
+            <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Visão Ativa</div>
+            <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#ff6b00', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end', marginTop: '2px' }}>
+              <span>{currentRoleInfo.icon}</span> {currentRoleInfo.title}
+            </div>
+          </div>
+        </div>
+
+        {/* Multi-Perfis Selector Pills */}
+        {userRoles.length > 1 && (
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.78rem', color: '#cbd5e1', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Layers size={14} /> Alternar Visão:
+            </span>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              {userRoles.map(roleKey => {
+                const info = ROLE_LABELS[roleKey] || { title: roleKey, icon: '⚡' };
+                const isSelected = activeRole === roleKey;
+                return (
+                  <button
+                    key={roleKey}
+                    onClick={() => switchActiveRole(roleKey)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '6px 14px',
+                      borderRadius: '50px',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      border: isSelected ? '1px solid #ff6b00' : '1px solid rgba(255,255,255,0.15)',
+                      background: isSelected ? '#ff6b00' : 'rgba(255,255,255,0.08)',
+                      color: isSelected ? '#ffffff' : '#e2e8f0',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <span>{info.icon}</span>
+                    <span>{info.title}</span>
+                    {isSelected && <span style={{ fontSize: '0.68rem', opacity: 0.9 }}>✓</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+         1. INVESTOR DASHBOARD VIEW
+      ───────────────────────────────────────────────────────────── */}
+      {activeRole === 'investidor' && (
+        <>
           <div className={styles.progressGrid}>
             <div className={styles.progressCard}>
-              <h3>Portfólio de Análise</h3>
+              <h3>Portfólio de Análise & Deals</h3>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
                 <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
-                  14<span style={{ fontSize: '1rem', color: '#64748b' }}> startups</span>
+                  18<span style={{ fontSize: '1rem', color: '#64748b' }}> startups</span>
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
-                    Startups em aceleração ativa elegíveis para investimento imediato.
+                    Startups em aceleração ativa no ABN Hub elegíveis para investimento imediato e co-financiamento.
                   </p>
                 </div>
               </div>
             </div>
             
             <div className={styles.progressCard}>
-              <h3>Progresso de Credenciação</h3>
+              <h3>Critérios de Credenciação</h3>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Registo de Perfil de Investidor</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Setores de Preferência Indicados</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><XCircle size={18} color="#cbd5e1" /> Primeiro Compromisso de Financiamento</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Registo de Perfil de Investidor Concluído</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Setores e Teses de Investimento Ativos</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Acesso Liberado a Pitch Decks & Data Rooms</li>
               </ul>
             </div>
           </div>
 
           <div className={styles.sectionTitle}>
-            <h2>Ações Recomendadas</h2>
+            <h2>Ações Rápidas de Investimento</h2>
           </div>
 
           <div className={styles.tasks}>
             <div className={styles.taskItem}>
               <input type="checkbox" checked={true} readOnly />
-              <span>Explorar diretório de projetos abertos</span>
+              <span>Explorar diretório de startups em rodada de financiamento</span>
             </div>
             <div className={styles.taskItem}>
               <input type="checkbox" checked={false} readOnly />
-              <span>Avaliar novos relatórios financeiros submetidos</span>
+              <span>Agendar reunião de Due Diligence com founders via ABN Hub</span>
             </div>
             <div className={styles.taskItem}>
               <input type="checkbox" checked={false} readOnly />
-              <span>Agendar reuniões com fundadores via WhatsApp/Email</span>
+              <span>Submeter Term Sheet ou manifestação de interesse preliminar</span>
             </div>
           </div>
 
@@ -186,14 +336,14 @@ export default function DashboardPage() {
           </div>
 
           <div className={styles.resources}>
-            <div className={styles.resourceCard} onClick={() => setActiveResource({ title: 'VC Trends em África', type: 'doc', description: 'Relatório semestral de investimentos em venture capital em África e CPLP.' })}>
+            <div className={styles.resourceCard} onClick={() => setActiveResource({ title: 'VC Trends em África e Lusofonia', type: 'doc', description: 'Relatório semestral de investimentos em venture capital e oportunidades em mercados CPLP.' })}>
               <div className={styles.resourceIcon} style={{ background: 'rgba(255, 107, 0, 0.08)', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
                 <BarChart3 size={28} color="var(--primary, #ff6b00)" />
               </div>
               <h4>VC Trends em África</h4>
               <p style={{ fontSize: '0.85rem' }}>Relatório Semestral - PDF</p>
             </div>
-            <div className={styles.resourceCard} onClick={() => setActiveResource({ title: 'Guia de Co-Investimento', type: 'doc', description: 'Manual de melhores práticas de co-investimento e compliance para investidores anjo.' })}>
+            <div className={styles.resourceCard} onClick={() => setActiveResource({ title: 'Guia de Co-Investimento & Compliance', type: 'doc', description: 'Manual de melhores práticas de co-investimento e governança para investidores anjo e fundos.' })}>
               <div className={styles.resourceIcon} style={{ background: 'rgba(255, 107, 0, 0.08)', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
                 <Users size={28} color="var(--primary, #ff6b00)" />
               </div>
@@ -205,25 +355,20 @@ export default function DashboardPage() {
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-         2. MENTOR DASHBOARD
+         2. MENTOR DASHBOARD VIEW
       ───────────────────────────────────────────────────────────── */}
-      {role === 'mentor' && (
+      {activeRole === 'mentor' && (
         <>
-          <div className={styles.welcome}>
-            <h1>Olá, <span className="text-gradient-gold">{userName}</span> 👋</h1>
-            <p>Bem-vindo ao seu painel de mentoria. Acompanhe o progresso de startups e guie os fundadores do ecossistema.</p>
-          </div>
-
           <div className={styles.progressGrid}>
             <div className={styles.progressCard}>
               <h3>Atividade de Mentoria</h3>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
                 <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
-                  6<span style={{ fontSize: '1rem', color: '#64748b' }}> startups</span>
+                  8<span style={{ fontSize: '1rem', color: '#64748b' }}> startups</span>
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
-                    Acompanhando ativamente ideias inovadoras no ecossistema ABN.
+                    Startups sob a sua mentoria estratégica nos setores de inovação e negócios.
                   </p>
                 </div>
               </div>
@@ -232,38 +377,34 @@ export default function DashboardPage() {
             <div className={styles.progressCard}>
               <h3>Métricas do Mentor</h3>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Star size={18} color="var(--primary, #ff6b00)" /> Avaliação Média: <strong>{analytics?.stats?.averageRating ? analytics.stats.averageRating.toFixed(1) : '4.9'} / 5.0</strong></li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Clock size={18} color="var(--primary, #ff6b00)" /> Horas Doadas: <strong>{analytics?.stats?.mentorshipHours || 12} Horas</strong></li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Calendar size={18} color="var(--primary, #ff6b00)" /> Próxima Sessão: <strong>Sexta-feira, 15:00</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Star size={18} color="var(--primary, #ff6b00)" /> Avaliação Média: <strong>4.9 / 5.0</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Clock size={18} color="var(--primary, #ff6b00)" /> Horas Doadas: <strong>16 Horas</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Calendar size={18} color="var(--primary, #ff6b00)" /> Próxima Sessão: <strong>Terça-feira, 14:00</strong></li>
               </ul>
             </div>
           </div>
 
           <div className={styles.sectionTitle}>
-            <h2>Tarefas &amp; Avaliações</h2>
+            <h2>Tarefas de Acompanhamento</h2>
           </div>
 
           <div className={styles.tasks}>
             <div className={styles.taskItem}>
-              <input type="checkbox" checked={false} readOnly />
+              <input type="checkbox" checked={true} readOnly />
               <span>Avaliar a descrição de negócios e pitch de novos fundadores</span>
             </div>
             <div className={styles.taskItem}>
               <input type="checkbox" checked={false} readOnly />
-              <span>Agendar sessões semanais de acompanhamento via WhatsApp/Meet</span>
-            </div>
-            <div className={styles.taskItem}>
-              <input type="checkbox" checked={true} readOnly />
-              <span>Participar no webinar de boas-vindas do ABN Hub</span>
+              <span>Validar o plano de tração do primeiro trimestre das startups atribuídas</span>
             </div>
           </div>
 
           <div className={styles.sectionTitle}>
-            <h2>Recursos para Mentores</h2>
+            <h2>Materiais de Apoio</h2>
           </div>
 
           <div className={styles.resources}>
-            <div className={styles.resourceCard} onClick={() => setActiveResource({ title: 'Manual do Mentor ABN', type: 'doc', description: 'Metodologias de facilitação, perguntas chave e acompanhamento de empreendedores.' })}>
+            <div className={styles.resourceCard} onClick={() => setActiveResource({ title: 'Manual do Mentor ABN', type: 'doc', description: 'Metodologias e melhores práticas de orientação ágil para fundadores.' })}>
               <div className={styles.resourceIcon} style={{ background: 'rgba(255, 107, 0, 0.08)', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
                 <FileText size={28} color="var(--primary, #ff6b00)" />
               </div>
@@ -282,27 +423,161 @@ export default function DashboardPage() {
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-         3. DEFAULT ENTREPRENEUR / STARTUP DASHBOARD (ULTRA CLEAN)
+         3. CONSULTOR / ESPECIALISTA VIEW
       ───────────────────────────────────────────────────────────── */}
-      {role !== 'investidor' && role !== 'mentor' && (
+      {activeRole === 'consultor' && (
         <>
-          {/* Header & Status Card */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem', marginBottom: '2.5rem' }}>
-            <div>
-              <h1 style={{ margin: '0 0 0.3rem 0', fontSize: '2rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit' }}>
-                Olá, <span className="text-gradient-gold">{userName}</span> 👋
-              </h1>
-              <p style={{ margin: 0, color: '#64748b', fontSize: '0.95rem', fontWeight: 500 }}>
-                Acompanhe o desenvolvimento e os serviços ativos da sua startup no ABN Hub.
-              </p>
+          <div className={styles.progressGrid}>
+            <div className={styles.progressCard}>
+              <h3>Consultorias &amp; Assessoria Técnica</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
+                  5<span style={{ fontSize: '1rem', color: '#64748b' }}> projetos</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
+                    Demandas de especialidade técnica e diagnósticos ativos solicitados por empresas no Hub.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Active Membership Banner Card */}
-            <div style={{ background: '#0f172a', color: '#ffffff', borderRadius: '20px', padding: '1.2rem 1.6rem', boxShadow: '0 10px 25px rgba(15,23,42,0.12)', display: 'flex', alignItems: 'center', gap: '1.2rem', border: '1px solid rgba(255,107,0,0.25)' }}>
+            <div className={styles.progressCard}>
+              <h3>Perfil de Especialista</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Credencial de Consultor ABN Ativa</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Catálogo de Serviços Disponível no Marketplace</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Star size={18} color="var(--primary, #ff6b00)" /> Índice de Satisfação: <strong>98%</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className={styles.sectionTitle}>
+            <h2>Demandas de Especialistas Recentes</h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.25rem' }}>
+              <span style={{ fontSize: '0.72rem', background: '#fff7ed', color: '#ea580c', fontWeight: 800, padding: '2px 8px', borderRadius: '6px' }}>Finanças &amp; Fiscalidade</span>
+              <h4 style={{ margin: '8px 0 4px 0', fontSize: '1rem', color: '#0f172a' }}>Estruturação Fiscal para PMEs</h4>
+              <p style={{ margin: 0, fontSize: '0.82rem', color: '#64748b' }}>Solicitação para apoio em enquadramento societário e compliance bancário.</p>
+            </div>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.25rem' }}>
+              <span style={{ fontSize: '0.72rem', background: '#f0fdf4', color: '#16a34a', fontWeight: 800, padding: '2px 8px', borderRadius: '6px' }}>Tecnologia &amp; Produto</span>
+              <h4 style={{ margin: '8px 0 4px 0', fontSize: '1rem', color: '#0f172a' }}>Auditoria de Segurança &amp; Cloud</h4>
+              <p style={{ margin: 0, fontSize: '0.82rem', color: '#64748b' }}>Análise de infraestrutura cloud e arquitetura de microsserviços.</p>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+         4. EMPRESA / PME & PARCEIRO VIEW
+      ───────────────────────────────────────────────────────────── */}
+      {(activeRole === 'empresa' || activeRole === 'parceiro') && (
+        <>
+          <div className={styles.progressGrid}>
+            <div className={styles.progressCard}>
+              <h3>Oportunidades &amp; Conexões B2B</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
+                  24<span style={{ fontSize: '1rem', color: '#64748b' }}> conexões</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
+                    Empresas qualificadas, fornecedores certificados e sinergias empresariais no ecossistema ABN.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.progressCard}>
+              <h3>Rede Corporativa</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Selo de Empresa Parceira Oficial ABN</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Acesso ao Fórum de Negócios B2B</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Oportunidades de Compra &amp; Parcerias Estratégicas</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className={styles.sectionTitle}>
+            <h2>Inovação Aberta &amp; Soluções de Startups</h2>
+          </div>
+
+          <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', marginBottom: '2.5rem' }}>
+            <p style={{ margin: '0 0 1rem 0', fontSize: '0.9rem', color: '#475569' }}>
+              Encontre startups e especialistas que solucionam desafios operacionais da sua organização através de tecnologias aplicadas.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <Link href="/dashboard/oportunidades" className="btn-primary" style={{ padding: '10px 18px', fontSize: '0.85rem' }}>
+                Explorar Oportunidades →
+              </Link>
+              <Link href="/dashboard/networking" className="btn-outline" style={{ padding: '10px 18px', fontSize: '0.85rem' }}>
+                Ver Diretório de Membros
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+         5. UNIVERSIDADE / INCUBADORA / ORGANIZAÇÃO VIEW
+      ───────────────────────────────────────────────────────────── */}
+      {(activeRole === 'universidade' || activeRole === 'incubadora' || activeRole === 'organizacao') && (
+        <>
+          <div className={styles.progressGrid}>
+            <div className={styles.progressCard}>
+              <h3>Hub Institucional &amp; I&amp;D</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
+                  12<span style={{ fontSize: '1rem', color: '#64748b' }}> projetos</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
+                    Iniciativas conjuntas de capacitação, transferência de tecnologia e ligação universidade-empresa.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.progressCard}>
+              <h3>Compromisso Institucional</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Protocolo de Cooperação ABN Ativo</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Partilha de Bolsas &amp; Talentos Académicos</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Apoio ao Desenvolvimento de Startups Universitárias</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className={styles.sectionTitle}>
+            <h2>Programas de Capacitação &amp; Fomento</h2>
+          </div>
+
+          <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', marginBottom: '2.5rem' }}>
+            <p style={{ margin: '0 0 1rem 0', fontSize: '0.9rem', color: '#475569' }}>
+              Divulgue bolsas de estudo, congressos científicos e programas de aceleração para toda a rede de empreendedores ABN.
+            </p>
+            <Link href="/dashboard/programas" className="btn-primary" style={{ padding: '10px 18px', fontSize: '0.85rem' }}>
+              Gerir Programas Institucionais →
+            </Link>
+          </div>
+        </>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+         6. DEFAULT / EMPREENDEDOR / STARTUP DASHBOARD
+      ───────────────────────────────────────────────────────────── */}
+      {(activeRole === 'empreendedor' || activeRole === 'startup') && (
+        <>
+          {/* Active Membership Banner Card */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem', marginBottom: '2.5rem' }}>
+            <div style={{ background: '#0f172a', color: '#ffffff', borderRadius: '20px', padding: '1.2rem 1.6rem', boxShadow: '0 10px 25px rgba(15,23,42,0.12)', display: 'flex', alignItems: 'center', gap: '1.2rem', border: '1px solid rgba(255,107,0,0.25)', width: '100%' }}>
               <div style={{ width: '46px', height: '46px', borderRadius: '14px', background: 'rgba(255,107,0,0.15)', color: '#ff6b00', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', flexShrink: 0 }}>
                 🏛️
               </div>
-              <div>
+              <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2px' }}>
                   <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Membro Registado</span>
                   <span style={{ fontSize: '0.7rem', fontWeight: 800, background: '#10b981', color: '#ffffff', padding: '2px 8px', borderRadius: '12px' }}>🟢 Ativo</span>
@@ -313,10 +588,104 @@ export default function DashboardPage() {
                     : getClubStepTitle('Clube dos Empreendedores ABN')}
                 </div>
               </div>
+              <Link href="/dashboard/perfil" style={{ color: '#ff8c3a', fontSize: '0.82rem', fontWeight: 700, textDecoration: 'none' }}>
+                Ver Perfil →
+              </Link>
             </div>
           </div>
 
-          {/* 1. Minhas Inscrições, Cursos & Serviços Solicitados */}
+          {/* ── MÓDULO DE CRESCIMENTO & RECOMENDAÇÕES INTELIGENTES ── */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div>
+                <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0f172a', margin: 0, fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Sparkles size={22} color="#ff6b00" /> Crescimento &amp; Oportunidades do Ecossistema
+                </h2>
+                <p style={{ margin: '4px 0 0 0', color: '#64748b', fontSize: '0.88rem' }}>
+                  Inteligência de matching para acelerar e financiar o seu negócio.
+                </p>
+              </div>
+              <Link href="/dashboard/negocios" className="btn-outline" style={{ padding: '8px 14px', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Building2 size={15} /> Painel de Gestão do Negócio →
+              </Link>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.25rem' }}>
+              {/* Card 1: Investimento */}
+              <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 4px 16px rgba(15,23,42,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(255,107,0,0.1)', color: '#ff6b00', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}>
+                    💰
+                  </div>
+                  <h3 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
+                    O seu negócio precisa de investimento?
+                  </h3>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
+                    Submeta o seu Pitch Deck e conecte-se a investidores anjo e fundos de capital de risco no ABN Hub.
+                  </p>
+                </div>
+                <Link href="/dashboard/projetos" style={{ marginTop: '1.25rem', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', fontWeight: 800, color: '#ff6b00', textDecoration: 'none' }}>
+                  Submeter a Investidores →
+                </Link>
+              </div>
+
+              {/* Card 2: Oportunidades Compatíveis */}
+              <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 4px 16px rgba(15,23,42,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(16,185,129,0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}>
+                    🎯
+                  </div>
+                  <h3 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
+                    Existem 5 oportunidades compatíveis
+                  </h3>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
+                    Encontramos editais, bolsas e linhas de fomento abertas com compatibilidade direta para o seu setor.
+                  </p>
+                </div>
+                <Link href="/dashboard/oportunidades" style={{ marginTop: '1.25rem', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', fontWeight: 800, color: '#10b981', textDecoration: 'none' }}>
+                  Ver 5 Oportunidades →
+                </Link>
+              </div>
+
+              {/* Card 3: Mentores Disponíveis */}
+              <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 4px 16px rgba(15,23,42,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(126,34,206,0.1)', color: '#7e22ce', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}>
+                    🧭
+                  </div>
+                  <h3 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
+                    Existem 3 mentores disponíveis na sua área
+                  </h3>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
+                    Especialistas líderes de mercado prontos para prestar mentoria estratégica e guiar a tração do negócio.
+                  </p>
+                </div>
+                <Link href="/dashboard/networking" style={{ marginTop: '1.25rem', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', fontWeight: 800, color: '#7e22ce', textDecoration: 'none' }}>
+                  Consultar Mentores →
+                </Link>
+              </div>
+
+              {/* Card 4: Parceiros Internacionais */}
+              <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 4px 16px rgba(15,23,42,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(59,130,246,0.1)', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}>
+                    🌐
+                  </div>
+                  <h3 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
+                    Há 2 parceiros internacionais interessados
+                  </h3>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
+                    Empresas e câmaras de comércio nos mercados lusófonos e europeus abertas a acordos bilaterais.
+                  </p>
+                </div>
+                <Link href="/dashboard/networking" style={{ marginTop: '1.25rem', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', fontWeight: 800, color: '#3b82f6', textDecoration: 'none' }}>
+                  Conectar com Parceiros →
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Inscrições, Cursos & Serviços Solicitados */}
           <div style={{ marginBottom: '2.5rem' }}>
             <div style={{ padding: '1.75rem', borderRadius: '24px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.03)' }}>
               
@@ -381,7 +750,7 @@ export default function DashboardPage() {
                     <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>A carregar candidaturas...</div>
                   ) : userInscricoes.length === 0 ? (
                     <div style={{ background: '#f8fafc', border: '1px border-dashed #cbd5e1', borderRadius: '14px', padding: '1.25rem', textAlign: 'center', color: '#64748b', fontSize: '0.85rem', fontWeight: 500 }}>
-                      Nenhuma candidatura a programas pendente. Explore os programas abertos!
+                      Nenhuma candidatura a programas pendente. Explore os programas abertos no Hub!
                     </div>
                   ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
@@ -454,7 +823,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* 2. Pipeline de Incubação (4 Fases Diretas) */}
+          {/* Pipeline de Incubação (4 Fases Diretas) */}
           <div style={{ padding: '1.75rem 2rem', borderRadius: '24px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(15,23,42,0.03)', marginBottom: '2.5rem' }}>
             <h3 style={{ color: '#0f172a', fontSize: '1.1rem', marginBottom: '1.25rem', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 800 }}>
               <Target size={20} color="var(--primary, #ff6b00)" />
@@ -546,7 +915,7 @@ export default function DashboardPage() {
               <div style={{ background: '#f8fafc', border: '1.5px dashed #cbd5e1', borderRadius: '16px', padding: '2rem', textAlign: 'center', marginBottom: '1.5rem' }}>
                 <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>📄</div>
                 <h4 style={{ margin: '0 0 0.3rem 0', color: '#0f172a' }}>Modelo Oficial ABN (PDF/DOC)</h4>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b' }}>Pronto para preenchimento do plano de negócios da sua startup.</p>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b' }}>Pronto para preenchimento do plano de negócios e documentação.</p>
               </div>
             )}
 
@@ -573,4 +942,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-

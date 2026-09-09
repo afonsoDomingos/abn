@@ -61,15 +61,38 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: false, error: 'Sessão inválida' }, { status: 401 });
     }
 
-    const { name, category, description, website, location, incubationPhase } = await request.json();
+    const body = await request.json();
+    const { 
+      name, category, description, logo, website, location, incubationPhase,
+      services, portfolio, productsAndServices, clients, suppliers, team, goals, documents
+    } = body;
 
     if (!name || !category) {
       return NextResponse.json({ error: 'Nome e categoria são obrigatórios.' }, { status: 400 });
     }
 
+    const updateData: any = {
+      name,
+      category,
+      description: description || '',
+      website: website || '',
+      location: location || '',
+      incubationPhase: incubationPhase || 'Ideação'
+    };
+
+    if (logo !== undefined) updateData.logo = logo;
+    if (services !== undefined) updateData.services = services;
+    if (portfolio !== undefined) updateData.portfolio = portfolio;
+    if (productsAndServices !== undefined) updateData.productsAndServices = productsAndServices;
+    if (clients !== undefined) updateData.clients = clients;
+    if (suppliers !== undefined) updateData.suppliers = suppliers;
+    if (team !== undefined) updateData.team = team;
+    if (goals !== undefined) updateData.goals = goals;
+    if (documents !== undefined) updateData.documents = documents;
+
     const business = await Business.findOneAndUpdate(
       { owner: session.id },
-      { name, category, description, website, location, incubationPhase },
+      updateData,
       { new: true, upsert: true }
     );
 

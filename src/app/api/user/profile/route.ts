@@ -8,7 +8,11 @@ export async function PUT(request: Request) {
   try {
     await dbConnect();
     const body = await request.json();
-    const { id, name, email, password, profileImage, phone, country, city, company, sector, linkedin, bio, birthDate, gender, nationality, passportBioPage, passportPhoto, educationLevel, howHeardAboutUs } = body;
+    const { 
+      id, name, email, password, profileImage, phone, country, city, company, sector, sectors,
+      website, linkedin, socialLinks, bio, interests, languages, experience, skills, roles, role,
+      birthDate, gender, nationality, passportBioPage, passportPhoto, educationLevel, howHeardAboutUs 
+    } = body;
     
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get('abn_session');
@@ -43,8 +47,22 @@ export async function PUT(request: Request) {
     if (city !== undefined) updateData.city = city;
     if (company !== undefined) updateData.company = company;
     if (sector !== undefined) updateData.sector = sector;
+    if (sectors !== undefined) updateData.sectors = sectors;
+    if (website !== undefined) updateData.website = website;
     if (linkedin !== undefined) updateData.linkedin = linkedin;
+    if (socialLinks !== undefined) updateData.socialLinks = socialLinks;
     if (bio !== undefined) updateData.bio = bio;
+    if (interests !== undefined) updateData.interests = interests;
+    if (languages !== undefined) updateData.languages = languages;
+    if (experience !== undefined) updateData.experience = experience;
+    if (skills !== undefined) updateData.skills = skills;
+    if (roles !== undefined && Array.isArray(roles)) {
+      updateData.roles = roles;
+      if (roles.length > 0 && !role) {
+        updateData.role = roles[0];
+      }
+    }
+    if (role !== undefined) updateData.role = role;
     if (birthDate !== undefined) updateData.birthDate = birthDate;
     if (gender !== undefined) updateData.gender = gender;
     if (nationality !== undefined) updateData.nationality = nationality;
@@ -67,11 +85,16 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Usuário não encontrado.' }, { status: 404 });
     }
 
+    const userRoles = Array.isArray(user.roles) && user.roles.length > 0 
+      ? user.roles 
+      : [user.role || 'empreendedor'];
+
     const userData = { 
       id: String(user._id), 
       name: user.name, 
       email: user.email, 
       role: user.role, 
+      roles: userRoles,
       profileImage: user.profileImage 
     };
 

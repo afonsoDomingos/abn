@@ -8,7 +8,8 @@ export async function POST(request: Request) {
   try {
     await dbConnect();
     const { 
-      name, email, password, role, phone, country, city, company, sector, linkedin, bio,
+      name, email, password, role, roles, phone, country, city, company, sector, sectors, website,
+      linkedin, socialLinks, bio, interests, languages, experience, skills, profileImage,
       birthDate, gender, nationality, passportBioPage, passportPhoto, educationLevel, howHeardAboutUs
     } = await request.json();
 
@@ -27,18 +28,40 @@ export async function POST(request: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Normalizar lista de perfis / papéis
+    let userRoles: string[] = Array.isArray(roles) && roles.length > 0 
+      ? roles 
+      : [role || 'empreendedor'];
+
+    const primaryRole = role || userRoles[0] || 'empreendedor';
+
     const user = await User.create({
       name,
       email: email.toLowerCase(),
       password: hashedPassword,
-      role: role || 'empreendedor',
+      role: primaryRole,
+      roles: userRoles,
+      profileImage: profileImage || '',
       phone: phone || '',
       country: country || '',
       city: city || '',
       company: company || '',
-      sector: sector || '',
-      linkedin: linkedin || '',
+      sector: sector || (sectors && sectors[0]) || '',
+      sectors: Array.isArray(sectors) ? sectors : (sector ? [sector] : []),
+      website: website || '',
+      linkedin: linkedin || (socialLinks?.linkedin || ''),
+      socialLinks: {
+        linkedin: socialLinks?.linkedin || linkedin || '',
+        twitter: socialLinks?.twitter || '',
+        instagram: socialLinks?.instagram || '',
+        facebook: socialLinks?.facebook || ''
+      },
       bio: bio || '',
+      interests: Array.isArray(interests) ? interests : [],
+      languages: Array.isArray(languages) ? languages : [],
+      experience: experience || '',
+      skills: Array.isArray(skills) ? skills : [],
+      verificationStatus: 'verificado',
       birthDate: birthDate || '',
       gender: gender || '',
       nationality: nationality || '',
@@ -53,7 +76,14 @@ export async function POST(request: Request) {
       console.error('[Resend] Erro ao enviar email de boas-vindas:', err);
     });
 
-    const userData = { id: String(user._id), name: user.name, email: user.email, role: user.role };
+    const userData = { 
+      id: String(user._id), 
+      name: user.name, 
+      email: user.email, 
+      role: user.role, 
+      roles: user.roles,
+      profileImage: user.profileImage 
+    };
 
     const response = NextResponse.json({ success: true, user: userData }, { status: 201 });
 

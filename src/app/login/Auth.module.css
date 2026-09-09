@@ -331,6 +331,227 @@
   flex: 1;
 }
 
+.authCardWide {
+  max-width: 760px !important;
+}
+
+/* ──────────────────────────────────────────────
+   MULTI-PROFILE SELECTION TILES
+────────────────────────────────────────────── */
+.profileCardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.profileCard {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+.profileCard:hover {
+  border-color: #cbd5e1;
+  background: #fafafa;
+  transform: translateY(-2px);
+}
+
+.profileCardSelected {
+  border-color: #ff6b00 !important;
+  background: #fffaf5 !important;
+  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.12);
+}
+
+.profileCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.profileCardIcon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.profileCardCheck {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.profileCardSelected .profileCardCheck {
+  background: #ff6b00;
+  border-color: #ff6b00;
+  color: #ffffff;
+}
+
+.profileCardTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  font-family: 'Outfit', sans-serif;
+  margin-top: 0.25rem;
+}
+
+.profileCardDesc {
+  font-size: 0.78rem;
+  color: #64748b;
+  line-height: 1.35;
+}
+
+.selectedRolesBanner {
+  background: linear-gradient(135deg, rgba(255,107,0,0.08) 0%, rgba(42,79,166,0.06) 100%);
+  border: 1px solid rgba(255,107,0,0.25);
+  border-radius: 14px;
+  padding: 0.9rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.selectedRolesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.roleTag {
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.roleTagPrimary {
+  background: #ff6b00;
+}
+
+/* ──────────────────────────────────────────────
+   INTERACTIVE CHIPS (SETORS, INTERESTS, SKILLS)
+────────────────────────────────────────────── */
+.chipContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.chip {
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.chip:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.chipActive {
+  background: #ff6b00 !important;
+  color: #ffffff !important;
+  border-color: #ff6b00 !important;
+  box-shadow: 0 2px 8px rgba(255,107,0,0.25);
+}
+
+/* ──────────────────────────────────────────────
+   AVATAR UPLOAD
+────────────────────────────────────────────── */
+.avatarSection {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+}
+
+.avatarPreview {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ff6b00;
+  background: #e2e8f0;
+}
+
+.avatarPlaceholder {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-size: 1.5rem;
+  font-weight: 800;
+  border: 2px dashed #cbd5e1;
+}
+
+/* ──────────────────────────────────────────────
+   VERIFICATION STEP CARD
+────────────────────────────────────────────── */
+.verificationCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+}
+
+.verificationSummaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.88rem;
+}
+
+.verificationSummaryRow span:first-child {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.verificationSummaryRow span:last-child {
+  color: #0f172a;
+  font-weight: 700;
+  text-align: right;
+}
+
 /* Responsive breakpoint */
 @media (max-width: 580px) {
   .authPage {
@@ -350,4 +571,8 @@
   .stepLabel {
     font-size: 0.65rem;
   }
+  .profileCardGrid {
+    grid-template-columns: 1fr;
+  }
 }
+

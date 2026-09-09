@@ -24,7 +24,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Senha incorreta.' }, { status: 401 });
     }
 
-    const userData = { id: String(user._id), name: user.name, email: user.email, role: user.role, profileImage: user.profileImage };
+    const userRoles = Array.isArray(user.roles) && user.roles.length > 0 
+      ? user.roles 
+      : [user.role || 'empreendedor'];
+
+    const userData = { 
+      id: String(user._id), 
+      name: user.name, 
+      email: user.email, 
+      role: user.role, 
+      roles: userRoles,
+      profileImage: user.profileImage 
+    };
 
     const response = NextResponse.json({ success: true, user: userData });
 

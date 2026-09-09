@@ -6,8 +6,16 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { 
     type: String, 
-    enum: ['empreendedor', 'startup', 'investidor', 'mentor', 'admin', 'collaborator'], 
+    enum: [
+      'empreendedor', 'startup', 'empresa', 'investidor', 'mentor', 
+      'consultor', 'parceiro', 'universidade', 'incubadora', 'organizacao', 
+      'admin', 'collaborator'
+    ], 
     default: 'empreendedor' 
+  },
+  roles: {
+    type: [String],
+    default: ['empreendedor']
   },
   department: { type: String, default: '' },
   profileImage: { type: String },
@@ -19,9 +27,28 @@ const UserSchema = new mongoose.Schema({
   country: { type: String, default: '' },
   city: { type: String, default: '' },
   company: { type: String, default: '' },       // Nome da empresa/startup
-  sector: { type: String, default: '' },         // Sector de actividade
+  sector: { type: String, default: '' },         // Sector principal de actividade
+  sectors: [{ type: String }],                   // Lista de sectores
+  website: { type: String, default: '' },        // Website oficial / portfólio
   linkedin: { type: String, default: '' },       // URL do LinkedIn
-  bio: { type: String, default: '' },            // Breve descrição
+  socialLinks: {
+    linkedin: { type: String, default: '' },
+    twitter: { type: String, default: '' },
+    instagram: { type: String, default: '' },
+    facebook: { type: String, default: '' }
+  },
+  bio: { type: String, default: '' },            // Breve descrição / Biografia
+  interests: [{ type: String }],                 // Áreas de interesse
+  languages: [{ type: String }],                 // Idiomas
+  experience: { type: String, default: '' },     // Nível de Experiência / Descrição
+  skills: [{ type: String }],                    // Competências
+
+  // Estado de verificação da conta / perfil
+  verificationStatus: {
+    type: String,
+    enum: ['pendente', 'em_analise', 'verificado'],
+    default: 'verificado'
+  },
   
   // Documentos & Formação
   passportBioPage: { type: String, default: '' }, // URL da página de dados do passaporte

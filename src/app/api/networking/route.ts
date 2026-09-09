@@ -26,7 +26,7 @@ export async function GET() {
 
     // List all users except current logged-in user
     const users = await User.find({ _id: { $ne: session.id } })
-      .select('name email role profileImage description')
+      .select('name email role roles profileImage bio company sector country city skills')
       .sort({ createdAt: -1 });
 
     // Fetch follows by current user
@@ -39,16 +39,23 @@ export async function GET() {
     // Map data
     const profiles = users.map((u: any) => {
       const startup = startups.find(s => String(s.owner) === String(u._id));
+      const userRoles = Array.isArray(u.roles) && u.roles.length > 0 ? u.roles : [u.role || 'empreendedor'];
       return {
         id: u._id,
         name: u.name,
         email: u.email,
         role: u.role,
+        roles: userRoles,
         profileImage: u.profileImage || '/abn-logo.png',
-        description: u.description || '',
+        description: u.bio || '',
+        company: u.company || (startup ? startup.name : ''),
+        sector: u.sector || (startup ? startup.category : ''),
+        country: u.country || '',
+        city: u.city || '',
+        skills: u.skills || [],
         isFollowing: followingIds.includes(String(u._id)),
-        startupName: startup ? startup.name : null,
-        startupCategory: startup ? startup.category : null
+        startupName: startup ? startup.name : u.company || null,
+        startupCategory: startup ? startup.category : u.sector || null
       };
     });
 
