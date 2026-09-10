@@ -29,6 +29,8 @@ export default function LoginPage() {
 
       if (res.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
+        const userPrimaryRole = data.user.role || (Array.isArray(data.user.roles) && data.user.roles.length > 0 ? data.user.roles[0] : 'empreendedor');
+        localStorage.setItem('abn_active_role', userPrimaryRole);
         const role = (data.user.role || '').toLowerCase();
         if (role === 'admin') {
           router.push('/admin');

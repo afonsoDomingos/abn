@@ -30,7 +30,8 @@ import {
   Users as UsersIcon,
   UserCheck,
   Building,
-  Award
+  Award,
+  Layers
 } from 'lucide-react';
 
 interface NavItem {
@@ -77,6 +78,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       title: 'Geral',
       items: [
         { href: '/admin', label: t.admin.dashboard, icon: <LayoutDashboard size={18} /> },
+        { href: '/dashboard', label: 'Simulador de Perfis 👁️', icon: <Layers size={18} /> },
         { href: '/admin/perfil', label: 'Meu Perfil & Foto', icon: <UserCheck size={18} /> },
         { href: '/admin/usuarios', label: t.admin.users, icon: <Users size={18} /> },
         { href: '/admin/especialistas', label: 'Especialistas & Mentores', icon: <Award size={18} /> },

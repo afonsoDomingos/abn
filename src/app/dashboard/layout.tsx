@@ -26,7 +26,9 @@ import {
   DollarSign,
   Compass,
   Handshake,
-  GraduationCap
+  GraduationCap,
+  Landmark,
+  ShieldCheck
 } from 'lucide-react';
 import styles from './Dashboard.module.css';
 
@@ -40,12 +42,13 @@ export default function DashboardLayout({
     profileImage: string;
     role: string;
     roles: string[];
-  }>({ name: 'Empreendedor', profileImage: '', role: 'empreendedor', roles: ['empreendedor'] });
+  }>({ name: 'Carregando...', profileImage: '', role: 'empreendedor', roles: ['empreendedor'] });
   const [activeRole, setActiveRole] = useState<string>('empreendedor');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const pathname = usePathname();
@@ -57,14 +60,32 @@ export default function DashboardLayout({
       try {
         const parsed = JSON.parse(storedUser);
         const userRole = (parsed.role || '').toLowerCase();
-        if (userRole === 'admin' || userRole === 'collaborator' || userRole === 'colaborador') {
-          window.location.href = '/admin';
+        const isAdminUser = userRole === 'admin' || (Array.isArray(parsed.roles) && parsed.roles.includes('admin'));
+        setIsAdmin(isAdminUser);
+
+        if (!isAdminUser && (userRole === 'collaborator' || userRole === 'colaborador')) {
+          window.location.href = '/colaborador';
           return;
         }
 
-        const userRoles: string[] = Array.isArray(parsed.roles) && parsed.roles.length > 0
-          ? parsed.roles
-          : [parsed.role || 'empreendedor'];
+        const ALL_ECOSYSTEM_ROLES = [
+          'empreendedor',
+          'startup',
+          'investidor',
+          'incubadora',
+          'universidade',
+          'mentor',
+          'consultor',
+          'parceiro',
+          'empresa',
+          'organizacao'
+        ];
+
+        const userRoles: string[] = isAdminUser
+          ? ALL_ECOSYSTEM_ROLES
+          : (Array.isArray(parsed.roles) && parsed.roles.length > 0
+            ? parsed.roles
+            : [parsed.role || 'empreendedor']);
 
         const storedActiveRole = localStorage.getItem('abn_active_role');
         const currentActive = storedActiveRole && userRoles.includes(storedActiveRole)
@@ -73,7 +94,7 @@ export default function DashboardLayout({
 
         setActiveRole(currentActive);
         setUser({
-          name: parsed.name || 'Empreendedor',
+          name: parsed.name || (isAdminUser ? 'Administrador' : 'Empreendedor'),
           profileImage: parsed.profileImage || '',
           role: currentActive,
           roles: userRoles
@@ -166,6 +187,24 @@ export default function DashboardLayout({
         </button>
 
         <nav className={styles.sidebarNav}>
+          {isAdmin && (
+            <Link 
+              href="/admin" 
+              onClick={() => setSidebarOpen(false)} 
+              title={collapsed ? 'Voltar ao Painel Admin' : undefined}
+              style={{
+                background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)',
+                border: '1px solid rgba(165, 180, 252, 0.35)',
+                color: '#c7d2fe',
+                marginBottom: '0.6rem',
+                fontWeight: 800,
+                boxShadow: '0 4px 12px rgba(30, 27, 75, 0.3)'
+              }}
+            >
+              <ShieldCheck size={18} />
+              {!collapsed && <span>Painel Admin 👑</span>}
+            </Link>
+          )}
           <Link href="/dashboard" className={isActive('/dashboard') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Dashboard' : undefined}>
             <LayoutDashboard size={18} />
             {!collapsed && <span>Dashboard</span>}
@@ -280,6 +319,22 @@ export default function DashboardLayout({
             >
               <GraduationCap size={18} />
               {!collapsed && <span>Academia 🎓</span>}
+            </Link>
+          )}
+          {(user.roles.includes('incubadora') || activeRole === 'incubadora') && (
+            <Link
+              href="/dashboard/incubadora"
+              className={isActive('/dashboard/incubadora') ? styles.active : ''}
+              onClick={() => setSidebarOpen(false)}
+              title={collapsed ? 'Hub de Incubação & Aceleração' : undefined}
+              style={{
+                background: isActive('/dashboard/incubadora') ? undefined : 'linear-gradient(135deg, rgba(79,70,229,0.09) 0%, rgba(99,102,241,0.07) 100%)',
+                border: isActive('/dashboard/incubadora') ? undefined : '1px solid rgba(79,70,229,0.22)',
+                color: isActive('/dashboard/incubadora') ? undefined : '#4f46e5'
+              }}
+            >
+              <Landmark size={18} />
+              {!collapsed && <span>Incubadora 🏛️</span>}
             </Link>
           )}
           <Link href="/dashboard/cursos" className={isActive('/dashboard/cursos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Cursos' : undefined}>

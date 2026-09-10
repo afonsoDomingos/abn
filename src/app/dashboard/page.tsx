@@ -30,7 +30,9 @@ import {
   BarChart2,
   Globe,
   Compass,
-  Handshake
+  Handshake,
+  Landmark,
+  Search
 } from 'lucide-react';
 import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Dashboard.module.css';
@@ -52,6 +54,7 @@ export default function DashboardPage() {
   const [userName, setUserName] = useState('Empreendedor');
   const [userRoles, setUserRoles] = useState<string[]>(['empreendedor']);
   const [activeRole, setActiveRole] = useState('empreendedor');
+  const [isAdmin, setIsAdmin] = useState(false);
   const [business, setBusiness] = useState<any>(null);
   const [score, setScore] = useState(0);
   const [checklist, setChecklist] = useState({
@@ -113,17 +116,33 @@ export default function DashboardPage() {
         userRole = u.role || 'empreendedor';
         userEmail = u.email || '';
         
-        rolesArr = Array.isArray(u.roles) && u.roles.length > 0 
-          ? u.roles 
-          : [userRole];
-        
-        setUserRoles(rolesArr);
-
         const r = userRole.toLowerCase();
-        if (r === 'admin' || r === 'collaborator' || r === 'colaborador') {
-          window.location.href = '/admin';
+        const isAdminUser = r === 'admin' || (Array.isArray(u.roles) && u.roles.includes('admin'));
+        setIsAdmin(isAdminUser);
+
+        if (!isAdminUser && (r === 'collaborator' || r === 'colaborador')) {
+          window.location.href = '/colaborador';
           return;
         }
+
+        const ALL_ECOSYSTEM_ROLES = [
+          'empreendedor',
+          'startup',
+          'investidor',
+          'incubadora',
+          'universidade',
+          'mentor',
+          'consultor',
+          'parceiro',
+          'empresa',
+          'organizacao'
+        ];
+
+        rolesArr = isAdminUser 
+          ? ALL_ECOSYSTEM_ROLES 
+          : (Array.isArray(u.roles) && u.roles.length > 0 ? u.roles : [userRole]);
+        
+        setUserRoles(rolesArr);
 
         const storedActive = localStorage.getItem('abn_active_role');
         const currentActive = storedActive && rolesArr.includes(storedActive)
@@ -236,6 +255,76 @@ export default function DashboardPage() {
 
   return (
     <div className={styles.dashboard}>
+
+      {/* ─────────────────────────────────────────────────────────────
+         BANNER ESPECIAL: MODO ADMINISTRADOR (SIMULADOR DE PERFIS)
+      ───────────────────────────────────────────────────────────── */}
+      {isAdmin && (
+        <div style={{
+          background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4338ca 100%)',
+          color: '#ffffff',
+          borderRadius: '20px',
+          padding: '1.25rem 1.75rem',
+          marginBottom: '1.5rem',
+          boxShadow: '0 10px 25px -5px rgba(49, 46, 129, 0.4)',
+          border: '1px solid rgba(165, 180, 252, 0.35)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '1rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div style={{
+              width: '46px',
+              height: '46px',
+              borderRadius: '12px',
+              background: 'rgba(255, 255, 255, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '1.5rem'
+            }}>
+              👑
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, fontFamily: 'Outfit', color: '#ffffff' }}>
+                  Modo Administrador · Simulador de Perfis
+                </h3>
+                <span style={{ fontSize: '0.72rem', background: '#22c55e', color: '#ffffff', fontWeight: 800, padding: '2px 8px', borderRadius: '10px' }}>
+                  Acesso Total
+                </span>
+              </div>
+              <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: '#c7d2fe', lineHeight: 1.4 }}>
+                A visualizar o ecossistema na perspetiva de <strong>{currentRoleInfo.title} ({currentRoleInfo.icon})</strong>. Selecione qualquer um dos 10 perfis abaixo para testar a experiência.
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+            <Link
+              href="/admin"
+              style={{
+                background: '#ffffff',
+                color: '#1e1b4b',
+                textDecoration: 'none',
+                padding: '0.65rem 1.25rem',
+                borderRadius: '10px',
+                fontWeight: 800,
+                fontSize: '0.85rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+              }}
+            >
+              <span>Voltar ao Painel Admin</span>
+              <ArrowRight size={15} />
+            </Link>
+          </div>
+        </div>
+      )}
       
       {/* ─────────────────────────────────────────────────────────────
          BARRA SUPERIOR: BOAS-VINDAS MULTI-PERFIL & SELETOR DE VISÃO
@@ -1241,13 +1330,236 @@ export default function DashboardPage() {
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-         5b. INCUBADORA / ORGANIZAÇÃO VIEW
+         5b. INCUBADORA / ACELERADORA DASHBOARD — Sofisticado
       ───────────────────────────────────────────────────────────── */}
-      {(activeRole === 'incubadora' || activeRole === 'organizacao') && (
+      {activeRole === 'incubadora' && (
+        <>
+          {/* Hero Banner da Incubadora */}
+          <div style={{
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)',
+            borderRadius: '24px',
+            padding: '2rem',
+            color: '#ffffff',
+            marginBottom: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1.5rem',
+            boxShadow: '0 12px 30px -8px rgba(15, 23, 42, 0.4)',
+            border: '1px solid rgba(99, 102, 241, 0.3)',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            <div style={{ position: 'relative', zIndex: 1, maxWidth: '640px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(99, 102, 241, 0.25)', color: '#c7d2fe', border: '1px solid rgba(99, 102, 241, 0.4)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.6rem' }}>
+                <Landmark size={14} /> Hub de Aceleração &amp; Incubação ABN
+              </div>
+              <h2 style={{ fontSize: '1.65rem', fontWeight: 900, margin: '0 0 8px 0', fontFamily: 'Outfit' }}>
+                Gestão de Coortes, Startups &amp; Demo Days
+              </h2>
+              <p style={{ color: '#cbd5e1', fontSize: '0.9rem', lineHeight: 1.5, margin: 0 }}>
+                Supervisione turmas ativas, avalie candidaturas, aloque mentores seniores, ligue fundadores a investidores no Demo Day e utilize o Radar ABN para descobrir e recrutar novas startups promissoras.
+              </p>
+            </div>
+
+            <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '0.85rem', flexWrap: 'wrap' }}>
+              <Link 
+                href="/dashboard/incubadora"
+                style={{
+                  background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  padding: '0.85rem 1.6rem',
+                  borderRadius: '12px',
+                  fontWeight: 800,
+                  fontSize: '0.9rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: '0 4px 14px rgba(79, 70, 229, 0.4)',
+                  border: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <span>Aceder ao Hub da Incubadora 🏛️</span>
+                <ArrowRight size={18} />
+              </Link>
+              <Link
+                href="/dashboard/incubadora"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.12)',
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  padding: '0.85rem 1.4rem',
+                  borderRadius: '12px',
+                  fontWeight: 700,
+                  fontSize: '0.9rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  border: '1px solid rgba(255, 255, 255, 0.25)',
+                  backdropFilter: 'blur(4px)'
+                }}
+              >
+                <Search size={16} />
+                <span>Radar de Startups</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* KPI Grid da Incubadora */}
+          <div className={styles.progressGrid} style={{ marginBottom: '2rem' }}>
+            <div className={styles.progressCard}>
+              <h3>Startups no Portfólio</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#4f46e5', fontFamily: 'Outfit' }}>
+                  28<span style={{ fontSize: '0.9rem', color: '#64748b' }}> startups</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#475569', fontWeight: 600 }}>
+                    Startups em aceleração ativa e graduadas com sucesso no mercado.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.progressCard}>
+              <h3>Capital Total Captado</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.2rem', fontWeight: 900, color: '#10b981', fontFamily: 'Outfit' }}>
+                  1.45M<span style={{ fontSize: '0.9rem', color: '#64748b' }}> €</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#475569', fontWeight: 600 }}>
+                    Volume financeiro mobilizado pelas startups através de investidores da rede.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.progressCard}>
+              <h3>Bolsa de Mentores</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#d97706', fontFamily: 'Outfit' }}>
+                  18<span style={{ fontSize: '0.9rem', color: '#64748b' }}> mentores</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#475569', fontWeight: 600 }}>
+                    Especialistas seniores alocados para mentorias semanais 1:1.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.progressCard}>
+              <h3>Taxa de Sobrevivência</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#0ea5e9', fontFamily: 'Outfit' }}>
+                  82%<span style={{ fontSize: '0.9rem', color: '#64748b' }}> taxa</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#475569', fontWeight: 600 }}>
+                    Resiliência e viabilidade das startups incubadas após 18 meses de operação.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Pilares da Incubadora */}
+          <div className={styles.sectionTitle}>
+            <h2>Pilares do Programa de Aceleração</h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.35rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(79, 70, 229, 0.1)', color: '#4f46e5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}>
+                🎯
+              </div>
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
+                Funil de Candidaturas (3 Pendentes)
+              </h4>
+              <p style={{ margin: '0 0 1rem 0', fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
+                Revise os pitch decks das startups candidatas à próxima coorte e agende entrevistas com os fundadores.
+              </p>
+              <Link href="/dashboard/incubadora" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#4f46e5', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                Avaliar Candidaturas →
+              </Link>
+            </div>
+
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.35rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}>
+                💼
+              </div>
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
+                Deal Room &amp; Demo Day
+              </h4>
+              <p style={{ margin: '0 0 1rem 0', fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
+                Conecte os fundadores graduados aos fundos de Venture Capital e Business Angels parceiros da incubadora.
+              </p>
+              <Link href="/dashboard/incubadora" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#10b981', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                Abrir Deal Room →
+              </Link>
+            </div>
+
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.35rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}>
+                🔍
+              </div>
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
+                Radar de Scouting de Startups
+              </h4>
+              <p style={{ margin: '0 0 1rem 0', fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
+                Pesquise diretamente no diretório ABN startups qualificadas por setor e país para convidar para a próxima turma.
+              </p>
+              <Link href="/dashboard/incubadora" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#f59e0b', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                Explorar Radar ABN →
+              </Link>
+            </div>
+          </div>
+
+          <div className={styles.sectionTitle}>
+            <h2>Ações Rápidas de Gestão</h2>
+          </div>
+
+          <div className={styles.tasks} style={{ marginBottom: '2.5rem' }}>
+            <Link href="/dashboard/incubadora" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={true} readOnly />
+                <span style={{ fontWeight: 600 }}>Perfil institucional e credencial de incubadora/aceleradora ativa →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/incubadora" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Lançar nova chamada de candidaturas para coorte 2026.2 →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/incubadora" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Registar relatório de avaliação diagnóstica periódica da startup →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/incubadora" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Agendar Demo Day ou pitch session com banca de investidores →</span>
+              </div>
+            </Link>
+          </div>
+        </>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+         5c. ORGANIZAÇÃO INSTITUCIONAL VIEW
+      ───────────────────────────────────────────────────────────── */}
+      {activeRole === 'organizacao' && (
         <>
           <div className={styles.progressGrid}>
             <div className={styles.progressCard}>
-              <h3>Hub Institucional &amp; I&amp;D</h3>
+              <h3>Hub Institucional &amp; Fomento</h3>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
                 <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
                   12<span style={{ fontSize: '1rem', color: '#64748b' }}> projetos</span>

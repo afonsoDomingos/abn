@@ -371,6 +371,7 @@ export default function RegisterPage() {
 
       if (res.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('abn_active_role', primaryRole || selectedRoles[0] || 'empreendedor');
         // Avançar para dashboard
         router.push('/dashboard');
       } else {
