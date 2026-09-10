@@ -25,7 +25,8 @@ import {
   TrendingUp,
   DollarSign,
   Compass,
-  Handshake
+  Handshake,
+  GraduationCap
 } from 'lucide-react';
 import styles from './Dashboard.module.css';
 
@@ -265,6 +266,22 @@ export default function DashboardLayout({
             <Handshake size={18} />
             {!collapsed && <span>Parcerias {user.roles.includes('parceiro') || activeRole === 'parceiro' ? '🤝' : ''}</span>}
           </Link>
+          {(user.roles.includes('universidade') || activeRole === 'universidade') && (
+            <Link
+              href="/dashboard/universidade"
+              className={isActive('/dashboard/universidade') ? styles.active : ''}
+              onClick={() => setSidebarOpen(false)}
+              title={collapsed ? 'Hub Académico & Inovação' : undefined}
+              style={{
+                background: isActive('/dashboard/universidade') ? undefined : 'linear-gradient(135deg, rgba(5,150,105,0.09) 0%, rgba(16,185,129,0.07) 100%)',
+                border: isActive('/dashboard/universidade') ? undefined : '1px solid rgba(5,150,105,0.22)',
+                color: isActive('/dashboard/universidade') ? undefined : '#047857'
+              }}
+            >
+              <GraduationCap size={18} />
+              {!collapsed && <span>Academia 🎓</span>}
+            </Link>
+          )}
           <Link href="/dashboard/cursos" className={isActive('/dashboard/cursos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Cursos' : undefined}>
             <BookOpen size={18} />
             {!collapsed && <span>Cursos</span>}

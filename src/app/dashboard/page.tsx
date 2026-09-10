@@ -1018,9 +1018,232 @@ export default function DashboardPage() {
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-         5. UNIVERSIDADE / INCUBADORA / ORGANIZAÇÃO VIEW
+         5a. UNIVERSIDADE / ACADEMIA DASHBOARD — Sofisticado
       ───────────────────────────────────────────────────────────── */}
-      {(activeRole === 'universidade' || activeRole === 'incubadora' || activeRole === 'organizacao') && (
+      {activeRole === 'universidade' && (
+        <>
+          {/* Hero Banner da Universidade */}
+          <div style={{
+            background: 'linear-gradient(135deg, #064e3b 0%, #047857 50%, #0f172a 100%)',
+            borderRadius: '24px',
+            padding: '2rem',
+            color: '#ffffff',
+            marginBottom: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1.5rem',
+            boxShadow: '0 12px 30px -8px rgba(6, 78, 59, 0.4)',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            <div style={{ position: 'relative', zIndex: 1, maxWidth: '640px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(16, 185, 129, 0.25)', color: '#6ee7b7', border: '1px solid rgba(16, 185, 129, 0.4)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.6rem' }}>
+                <GraduationCap size={14} /> Portal Universitário &amp; I&amp;D
+              </div>
+              <h2 style={{ fontSize: '1.65rem', fontWeight: 900, margin: '0 0 8px 0', fontFamily: 'Outfit' }}>
+                Academia, Investigação Científica &amp; Inovação
+              </h2>
+              <p style={{ color: '#d1fae5', fontSize: '0.9rem', lineHeight: 1.5, margin: 0 }}>
+                Publique programas académicos, divulgue investigações e patentes, crie oportunidades de estágio para estudantes e lance desafios de inovação em parceria com empresas e startups da rede ABN.
+              </p>
+            </div>
+
+            <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '0.85rem', flexWrap: 'wrap' }}>
+              <Link 
+                href="/dashboard/universidade"
+                style={{
+                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  padding: '0.85rem 1.6rem',
+                  borderRadius: '12px',
+                  fontWeight: 800,
+                  fontSize: '0.9rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: '0 4px 14px rgba(5, 150, 105, 0.4)',
+                  border: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <span>Aceder ao Portal Académico 🎓</span>
+                <ArrowRight size={18} />
+              </Link>
+              <Link
+                href="/dashboard/networking"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.12)',
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  padding: '0.85rem 1.4rem',
+                  borderRadius: '12px',
+                  fontWeight: 700,
+                  fontSize: '0.9rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  border: '1px solid rgba(255, 255, 255, 0.25)',
+                  backdropFilter: 'blur(4px)'
+                }}
+              >
+                <Users size={16} />
+                <span>Explorar Startups &amp; Empresas</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* KPI Grid Académico */}
+          <div className={styles.progressGrid} style={{ marginBottom: '2rem' }}>
+            <div className={styles.progressCard}>
+              <h3>Programas &amp; Formação Superior</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#059669', fontFamily: 'Outfit' }}>
+                  6<span style={{ fontSize: '0.9rem', color: '#64748b' }}> cursos</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#475569', fontWeight: 600 }}>
+                    Licenciaturas, mestrados e pós-graduações com candidaturas abertas à rede ABN.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.progressCard}>
+              <h3>Investigação &amp; I&amp;D Aplicada</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#0284c7', fontFamily: 'Outfit' }}>
+                  8<span style={{ fontSize: '0.9rem', color: '#64748b' }}> projetos</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#475569', fontWeight: 600 }}>
+                    Linhas de investigação científica prontas para transferência de tecnologia ou financiamento.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.progressCard}>
+              <h3>Estágios &amp; Bolsas</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#d97706', fontFamily: 'Outfit' }}>
+                  14<span style={{ fontSize: '0.9rem', color: '#64748b' }}> vagas</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#475569', fontWeight: 600 }}>
+                    Oportunidades de colocação para estudantes finalistas e recém-licenciados no mercado.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.progressCard}>
+              <h3>Desafios de Inovação</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#7c3aed', fontFamily: 'Outfit' }}>
+                  3<span style={{ fontSize: '0.9rem', color: '#64748b' }}> desafios</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.84rem', color: '#475569', fontWeight: 600 }}>
+                    Hackathons e competições abertas promovendo sinergias entre academia e setor produtivo.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Iniciativas de Ligação Universidade-Empresa */}
+          <div className={styles.sectionTitle}>
+            <h2>Pilares de Transferência de Conhecimento &amp; Cooperação</h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.35rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(5, 150, 105, 0.1)', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}>
+                🔬
+              </div>
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
+                Transferência de Tecnologia (TTO)
+              </h4>
+              <p style={{ margin: '0 0 1rem 0', fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
+                Conecte artigos, protótipos e patentes desenvolvidos pelos seus laboratórios a indústrias e investidores que procuram inovação validada.
+              </p>
+              <Link href="/dashboard/universidade" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#059669', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                Divulgar Projetos de I&amp;D →
+              </Link>
+            </div>
+
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.35rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(2, 132, 199, 0.1)', color: '#0284c7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}>
+                💼
+              </div>
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
+                Bolsas de Estágio &amp; Talento
+              </h4>
+              <p style={{ margin: '0 0 1rem 0', fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
+                Crie canais diretos para as empresas do ecossistema recrutarem os melhores talentos formados pela sua instituição.
+              </p>
+              <Link href="/dashboard/universidade" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0284c7', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                Criar Oportunidades de Estágio →
+              </Link>
+            </div>
+
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.35rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(124, 58, 237, 0.1)', color: '#7c3aed', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}>
+                🏆
+              </div>
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
+                Desafios de Inovação Aberta
+              </h4>
+              <p style={{ margin: '0 0 1rem 0', fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
+                Mobilize a criatividade de professores e estudantes para responder a desafios reais propostos por empresas e governos.
+              </p>
+              <Link href="/dashboard/universidade" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#7c3aed', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                Lançar Novo Desafio →
+              </Link>
+            </div>
+          </div>
+
+          <div className={styles.sectionTitle}>
+            <h2>Ações Rápidas no Portal Académico</h2>
+          </div>
+
+          <div className={styles.tasks} style={{ marginBottom: '2.5rem' }}>
+            <Link href="/dashboard/universidade" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={true} readOnly />
+                <span style={{ fontWeight: 600 }}>Perfil institucional e selo de instituição de ensino superior verificado →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/universidade" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Publicar novo programa de pós-graduação ou mestrado executivo →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/universidade" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Submeter proposta de projeto de investigação aplicada para co-financiamento →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/universidade" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Publicar vagas de estágio curricular para ligação com empresas parceiras →</span>
+              </div>
+            </Link>
+          </div>
+        </>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+         5b. INCUBADORA / ORGANIZAÇÃO VIEW
+      ───────────────────────────────────────────────────────────── */}
+      {(activeRole === 'incubadora' || activeRole === 'organizacao') && (
         <>
           <div className={styles.progressGrid}>
             <div className={styles.progressCard}>
