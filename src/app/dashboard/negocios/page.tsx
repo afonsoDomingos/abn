@@ -543,7 +543,7 @@ export default function NegociosPage() {
             fontSize: '1.8rem',
             boxShadow: '0 8px 16px rgba(255,107,0,0.2)'
           }}>
-            🏢
+            
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>

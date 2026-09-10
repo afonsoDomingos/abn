@@ -345,7 +345,7 @@ export default function AdminOportunidadesPage() {
         </div>
       ) : filteredOpportunities.length === 0 ? (
         <div className={styles.empty}>
-          <span>💼</span>
+          <span></span>
           <p>Nenhuma oportunidade cadastrada nesta categoria.</p>
         </div>
       ) : (
@@ -385,7 +385,7 @@ export default function AdminOportunidadesPage() {
                 </div>
                 {opp.provider && (
                   <div className={styles.metaItem}>
-                    <span>🏢 Promotor:</span>
+                    <span>Promotor:</span>
                     <span>{opp.provider}</span>
                   </div>
                 )}

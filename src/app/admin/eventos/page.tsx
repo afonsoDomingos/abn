@@ -550,7 +550,7 @@ export default function AdminEventosPage() {
                           {insc.nomeCompleto}
                         </div>
                         <div style={{ fontSize: '0.84rem', color: '#64748b' }}>{insc.email} | 📞 {insc.telefone || 'Sem telefone'}</div>
-                        {insc.empresa && <div style={{ fontSize: '0.8rem', color: '#64748b' }}>🏢 {insc.empresa} | 💼 {insc.cargo || 'N/A'}</div>}
+                        {insc.empresa && <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{insc.empresa} |  {insc.cargo || 'N/A'}</div>}
                       </div>
 
                       <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>

@@ -58,7 +58,7 @@ export default async function ImpactoPage() {
   ];
 
   const rawCompanies = configMap['supported_companies'] || [
-    { name: 'Xiphefu', location: 'Maputo, Moçambique', desc: 'Soluções inteligentes de iluminação.', icon: '🏢', phase: 'Crescimento', type: 'incubada' }
+    { name: 'Xiphefu', location: 'Maputo, Moçambique', desc: 'Soluções inteligentes de iluminação.', icon: '', phase: 'Crescimento', type: 'incubada' }
   ];
 
   // Map type default to 'incubada' for older entries
@@ -66,7 +66,7 @@ export default async function ImpactoPage() {
     name: c.name || '',
     location: c.location || '',
     desc: c.desc || '',
-    icon: c.icon || '🏢',
+    icon: c.icon || '',
     phase: c.phase || '',
     type: c.type || 'incubada'
   }));

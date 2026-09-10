@@ -304,7 +304,7 @@ function FormacaoPageInner() {
               Admin Preview
             </span>
             <span style={{ color: '#94a3b8', fontSize: '0.88rem', fontWeight: 600 }}>
-              👁️ Está a visualizar a plataforma <strong style={{ color: '#e2e8f0' }}>como um Aluno/Empreendedor</strong>
+              Está a visualizar a plataforma <strong style={{ color: '#e2e8f0' }}>como um Aluno/Empreendedor</strong>
             </span>
           </div>
           <a
@@ -527,7 +527,7 @@ function FormacaoPageInner() {
                     {/* Badges row */}
                     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '0.6rem' }}>
                       <span style={{ fontSize: '0.68rem', textTransform: 'uppercase', color: '#ff6b00', fontWeight: 800, letterSpacing: '0.1em', background: '#fff7ed', padding: '3px 8px', borderRadius: '6px', border: '1px solid #fed7aa' }}>
-                        🎓 Certificado
+                        Certificado
                       </span>
                       <span style={{ fontSize: '0.72rem', fontWeight: 800, color: isCoursePaid(course) ? '#1d4ed8' : '#15803d', background: isCoursePaid(course) ? '#eff6ff' : '#f0fdf4', padding: '3px 10px', borderRadius: '6px', border: `1px solid ${isCoursePaid(course) ? '#bfdbfe' : '#bbf7d0'}` }}>
                         {isCoursePaid(course) ? `💳 ${course.price} MT` : '✅ GRATUITO'}
@@ -590,7 +590,7 @@ function FormacaoPageInner() {
                                 disabled={processingId === enrollment?._id}
                                 onClick={() => enrollment && handleUpdateProgress(enrollment._id, { certificateRequested: true })}
                               >
-                                {processingId === enrollment?._id ? 'A processar...' : '🎓 Solicitar Certificado'}
+                                {processingId === enrollment?._id ? 'A processar...' : 'Solicitar Certificado'}
                               </button>
                             ) : !enrollment?.certificateApproved ? (
                               <span style={{ fontSize: '0.82rem', fontWeight: 700, background: '#fefce8', color: '#ca8a04', border: '1px solid #fef08a', padding: '9px 18px', borderRadius: '10px' }}>
@@ -604,7 +604,7 @@ function FormacaoPageInner() {
                                   setShowCert(true);
                                 }}
                               >
-                                🎓 Ver Certificado PDF
+                                Ver Certificado PDF
                               </button>
                             )}
                           </>
@@ -1096,7 +1096,7 @@ function FormacaoPageInner() {
                   letterSpacing: '0.05em'
                 }}
               >
-                {isCoursePaid(courseToEnroll) ? 'Avançar para Pagamento 💳' : 'Confirmar e Inscrever Grátis 🚀'}
+                {isCoursePaid(courseToEnroll) ? 'Avançar para Pagamento' : 'Confirmar e Inscrever Grátis'}
               </button>
             </form>
           </div>
@@ -1407,7 +1407,7 @@ function FormacaoPageInner() {
               }} 
             />
             <span style={{ marginTop: '10px', color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600 }}>
-              💡 Clique fora ou no X para fechar
+              Clique fora ou no X para fechar
             </span>
           </div>
         </div>

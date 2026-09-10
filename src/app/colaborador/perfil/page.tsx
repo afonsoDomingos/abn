@@ -352,7 +352,7 @@ export default function ColaboradorPerfil() {
 
             {/* Perfil Profissional */}
             <h4 style={{ margin: '1.5rem 0 0.5rem 0', color: 'var(--primary)', borderBottom: '1px solid rgba(0,0,0,0.08)', paddingBottom: '0.5rem' }}>
-              🏢 Perfil Profissional & Académico
+              Perfil Profissional & Académico
             </h4>
             <div className={styles.grid}>
               <div className={styles.field}>

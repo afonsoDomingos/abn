@@ -119,7 +119,7 @@ export default function AdminInscricoesClubePage() {
       {/* Header */}
       <div className={styles.pageHeader}>
         <div>
-          <h1 className={styles.pageTitle}>🏛️ Inscrições — {getClubStepTitle('Clube dos Empreendedores ABN')}</h1>
+          <h1 className={styles.pageTitle}>Inscrições — {getClubStepTitle('Clube dos Empreendedores ABN')}</h1>
           <p className={styles.pageSubtitle}>Gestão de candidatos ao {getClubStepTitle('Clube dos Empreendedores ABN')}</p>
         </div>
         <button className={styles.refreshBtn} onClick={fetchInscricoes}>↻ Atualizar</button>
@@ -246,7 +246,7 @@ export default function AdminInscricoesClubePage() {
               {/* Negócio */}
               {(selected.nomeNegocio || (selected.sector && selected.sector.length > 0)) && (
                 <div className={styles.detailSection}>
-                  <h4 className={styles.detailSectionTitle}>💼 Negócio</h4>
+                  <h4 className={styles.detailSectionTitle}>Negócio</h4>
                   <div className={styles.detailGrid}>
                     {selected.nomeNegocio && <div className={styles.detailItem}><span>Empresa</span><p>{selected.nomeNegocio}</p></div>}
                     {selected.alvara && <div className={styles.detailItem}><span>Alvará</span><p>{selected.alvara}</p></div>}
@@ -262,7 +262,7 @@ export default function AdminInscricoesClubePage() {
 
               {/* Adesão & Pagamento */}
               <div className={styles.detailSection}>
-                <h4 className={styles.detailSectionTitle}>🏛️ Adesão &amp; Pagamento</h4>
+                <h4 className={styles.detailSectionTitle}>Adesão &amp; Pagamento</h4>
                 <div className={styles.detailGrid}>
                   <div className={styles.detailItem}><span>Nível</span><p>{NIVEL_LABELS[selected.nivelAdesao] || selected.nivelAdesao}</p></div>
                   {selected.formaPagamento && <div className={styles.detailItem}><span>Pagamento</span><p style={{ textTransform: 'capitalize' }}>{selected.formaPagamento}</p></div>}
@@ -270,7 +270,7 @@ export default function AdminInscricoesClubePage() {
                     <div className={styles.detailItem}>
                       <span>Modo de Pagamento</span>
                       <p style={{ fontWeight: 800, color: selected.tipoPagamento === 'comprovativo_manual' ? '#d97706' : '#2563eb' }}>
-                        {selected.tipoPagamento === 'comprovativo_manual' ? '⏳ Comprovativo Manual (Em Análise)' : '⚡ API Direta / PIN Telemóvel'}
+                        {selected.tipoPagamento === 'comprovativo_manual' ? 'Comprovativo Manual (Em Análise)' : 'API Direta / PIN Telemóvel'}
                       </p>
                     </div>
                   )}

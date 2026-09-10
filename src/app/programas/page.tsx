@@ -607,7 +607,7 @@ const canProceed = () => {
                 <div className={styles.clubeHeaderLeft}>
                   <span className={styles.clubeFeaturedBadge}>Programa em Destaque</span>
                   <div className={styles.clubeIconRow}>
-                    <span className={styles.clubeIcon}>🏛️</span>
+                    <span className={styles.clubeIcon}></span>
                     <div>
                       <h2 className={styles.clubeTitle}>{clube.title}</h2>
                       {clube.province && (
@@ -849,7 +849,7 @@ const canProceed = () => {
             <div className={styles.modalHeader}>
               <div className={styles.modalHeaderLeft}>
                 <span className={styles.modalHeaderIcon}>
-                  {submitted && lastSubmission?.tipoPagamento === 'api_directo' ? '📱' : '🏛️'}
+                  {submitted && lastSubmission?.tipoPagamento === 'api_directo' ? '' : ''}
                 </span>
                 <div>
                   <h2 className={styles.modalTitle}>
@@ -1117,7 +1117,7 @@ const canProceed = () => {
                     </div>
 
                     <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '12px', padding: '0.85rem 1rem', marginBottom: '1.5rem', color: '#1e40af', fontSize: '0.85rem', lineHeight: '1.5', textAlign: 'left' }}>
-                      💡 <strong>Menu no Telemóvel:</strong> Surgirá um pop-up no seu ecrã para introduzir o seu <strong>PIN M-Pesa / eMola</strong> e autorizar.
+                      <strong>Menu no Telemóvel:</strong> Surgirá um pop-up no seu ecrã para introduzir o seu <strong>PIN M-Pesa / eMola</strong> e autorizar.
                     </div>
 
                     {/* Action Buttons: Confirm or Cancel */}
@@ -1785,7 +1785,7 @@ const canProceed = () => {
                         )}
                         {form.metodoPagamento === 'banco' && (
                           <div style={{ fontSize: '0.88rem', color: '#334155', lineHeight: '1.6', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                            <p style={{ margin: 0, fontWeight: 700, color: '#0f172a' }}>🏛️ Dados para Transferência Bancária (Titular: Lizi Cristina Mulambo):</p>
+                            <p style={{ margin: 0, fontWeight: 700, color: '#0f172a' }}>Dados para Transferência Bancária (Titular: Lizi Cristina Mulambo):</p>
                             <div style={{ background: '#ffffff', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
                               <div><strong>Millennium BIM:</strong> Conta 5283397 | NIB 0001 000000005283397 57</div>
                             </div>
@@ -1808,7 +1808,7 @@ const canProceed = () => {
                               style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem', outline: 'none', background: '#ffffff', color: '#0f172a' }}
                             />
                             <small style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', marginTop: '0.3rem' }}>
-                              💡 Insira o seu número registado no {form.metodoPagamento === 'mpesa' ? 'M-Pesa' : 'eMola'} para onde será enviado o pedido de pagamento para confirmação com PIN.
+                              Insira o seu número registado no {form.metodoPagamento === 'mpesa' ? 'M-Pesa' : 'eMola'} para onde será enviado o pedido de pagamento para confirmação com PIN.
                             </small>
                           </div>
                         )}

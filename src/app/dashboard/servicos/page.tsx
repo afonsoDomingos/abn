@@ -654,7 +654,7 @@ export default function ServicosConsultoriaPage() {
                     <div>
                       <h4 style={{ margin: 0, fontSize: '1.1rem', color: '#0f172a' }}>{proj.clientName}</h4>
                       <div style={{ fontSize: '0.82rem', color: '#64748b' }}>
-                        🏢 {proj.clientCompany} • {proj.clientEmail} {proj.clientPhone ? `• ${proj.clientPhone}` : ''}
+                        {proj.clientCompany} • {proj.clientEmail} {proj.clientPhone ? `• ${proj.clientPhone}` : ''}
                       </div>
                     </div>
                   </div>

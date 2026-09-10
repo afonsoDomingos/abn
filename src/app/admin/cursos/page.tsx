@@ -521,7 +521,7 @@ export default function AdminCursosPage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontWeight: 700, color: '#ff6b00' }}>📚 <strong>{lessonCount} Aulas</strong> {pdfCount > 0 && <span style={{ color: '#2563eb', marginLeft: '4px' }}>({pdfCount} PDFs 📄)</span>}</span>
                     <span style={{ fontSize: '0.75rem', color: course.videoVisible !== false ? '#16a34a' : '#dc2626', fontWeight: 700 }}>
-                      {course.videoVisible !== false ? '👁️ Vídeos Visíveis' : '🔒 Vídeos Ocultos'}
+                      {course.videoVisible !== false ? ' Vídeos Visíveis' : '🔒 Vídeos Ocultos'}
                     </span>
                   </div>
                 </div>
@@ -535,7 +535,7 @@ export default function AdminCursosPage() {
                     title="Ver como um Aluno/Empreendedor veria este curso"
                     style={{ flex: 1, padding: '10px 0', border: '1px solid #e2e8f0', background: '#f8fafc', color: '#475569', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '5px', textDecoration: 'none' }}
                   >
-                    👁️ Ver como Aluno
+                     Ver como Aluno
                   </a>
                   <button
                     onClick={() => handleViewParticipants(course)}
@@ -1070,7 +1070,7 @@ export default function AdminCursosPage() {
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '14px 18px' }}>
                       <div>
                         <p style={{ color: '#0f172a', fontWeight: 800, margin: 0, fontSize: '0.92rem' }}>
-                          👁️ Visibilidade dos Vídeos aos Alunos
+                           Visibilidade dos Vídeos aos Alunos
                         </p>
                         <p style={{ color: '#64748b', margin: '2px 0 0 0', fontSize: '0.78rem' }}>
                           {videoVisible ? 'Os vídeos estão visíveis para os alunos inscritos' : 'Os vídeos estão ocultos para revisão do admin'}
@@ -1145,7 +1145,7 @@ export default function AdminCursosPage() {
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '14px 18px', marginTop: '0.5rem' }}>
                       <div>
                         <p style={{ color: '#0f172a', fontWeight: 800, margin: 0, fontSize: '0.92rem' }}>
-                          🤝 Logótipo de Parceiro no Certificado
+                          Logótipo de Parceiro no Certificado
                         </p>
                         <p style={{ color: '#64748b', margin: '2px 0 0 0', fontSize: '0.78rem' }}>
                           Exibir logótipo oficial da empresa parceira no documento final
@@ -1173,7 +1173,7 @@ export default function AdminCursosPage() {
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: '#ffffff', border: '1.5px dashed #cbd5e1', borderRadius: '14px', padding: '1.2rem' }}>
                         <div>
                           <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>
-                            🤝 Logótipos dos Parceiros Certificadores (Multi-parceiros)
+                            Logótipos dos Parceiros Certificadores (Multi-parceiros)
                           </label>
                           <p style={{ fontSize: '0.78rem', color: '#64748b', margin: '2px 0 0 0' }}>
                             Pode carregar múltiplos logótipos de empresas ou instituições parceiras que serão exibidos lado a lado no certificado final.
@@ -1685,7 +1685,7 @@ export default function AdminCursosPage() {
               }} 
             />
             <span style={{ marginTop: '10px', color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600 }}>
-              💡 Clique fora ou no X para fechar
+              Clique fora ou no X para fechar
             </span>
           </div>
         </div>

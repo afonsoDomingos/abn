@@ -54,9 +54,9 @@ const fallbackHubs: Record<string, any> = {
       { name: 'Umaro Sissoco', role: 'Coordenador de Parcerias e Impacto', image: '' }
     ],
     partners: [
-      { name: 'Startup Bissau', logo: '🚀' },
+      { name: 'Startup Bissau', logo: '' },
       { name: 'Banco da Guiné', logo: '🏦' },
-      { name: 'Mentores GB', logo: '🤝' }
+      { name: 'Mentores GB', logo: '' }
     ]
   }
 };
@@ -484,7 +484,7 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
                         {p.logo && (p.logo.startsWith('http') || p.logo.startsWith('/')) ? (
                           <img src={p.logo} alt={p.name} className={styles.partnerLogo} />
                         ) : (
-                          <span className={styles.partnerEmoji}>{p.logo || '🤝'}</span>
+                          <span className={styles.partnerEmoji}>{p.logo || ''}</span>
                         )}
                         <span className={styles.partnerName}>{p.name}</span>
                       </div>
@@ -503,7 +503,7 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
                       {p.logo && (p.logo.startsWith('http') || p.logo.startsWith('/')) ? (
                         <img src={p.logo} alt={p.name} className={styles.partnerLogo} />
                       ) : (
-                        <span className={styles.partnerEmoji}>{p.logo || '🤝'}</span>
+                        <span className={styles.partnerEmoji}>{p.logo || ''}</span>
                       )}
                       <span className={styles.partnerName}>{p.name}</span>
                     </div>

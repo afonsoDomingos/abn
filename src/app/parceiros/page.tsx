@@ -160,15 +160,15 @@ ${formData.msg}`;
       whyTitle: "Por que tornar-se parceiro da ABN?",
       whySubtitle: "Ao integrar a nossa rede, a sua organização ou o seu perfil profissional poderá:",
       benefits: [
-        { icon: "🌐", title: "Expansão de Rede", desc: "Expandir a sua rede de contactos em vários países africanos e da diáspora." },
+        { icon: "", title: "Expansão de Rede", desc: "Expandir a sua rede de contactos em vários países africanos e da diáspora." },
         { icon: "📢", title: "Visibilidade de Marca", desc: "Aumentar a visibilidade e autoridade da sua marca ou carreira no ecossistema." },
-        { icon: "🚀", title: "Projetos de Impacto", desc: "Desenvolver e colaborar em projetos de elevado impacto socioeconómico." },
+        { icon: "", title: "Projetos de Impacto", desc: "Desenvolver e colaborar em projetos de elevado impacto socioeconómico." },
         { icon: "🔍", title: "Novas Oportunidades", desc: "Identificar novos clientes, fornecedores, parceiros e potenciais investidores." },
         { icon: "📅", title: "Programas Exclusivos", desc: "Participar em conferências, feiras, missões empresariais e programas fechados." },
         { icon: "🌱", title: "Fomento de Empreendedorismo", desc: "Contribuir activamente para o fortalecimento do empreendedorismo em África." },
         { icon: "🏆", title: "Posicionamento Setorial", desc: "Posicionar-se como uma autoridade e referência no seu setor de atuação." },
-        { icon: "🤝", title: "Colaboração Global", desc: "Colaborar de perto com especialistas nacionais e internacionais de topo." },
-        { icon: "💡", title: "Soluções Reais", desc: "Participar ativamente na construção de soluções para os desafios reais do continente." }
+        { icon: "", title: "Colaboração Global", desc: "Colaborar de perto com especialistas nacionais e internacionais de topo." },
+        { icon: "", title: "Soluções Reais", desc: "Participar ativamente na construção de soluções para os desafios reais do continente." }
       ],
 
       whoTitle: "Quem Pode Tornar-se Parceiro?",
@@ -185,12 +185,12 @@ ${formData.msg}`;
       instCategoriesTitle: "Categorias de Parceria Institucional",
       instCategories: [
         { icon: "🏦", title: "Parceiro Bancário", desc: "Apoia o acesso ao financiamento, educação financeira, soluções bancárias e inclusão financeira." },
-        { icon: "🎓", title: "Parceiro Académico", desc: "Promove investigação, formação, estágios, inovação e aproxima a academia do mercado real." },
-        { icon: "🎯", title: "Parceiro Estratégico", desc: "Participa ativamente na conceção e implementação de programas estruturantes para o ecossistema." },
+        { icon: "", title: "Parceiro Académico", desc: "Promove investigação, formação, estágios, inovação e aproxima a academia do mercado real." },
+        { icon: "", title: "Parceiro Estratégico", desc: "Participa ativamente na conceção e implementação de programas estruturantes para o ecossistema." },
         { icon: "💰", title: "Parceiro Financeiro", desc: "Investe em programas, fundos, eventos e iniciativas que aceleram o ecossistema empreendedor." },
         { icon: "🛠️", title: "Parceiro Técnico", desc: "Disponibiliza conhecimento especializado, mentoria corporativa, consultoria e assistência técnica." },
         { icon: "💻", title: "Parceiro Tecnológico", desc: "Fornece infraestruturas, ferramentas digitais, inovação e soluções tecnológicas para PMEs." },
-        { icon: "💼", title: "Parceiro Comercial", desc: "Cria oportunidades de mercado, benefícios comerciais cruzados e ligações empresariais diretas." },
+        { icon: "", title: "Parceiro Comercial", desc: "Cria oportunidades de mercado, benefícios comerciais cruzados e ligações empresariais diretas." },
         { icon: "📣", title: "Comunicação e Media", desc: "Amplifica o impacto e visibilidade das iniciativas da ABN através da comunicação e divulgação nos media." },
         { icon: "🌍", title: "Parceiro Internacional", desc: "Fortalece a cooperação bilateral, promove intercâmbios internacionais e acelera a internacionalização." }
       ],
@@ -290,15 +290,15 @@ ${formData.msg}`;
       whyTitle: "Why become an ABN partner?",
       whySubtitle: "By joining our network, your organization or professional profile will be able to:",
       benefits: [
-        { icon: "🌐", title: "Network Expansion", desc: "Expand your contact network across multiple African countries and the diaspora." },
+        { icon: "", title: "Network Expansion", desc: "Expand your contact network across multiple African countries and the diaspora." },
         { icon: "📢", title: "Brand Visibility", desc: "Increase the visibility and authority of your brand or career in the ecosystem." },
-        { icon: "🚀", title: "Impact Projects", desc: "Develop and collaborate on high socio-economic impact projects." },
+        { icon: "", title: "Impact Projects", desc: "Develop and collaborate on high socio-economic impact projects." },
         { icon: "🔍", title: "New Opportunities", desc: "Identify new clients, suppliers, partners, and potential investors." },
         { icon: "📅", title: "Exclusive Programs", desc: "Participate in conferences, trade fairs, business missions, and closed programs." },
         { icon: "🌱", title: "Foster Entrepreneurship", desc: "Actively contribute to strengthening entrepreneurship across Africa." },
         { icon: "🏆", title: "Sectored Positioning", desc: "Position yourself as an authority and reference in your field of work." },
-        { icon: "🤝", title: "Global Collaboration", desc: "Collaborate closely with top national and international experts." },
-        { icon: "💡", title: "Real Solutions", desc: "Actively participate in building solutions for the continent's real challenges." }
+        { icon: "", title: "Global Collaboration", desc: "Collaborate closely with top national and international experts." },
+        { icon: "", title: "Real Solutions", desc: "Actively participate in building solutions for the continent's real challenges." }
       ],
 
       whoTitle: "Who Can Become a Partner?",
@@ -315,12 +315,12 @@ ${formData.msg}`;
       instCategoriesTitle: "Institutional Partnership Categories",
       instCategories: [
         { icon: "🏦", title: "Banking Partner", desc: "Supports access to finance, financial education, banking solutions, and inclusion." },
-        { icon: "🎓", title: "Academic Partner", desc: "Promotes research, training, internships, innovation, and connects academia to the real market." },
-        { icon: "🎯", title: "Strategic Partner", desc: "Actively participates in designing and implementing ecosystem programs." },
+        { icon: "", title: "Academic Partner", desc: "Promotes research, training, internships, innovation, and connects academia to the real market." },
+        { icon: "", title: "Strategic Partner", desc: "Actively participates in designing and implementing ecosystem programs." },
         { icon: "💰", title: "Financial Partner", desc: "Invests in programs, funds, events, and initiatives that accelerate entrepreneurship." },
         { icon: "🛠️", title: "Technical Partner", desc: "Provides specialized knowledge, corporate mentoring, consulting, and technical assistance." },
         { icon: "💻", title: "Technological Partner", desc: "Supplies infrastructures, digital tools, innovation, and technological solutions for SMEs." },
-        { icon: "💼", title: "Commercial Partner", desc: "Creates market opportunities, cross-business benefits, and direct business connections." },
+        { icon: "", title: "Commercial Partner", desc: "Creates market opportunities, cross-business benefits, and direct business connections." },
         { icon: "📣", title: "Media Partner", desc: "Amplifies the impact and visibility of ABN initiatives through media coverage and PR." },
         { icon: "🌍", title: "International Partner", desc: "Strengthens bilateral cooperation, promotes international exchanges, and accelerates expansion." }
       ],
@@ -770,7 +770,7 @@ ${formData.msg}`;
                     />
                   ) : (
                     <span className={styles.logoIcon} style={{ fontSize: '2.5rem', marginBottom: '1rem', display: 'block' }}>
-                      {p.logo || '🤝'}
+                      {p.logo || ''}
                     </span>
                   )}
                   <span className={styles.logoName}>{p.name}</span>
@@ -818,7 +818,7 @@ ${formData.msg}`;
                           />
                         </div>
                       ) : (
-                        <span className={styles.companyIcon}>{company.icon || '🏢'}</span>
+                        <span className={styles.companyIcon}>{company.icon || ''}</span>
                       )}
                       <div>
                         <h4>{company.name}</h4>

@@ -101,7 +101,7 @@ export default function AdminImpactoPage() {
             setCompanies(parsedCompanies);
           } else {
             setCompanies([
-              { name: 'Xiphefu', location: 'Maputo, Moçambique', desc: 'Soluções inteligentes de iluminação.', icon: '🏢', phase: 'Crescimento', type: 'incubada' }
+              { name: 'Xiphefu', location: 'Maputo, Moçambique', desc: 'Soluções inteligentes de iluminação.', icon: '', phase: 'Crescimento', type: 'incubada' }
             ]);
           }
         }
@@ -215,7 +215,7 @@ export default function AdminImpactoPage() {
           className={`${styles.tabBtn} ${activeTab === 'empresas' ? styles.activeTabBtn : ''}`}
           onClick={() => setActiveTab('empresas')}
         >
-          🏢 Startups & Empresas
+          Startups & Empresas
         </button>
       </div>
 
@@ -469,7 +469,7 @@ export default function AdminImpactoPage() {
                         {company.icon && (company.icon.startsWith('http') || company.icon.startsWith('/')) ? (
                           <img src={company.icon} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         ) : (
-                          <span style={{ fontSize: '1.5rem' }}>{company.icon || '🏢'}</span>
+                          <span style={{ fontSize: '1.5rem' }}>{company.icon || ''}</span>
                         )}
                       </div>
                       <div className={styles.logoInputWrapper}>
@@ -488,7 +488,7 @@ export default function AdminImpactoPage() {
                           <input
                             type="file"
                             accept="image/*"
-                            onChange={e => handleFileUpload(e, idx, setCompanies, companies, 'icon', '🏢')}
+                            onChange={e => handleFileUpload(e, idx, setCompanies, companies, 'icon', '')}
                             style={{ display: 'none' }}
                           />
                         </label>
@@ -554,7 +554,7 @@ export default function AdminImpactoPage() {
                 <button
                   type="button"
                   className="btn-outline"
-                  onClick={() => addItem(setCompanies, companies, { name: '', location: '', desc: '', icon: '🏢', phase: '', type: 'incubada' })}
+                  onClick={() => addItem(setCompanies, companies, { name: '', location: '', desc: '', icon: '', phase: '', type: 'incubada' })}
                 >
                   + Adicionar Nova Startup/Empresa
                 </button>

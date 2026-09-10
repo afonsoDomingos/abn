@@ -1068,7 +1068,7 @@ export default function RegisterPage() {
                   disabled={loading}
                   style={{ padding: '14px 20px', fontSize: '0.92rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}
                 >
-                  {loading ? 'A criar a sua conta...' : 'Ativar Conta e Entrar no Dashboard 🚀'}
+                  {loading ? 'A criar a sua conta...' : 'Ativar Conta e Entrar no Dashboard'}
                 </button>
               </div>
             </div>

@@ -91,7 +91,7 @@ export default function AdminDepartamentosPage() {
         </div>
       ) : departments.length === 0 ? (
         <div className={styles.empty}>
-          <span>🏢</span>
+          <span></span>
           <p>Nenhum departamento encontrado.</p>
         </div>
       ) : (

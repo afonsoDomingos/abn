@@ -107,7 +107,7 @@ export default function DashboardEventosPage() {
             </div>
 
             <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '1rem', marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>🏛️ AfroBiz Network</span>
+              <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>AfroBiz Network</span>
               <Link href="/eventos" className="btn-primary" style={{ textDecoration: 'none', padding: '8px 16px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 700 }}>
                 Garantir Vaga <ArrowRight size={14} />
               </Link>

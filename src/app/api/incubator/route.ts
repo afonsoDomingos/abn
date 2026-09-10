@@ -157,7 +157,7 @@ export async function GET(request: Request) {
       incubator = {
         userId: sessionUser?._id,
         organizationName: sessionUser?.company || 'ABN Innovation Hub & Aceleradora Lusófona',
-        logo: '🏛️',
+        logo: '',
         organizationType: 'aceleradora',
         headline: 'Aceleradora de Impacto e Inovação Aberta para Startups da África Ocidental e Lusofonia',
         bio: 'Dedicados a identificar, capacitar e capitalizar fundadores audazes com soluções tecnológicas escaláveis nos mercados emergentes.',
@@ -325,7 +325,7 @@ export async function GET(request: Request) {
             company: 'Lisbon VC / ABN Advisor',
             specialty: 'Fintech, Compliance & Captação',
             email: 'rui.furtado@abn.network',
-            avatar: '👨‍💼',
+            avatar: '',
             assignedStartups: ['Kassumai Pay'],
             sessionsCompleted: 14,
             rating: 4.9

@@ -535,7 +535,7 @@ export default function AdminEspecialistasPage() {
                           )}
                           {item.website && (
                             <a href={item.website} target="_blank" rel="noreferrer" title="Website / Portfólio" style={{ color: '#ff6b00', fontSize: '1rem', textDecoration: 'none' }}>
-                              🌐
+                              
                             </a>
                           )}
                           {item.email && (

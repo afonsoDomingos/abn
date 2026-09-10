@@ -806,14 +806,14 @@ export default function AdminProgramasPage() {
                       onClick={() => setEnabledSteps({ identificacao: true, negocio: true, adesao: true, interesses: true, origem: true, declaracao: true, checkout: true })}
                       style={{ background: '#eff6ff', color: '#2563eb', border: '1px solid #bfdbfe', padding: '6px 12px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer' }}
                     >
-                      🏢 Completo (7 Etapas)
+                      Completo (7 Etapas)
                     </button>
                     <button
                       type="button"
                       onClick={() => setEnabledSteps({ identificacao: true, negocio: true, adesao: false, interesses: true, origem: false, declaracao: true, checkout: false })}
                       style={{ background: '#fff7ed', color: '#ea580c', border: '1px solid #fed7aa', padding: '6px 12px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer' }}
                     >
-                      ⚡ Inscrição Direta
+                      Inscrição Direta
                     </button>
                   </div>
                 </div>

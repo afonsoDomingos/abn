@@ -11,7 +11,7 @@ export default function Partners() {
     { name: 'AfDB', logo: '🏦' },
     { name: 'UNDP', logo: '🇺🇳' },
     { name: 'TechHub Luanda', logo: '💻' },
-    { name: 'Startup Moçambique', logo: '🚀' },
+    { name: 'Startup Moçambique', logo: '' },
     { name: 'Global Invest', logo: '📈' },
   ]);
 

@@ -117,7 +117,7 @@ export async function POST(request: Request) {
       try {
         await Notification.create({
           user: session.id,
-          title: 'Inscrição Confirmada! 🎓',
+          title: 'Inscrição Confirmada!',
           message: `A sua inscrição no curso "${payment.itemName}" foi efetuada com sucesso. Já pode assistir às aulas!`,
           link: '/dashboard/formacao'
         });
@@ -130,7 +130,7 @@ export async function POST(request: Request) {
     const adminPhone = process.env.ADMIN_WHATSAPP || '245955000000';
     const studentName = session.name || 'Aluno';
     const waText = encodeURIComponent(
-      `🚨 *Novo Comprovativo Recebido!*\n\n📚 *Curso:* ${itemName}\n👤 *Aluno:* ${studentName}\n📱 *Contacto:* ${phone || 'N/A'}\n🏢 *Empresa:* ${company || 'N/A'}\n💰 *Valor:* ${price}\n\nPor favor, valide no painel Admin em /admin/pagamentos`
+      `🚨 *Novo Comprovativo Recebido!*\n\n📚 *Curso:* ${itemName}\n👤 *Aluno:* ${studentName}\n📱 *Contacto:* ${phone || 'N/A'}\n*Empresa:* ${company || 'N/A'}\n💰 *Valor:* ${price}\n\nPor favor, valide no painel Admin em /admin/pagamentos`
     );
     const waUrl = `https://api.whatsapp.com/send?phone=${adminPhone}&text=${waText}`;
 
@@ -187,7 +187,7 @@ export async function PUT(request: Request) {
       if (status === 'aprovado') {
         await Notification.create({
           user: payment.user,
-          title: 'Inscrição Aprovada! 🎓',
+          title: 'Inscrição Aprovada!',
           message: `A sua inscrição no curso "${payment.itemName}" foi aprovada com sucesso. Já pode assistir a todas as aulas!`,
           link: '/dashboard/formacao'
         });
@@ -246,7 +246,7 @@ export async function PUT(request: Request) {
         try {
           await Notification.create({
             user: payment.user,
-            title: 'Certificado Emitido com Sucesso! 🎓',
+            title: 'Certificado Emitido com Sucesso!',
             message: `O seu certificado para o curso "${payment.itemName}" foi aprovado pela direção da ABN. Já pode descarregá-lo em PDF!`,
             link: '/dashboard/formacao'
           });

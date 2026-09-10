@@ -125,11 +125,11 @@ export default function AdminPagamentosPage() {
     let message = '';
 
     if (pay.certificateApproved) {
-      message = `Olá ${userName}! 🎓\n\nParabéns! O seu certificado do curso *${courseTitle}* foi validado e aprovado pela Direção da ABN.\n\nJá pode aceder ao seu painel em https://abnafrobiznetwork.com para descarregar o documento em PDF!\n\nQualquer dúvida, estamos ao dispor.`;
+      message = `Olá ${userName}!\n\nParabéns! O seu certificado do curso *${courseTitle}* foi validado e aprovado pela Direção da ABN.\n\nJá pode aceder ao seu painel em https://abnafrobiznetwork.com para descarregar o documento em PDF!\n\nQualquer dúvida, estamos ao dispor.`;
     } else if (pay.status === 'pendente') {
       message = `Olá ${userName}! 💳\n\nConfirmamos a receção da sua inscrição para o curso *${courseTitle}*.\n\nA nossa equipa está a analisar o seu comprovativo de pagamento e dará novidades em breve!\n\nObrigado pela preferência, AfroBiz Network (ABN).`;
     } else if (pay.status === 'aprovado') {
-      message = `Olá ${userName}! 🚀\n\nEntramos em contacto da AfroBiz Network (ABN) relativamente à sua inscrição no curso *${courseTitle}*.\n\nPrecisa de algum apoio ou ajuda com o acesso às videoaulas e materiais de apoio?`;
+      message = `Olá ${userName}!\n\nEntramos em contacto da AfroBiz Network (ABN) relativamente à sua inscrição no curso *${courseTitle}*.\n\nPrecisa de algum apoio ou ajuda com o acesso às videoaulas e materiais de apoio?`;
     } else {
       message = `Olá ${userName}! 👋\n\nEntramos em contacto da AfroBiz Network (ABN) relativamente ao curso *${courseTitle}*.\n\nComo podemos ajudar?`;
     }
@@ -245,7 +245,7 @@ export default function AdminPagamentosPage() {
                 gap: '6px'
               }}
             >
-              {f === 'certificados' ? `🎓 Certificados (${certCount})` : f === 'todos' ? `Ver Todos (${payments.length})` : `${f.toUpperCase()} (${payments.filter(p => p.status === f).length})`}
+              {f === 'certificados' ? `Certificados (${certCount})` : f === 'todos' ? `Ver Todos (${payments.length})` : `${f.toUpperCase()} (${payments.filter(p => p.status === f).length})`}
             </button>
           ))}
         </div>
@@ -343,7 +343,7 @@ export default function AdminPagamentosPage() {
                         color: pay.certificateApproved ? '#2563eb' : '#d97706',
                         border: `1px solid ${pay.certificateApproved ? '#bfdbfe' : '#fde68a'}`
                       }}>
-                        🎓 Certificado: {pay.certificateApproved ? 'Aprovado' : 'Aguardar Aprovação Admin'}
+                        Certificado: {pay.certificateApproved ? 'Aprovado' : 'Aguardar Aprovação Admin'}
                       </span>
                     )}
                   </div>

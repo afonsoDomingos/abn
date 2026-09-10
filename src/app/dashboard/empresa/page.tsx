@@ -18,11 +18,11 @@ const CONNECT_TYPES = [
 ];
 
 const DESENVOLVIMENTO_CATS = [
-  { key: "consultoria", label: "Consultoria", icon: "🎯" },
-  { key: "formacao", label: "Formação", icon: "🎓" },
-  { key: "mentoria", label: "Mentoria", icon: "🧭" },
-  { key: "aceleracao", label: "Aceleração", icon: "🚀" },
-  { key: "internacionalizacao", label: "Internacionalização", icon: "🌐" },
+  { key: "consultoria", label: "Consultoria", icon: "" },
+  { key: "formacao", label: "Formação", icon: "" },
+  { key: "mentoria", label: "Mentoria", icon: "" },
+  { key: "aceleracao", label: "Aceleração", icon: "" },
+  { key: "internacionalizacao", label: "Internacionalização", icon: "" },
   { key: "marketing", label: "Marketing", icon: "📢" },
   { key: "recursos_humanos", label: "Recursos Humanos", icon: "👥" },
   { key: "estrategia", label: "Estratégia", icon: "♟️" },
@@ -147,11 +147,11 @@ export default function EmpresaPage() {
   };
 
   const TABS = [
-    { key: "empresa", label: "🏢 Empresa" },
+    { key: "empresa", label: "Empresa" },
     { key: "connect", label: "🔗 Business Connect" },
     { key: "desenvolvimento", label: "📈 Desenvolvimento" },
     { key: "oportunidades", label: "🎯 Oportunidades" },
-    { key: "networking", label: "🤝 Networking B2B" },
+    { key: "networking", label: "Networking B2B" },
   ];
 
   const connectRequests: any[] = business?.businessConnect || [];
@@ -177,7 +177,7 @@ export default function EmpresaPage() {
         <div style={{ position: "relative", zIndex: 1, display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "0.7rem", fontWeight: 800, background: "rgba(14,165,233,0.25)", color: "#7dd3fc", padding: "3px 10px", borderRadius: "20px", textTransform: "uppercase", letterSpacing: "0.8px", border: "1px solid rgba(14,165,233,0.35)" }}>🏢 Empresa / PME</span>
+              <span style={{ fontSize: "0.7rem", fontWeight: 800, background: "rgba(14,165,233,0.25)", color: "#7dd3fc", padding: "3px 10px", borderRadius: "20px", textTransform: "uppercase", letterSpacing: "0.8px", border: "1px solid rgba(14,165,233,0.35)" }}> Empresa / PME</span>
               <span style={{ fontSize: "0.7rem", fontWeight: 800, background: "rgba(16,185,129,0.2)", color: "#6ee7b7", padding: "3px 10px", borderRadius: "20px", border: "1px solid rgba(16,185,129,0.3)" }}>🟢 Verificada</span>
               {business?.empresaProfile?.exportReady && <span style={{ fontSize: "0.7rem", fontWeight: 800, background: "rgba(251,191,36,0.2)", color: "#fbbf24", padding: "3px 10px", borderRadius: "20px", border: "1px solid rgba(251,191,36,0.3)" }}>🌍 Export Ready</span>}
             </div>
@@ -379,9 +379,9 @@ export default function EmpresaPage() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem", marginBottom: "1.5rem" }}>
                 {[
                   { icon: "📢", title: "Edital ADEI — PMEs Inovadoras 2026", deadline: "30 Set 2026", value: "$50,000", tag: "Fomento" },
-                  { icon: "🤝", title: "Parceria B2B com Distribuidoras Luandenses", deadline: "15 Out 2026", value: "Variável", tag: "Parceria" },
+                  { icon: "", title: "Parceria B2B com Distribuidoras Luandenses", deadline: "15 Out 2026", value: "Variável", tag: "Parceria" },
                   { icon: "💰", title: "Linha de Crédito BCSTP — Exportação", deadline: "31 Out 2026", value: "até $200,000", tag: "Financiamento" },
-                  { icon: "🌐", title: "Missão Empresarial Portugal 2026", deadline: "20 Out 2026", value: "Apoiado ABN", tag: "Evento" },
+                  { icon: "", title: "Missão Empresarial Portugal 2026", deadline: "20 Out 2026", value: "Apoiado ABN", tag: "Evento" },
                 ].map((op, i) => (
                   <div key={i} style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "18px", padding: "1.25rem", boxShadow: "0 2px 8px rgba(15,23,42,0.04)" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>

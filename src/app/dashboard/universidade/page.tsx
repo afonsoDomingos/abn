@@ -169,11 +169,11 @@ export default function UniversidadePage() {
       {/* ── KPIs ── */}
       <div className={styles.kpisGrid}>
         {[
-          { label: 'Estudantes', value: Number(metrics.totalStudents || 8500).toLocaleString('pt-PT'), icon: '🎓', bg: 'rgba(5,150,105,0.1)' },
+          { label: 'Estudantes', value: Number(metrics.totalStudents || 8500).toLocaleString('pt-PT'), icon: '', bg: 'rgba(5,150,105,0.1)' },
           { label: 'Investigadores', value: metrics.totalResearchers || 142, icon: '🔬', bg: 'rgba(99,102,241,0.1)' },
           { label: 'Publicações Científicas', value: metrics.totalPublications || 87, icon: '📄', bg: 'rgba(245,158,11,0.1)' },
-          { label: 'Spin-offs & Startups', value: metrics.totalSpinOffs || startups.length || 14, icon: '🚀', bg: 'rgba(236,72,153,0.1)' },
-          { label: 'Estágios Abertos', value: internships.filter((i: any) => i.status === 'aberto').length || metrics.totalInternshipsOffered || 120, icon: '💼', bg: 'rgba(14,165,233,0.1)' },
+          { label: 'Spin-offs & Startups', value: metrics.totalSpinOffs || startups.length || 14, icon: '', bg: 'rgba(236,72,153,0.1)' },
+          { label: 'Estágios Abertos', value: internships.filter((i: any) => i.status === 'aberto').length || metrics.totalInternshipsOffered || 120, icon: '', bg: 'rgba(14,165,233,0.1)' },
         ].map(kpi => (
           <div key={kpi.label} className={styles.kpiCard}>
             <div className={styles.kpiIconBox} style={{ background: kpi.bg }}>{kpi.icon}</div>
@@ -218,7 +218,7 @@ export default function UniversidadePage() {
           <div style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)', border: '1px solid #6ee7b7', borderRadius: '20px', padding: '1.6rem', marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
               <div style={{ width: '64px', height: '64px', borderRadius: '20px', background: '#059669', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', flexShrink: 0 }}>
-                {profile.universityLogo || '🎓'}
+                {profile.universityLogo || 'U'}
               </div>
               <div>
                 <h4 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>{profile.universityName}</h4>
@@ -305,7 +305,7 @@ export default function UniversidadePage() {
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '2rem' }}>
                 {startups.map((s: any, i: number) => (
                   <div key={i} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '0.85rem 1.2rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ width: '36px', height: '36px', background: '#ecfdf5', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>🚀</div>
+                    <div style={{ width: '36px', height: '36px', background: '#ecfdf5', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}><Rocket size={18} color="#059669" /></div>
                     <div>
                       <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#0f172a' }}>{s.name}</div>
                       <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{s.sector} · {s.type === 'spin_off' ? 'Spin-off' : (s.type === 'incubada' ? 'Incubada' : 'Alumni')} · {s.year}</div>
@@ -333,7 +333,7 @@ export default function UniversidadePage() {
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.8rem', gridColumn: 'span 2' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.5rem' }}>
                 <div style={{ width: '72px', height: '72px', borderRadius: '20px', background: '#059669', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.2rem' }}>
-                  {profile.universityLogo || '🎓'}
+                  {profile.universityLogo || 'U'}
                 </div>
                 <div>
                   <h4 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 800, color: '#0f172a' }}>{profile.universityName}</h4>
@@ -481,7 +481,7 @@ export default function UniversidadePage() {
                 <h4 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', fontWeight: 800, color: '#0f172a' }}>{int.title}</h4>
                 <p style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: '#475569' }}>{int.description}</p>
                 <div style={{ fontSize: '0.82rem', color: '#64748b', display: 'flex', gap: '1.2rem', flexWrap: 'wrap' }}>
-                  {int.department && <span>🏛️ {int.department}</span>}
+                  {int.department && <span>{int.department}</span>}
                   {int.duration && <span>🗓️ {int.duration}</span>}
                   {int.slots && <span>👥 {int.slots} vagas</span>}
                   {int.applicationDeadline && <span>⏰ Prazo: {int.applicationDeadline}</span>}
@@ -588,9 +588,9 @@ export default function UniversidadePage() {
           {/* Stats do Ecossistema */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
             {[
-              { icon: '🚀', label: 'Startups à Procura de Parcerias Académicas', value: eco.startupsLookingForPartners || 24, color: '#ecfdf5', textColor: '#047857' },
-              { icon: '🏢', label: 'Empresas com Desafios de Inovação Aberta', value: eco.companiesOffering || 18, color: '#eff6ff', textColor: '#1d4ed8' },
-              { icon: '💼', label: 'Pedidos de Estágio em Aberto', value: eco.openInternshipRequests || 9, color: '#fefce8', textColor: '#92400e' },
+              { icon: '', label: 'Startups à Procura de Parcerias Académicas', value: eco.startupsLookingForPartners || 24, color: '#ecfdf5', textColor: '#047857' },
+              { icon: '', label: 'Empresas com Desafios de Inovação Aberta', value: eco.companiesOffering || 18, color: '#eff6ff', textColor: '#1d4ed8' },
+              { icon: '', label: 'Pedidos de Estágio em Aberto', value: eco.openInternshipRequests || 9, color: '#fefce8', textColor: '#92400e' },
               { icon: '🏆', label: 'Desafios de Inovação Ativos na Rede', value: eco.innovationChallengesActive || 6, color: '#fdf4ff', textColor: '#6b21a8' },
             ].map(stat => (
               <div key={stat.label} style={{ background: stat.color, border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.25rem', textAlign: 'center' }}>
@@ -606,8 +606,8 @@ export default function UniversidadePage() {
           <div className={styles.cardsGrid}>
             {[
               { icon: '🔍', title: 'Procurar Startups', desc: 'Encontre startups e empreendedores interessados em projetos de investigação aplicada, co-criação e acesso a infraestrutura académica.', link: '/dashboard/oportunidades', label: 'Explorar Startups' },
-              { icon: '🏢', title: 'Conectar com Empresas', desc: 'Estabeleça projetos de inovação aberta com PMEs e corporações que necessitam de expertise académica, R&D e capital humano especializado.', link: '/dashboard/networking', label: 'Ver Empresas' },
-              { icon: '🤝', title: 'Encontrar Parceiros ABN', desc: 'Procure universidades parceiras, centros de investigação e aceleradoras que possam co-financiar e co-executar programas de impacto.', link: '/dashboard/networking', label: 'Explorar Parcerias' },
+              { icon: '', title: 'Conectar com Empresas', desc: 'Estabeleça projetos de inovação aberta com PMEs e corporações que necessitam de expertise académica, R&D e capital humano especializado.', link: '/dashboard/networking', label: 'Ver Empresas' },
+              { icon: '', title: 'Encontrar Parceiros ABN', desc: 'Procure universidades parceiras, centros de investigação e aceleradoras que possam co-financiar e co-executar programas de impacto.', link: '/dashboard/networking', label: 'Explorar Parcerias' },
               { icon: '🌍', title: 'Participar em Desafios', desc: 'Submeta soluções e equipas académicas aos desafios de inovação lançados por empresas parceiras no ecossistema ABN.', link: '/dashboard/oportunidades', label: 'Ver Desafios' }
             ].map((item, i) => (
               <div key={i} className={styles.card}>

@@ -5,7 +5,7 @@ const IncubatorProfileSchema = new mongoose.Schema({
 
   // Identidade Institucional
   organizationName: { type: String, default: '' },
-  logo: { type: String, default: '🏛️' },
+  logo: { type: String, default: '' },
   organizationType: {
     type: String,
     enum: ['incubadora', 'aceleradora', 'hub_inovacao', 'fabrica_startups', 'coworking_tech'],

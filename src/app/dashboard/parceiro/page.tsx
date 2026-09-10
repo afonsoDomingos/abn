@@ -399,7 +399,7 @@ export default function ParceiroDashboardPage() {
           <div className={styles.kpisGrid}>
             <div className={styles.kpiCard}>
               <div className={styles.kpiIconBox} style={{ background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1' }}>
-                🚀
+                
               </div>
               <div>
                 <div className={styles.kpiValue}>{metrics.startupsSupported || 42}</div>
@@ -409,7 +409,7 @@ export default function ParceiroDashboardPage() {
 
             <div className={styles.kpiCard}>
               <div className={styles.kpiIconBox} style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>
-                🤝
+                
               </div>
               <div>
                 <div className={styles.kpiValue}>{projects.length || metrics.jointInitiatives || 4}</div>
@@ -565,7 +565,7 @@ export default function ParceiroDashboardPage() {
                 <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.8rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
                     <div style={{ width: '64px', height: '64px', borderRadius: '18px', background: '#eef2ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
-                      {profile.organizationLogo || '🏢'}
+                      {profile.organizationLogo || 'P'}
                     </div>
                     <div>
                       <h4 style={{ margin: 0, fontSize: '1.3rem', fontWeight: 800, color: '#0f172a' }}>{profile.organizationName}</h4>

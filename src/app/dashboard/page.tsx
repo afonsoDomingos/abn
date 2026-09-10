@@ -37,17 +37,17 @@ import {
 import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Dashboard.module.css';
 
-const ROLE_LABELS: Record<string, { title: string; icon: string; desc: string }> = {
-  empreendedor: { title: 'Empreendedor', icon: '🚀', desc: 'Acompanhe a aceleração de ideias, pipeline de incubação e cursos.' },
-  startup: { title: 'Startup', icon: '💡', desc: 'Gestão de negócio escalável, captação de investimento e programas.' },
-  empresa: { title: 'Empresa / PME', icon: '🏢', desc: 'Oportunidades de expansão, inovação aberta e conexões B2B.' },
-  investidor: { title: 'Investidor', icon: '💰', desc: 'Portfólio de investimento, análise de risco e startups qualificadas.' },
-  mentor: { title: 'Mentor', icon: '🧭', desc: 'Orientação de fundadores, doação de horas e sessões estratégicas.' },
-  consultor: { title: 'Consultor / Especialista', icon: '🎯', desc: 'Demandas técnicas, consultorias especializadas e diagnósticos.' },
-  parceiro: { title: 'Parceiro', icon: '🤝', desc: 'Alianças comerciais, soluções corporativas e cooperação institucional.' },
-  universidade: { title: 'Universidade / Academia', icon: '🎓', desc: 'Projetos de I&D, polos científicos e ligação universidade-empresa.' },
-  incubadora: { title: 'Incubadora / Aceleradora', icon: '🏛️', desc: 'Hub de incubação, capacitação e acompanhamento de cohortes.' },
-  organizacao: { title: 'Organização / Instituição', icon: '🌐', desc: 'Programas de fomento, desenvolvimento socioeconómico e parcerias.' }
+const ROLE_LABELS: Record<string, { title: string; desc: string }> = {
+  empreendedor: { title: 'Empreendedor', desc: 'Acompanhe a aceleração de ideias, pipeline de incubação e cursos.' },
+  startup: { title: 'Startup', desc: 'Gestão de negócio escalável, captação de investimento e programas.' },
+  empresa: { title: 'Empresa / PME', desc: 'Oportunidades de expansão, inovação aberta e conexões B2B.' },
+  investidor: { title: 'Investidor', desc: 'Portfólio de investimento, análise de risco e startups qualificadas.' },
+  mentor: { title: 'Mentor', desc: 'Orientação de fundadores, doação de horas e sessões estratégicas.' },
+  consultor: { title: 'Consultor / Especialista', desc: 'Demandas técnicas, consultorias especializadas e diagnósticos.' },
+  parceiro: { title: 'Parceiro', desc: 'Alianças comerciais, soluções corporativas e cooperação institucional.' },
+  universidade: { title: 'Universidade / Academia', desc: 'Projetos de I&D, polos científicos e ligação universidade-empresa.' },
+  incubadora: { title: 'Incubadora / Aceleradora', desc: 'Hub de incubação, capacitação e acompanhamento de cohortes.' },
+  organizacao: { title: 'Organização / Instituição', desc: 'Programas de fomento, desenvolvimento socioeconómico e parcerias.' }
 };
 
 export default function DashboardPage() {
@@ -249,7 +249,6 @@ export default function DashboardPage() {
 
   const currentRoleInfo = ROLE_LABELS[activeRole] || {
     title: activeRole.toUpperCase(),
-    icon: '⚡',
     desc: 'Bem-vindo ao seu painel na ABN.'
   };
 
@@ -282,10 +281,9 @@ export default function DashboardPage() {
               background: 'rgba(255, 255, 255, 0.15)',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '1.5rem'
+              justifyContent: 'center'
             }}>
-              👑
+              <ShieldCheck size={22} color="#c7d2fe" />
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -297,7 +295,7 @@ export default function DashboardPage() {
                 </span>
               </div>
               <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: '#c7d2fe', lineHeight: 1.4 }}>
-                A visualizar o ecossistema na perspetiva de <strong>{currentRoleInfo.title} ({currentRoleInfo.icon})</strong>. Selecione qualquer um dos 10 perfis abaixo para testar a experiência.
+                A visualizar o ecossistema na perspetiva de <strong>{currentRoleInfo.title}</strong>. Selecione qualquer um dos 10 perfis abaixo para testar a experiência.
               </p>
             </div>
           </div>
@@ -352,7 +350,7 @@ export default function DashboardPage() {
               </span>
             </div>
             <h1 style={{ margin: '0 0 0.35rem 0', fontSize: '1.85rem', fontWeight: 800, color: '#ffffff', fontFamily: 'Outfit' }}>
-              Olá, <span className="text-gradient-gold">{userName}</span> 👋
+              Olá, <span className="text-gradient-gold">{userName}</span>
             </h1>
             <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.9rem' }}>
               {currentRoleInfo.desc}
@@ -363,7 +361,7 @@ export default function DashboardPage() {
           <div style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '16px', padding: '0.85rem 1.25rem', textAlign: 'right' }}>
             <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Visão Ativa</div>
             <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#ff6b00', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end', marginTop: '2px' }}>
-              <span>{currentRoleInfo.icon}</span> {currentRoleInfo.title}
+              {currentRoleInfo.title}
             </div>
           </div>
         </div>
@@ -376,7 +374,7 @@ export default function DashboardPage() {
             </span>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
               {userRoles.map(roleKey => {
-                const info = ROLE_LABELS[roleKey] || { title: roleKey, icon: '⚡' };
+                const info = ROLE_LABELS[roleKey] || { title: roleKey };
                 const isSelected = activeRole === roleKey;
                 return (
                   <button
@@ -397,7 +395,6 @@ export default function DashboardPage() {
                       transition: 'all 0.2s ease'
                     }}
                   >
-                    <span>{info.icon}</span>
                     <span>{info.title}</span>
                     {isSelected && <span style={{ fontSize: '0.68rem', opacity: 0.9 }}>✓</span>}
                   </button>
@@ -457,7 +454,7 @@ export default function DashboardPage() {
                 transition: 'all 0.2s ease'
               }}
             >
-              <span>Abrir Deal Room Completo 💎</span>
+              <span>Abrir Deal Room Completo</span>
               <ArrowRight size={18} />
             </Link>
           </div>
@@ -584,7 +581,7 @@ export default function DashboardPage() {
                 transition: 'all 0.2s ease'
               }}
             >
-              <span>Aceder ao Portal de Mentoria 🧭</span>
+              <span>Aceder ao Portal de Mentoria</span>
               <ArrowRight size={18} />
             </Link>
           </div>
@@ -936,7 +933,7 @@ export default function DashboardPage() {
             <div style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(14,165,233,0.25)', color: '#7dd3fc', padding: '3px 10px', borderRadius: '20px', textTransform: 'uppercase', letterSpacing: '0.8px', border: '1px solid rgba(14,165,233,0.35)' }}>🏢 Empresa / PME</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(14,165,233,0.25)', color: '#7dd3fc', padding: '3px 10px', borderRadius: '20px', textTransform: 'uppercase', letterSpacing: '0.8px', border: '1px solid rgba(14,165,233,0.35)' }}>Empresa / PME</span>
                   <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(16,185,129,0.2)', color: '#6ee7b7', padding: '3px 10px', borderRadius: '20px', border: '1px solid rgba(16,185,129,0.3)' }}>🟢 Verificada</span>
                 </div>
                 <h2 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 900, color: '#ffffff', fontFamily: 'Outfit, sans-serif', lineHeight: 1.2 }}>
@@ -960,14 +957,14 @@ export default function DashboardPage() {
           {/* KPI Tiles */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(155px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
             {[
-              { label: 'Clientes Ativos', value: business?.clients?.length || 12, icon: '👤', bg: 'rgba(14,165,233,0.08)' },
-              { label: 'Projetos', value: business?.stats?.projects || 8, icon: '📂', bg: 'rgba(99,102,241,0.08)' },
-              { label: 'Fornecedores', value: business?.suppliers?.length || 5, icon: '📦', bg: 'rgba(16,185,129,0.08)' },
-              { label: 'Pedidos Connect', value: 2, icon: '🔗', bg: 'rgba(245,158,11,0.08)' },
-              { label: 'Mercados', value: '3 países', icon: '🌍', bg: 'rgba(139,92,246,0.08)' },
+              { label: 'Clientes Ativos', value: business?.clients?.length || 12, bg: 'rgba(14,165,233,0.08)' },
+              { label: 'Projetos', value: business?.stats?.projects || 8, bg: 'rgba(99,102,241,0.08)' },
+              { label: 'Fornecedores', value: business?.suppliers?.length || 5, bg: 'rgba(16,185,129,0.08)' },
+              { label: 'Pedidos Connect', value: 2, bg: 'rgba(245,158,11,0.08)' },
+              { label: 'Mercados', value: '3 países', bg: 'rgba(139,92,246,0.08)' },
             ].map(kpi => (
               <div key={kpi.label} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1.25rem', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
-                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: kpi.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', marginBottom: '0.5rem' }}>{kpi.icon}</div>
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: kpi.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}><TrendingUp size={18} color="#0ea5e9" /></div>
                 <div style={{ fontSize: '1.4rem', fontWeight: 900, color: '#0f172a', fontFamily: 'Outfit' }}>{kpi.value}</div>
                 <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.4px' }}>{kpi.label}</div>
               </div>
@@ -989,11 +986,11 @@ export default function DashboardPage() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1rem' }}>
               {[
-                { icon: '🏪', label: 'Procuro Distribuidor', title: 'Procuro distribuidor em Angola', country: 'Angola', status: 'ativo', responses: 3, color: '#6366f1' },
-                { icon: '💻', label: 'Procuro Parceiro Tecnológico', title: 'Digitalização e ERP — parceiro tecnológico', country: 'Portugal / GB', status: 'em_negociacao', responses: 7, color: '#8b5cf6' },
+                { label: 'Procuro Distribuidor', title: 'Procuro distribuidor em Angola', country: 'Angola', status: 'ativo', responses: 3, color: '#6366f1' },
+                { label: 'Procuro Parceiro Tecnológico', title: 'Digitalização e ERP — parceiro tecnológico', country: 'Portugal / GB', status: 'em_negociacao', responses: 7, color: '#8b5cf6' },
               ].map((c, i) => (
                 <div key={i} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '1rem 1.25rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: `${c.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', flexShrink: 0 }}>{c.icon}</div>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: `${c.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Handshake size={20} color={c.color} /></div>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
                       <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0f172a' }}>{c.title}</span>
@@ -1001,7 +998,7 @@ export default function DashboardPage() {
                         {c.status === 'ativo' ? 'Ativo' : 'Em Negociação'}
                       </span>
                     </div>
-                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>🌍 {c.country} · 💬 {c.responses} respostas ABN</span>
+                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>{c.country} · {c.responses} respostas ABN</span>
                   </div>
                 </div>
               ))}
@@ -1021,18 +1018,18 @@ export default function DashboardPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.85rem' }}>
               {[
-                { icon: '🎯', label: 'Consultoria', color: 'rgba(99,102,241,0.08)' },
-                { icon: '🌐', label: 'Internacionalização', color: 'rgba(14,165,233,0.08)' },
-                { icon: '📢', label: 'Marketing', color: 'rgba(245,158,11,0.08)' },
-                { icon: '🎓', label: 'Formação', color: 'rgba(16,185,129,0.08)' },
-                { icon: '🧭', label: 'Mentoria', color: 'rgba(139,92,246,0.08)' },
-                { icon: '♟️', label: 'Estratégia', color: 'rgba(239,68,68,0.08)' },
-                { icon: '👥', label: 'Recursos Humanos', color: 'rgba(255,107,0,0.08)' },
-                { icon: '🚀', label: 'Aceleração', color: 'rgba(15,23,42,0.06)' },
+                { label: 'Consultoria', color: 'rgba(99,102,241,0.08)' },
+                { label: 'Internacionalização', color: 'rgba(14,165,233,0.08)' },
+                { label: 'Marketing', color: 'rgba(245,158,11,0.08)' },
+                { label: 'Formação', color: 'rgba(16,185,129,0.08)' },
+                { label: 'Mentoria', color: 'rgba(139,92,246,0.08)' },
+                { label: 'Estratégia', color: 'rgba(239,68,68,0.08)' },
+                { label: 'Recursos Humanos', color: 'rgba(255,107,0,0.08)' },
+                { label: 'Aceleração', color: 'rgba(15,23,42,0.06)' },
               ].map(item => (
                 <Link key={item.label} href="/dashboard/empresa" style={{ textDecoration: 'none' }}>
                   <div style={{ background: item.color, borderRadius: '14px', padding: '1rem', textAlign: 'center', border: '1px solid transparent', transition: 'all 0.2s', cursor: 'pointer' }}>
-                    <div style={{ fontSize: '1.6rem', marginBottom: '4px' }}>{item.icon}</div>
+                    <div style={{ marginBottom: '6px', display: 'flex', justifyContent: 'center' }}><ArrowRight size={16} color="#6366f1" /></div>
                     <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>{item.label}</div>
                   </div>
                 </Link>
@@ -1043,7 +1040,7 @@ export default function DashboardPage() {
           {/* CTA Full Dashboard */}
           <div style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)', border: '1.5px solid #bae6fd', borderRadius: '20px', padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(14,165,233,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>🏢</div>
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(14,165,233,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}><Building2 size={24} color="#0284c7" /></div>
               <div>
                 <div style={{ fontWeight: 800, fontSize: '1rem', color: '#0c4a6e' }}>Painel Completo da Empresa</div>
                 <div style={{ fontSize: '0.82rem', color: '#0369a1' }}>Dados, equipa, clientes, fornecedores, projetos e Business Connect.</div>
@@ -1159,7 +1156,7 @@ export default function DashboardPage() {
                   transition: 'all 0.2s ease'
                 }}
               >
-                <span>Aceder ao Portal Académico 🎓</span>
+                <span>Aceder ao Portal Académico</span>
                 <ArrowRight size={18} />
               </Link>
               <Link
@@ -1266,9 +1263,7 @@ export default function DashboardPage() {
             </div>
 
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.35rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(2, 132, 199, 0.1)', color: '#0284c7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}>
-                💼
-              </div>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(2, 132, 199, 0.1)', color: '#0284c7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}><Briefcase size={20} color="#0284c7" /></div>
               <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
                 Bolsas de Estágio &amp; Talento
               </h4>
@@ -1382,7 +1377,7 @@ export default function DashboardPage() {
                   transition: 'all 0.2s ease'
                 }}
               >
-                <span>Aceder ao Hub da Incubadora 🏛️</span>
+                <span>Aceder ao Hub da Incubadora</span>
                 <ArrowRight size={18} />
               </Link>
               <Link
@@ -1489,9 +1484,7 @@ export default function DashboardPage() {
             </div>
 
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.35rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}>
-                💼
-              </div>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}><Briefcase size={20} color="#0284c7" /></div>
               <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
                 Deal Room &amp; Demo Day
               </h4>
@@ -1611,7 +1604,7 @@ export default function DashboardPage() {
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
                     <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(99,102,241,0.3)', color: '#a5b4fc', padding: '3px 10px', borderRadius: '20px', textTransform: 'uppercase', letterSpacing: '0.8px', border: '1px solid rgba(99,102,241,0.4)' }}>
-                      💡 Startup
+                      Startup
                     </span>
                     <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(16,185,129,0.2)', color: '#6ee7b7', padding: '3px 10px', borderRadius: '20px', border: '1px solid rgba(16,185,129,0.3)' }}>
                       🟢 Ativo
@@ -1626,7 +1619,7 @@ export default function DashboardPage() {
                 </div>
                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                   <Link href="/dashboard/captacao" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#6366f1', color: '#ffffff', padding: '10px 18px', borderRadius: '12px', fontWeight: 800, fontSize: '0.85rem', textDecoration: 'none', border: '1px solid rgba(99,102,241,0.5)', transition: 'all 0.2s' }}>
-                    <TrendingUp size={16} /> Captação 🚀
+                    <TrendingUp size={16} /> Captação
                   </Link>
                   <Link href="/dashboard/negocios" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.08)', color: '#e2e8f0', padding: '10px 18px', borderRadius: '12px', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.15)' }}>
                     <Building2 size={16} /> Gerir Startup
@@ -1675,20 +1668,20 @@ export default function DashboardPage() {
             {/* 7-Pillar Grid */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.85rem', marginBottom: '1.25rem' }}>
               {[
-                { label: 'Equipa', key: 'team', icon: '👥', color: '#6366f1' },
-                { label: 'Produto', key: 'product', icon: '🛠️', color: '#8b5cf6' },
-                { label: 'Mercado', key: 'market', icon: '🌍', color: '#0ea5e9' },
-                { label: 'Tração', key: 'traction', icon: '📈', color: '#10b981' },
-                { label: 'Modelo de Negócio', key: 'businessModel', icon: '💼', color: '#f59e0b' },
-                { label: 'Governança', key: 'governance', icon: '🏛️', color: '#ef4444' },
-                { label: 'Potencial de Crescimento', key: 'growthPotential', icon: '🚀', color: '#ff6b00' }
+                { label: 'Equipa', key: 'team', color: '#6366f1' },
+                { label: 'Produto', key: 'product', color: '#8b5cf6' },
+                { label: 'Mercado', key: 'market', color: '#0ea5e9' },
+                { label: 'Tração', key: 'traction', color: '#10b981' },
+                { label: 'Modelo de Negócio', key: 'businessModel', color: '#f59e0b' },
+                { label: 'Governança', key: 'governance', color: '#ef4444' },
+                { label: 'Potencial de Crescimento', key: 'growthPotential', color: '#ff6b00' }
               ].map(pillar => {
                 const val = startupData?.startupScore?.[pillar.key] ?? 80;
                 return (
                   <div key={pillar.key} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '14px', padding: '0.9rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ fontSize: '1rem' }}>{pillar.icon}</span>
+                        <Target size={14} color={pillar.color} />
                         <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>{pillar.label}</span>
                       </div>
                       <span style={{ fontSize: '0.85rem', fontWeight: 900, color: pillar.color }}>{val}</span>
@@ -1722,17 +1715,15 @@ export default function DashboardPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
               {[
-                { label: 'MRR', value: startupData?.traction?.mrr || '$5,000', icon: '💵', color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
-                { label: 'ARR', value: startupData?.traction?.arr || '$60,000', icon: '📊', color: '#6366f1', bg: 'rgba(99,102,241,0.08)' },
-                { label: 'Runway', value: `${startupData?.traction?.runwayMonths || 14} meses`, icon: '⏳', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)' },
-                { label: 'Burn Rate', value: startupData?.traction?.burnRate || '$3,500/mês', icon: '🔥', color: '#ef4444', bg: 'rgba(239,68,68,0.08)' },
-                { label: 'Clientes Ativos', value: `${startupData?.traction?.activeClients || 45}`, icon: '👤', color: '#0ea5e9', bg: 'rgba(14,165,233,0.08)' },
-                { label: 'Crescimento MoM', value: startupData?.traction?.momGrowth || '18%', icon: '📈', color: '#ff6b00', bg: 'rgba(255,107,0,0.08)' }
+                { label: 'MRR', value: startupData?.traction?.mrr || '$5,000', color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
+                { label: 'ARR', value: startupData?.traction?.arr || '$60,000', color: '#6366f1', bg: 'rgba(99,102,241,0.08)' },
+                { label: 'Runway', value: `${startupData?.traction?.runwayMonths || 14} meses`, color: '#f59e0b', bg: 'rgba(245,158,11,0.08)' },
+                { label: 'Burn Rate', value: startupData?.traction?.burnRate || '$3,500/mês', color: '#ef4444', bg: 'rgba(239,68,68,0.08)' },
+                { label: 'Clientes Ativos', value: `${startupData?.traction?.activeClients || 45}`, color: '#0ea5e9', bg: 'rgba(14,165,233,0.08)' },
+                { label: 'Crescimento MoM', value: startupData?.traction?.momGrowth || '18%', color: '#ff6b00', bg: 'rgba(255,107,0,0.08)' }
               ].map(kpi => (
                 <div key={kpi.label} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1.25rem', boxShadow: '0 2px 8px rgba(15,23,42,0.04)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: kpi.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>
-                    {kpi.icon}
-                  </div>
+                  <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: kpi.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><BarChart2 size={18} color={kpi.color} /></div>
                   <div style={{ fontSize: '1.3rem', fontWeight: 900, color: '#0f172a', fontFamily: 'Outfit' }}>{kpi.value}</div>
                   <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.4px' }}>{kpi.label}</div>
                 </div>
@@ -1743,9 +1734,7 @@ export default function DashboardPage() {
           {/* ── RODADA DE CAPTAÇÃO ATIVA ── */}
           <div style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)', border: '1.5px solid #bbf7d0', borderRadius: '20px', padding: '1.5rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(16,185,129,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', flexShrink: 0 }}>
-                💰
-              </div>
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(16,185,129,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><DollarSign size={22} color="#16a34a" /></div>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '4px' }}>
                   <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: '#064e3b' }}>Rodada de Captação Ativa</h4>
@@ -1761,7 +1750,7 @@ export default function DashboardPage() {
                     📊 Valuation: <strong>{startupData?.fundraising?.valuation || '$1.5M Pre-Money'}</strong>
                   </span>
                   <span style={{ fontSize: '0.82rem', color: '#065f46', fontWeight: 600 }}>
-                    🎯 Estágio: <strong>{startupData?.fundraising?.stage || 'Seed'}</strong>
+                    Estágio: <strong>{startupData?.fundraising?.stage || 'Seed'}</strong>
                   </span>
                   <span style={{ fontSize: '0.82rem', color: startupData?.fundraising?.pitchDeckUrl ? '#065f46' : '#b45309', fontWeight: 600 }}>
                     {startupData?.fundraising?.pitchDeckUrl ? '✅ Pitch Deck carregado' : '⚠️ Pitch Deck em falta'}
@@ -1843,16 +1832,14 @@ export default function DashboardPage() {
           {/* ── QUICK ACTIONS para STARTUP ── */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
             {[
-              { href: '/dashboard/captacao', icon: '🎯', label: 'Data Room', desc: 'Gerir documentos para investidores', color: '#6366f1', bg: 'rgba(99,102,241,0.08)' },
-              { href: '/dashboard/captacao', icon: '🤝', label: 'Solicitar Introdução', desc: 'Conectar com investidores ABN', color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
-              { href: '/dashboard/networking', icon: '🌍', label: 'Procurar Investidores', desc: 'Explorar o ecossistema ABN', color: '#0ea5e9', bg: 'rgba(14,165,233,0.08)' },
-              { href: '/dashboard/perfil', icon: '✏️', label: 'Atualizar Perfil', desc: 'Setor, modelo, equipa e produto', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)' }
+              { href: '/dashboard/captacao', label: 'Data Room', desc: 'Gerir documentos para investidores', color: '#6366f1', bg: 'rgba(99,102,241,0.08)' },
+              { href: '/dashboard/captacao', label: 'Solicitar Introdução', desc: 'Conectar com investidores ABN', color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
+              { href: '/dashboard/networking', label: 'Procurar Investidores', desc: 'Explorar o ecossistema ABN', color: '#0ea5e9', bg: 'rgba(14,165,233,0.08)' },
+              { href: '/dashboard/perfil', label: 'Atualizar Perfil', desc: 'Setor, modelo, equipa e produto', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)' }
             ].map(action => (
               <Link key={action.label} href={action.href} style={{ textDecoration: 'none' }}>
                 <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1.25rem', boxShadow: '0 2px 8px rgba(15,23,42,0.03)', transition: 'all 0.2s', cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                  <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: action.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', flexShrink: 0 }}>
-                    {action.icon}
-                  </div>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: action.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><ArrowRight size={18} color={action.color} /></div>
                   <div>
                     <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0f172a', marginBottom: '3px' }}>{action.label}</div>
                     <div style={{ fontSize: '0.78rem', color: '#64748b', lineHeight: 1.4 }}>{action.desc}</div>
@@ -1872,9 +1859,7 @@ export default function DashboardPage() {
           {/* Active Membership Banner Card */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem', marginBottom: '2.5rem' }}>
             <div style={{ background: '#0f172a', color: '#ffffff', borderRadius: '20px', padding: '1.2rem 1.6rem', boxShadow: '0 10px 25px rgba(15,23,42,0.12)', display: 'flex', alignItems: 'center', gap: '1.2rem', border: '1px solid rgba(255,107,0,0.25)', width: '100%' }}>
-              <div style={{ width: '46px', height: '46px', borderRadius: '14px', background: 'rgba(255,107,0,0.15)', color: '#ff6b00', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', flexShrink: 0 }}>
-                🏛️
-              </div>
+              <div style={{ width: '46px', height: '46px', borderRadius: '14px', background: 'rgba(255,107,0,0.15)', color: '#ff6b00', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', flexShrink: 0 }}><Landmark size={20} color="#ff6b00" /></div>
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2px' }}>
                   <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Membro Registado</span>
@@ -1948,9 +1933,7 @@ export default function DashboardPage() {
               {/* Card 3: Mentores Disponíveis */}
               <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 4px 16px rgba(15,23,42,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
-                  <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(126,34,206,0.1)', color: '#7e22ce', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}>
-                    🧭
-                  </div>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(126,34,206,0.1)', color: '#7e22ce', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}><Compass size={20} color="#2563eb" /></div>
                   <h3 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
                     Existem 3 mentores disponíveis na sua área
                   </h3>
@@ -1966,9 +1949,7 @@ export default function DashboardPage() {
               {/* Card 4: Parceiros Internacionais */}
               <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 4px 16px rgba(15,23,42,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
-                  <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(59,130,246,0.1)', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}>
-                    🌐
-                  </div>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(59,130,246,0.1)', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}><Globe size={20} color="#16a34a" /></div>
                   <h3 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
                     Há 2 parceiros internacionais interessados
                   </h3>

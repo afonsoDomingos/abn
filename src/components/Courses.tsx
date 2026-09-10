@@ -61,8 +61,8 @@ export default function Courses() {
   const handleShareWhatsApp = (course: Course) => {
     const url = `${window.location.origin}/dashboard/formacao`;
     const text = language === 'pt'
-      ? `🎓 *${course.title}* - Curso na ABN Academia!\n\n${course.desc.slice(0, 140)}...\n\n💰 Valor: ${course.price}\n⏱️ Duração: ${course.duration}\n\n👉 Inscreva-se em: ${url}`
-      : `🎓 *${course.title}* - ABN Academy Course!\n\n${course.desc.slice(0, 140)}...\n\n💰 Price: ${course.price}\n⏱️ Duration: ${course.duration}\n\n👉 Enroll at: ${url}`;
+      ? `*${course.title}* - Curso na ABN Academia!\n\n${course.desc.slice(0, 140)}...\n\n💰 Valor: ${course.price}\n⏱️ Duração: ${course.duration}\n\n👉 Inscreva-se em: ${url}`
+      : `*${course.title}* - ABN Academy Course!\n\n${course.desc.slice(0, 140)}...\n\n💰 Price: ${course.price}\n⏱️ Duration: ${course.duration}\n\n👉 Enroll at: ${url}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 

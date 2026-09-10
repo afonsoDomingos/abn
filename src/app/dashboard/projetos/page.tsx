@@ -197,7 +197,7 @@ export default function ProjetosPage() {
             <div>
               <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.5rem', fontWeight: 800 }}>Fase de Incubação</h4>
               <span style={{ display: 'inline-block', background: '#fff7ed', border: '1px solid #ffedd5', color: '#c2410c', padding: '4px 14px', borderRadius: '40px', fontSize: '0.85rem', fontWeight: 800 }}>
-                🚀 {business?.incubationPhase}
+                {business?.incubationPhase}
               </span>
             </div>
           </div>

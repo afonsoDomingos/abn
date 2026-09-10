@@ -78,7 +78,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       title: 'Geral',
       items: [
         { href: '/admin', label: t.admin.dashboard, icon: <LayoutDashboard size={18} /> },
-        { href: '/dashboard', label: 'Simulador de Perfis 👁️', icon: <Layers size={18} /> },
+        { href: '/dashboard', label: 'Simulador de Perfis', icon: <Layers size={18} /> },
         { href: '/admin/perfil', label: 'Meu Perfil & Foto', icon: <UserCheck size={18} /> },
         { href: '/admin/usuarios', label: t.admin.users, icon: <Users size={18} /> },
         { href: '/admin/especialistas', label: 'Especialistas & Mentores', icon: <Award size={18} /> },
@@ -208,11 +208,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <h2 className={styles.headerTitle}>{t.admin.panel}</h2>
             {isCollaborator ? (
               <span style={{ background: '#eff6ff', color: '#1d4ed8', fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', border: '1px solid #bfdbfe' }}>
-                👤 Colaborador
+                Colaborador
               </span>
             ) : (
               <span style={{ background: '#fff7ed', color: '#c2410c', fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', border: '1px solid #ffedd5' }}>
-                ⚡ Administrador
+                Administrador
               </span>
             )}
           </div>

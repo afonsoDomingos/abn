@@ -313,7 +313,7 @@ export default function AdminHubsPage() {
       alert('Preencha o nome do parceiro.');
       return;
     }
-    setPartners([...partners, { name: newPartnerName, logo: newPartnerLogo || '🤝' }]);
+    setPartners([...partners, { name: newPartnerName, logo: newPartnerLogo || '' }]);
     setNewPartnerName('');
     setNewPartnerLogo('');
   };
@@ -669,7 +669,7 @@ export default function AdminHubsPage() {
                     <div key={idx} className={styles.subItemBox} style={{ marginBottom: 0 }}>
                       <div className={styles.subItemRow}>
                         <span style={{ fontWeight: 700, color: evt.type === 'future' ? 'var(--primary)' : 'rgba(255,255,255,0.5)', fontSize: '0.85rem', textTransform: 'uppercase' }}>
-                          {evt.type === 'future' ? '🚀 Futuro' : '⏳ Passado'}
+                          {evt.type === 'future' ? 'Futuro' : '⏳ Passado'}
                         </span>
                         <button 
                           type="button" 
@@ -793,7 +793,7 @@ export default function AdminHubsPage() {
                 <div className={styles.formGroup}>
                   <label>Logótipo/Emoji do Parceiro (Emoji ou Link ou Upload)</label>
                   <div className={styles.uploadRow}>
-                    <input value={newPartnerLogo} onChange={e => setNewPartnerLogo(e.target.value)} placeholder="Ex: 🤝 ou link da imagem" style={{ flex: 1 }} />
+                    <input value={newPartnerLogo} onChange={e => setNewPartnerLogo(e.target.value)} placeholder="Link ou URL do logótipo" style={{ flex: 1 }} />
                     <label className={styles.uploadLabel} title="Carregar Logótipo" style={{ cursor: 'pointer' }}>
                       {uploadingPartnerLogo ? <div className={styles.spinnerSmall}></div> : '📁'}
                       <input 
@@ -843,7 +843,7 @@ export default function AdminHubsPage() {
                         {partner.logo && (partner.logo.startsWith('http') || partner.logo.startsWith('/')) ? (
                           <img src={partner.logo} alt={partner.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                         ) : (
-                          <span style={{ fontSize: '1.5rem' }}>{partner.logo || '🤝'}</span>
+                          <span style={{ fontSize: '1.5rem' }}>{partner.logo || ''}</span>
                         )}
                       </div>
                       <div style={{ flex: 1 }}>

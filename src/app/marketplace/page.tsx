@@ -16,9 +16,9 @@ interface Service {
 
 const categoryIcons: Record<string, string> = {
   'Marketing Digital': '📣',
-  'Incubação': '🚀',
+  'Incubação': '',
   'Design': '🎨',
-  'Consultoria': '💼',
+  'Consultoria': '',
   'Tecnologia': '💻',
 };
 

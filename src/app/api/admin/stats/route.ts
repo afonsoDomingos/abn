@@ -103,7 +103,7 @@ export async function GET() {
       }
       activities.push({
         id: `pay-${p._id}`,
-        icon: '🎓',
+        icon: '',
         title: `Inscrição em Curso (${p.price})`,
         desc: `${userName} inscreveu-se no curso "${p.itemName}"`,
         createdAt: p.createdAt,
@@ -115,7 +115,7 @@ export async function GET() {
     recentClubInscriptions.forEach((c: any) => {
       activities.push({
         id: `club-${c._id}`,
-        icon: '🏛️',
+        icon: '',
         title: `Inscrição Clube / Programa (${c.valorPago || 'Padrão'})`,
         desc: `${c.nomeCompleto} submeteu candidatura ao Clube (${c.nivelAdesao || 'Membro'})`,
         createdAt: c.createdAt,

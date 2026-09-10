@@ -42,7 +42,7 @@ export async function seedAdmin() {
           { name: 'AfDB', logo: '🏦' },
           { name: 'UNDP', logo: '🇺🇳' },
           { name: 'TechHub Luanda', logo: '💻' },
-          { name: 'Startup Moçambique', logo: '🚀' },
+          { name: 'Startup Moçambique', logo: '' },
           { name: 'Global Invest', logo: '📈' }
         ]
       },
@@ -376,9 +376,9 @@ export async function seedAdmin() {
         { name: 'Umaro Sissoco', role: 'Coordenador de Parcerias e Impacto', image: '/default-avatar.png' }
       ],
       partners: [
-        { name: 'Startup Bissau', logo: '🚀' },
+        { name: 'Startup Bissau', logo: '' },
         { name: 'Banco da Guiné', logo: '🏦' },
-        { name: 'Mentores GB', logo: '🤝' }
+        { name: 'Mentores GB', logo: '' }
       ]
     };
 

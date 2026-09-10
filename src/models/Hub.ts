@@ -99,7 +99,7 @@ const HubSchema = new Schema<IHub>({
   partners: [
     {
       name: { type: String, default: '' },
-      logo: { type: String, default: '🤝' }
+      logo: { type: String, default: '' }
     }
   ]
 }, { timestamps: true });

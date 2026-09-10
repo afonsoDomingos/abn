@@ -202,7 +202,7 @@ export default function DashboardLayout({
               }}
             >
               <ShieldCheck size={18} />
-              {!collapsed && <span>Painel Admin 👑</span>}
+              {!collapsed && <span>Painel Admin</span>}
             </Link>
           )}
           <Link href="/dashboard" className={isActive('/dashboard') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Dashboard' : undefined}>
@@ -241,7 +241,7 @@ export default function DashboardLayout({
             }}
           >
             <Briefcase size={18} />
-            {!collapsed && <span>Serviços {user.roles.includes('consultor') || activeRole === 'consultor' ? '🎯' : ''}</span>}
+            {!collapsed && <span>Serviços</span>}
           </Link>
           {(user.roles.includes('investidor') || activeRole === 'investidor') && (
             <Link 
@@ -256,7 +256,7 @@ export default function DashboardLayout({
               }}
             >
               <TrendingUp size={18} />
-              {!collapsed && <span>Deal Room 💎</span>}
+              {!collapsed && <span>Deal Room</span>}
             </Link>
           )}
           {!(user.roles.includes('investidor') || activeRole === 'investidor') && (user.roles.includes('mentor') || activeRole === 'mentor') && (
@@ -268,13 +268,13 @@ export default function DashboardLayout({
           {(user.roles.includes('startup') || activeRole === 'startup') && (
             <Link href="/dashboard/captacao" className={isActive('/dashboard/captacao') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Captação de Investimento' : undefined} style={{ background: isActive('/dashboard/captacao') ? undefined : 'linear-gradient(135deg, rgba(255,107,0,0.06) 0%, rgba(251,191,36,0.06) 100%)', border: isActive('/dashboard/captacao') ? undefined : '1px solid rgba(255,107,0,0.15)', color: isActive('/dashboard/captacao') ? undefined : '#b45309' }}>
               <TrendingUp size={18} />
-              {!collapsed && <span>Captação 🚀</span>}
+              {!collapsed && <span>Captação</span>}
             </Link>
           )}
           {(user.roles.includes('empresa') || activeRole === 'empresa') && (
             <Link href="/dashboard/empresa" className={isActive('/dashboard/empresa') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Business Connect' : undefined} style={{ background: isActive('/dashboard/empresa') ? undefined : 'linear-gradient(135deg, rgba(14,165,233,0.07) 0%, rgba(99,102,241,0.07) 100%)', border: isActive('/dashboard/empresa') ? undefined : '1px solid rgba(14,165,233,0.18)', color: isActive('/dashboard/empresa') ? undefined : '#0369a1' }}>
               <DollarSign size={18} />
-              {!collapsed && <span>Business Connect 🌐</span>}
+              {!collapsed && <span>Business Connect</span>}
             </Link>
           )}
           <Link 
@@ -289,7 +289,7 @@ export default function DashboardLayout({
             }}
           >
             <Compass size={18} />
-            {!collapsed && <span>Mentoria {user.roles.includes('mentor') || activeRole === 'mentor' ? '🧭' : ''}</span>}
+            {!collapsed && <span>Mentoria</span>}
           </Link>
           <Link 
             href="/dashboard/parceiro" 
@@ -303,7 +303,7 @@ export default function DashboardLayout({
             }}
           >
             <Handshake size={18} />
-            {!collapsed && <span>Parcerias {user.roles.includes('parceiro') || activeRole === 'parceiro' ? '🤝' : ''}</span>}
+            {!collapsed && <span>Parcerias</span>}
           </Link>
           {(user.roles.includes('universidade') || activeRole === 'universidade') && (
             <Link
@@ -318,7 +318,7 @@ export default function DashboardLayout({
               }}
             >
               <GraduationCap size={18} />
-              {!collapsed && <span>Academia 🎓</span>}
+              {!collapsed && <span>Academia</span>}
             </Link>
           )}
           {(user.roles.includes('incubadora') || activeRole === 'incubadora') && (
@@ -334,7 +334,7 @@ export default function DashboardLayout({
               }}
             >
               <Landmark size={18} />
-              {!collapsed && <span>Incubadora 🏛️</span>}
+              {!collapsed && <span>Incubadora</span>}
             </Link>
           )}
           <Link href="/dashboard/cursos" className={isActive('/dashboard/cursos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Cursos' : undefined}>

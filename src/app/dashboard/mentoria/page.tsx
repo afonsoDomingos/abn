@@ -628,7 +628,7 @@ export default function MentoriaPage() {
                         </div>
                         <div>
                           <h4 className={styles.menteeName}>{req.menteeName}</h4>
-                          <div className={styles.menteeStartup}>🏢 {req.menteeBusinessName} • Estágio: {req.businessStage}</div>
+                          <div className={styles.menteeStartup}>{req.menteeBusinessName} • Estágio: {req.businessStage}</div>
                         </div>
                       </div>
 
@@ -697,7 +697,7 @@ export default function MentoriaPage() {
                       <div>
                         <h4 className={styles.menteeName}>{req.menteeName}</h4>
                         <div className={styles.menteeStartup}>
-                          🏢 {req.menteeBusinessName} • Contacto: {req.menteeEmail} • Estágio: {req.businessStage}
+                          {req.menteeBusinessName} • Contacto: {req.menteeEmail} • Estágio: {req.businessStage}
                         </div>
                       </div>
                     </div>

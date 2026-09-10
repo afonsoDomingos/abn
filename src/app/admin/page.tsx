@@ -223,7 +223,7 @@ export default function AdminPage() {
           actionLabel = 'Ver Inscrições Cursos 💳';
         } else if (top.type === 'club_inscription') {
           actionLink = '/admin/clube/inscricoes';
-          actionLabel = 'Ver Inscrições Clube 🏛️';
+          actionLabel = 'Ver Inscrições Clube ';
         }
 
         return (
@@ -339,7 +339,7 @@ export default function AdminPage() {
       {/* SECÇÃO 1: ECOSSISTEMA & MEMBROS (3 Cartões) */}
       <div style={{ marginBottom: '2rem' }}>
         <h2 style={{ fontSize: '0.85rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          🏢 Ecossistema & Comunidade ABN
+           Ecossistema & Comunidade ABN
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
           
@@ -394,7 +394,7 @@ export default function AdminPage() {
       {/* SECÇÃO 2: PROGRAMAS, EVENTOS & NOTÍCIAS (3 Cartões) */}
       <div style={{ marginBottom: '2rem' }}>
         <h2 style={{ fontSize: '0.85rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          🚀 Programas, Eventos & Notícias
+          Programas, Eventos & Notícias
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
           
@@ -449,7 +449,7 @@ export default function AdminPage() {
       {/* SECÇÃO 3: ACADEMIA, CERTIFICADOS & FINANCEIRO (3 Cartões) */}
       <div style={{ marginBottom: '2.5rem' }}>
         <h2 style={{ fontSize: '0.85rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          🎓 Academia, Certificados & Faturação
+           Academia, Certificados & Faturação
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
           

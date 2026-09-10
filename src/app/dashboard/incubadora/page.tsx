@@ -239,14 +239,14 @@ export default function IncubadoraPage() {
         <>
           <div className={styles.kpiGrid}>
             <div className={styles.kpiCard}>
-              <div className={styles.kpiIcon} style={{ background: 'rgba(79, 70, 229, 0.1)', color: '#4f46e5' }}>🚀</div>
+              <div className={styles.kpiIcon} style={{ background: 'rgba(79, 70, 229, 0.1)', color: '#4f46e5' }}><Rocket size={20} /></div>
               <div>
                 <div className={styles.kpiValue}>{metrics.totalStartupsIncubated || startups.length}</div>
                 <div className={styles.kpiLabel}>Total Incubadas</div>
               </div>
             </div>
             <div className={styles.kpiCard}>
-              <div className={styles.kpiIcon} style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>⚡</div>
+              <div className={styles.kpiIcon} style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}><Zap size={20} /></div>
               <div>
                 <div className={styles.kpiValue}>{metrics.activeStartups || 12}</div>
                 <div className={styles.kpiLabel}>Ativas em Cohorte</div>
@@ -281,7 +281,7 @@ export default function IncubadoraPage() {
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.75rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#ede9fe', color: '#6d28d9', padding: '4px 10px', borderRadius: '20px' }}>
-                  🎯 Próximo Grande Marco
+                  Próximo Grande Marco
                 </span>
                 <span style={{ fontSize: '0.8rem', color: '#64748b' }}>28 de Maio, 2026</span>
               </div>
@@ -340,14 +340,14 @@ export default function IncubadoraPage() {
                   <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                       <span className={`${styles.statusPill} ${s.status === 'ativa' ? styles.statusAtiva : s.status === 'graduada' ? styles.statusGraduada : styles.statusRisco}`}>
-                        {s.status === 'ativa' ? '🟢 Ativa' : s.status === 'graduada' ? '🎓 Graduada' : '⚠️ Em Risco'}
+                        {s.status === 'ativa' ? 'Ativa' : s.status === 'graduada' ? 'Graduada' : 'Em Risco'}
                       </span>
                       <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b' }}>{s.batch}</span>
                     </div>
 
                     <h3 style={{ margin: '0 0 4px', fontSize: '1.2rem', color: '#0f172a', fontWeight: 800 }}>{s.startupName}</h3>
                     <p style={{ margin: '0 0 10px', fontSize: '0.84rem', color: '#64748b' }}>
-                      👤 {s.founderName || 'Fundador'} · 🏷️ {s.sector} · 🎯 {s.stage}
+                      {s.founderName || 'Fundador'} · {s.sector} · {s.stage}
                     </p>
 
                     {/* Health Score */}
@@ -439,7 +439,7 @@ export default function IncubadoraPage() {
                 </p>
 
                 <div style={{ background: '#f8fafc', borderRadius: '14px', padding: '1rem', marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.82rem', color: '#334155' }}>
-                  <div>⏳ <strong>Duração:</strong> {p.duration} · 🎯 <strong>Estágio:</strong> {p.stage?.toUpperCase()}</div>
+                  <div><strong>Duração:</strong> {p.duration} · <strong>Estágio:</strong> {p.stage?.toUpperCase()}</div>
                   <div>💰 <strong>Bolsa / Grant:</strong> {(p.grantAmountEur || 0).toLocaleString('pt-PT')} € {p.equityPercent ? `(${p.equityPercent}% equity)` : '(Equity-Free)'}</div>
                   <div>👥 <strong>Vagas:</strong> {p.slotsAvailable} startups</div>
                   {p.applicationDeadline && <div>📅 <strong>Prazo:</strong> {p.applicationDeadline}</div>}
@@ -500,7 +500,7 @@ export default function IncubadoraPage() {
                     "{app.pitchSummary}"
                   </p>
                   <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                    🎯 Programa: <strong>{app.programApplied}</strong> · Estágio: {app.stage} · Submetido: {new Date(app.submittedAt).toLocaleDateString('pt-PT')}
+                    Programa: <strong>{app.programApplied}</strong> · Estágio: {app.stage} · Submetido: {new Date(app.submittedAt).toLocaleDateString('pt-PT')}
                   </div>
                   {app.reviewerNotes && (
                     <div style={{ marginTop: '8px', fontSize: '0.8rem', color: '#0284c7', background: '#f0f9ff', padding: '6px 12px', borderRadius: '8px' }}>
@@ -569,7 +569,7 @@ export default function IncubadoraPage() {
                 </div>
 
                 <div style={{ background: '#f8fafc', padding: '10px 12px', borderRadius: '12px', fontSize: '0.82rem', color: '#334155', marginBottom: '12px' }}>
-                  🎯 <strong>Especialidade:</strong> {m.specialty}
+                  <strong>Especialidade:</strong> {m.specialty}
                 </div>
 
                 <div style={{ fontSize: '0.8rem', color: '#64748b', display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
@@ -579,7 +579,7 @@ export default function IncubadoraPage() {
 
                 {m.assignedStartups && m.assignedStartups.length > 0 && (
                   <div style={{ fontSize: '0.78rem', color: '#475569' }}>
-                    🚀 <strong>Startups acompanhadas:</strong> {m.assignedStartups.join(', ')}
+                    <strong>Startups acompanhadas:</strong> {m.assignedStartups.join(', ')}
                   </div>
                 )}
               </div>
@@ -625,7 +625,7 @@ export default function IncubadoraPage() {
 
                 {inv.interestedStartups && inv.interestedStartups.length > 0 && (
                   <div style={{ fontSize: '0.8rem', color: '#16a34a', fontWeight: 700 }}>
-                    🎯 Startups no radar: {inv.interestedStartups.join(', ')}
+                    Startups no radar: {inv.interestedStartups.join(', ')}
                   </div>
                 )}
               </div>

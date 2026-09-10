@@ -514,7 +514,7 @@ export default function AdminConfigPage() {
                     {(p.logo && (p.logo.startsWith('http') || p.logo.startsWith('/'))) ? (
                       <img src={p.logo} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
-                      <span style={{ fontSize: '1.5rem' }}>{p.logo || '🤝'}</span>
+                      <span style={{ fontSize: '1.5rem' }}>{p.logo || ''}</span>
                     )}
                   </div>
                   <div className={styles.logoInputWrapper}>
@@ -551,11 +551,11 @@ export default function AdminConfigPage() {
                             if (data.success && data.url) {
                               updateArrayField(setPartners, partners, index, 'logo', data.url);
                             } else {
-                              updateArrayField(setPartners, partners, index, 'logo', '🤝');
+                              updateArrayField(setPartners, partners, index, 'logo', '');
                               alert('Erro ao fazer upload: ' + (data.error || 'Erro desconhecido'));
                             }
                           } catch (err) {
-                            updateArrayField(setPartners, partners, index, 'logo', '🤝');
+                            updateArrayField(setPartners, partners, index, 'logo', '');
                             alert('Erro na conexão para upload.');
                           }
                         }}
@@ -579,7 +579,7 @@ export default function AdminConfigPage() {
                 />
               </div>
             ))}
-            <button className="btn-outline" onClick={() => addItem(setPartners, partners, { name: '', logo: '🤝', url: '' })}>+ Adicionar Parceiro</button>
+            <button className="btn-outline" onClick={() => addItem(setPartners, partners, { name: '', logo: '', url: '' })}>+ Adicionar Parceiro</button>
           </div>
           <button className="btn-primary" onClick={() => saveConfig('partners_content', partners)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Parceiros'}
@@ -597,7 +597,7 @@ export default function AdminConfigPage() {
                     {(company.icon && (company.icon.startsWith('http') || company.icon.startsWith('/'))) ? (
                       <img src={company.icon} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
-                      <span style={{ fontSize: '1.5rem' }}>{company.icon || '🏢'}</span>
+                      <span style={{ fontSize: '1.5rem' }}>{company.icon || ''}</span>
                     )}
                   </div>
                   <div className={styles.logoInputWrapper}>
@@ -634,11 +634,11 @@ export default function AdminConfigPage() {
                             if (data.success && data.url) {
                               updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', data.url);
                             } else {
-                              updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', '🏢');
+                              updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', '');
                               alert('Erro ao fazer upload: ' + (data.error || 'Erro desconhecido'));
                             }
                           } catch (err) {
-                            updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', '🏢');
+                            updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', '');
                             alert('Erro na conexão para upload.');
                           }
                         }}
@@ -677,7 +677,7 @@ export default function AdminConfigPage() {
                 />
               </div>
             ))}
-            <button className="btn-outline" onClick={() => addItem(setSupportedCompanies, supportedCompanies, { name: '', location: '', desc: '', icon: '🏢', phase: '' })}>+ Adicionar Empresa</button>
+            <button className="btn-outline" onClick={() => addItem(setSupportedCompanies, supportedCompanies, { name: '', location: '', desc: '', icon: '', phase: '' })}>+ Adicionar Empresa</button>
           </div>
           <button className="btn-primary" onClick={() => saveConfig('supported_companies', supportedCompanies)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Empresas'}
@@ -911,7 +911,7 @@ export default function AdminConfigPage() {
                 <textarea value={f.desc} onChange={e => updateArrayField(setFeatures, features, index, 'desc', e.target.value)} placeholder="Descrição curta" rows={2} />
               </div>
             ))}
-            <button className="btn-outline" onClick={() => addItem(setFeatures, features, { title: '', desc: '', icon: '🚀' })}>+ Adicionar Funcionalidade</button>
+            <button className="btn-outline" onClick={() => addItem(setFeatures, features, { title: '', desc: '', icon: '' })}>+ Adicionar Funcionalidade</button>
           </div>
           <button className="btn-primary" onClick={() => saveConfig('features_content', features)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Funcionalidades'}

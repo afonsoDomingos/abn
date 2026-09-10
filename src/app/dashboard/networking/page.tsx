@@ -353,11 +353,11 @@ export default function NetworkingPage() {
                 Filtrar Por:
               </span>
               {[
-                { id: 'todos', label: '🌐 Todos os Membros' },
-                { id: 'empreendedor', label: '🚀 Empreendedores' },
-                { id: 'empresa', label: '🏢 Empresas & Startups' },
+                { id: 'todos', label: 'Todos os Membros' },
+                { id: 'empreendedor', label: 'Empreendedores' },
+                { id: 'empresa', label: 'Empresas & Startups' },
                 { id: 'investidor', label: '💰 Investidores' },
-                { id: 'mentor', label: '🧭 Mentores & Especialistas' }
+                { id: 'mentor', label: 'Mentores & Especialistas' }
               ].map(item => {
                 const active = filter === item.id;
                 return (
