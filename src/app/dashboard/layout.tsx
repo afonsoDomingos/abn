@@ -23,7 +23,8 @@ import {
   ClipboardList,
   Building2,
   TrendingUp,
-  DollarSign
+  DollarSign,
+  Compass
 } from 'lucide-react';
 import styles from './Dashboard.module.css';
 
@@ -225,6 +226,20 @@ export default function DashboardLayout({
               {!collapsed && <span>Business Connect 🌐</span>}
             </Link>
           )}
+          <Link 
+            href="/dashboard/mentoria" 
+            className={isActive('/dashboard/mentoria') ? styles.active : ''} 
+            onClick={() => setSidebarOpen(false)} 
+            title={collapsed ? 'Mentoria' : undefined}
+            style={{ 
+              background: isActive('/dashboard/mentoria') ? undefined : (user.roles.includes('mentor') || activeRole === 'mentor' ? 'linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(255,107,0,0.08) 100%)' : undefined),
+              border: isActive('/dashboard/mentoria') ? undefined : (user.roles.includes('mentor') || activeRole === 'mentor' ? '1px solid rgba(245,158,11,0.25)' : undefined),
+              color: isActive('/dashboard/mentoria') ? undefined : (user.roles.includes('mentor') || activeRole === 'mentor' ? '#b45309' : undefined)
+            }}
+          >
+            <Compass size={18} />
+            {!collapsed && <span>Mentoria {user.roles.includes('mentor') || activeRole === 'mentor' ? '🧭' : ''}</span>}
+          </Link>
           <Link href="/dashboard/cursos" className={isActive('/dashboard/cursos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Cursos' : undefined}>
             <BookOpen size={18} />
             {!collapsed && <span>Cursos</span>}

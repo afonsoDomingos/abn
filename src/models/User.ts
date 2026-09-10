@@ -95,6 +95,43 @@ const UserSchema = new mongoose.Schema({
     availableCapital: { type: String, default: '' }
   },
 
+  // ── 8. PERFIL & OPERAÇÕES DO MENTOR ──
+  mentorProfile: {
+    headline: { type: String, default: '' },
+    specialization: [{ type: String }],
+    yearsOfExperience: { type: Number, default: 5 },
+    supportedCompanies: [{
+      name: { type: String },
+      logo: { type: String },
+      year: { type: String }
+    }],
+    certifications: [{
+      title: { type: String },
+      issuer: { type: String },
+      year: { type: String }
+    }],
+    languages: [{ type: String }],
+    hourlyRate: { type: String, default: 'Gratuito (ABN Cohort)' },
+    pricePerSession: { type: Number, default: 0 }, // 0 = Pro-Bono/Gratuito
+    abnCommissionPercent: { type: Number, default: 15 },
+    availability: {
+      days: [{ type: String }],
+      hours: { type: String, default: '14:00 - 18:00' },
+      mode: { type: String, enum: ['online', 'presencial', 'hibrido'], default: 'online' },
+      isAcceptingNewMentees: { type: Boolean, default: true }
+    },
+    reviews: [{
+      menteeId: { type: String },
+      menteeName: { type: String },
+      startupName: { type: String },
+      rating: { type: Number, default: 5 },
+      comment: { type: String },
+      date: { type: Date, default: Date.now }
+    }],
+    totalSessionsCompleted: { type: Number, default: 0 },
+    totalMenteesCount: { type: Number, default: 0 }
+  },
+
   createdAt: { type: Date, default: Date.now },
 });
 

@@ -28,7 +28,8 @@ import {
   AlertCircle,
   Zap,
   BarChart2,
-  Globe
+  Globe,
+  Compass
 } from 'lucide-react';
 import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Dashboard.module.css';
@@ -449,16 +450,65 @@ export default function DashboardPage() {
       ───────────────────────────────────────────────────────────── */}
       {activeRole === 'mentor' && (
         <>
+          {/* Banner Executivo de Acesso ao Portal de Mentoria */}
+          <div style={{
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+            borderRadius: '20px',
+            padding: '2rem',
+            color: '#ffffff',
+            marginBottom: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1.5rem',
+            boxShadow: '0 12px 30px -8px rgba(15, 23, 42, 0.35)',
+            border: '1px solid rgba(255,255,255,0.08)'
+          }}>
+            <div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.6rem' }}>
+                <Compass size={13} /> Área do Mentor ABN
+              </div>
+              <h2 style={{ fontSize: '1.65rem', fontWeight: 800, margin: '0 0 6px 0', fontFamily: 'Outfit' }}>
+                Gestão de Mentorias, Sessões &amp; Mentees
+              </h2>
+              <p style={{ color: '#94a3b8', fontSize: '0.9rem', maxWidth: '620px', margin: 0 }}>
+                Responda a pedidos de mentoria de fundadores, realize sessões virtuais com links integrados e configure a sua disponibilidade e especialidades.
+              </p>
+            </div>
+
+            <Link 
+              href="/dashboard/mentoria"
+              style={{
+                background: 'linear-gradient(135deg, #ff6b00 0%, #ea580c 100%)',
+                color: '#ffffff',
+                textDecoration: 'none',
+                padding: '0.85rem 1.6rem',
+                borderRadius: '12px',
+                fontWeight: 800,
+                fontSize: '0.95rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 8px 20px rgba(255, 107, 0, 0.35)',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <span>Aceder ao Portal de Mentoria 🧭</span>
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+
           <div className={styles.progressGrid}>
             <div className={styles.progressCard}>
               <h3>Atividade de Mentoria</h3>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
                 <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
-                  8<span style={{ fontSize: '1rem', color: '#64748b' }}> startups</span>
+                  14<span style={{ fontSize: '1rem', color: '#64748b' }}> startups</span>
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
-                    Startups sob a sua mentoria estratégica nos setores de inovação e negócios.
+                    Fundadores e startups sob a sua mentoria estratégica no ecossistema ABN.
                   </p>
                 </div>
               </div>
@@ -467,26 +517,36 @@ export default function DashboardPage() {
             <div className={styles.progressCard}>
               <h3>Métricas do Mentor</h3>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Star size={18} color="var(--primary, #ff6b00)" /> Avaliação Média: <strong>4.9 / 5.0</strong></li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Clock size={18} color="var(--primary, #ff6b00)" /> Horas Doadas: <strong>16 Horas</strong></li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Calendar size={18} color="var(--primary, #ff6b00)" /> Próxima Sessão: <strong>Terça-feira, 14:00</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Star size={18} color="var(--primary, #ff6b00)" /> Avaliação Média: <strong>4.9 / 5.0 ★</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Clock size={18} color="var(--primary, #ff6b00)" /> Horas Doadas: <strong>24 Horas</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Calendar size={18} color="var(--primary, #ff6b00)" /> Sessões Concluídas: <strong>18 Sessões</strong></li>
               </ul>
             </div>
           </div>
 
           <div className={styles.sectionTitle}>
-            <h2>Tarefas de Acompanhamento</h2>
+            <h2>Ações Rápidas de Mentoria</h2>
           </div>
 
           <div className={styles.tasks}>
-            <div className={styles.taskItem}>
-              <input type="checkbox" checked={true} readOnly />
-              <span>Avaliar a descrição de negócios e pitch de novos fundadores</span>
-            </div>
-            <div className={styles.taskItem}>
-              <input type="checkbox" checked={false} readOnly />
-              <span>Validar o plano de tração do primeiro trimestre das startups atribuídas</span>
-            </div>
+            <Link href="/dashboard/mentoria" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={true} readOnly />
+                <span style={{ fontWeight: 600 }}>Gerir pedidos de mentoria pendentes na caixa de entrada →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/mentoria" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Aceder à sala virtual da próxima sessão agendada no Google Meet →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/mentoria" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Atualizar disponibilidade semanal e especialidades no perfil →</span>
+              </div>
+            </Link>
           </div>
 
           <div className={styles.sectionTitle}>
