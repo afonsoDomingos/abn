@@ -13,21 +13,29 @@ import {
   Award, 
   ShieldCheck, 
   Check, 
-  ExternalLink 
+  ExternalLink,
+  Rocket,
+  Zap,
+  TrendingUp,
+  Compass,
+  Target,
+  Handshake,
+  GraduationCap,
+  Landmark
 } from 'lucide-react';
 import styles from './Perfil.module.css';
 
 const PROFILE_CATEGORIES = [
-  { id: 'empreendedor', title: 'Empreendedor', icon: '🚀' },
-  { id: 'startup', title: 'Startup', icon: '💡' },
-  { id: 'empresa', title: 'Empresa / PME', icon: '🏢' },
-  { id: 'investidor', title: 'Investidor', icon: '💰' },
-  { id: 'mentor', title: 'Mentor', icon: '🧭' },
-  { id: 'consultor', title: 'Consultor / Especialista', icon: '🎯' },
-  { id: 'parceiro', title: 'Parceiro', icon: '🤝' },
-  { id: 'universidade', title: 'Universidade / Academia', icon: '🎓' },
-  { id: 'incubadora', title: 'Incubadora / Aceleradora', icon: '🏛️' },
-  { id: 'organizacao', title: 'Organização / Instituição', icon: '🌐' }
+  { id: 'empreendedor', title: 'Empreendedor', icon: Rocket },
+  { id: 'startup', title: 'Startup', icon: Zap },
+  { id: 'empresa', title: 'Empresa / PME', icon: Building2 },
+  { id: 'investidor', title: 'Investidor', icon: TrendingUp },
+  { id: 'mentor', title: 'Mentor', icon: Compass },
+  { id: 'consultor', title: 'Consultor / Especialista', icon: Target },
+  { id: 'parceiro', title: 'Parceiro', icon: Handshake },
+  { id: 'universidade', title: 'Universidade / Academia', icon: GraduationCap },
+  { id: 'incubadora', title: 'Incubadora / Aceleradora', icon: Landmark },
+  { id: 'organizacao', title: 'Organização / Instituição', icon: Globe2 }
 ];
 
 const SECTORS = [
@@ -405,9 +413,12 @@ export default function PerfilPage() {
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center' }}>
                 {roles.map(r => {
                   const cat = PROFILE_CATEGORIES.find(c => c.id === r);
+                  const IconComp = cat?.icon;
                   return (
-                    <span key={r} style={{ background: '#0f172a', color: '#ffffff', padding: '3px 10px', borderRadius: '50px', fontSize: '0.74rem', fontWeight: 700 }}>
-                      {cat?.icon} {cat?.title} {r === role && '★'}
+                    <span key={r} style={{ background: '#0f172a', color: '#ffffff', padding: '3px 10px', borderRadius: '50px', fontSize: '0.74rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                      {IconComp && <IconComp size={12} style={{ color: '#ff6b00' }} />}
+                      <span>{cat?.title}</span>
+                      {r === role && <span style={{ color: '#ff6b00' }}>★</span>}
                     </span>
                   );
                 })}
@@ -453,8 +464,9 @@ export default function PerfilPage() {
                       transition: 'all 0.2s ease'
                     }}
                   >
-                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>
-                      {category.icon} {category.title}
+                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <category.icon size={16} color={isSelected ? '#ff6b00' : '#64748b'} />
+                      <span>{category.title}</span>
                     </span>
                     <div style={{
                       width: '18px',

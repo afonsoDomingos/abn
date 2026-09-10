@@ -322,16 +322,65 @@ export default function DashboardPage() {
       ───────────────────────────────────────────────────────────── */}
       {activeRole === 'investidor' && (
         <>
+          {/* Banner Executivo de Acesso ao Deal Room */}
+          <div style={{
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+            borderRadius: '20px',
+            padding: '2rem',
+            color: '#ffffff',
+            marginBottom: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1.5rem',
+            boxShadow: '0 12px 30px -8px rgba(15, 23, 42, 0.35)',
+            border: '1px solid rgba(255,255,255,0.08)'
+          }}>
+            <div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255, 107, 0, 0.15)', color: '#ff8c38', border: '1px solid rgba(255, 107, 0, 0.3)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.6rem' }}>
+                <TrendingUp size={13} /> Portal do Investidor Ativo
+              </div>
+              <h2 style={{ fontSize: '1.65rem', fontWeight: 800, margin: '0 0 6px 0', fontFamily: 'Outfit' }}>
+                Dealflow &amp; Oportunidades de Co-Investimento
+              </h2>
+              <p style={{ color: '#94a3b8', fontSize: '0.9rem', maxWidth: '620px', margin: 0 }}>
+                Explore rodadas de investimento abertas, aceda a pitch decks confidenciais e agende reuniões de due diligence com fundadores validados pelo ABN Hub.
+              </p>
+            </div>
+
+            <Link 
+              href="/dashboard/investimentos"
+              style={{
+                background: 'linear-gradient(135deg, #ff6b00 0%, #ea580c 100%)',
+                color: '#ffffff',
+                textDecoration: 'none',
+                padding: '0.85rem 1.6rem',
+                borderRadius: '12px',
+                fontWeight: 800,
+                fontSize: '0.95rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 8px 20px rgba(255, 107, 0, 0.35)',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <span>Abrir Deal Room Completo 💎</span>
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+
           <div className={styles.progressGrid}>
             <div className={styles.progressCard}>
-              <h3>Portfólio de Análise & Deals</h3>
+              <h3>Portfólio de Análise &amp; Deals</h3>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
                 <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
-                  18<span style={{ fontSize: '1rem', color: '#64748b' }}> startups</span>
+                  $1.1M<span style={{ fontSize: '0.9rem', color: '#64748b' }}> em captação</span>
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
-                    Startups em aceleração ativa no ABN Hub elegíveis para investimento imediato e co-financiamento.
+                    5 oportunidades qualificadas com rodadas ativas em Fintech, AgriTech, Logística e Energia Limpa.
                   </p>
                 </div>
               </div>
@@ -342,7 +391,7 @@ export default function DashboardPage() {
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
                 <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Registo de Perfil de Investidor Concluído</li>
                 <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Setores e Teses de Investimento Ativos</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Acesso Liberado a Pitch Decks & Data Rooms</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Acesso Liberado a Pitch Decks &amp; Data Rooms</li>
               </ul>
             </div>
           </div>
@@ -352,18 +401,24 @@ export default function DashboardPage() {
           </div>
 
           <div className={styles.tasks}>
-            <div className={styles.taskItem}>
-              <input type="checkbox" checked={true} readOnly />
-              <span>Explorar diretório de startups em rodada de financiamento</span>
-            </div>
-            <div className={styles.taskItem}>
-              <input type="checkbox" checked={false} readOnly />
-              <span>Agendar reunião de Due Diligence com founders via ABN Hub</span>
-            </div>
-            <div className={styles.taskItem}>
-              <input type="checkbox" checked={false} readOnly />
-              <span>Submeter Term Sheet ou manifestação de interesse preliminar</span>
-            </div>
+            <Link href="/dashboard/investimentos" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={true} readOnly />
+                <span style={{ fontWeight: 600 }}>Explorar diretório de startups em rodada de financiamento no Deal Room →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/investimentos" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Agendar reuniões de Due Diligence com fundadores via ABN Hub →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/investimentos" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Submeter Term Sheet ou manifestação de interesse confidencial →</span>
+              </div>
+            </Link>
           </div>
 
           <div className={styles.sectionTitle}>

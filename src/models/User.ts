@@ -67,6 +67,34 @@ const UserSchema = new mongoose.Schema({
     nextSession: { type: Date }
   },
 
+  // ── 7. PERFIL & OPERAÇÕES DO INVESTIDOR ──
+  investorWatchlist: [{
+    businessId: { type: String, required: true },
+    notes: { type: String, default: '' },
+    rating: { type: Number, default: 0 },
+    addedAt: { type: Date, default: Date.now }
+  }],
+  investorMeetings: [{
+    businessId: { type: String, required: true },
+    businessName: { type: String, required: true },
+    founderName: { type: String, default: '' },
+    date: { type: String, required: true },
+    time: { type: String, required: true },
+    topic: { type: String, default: 'Due Diligence & Apresentação' },
+    status: { type: String, enum: ['agendada', 'concluida', 'cancelada'], default: 'agendada' },
+    meetingLink: { type: String, default: '' },
+    notes: { type: String, default: '' },
+    createdAt: { type: Date, default: Date.now }
+  }],
+  investorPreferences: {
+    investorType: { type: String, default: 'Angel' }, // Angel, VC, Family Office, Corporate VC
+    ticketMin: { type: String, default: '$5,000' },
+    ticketMax: { type: String, default: '$100,000' },
+    preferredSectors: [{ type: String }],
+    targetCountries: [{ type: String }],
+    availableCapital: { type: String, default: '' }
+  },
+
   createdAt: { type: Date, default: Date.now },
 });
 

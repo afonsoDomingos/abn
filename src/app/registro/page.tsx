@@ -24,7 +24,14 @@ import {
   Compass,
   Layers,
   Camera,
-  ExternalLink
+  ExternalLink,
+  Rocket,
+  Zap,
+  TrendingUp,
+  Target,
+  Handshake,
+  GraduationCap,
+  Landmark
 } from 'lucide-react';
 import styles from '../login/Auth.module.css';
 
@@ -32,7 +39,7 @@ import styles from '../login/Auth.module.css';
 interface ProfileCategory {
   id: string;
   title: string;
-  icon: string;
+  icon: React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>;
   badge: string;
   description: string;
 }
@@ -41,70 +48,70 @@ const PROFILE_CATEGORIES: ProfileCategory[] = [
   {
     id: 'empreendedor',
     title: 'Empreendedor',
-    icon: '🚀',
+    icon: Rocket,
     badge: 'Inovação',
     description: 'Fundador de projetos, novos negócios e ideias inovadoras no ecossistema.'
   },
   {
     id: 'startup',
     title: 'Startup',
-    icon: '💡',
+    icon: Zap,
     badge: 'Escalabilidade',
     description: 'Negócio escalável em fase inicial, MVP, validação ou crescimento acelerado.'
   },
   {
     id: 'empresa',
     title: 'Empresa / PME',
-    icon: '🏢',
+    icon: Building2,
     badge: 'Corporativo',
     description: 'Empresa consolidada ou PME à procura de expansão, inovação e fornecedores.'
   },
   {
     id: 'investidor',
     title: 'Investidor',
-    icon: '💰',
+    icon: TrendingUp,
     badge: 'Capital',
     description: 'Business Angel, Fundo VC, investidor anjo ou corporativo em busca de deals.'
   },
   {
     id: 'mentor',
     title: 'Mentor',
-    icon: '🧭',
+    icon: Compass,
     badge: 'Orientação',
     description: 'Especialista e líder de mercado que orienta fundadores e partilha know-how.'
   },
   {
     id: 'consultor',
     title: 'Consultor / Especialista',
-    icon: '🎯',
+    icon: Target,
     badge: 'Expertise',
     description: 'Profissional qualificado em assessoria técnica, jurídica, financeira ou estratégica.'
   },
   {
     id: 'parceiro',
     title: 'Parceiro',
-    icon: '🤝',
+    icon: Handshake,
     badge: 'Alianças',
     description: 'Parceiro estratégico corporativo, tecnológico, de média ou serviços de apoio.'
   },
   {
     id: 'universidade',
     title: 'Universidade / Academia',
-    icon: '🎓',
+    icon: GraduationCap,
     badge: 'I&D & Ensino',
     description: 'Instituição de ensino superior, centros de investigação e polos científicos.'
   },
   {
     id: 'incubadora',
     title: 'Incubadora / Aceleradora',
-    icon: '🏛️',
+    icon: Landmark,
     badge: 'Ecossistema',
     description: 'Hub de apoio à incubação, capacitação e aceleração de novos negócios.'
   },
   {
     id: 'organizacao',
     title: 'Organização / Instituição',
-    icon: '🌐',
+    icon: Globe2,
     badge: 'Institucional',
     description: 'ONGs, associações empresariais, câmaras de comércio ou entidades públicas.'
   }
@@ -544,6 +551,7 @@ export default function RegisterPage() {
                   {selectedRoles.map(roleId => {
                     const found = PROFILE_CATEGORIES.find(c => c.id === roleId);
                     const isPrimary = roleId === primaryRole;
+                    const IconComp = found?.icon;
                     return (
                       <span 
                         key={roleId} 
@@ -552,7 +560,9 @@ export default function RegisterPage() {
                         onClick={() => setPrimaryRole(roleId)}
                         style={{ cursor: 'pointer' }}
                       >
-                        {found?.icon} {found?.title} {isPrimary && '★ Principal'}
+                        {IconComp && <IconComp size={14} />}
+                        <span>{found?.title}</span>
+                        {isPrimary && <span style={{ opacity: 0.9, fontSize: '0.72rem' }}>★ Principal</span>}
                       </span>
                     );
                   })}
@@ -562,6 +572,7 @@ export default function RegisterPage() {
               <div className={styles.profileCardGrid}>
                 {PROFILE_CATEGORIES.map(category => {
                   const isSelected = selectedRoles.includes(category.id);
+                  const IconComp = category.icon;
                   return (
                     <div
                       key={category.id}
@@ -569,7 +580,9 @@ export default function RegisterPage() {
                       onClick={() => toggleRole(category.id)}
                     >
                       <div className={styles.profileCardHeader}>
-                        <span className={styles.profileCardIcon}>{category.icon}</span>
+                        <div className={styles.profileCardIconBox}>
+                          <IconComp size={20} />
+                        </div>
                         <div className={styles.profileCardCheck}>
                           {isSelected && <Check size={14} />}
                         </div>
@@ -979,12 +992,14 @@ export default function RegisterPage() {
 
                 <div className={styles.verificationSummaryRow}>
                   <span>Categorias Escolhidas</span>
-                  <span style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                  <span style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                     {selectedRoles.map(r => {
                       const cat = PROFILE_CATEGORIES.find(c => c.id === r);
+                      const IconComp = cat?.icon;
                       return (
-                        <span key={r} style={{ background: '#f1f5f9', color: '#0f172a', padding: '2px 8px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700 }}>
-                          {cat?.icon} {cat?.title}
+                        <span key={r} style={{ background: '#f1f5f9', color: '#0f172a', padding: '4px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                          {IconComp && <IconComp size={13} style={{ color: '#ff6b00' }} />}
+                          <span>{cat?.title}</span>
                         </span>
                       );
                     })}

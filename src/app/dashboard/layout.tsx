@@ -191,9 +191,25 @@ export default function DashboardLayout({
             <Briefcase size={18} />
             {!collapsed && <span>Serviços</span>}
           </Link>
-          {(user.roles.includes('investidor') || user.roles.includes('mentor') || activeRole === 'investidor' || activeRole === 'mentor') && (
+          {(user.roles.includes('investidor') || activeRole === 'investidor') && (
+            <Link 
+              href="/dashboard/investimentos" 
+              className={isActive('/dashboard/investimentos') ? styles.active : ''} 
+              onClick={() => setSidebarOpen(false)} 
+              title={collapsed ? 'Deal Room & Investimentos' : undefined}
+              style={{ 
+                background: isActive('/dashboard/investimentos') ? undefined : 'linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(245,158,11,0.08) 100%)', 
+                border: isActive('/dashboard/investimentos') ? undefined : '1px solid rgba(16,185,129,0.25)', 
+                color: isActive('/dashboard/investimentos') ? undefined : '#047857' 
+              }}
+            >
+              <TrendingUp size={18} />
+              {!collapsed && <span>Deal Room 💎</span>}
+            </Link>
+          )}
+          {!(user.roles.includes('investidor') || activeRole === 'investidor') && (user.roles.includes('mentor') || activeRole === 'mentor') && (
             <Link href="/dashboard/investimentos" className={isActive('/dashboard/investimentos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Investimentos' : undefined}>
-              <CalendarDays size={18} />
+              <TrendingUp size={18} />
               {!collapsed && <span>Investimentos</span>}
             </Link>
           )}
