@@ -97,7 +97,23 @@ Mensagem de Motivação:
 ${formData.msg}`;
 
     try {
-      const res = await fetch('/api/contact', {
+      // 1. Registar candidatura na API de Parcerias da ABN
+      const partnerRes = await fetch('/api/partners', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'apply',
+          organizationName: formData.org,
+          organizationType: formData.type,
+          partnerCategory: formData.category,
+          focalPointName: formData.name,
+          focalPointEmail: formData.email,
+          motivationMessage: formData.msg
+        })
+      });
+
+      // 2. Notificar também por email / contacto
+      await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -107,8 +123,8 @@ ${formData.msg}`;
         })
       });
 
-      const data = await res.json();
-      if (res.ok && data.success) {
+      const partnerData = await partnerRes.json();
+      if (partnerRes.ok && partnerData.success) {
         setSent(true);
         setFormData({
           name: '',
@@ -120,9 +136,9 @@ ${formData.msg}`;
         });
         setTimeout(() => {
           setSent(false);
-        }, 5000);
+        }, 6000);
       } else {
-        setErrorMsg(data.error || (language === 'pt' ? 'Erro ao submeter a candidatura.' : 'Error submitting application.'));
+        setErrorMsg(partnerData.message || (language === 'pt' ? 'Erro ao submeter a candidatura.' : 'Error submitting application.'));
       }
     } catch (err) {
       setErrorMsg(language === 'pt' ? 'Erro de conexão. Tente novamente.' : 'Connection error. Please try again.');

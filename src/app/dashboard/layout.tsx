@@ -24,7 +24,8 @@ import {
   Building2,
   TrendingUp,
   DollarSign,
-  Compass
+  Compass,
+  Handshake
 } from 'lucide-react';
 import styles from './Dashboard.module.css';
 
@@ -249,6 +250,20 @@ export default function DashboardLayout({
           >
             <Compass size={18} />
             {!collapsed && <span>Mentoria {user.roles.includes('mentor') || activeRole === 'mentor' ? '🧭' : ''}</span>}
+          </Link>
+          <Link 
+            href="/dashboard/parceiro" 
+            className={isActive('/dashboard/parceiro') ? styles.active : ''} 
+            onClick={() => setSidebarOpen(false)} 
+            title={collapsed ? 'Parcerias Estratégicas' : undefined}
+            style={{ 
+              background: isActive('/dashboard/parceiro') ? undefined : (user.roles.includes('parceiro') || activeRole === 'parceiro' ? 'linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(16,185,129,0.08) 100%)' : undefined),
+              border: isActive('/dashboard/parceiro') ? undefined : (user.roles.includes('parceiro') || activeRole === 'parceiro' ? '1px solid rgba(99,102,241,0.25)' : undefined),
+              color: isActive('/dashboard/parceiro') ? undefined : (user.roles.includes('parceiro') || activeRole === 'parceiro' ? '#4f46e5' : undefined)
+            }}
+          >
+            <Handshake size={18} />
+            {!collapsed && <span>Parcerias {user.roles.includes('parceiro') || activeRole === 'parceiro' ? '🤝' : ''}</span>}
           </Link>
           <Link href="/dashboard/cursos" className={isActive('/dashboard/cursos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Cursos' : undefined}>
             <BookOpen size={18} />

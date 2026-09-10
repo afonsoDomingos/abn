@@ -29,7 +29,8 @@ import {
   Zap,
   BarChart2,
   Globe,
-  Compass
+  Compass,
+  Handshake
 } from 'lucide-react';
 import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Dashboard.module.css';
@@ -705,6 +706,130 @@ export default function DashboardPage() {
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
                 <span style={{ fontWeight: 600 }}>Atualizar portfólio de cases com métricas quantificáveis de sucesso →</span>
+              </div>
+            </Link>
+          </div>
+        </>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+         3b. PARCEIRO INSTITUCIONAL VIEW
+      ───────────────────────────────────────────────────────────── */}
+      {activeRole === 'parceiro' && (
+        <>
+          {/* Banner Executivo de Acesso ao Hub do Parceiro */}
+          <div style={{
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0c4a6e 100%)',
+            borderRadius: '20px',
+            padding: '2rem',
+            color: '#ffffff',
+            marginBottom: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1.5rem',
+            boxShadow: '0 12px 30px -8px rgba(15, 23, 42, 0.35)',
+            border: '1px solid rgba(99, 102, 241, 0.25)'
+          }}>
+            <div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(99, 102, 241, 0.2)', color: '#a5b4fc', border: '1px solid rgba(99, 102, 241, 0.4)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.6rem' }}>
+                <Handshake size={13} /> Parcerias Estratégicas ABN
+              </div>
+              <h2 style={{ fontSize: '1.65rem', fontWeight: 800, margin: '0 0 6px 0', fontFamily: 'Outfit' }}>
+                Cooperação Institucional &amp; Impacto no Ecossistema
+              </h2>
+              <p style={{ color: '#94a3b8', fontSize: '0.9rem', maxWidth: '620px', margin: 0 }}>
+                Coordene programas estruturantes com a ABN. Acompanhe o ciclo de vida de projetos conjuntos, webinars e fóruns co-organizados, e o impacto direto gerado em startups e PMEs.
+              </p>
+            </div>
+
+            <Link 
+              href="/dashboard/parceiro"
+              style={{
+                background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+                color: '#ffffff',
+                textDecoration: 'none',
+                padding: '0.85rem 1.6rem',
+                borderRadius: '12px',
+                fontWeight: 700,
+                fontSize: '0.95rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 14px rgba(79, 70, 229, 0.4)',
+                border: 'none',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <span>Aceder à Área do Parceiro</span>
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+
+          <div className={styles.progressGrid}>
+            <div className={styles.progressCard}>
+              <h3>Impacto Comunitário &amp; Cooperação</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
+                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#4f46e5', fontFamily: 'Outfit' }}>
+                  42<span style={{ fontSize: '1rem', color: '#64748b' }}> startups</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
+                    Startups e PMEs impulsionadas através dos programas conjuntos com a ABN e fundos mobilizados.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.progressCard}>
+              <h3>Métricas da Parceria Oficial</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><ShieldCheck size={18} color="#16a34a" /> Protocolo / MOU: <strong>Válido até 2027</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Handshake size={18} color="#6366f1" /> Projetos em Execução: <strong>4 Iniciativas</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><DollarSign size={18} color="#f59e0b" /> Recursos Mobilizados: <strong>70.000 €</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className={styles.sectionTitle}>
+            <h2>Iniciativas Bilaterais em Destaque</h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.25rem' }}>
+              <span style={{ fontSize: '0.72rem', background: '#eef2ff', color: '#4f46e5', fontWeight: 800, padding: '2px 8px', borderRadius: '6px' }}>Aceleração &amp; Inovação</span>
+              <h4 style={{ margin: '8px 0 4px 0', fontSize: '1rem', color: '#0f172a' }}>InovaÁfrica: Programa Agrotech 2026</h4>
+              <p style={{ margin: 0, fontSize: '0.82rem', color: '#64748b' }}>Capacitação e bolsa para 30 startups agrotech em Moçambique e Guiné-Bissau.</p>
+            </div>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.25rem' }}>
+              <span style={{ fontSize: '0.72rem', background: '#f0fdf4', color: '#16a34a', fontWeight: 800, padding: '2px 8px', borderRadius: '6px' }}>Conferência B2B</span>
+              <h4 style={{ margin: '8px 0 4px 0', fontSize: '1rem', color: '#0f172a' }}>Fórum Económico da Lusofonia &amp; ABN</h4>
+              <p style={{ margin: 0, fontSize: '0.82rem', color: '#64748b' }}>Webinar executivo e rodadas de matchmaking entre fundadores e investidores.</p>
+            </div>
+          </div>
+
+          <div className={styles.sectionTitle}>
+            <h2>Ações Rápidas de Parceria</h2>
+          </div>
+
+          <div className={styles.tasks}>
+            <Link href="/dashboard/parceiro" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={true} readOnly />
+                <span style={{ fontWeight: 600 }}>Acompanhar status e entregáveis dos projetos bilaterais ativos →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/parceiro" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Propor novo projeto conjunto ou agendar evento co-organizado →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/parceiro" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Consultar repositório de documentos oficiais e relatório trimestral →</span>
               </div>
             </Link>
           </div>

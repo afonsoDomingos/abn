@@ -164,6 +164,75 @@ const UserSchema = new mongoose.Schema({
     reviewsCount: { type: Number, default: 0 }
   },
 
+  // ── 10. PERFIL DO PARCEIRO (INSTITUCIONAL & CANDIDATO) ──
+  partnerProfile: {
+    status: { 
+      type: String, 
+      enum: ['candidato', 'em_analise', 'aprovado', 'rejeitado'], 
+      default: 'candidato' 
+    },
+    partnerType: { 
+      type: String, 
+      enum: ['institucional', 'financeiro', 'estrategico', 'tecnologico', 'comercial', 'academico', 'internacional', 'bancario'], 
+      default: 'estrategico' 
+    },
+    organizationName: { type: String, default: '' },
+    organizationLogo: { type: String, default: '' },
+    headline: { type: String, default: '' },
+    sector: { type: String, default: '' },
+    country: { type: String, default: '' },
+    city: { type: String, default: '' },
+    website: { type: String, default: '' },
+    institutionalBio: { type: String, default: '' },
+    focalPoint: {
+      name: { type: String, default: '' },
+      role: { type: String, default: '' },
+      email: { type: String, default: '' },
+      phone: { type: String, default: '' }
+    },
+    partnershipAgreement: {
+      mouStatus: { type: String, enum: ['pendente', 'em_revisao', 'assinado'], default: 'pendente' },
+      signedDate: { type: Date },
+      mouUrl: { type: String, default: '' }
+    },
+    jointProjects: [{
+      title: { type: String, required: true },
+      description: { type: String, default: '' },
+      category: { type: String, default: 'Inovação & Empreendedorismo' },
+      status: { type: String, enum: ['planeamento', 'em_andamento', 'concluido'], default: 'planeamento' },
+      budget: { type: String, default: '' },
+      goals: [{ type: String }],
+      startDate: { type: String, default: '' },
+      endDate: { type: String, default: '' }
+    }],
+    jointEvents: [{
+      title: { type: String, required: true },
+      date: { type: String, default: '' },
+      location: { type: String, default: 'Online / Hub ABN' },
+      type: { type: String, default: 'Webinar / Fórum' },
+      status: { type: String, enum: ['agendado', 'realizado', 'em_divulgacao'], default: 'agendado' },
+      link: { type: String, default: '' }
+    }],
+    campaigns: [{
+      title: { type: String, required: true },
+      channel: { type: String, default: 'Rede ABN & Media Parceiro' },
+      reach: { type: String, default: '5.000+ Empreendedores' },
+      status: { type: String, enum: ['ativa', 'programada', 'concluida'], default: 'ativa' }
+    }],
+    documents: [{
+      title: { type: String, required: true },
+      category: { type: String, default: 'Acordo / MOU' },
+      fileUrl: { type: String, default: '' },
+      uploadedAt: { type: Date, default: Date.now }
+    }],
+    metrics: {
+      startupsSupported: { type: Number, default: 0 },
+      jointInitiatives: { type: Number, default: 0 },
+      capitalMobilized: { type: String, default: '0 €' },
+      communityReach: { type: Number, default: 0 }
+    }
+  },
+
   createdAt: { type: Date, default: Date.now },
 });
 
