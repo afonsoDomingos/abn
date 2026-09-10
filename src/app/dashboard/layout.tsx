@@ -188,9 +188,19 @@ export default function DashboardLayout({
             <Users size={18} />
             {!collapsed && <span>Networking</span>}
           </Link>
-          <Link href="/dashboard/servicos" className={isActive('/dashboard/servicos') ? styles.active : ''} onClick={() => setSidebarOpen(false)} title={collapsed ? 'Serviços' : undefined}>
+          <Link 
+            href="/dashboard/servicos" 
+            className={isActive('/dashboard/servicos') ? styles.active : ''} 
+            onClick={() => setSidebarOpen(false)} 
+            title={collapsed ? 'Serviços & Especialistas' : undefined}
+            style={{
+              background: isActive('/dashboard/servicos') ? undefined : (user.roles.includes('consultor') || activeRole === 'consultor' ? 'linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(14,165,233,0.08) 100%)' : undefined),
+              border: isActive('/dashboard/servicos') ? undefined : (user.roles.includes('consultor') || activeRole === 'consultor' ? '1px solid rgba(99,102,241,0.25)' : undefined),
+              color: isActive('/dashboard/servicos') ? undefined : (user.roles.includes('consultor') || activeRole === 'consultor' ? '#4f46e5' : undefined)
+            }}
+          >
             <Briefcase size={18} />
-            {!collapsed && <span>Serviços</span>}
+            {!collapsed && <span>Serviços {user.roles.includes('consultor') || activeRole === 'consultor' ? '🎯' : ''}</span>}
           </Link>
           {(user.roles.includes('investidor') || activeRole === 'investidor') && (
             <Link 

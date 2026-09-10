@@ -577,46 +577,136 @@ export default function DashboardPage() {
       ───────────────────────────────────────────────────────────── */}
       {activeRole === 'consultor' && (
         <>
+          {/* Banner Executivo de Acesso ao Hub do Consultor */}
+          <div style={{
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)',
+            borderRadius: '20px',
+            padding: '2rem',
+            color: '#ffffff',
+            marginBottom: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1.5rem',
+            boxShadow: '0 12px 30px -8px rgba(15, 23, 42, 0.35)',
+            border: '1px solid rgba(99, 102, 241, 0.2)'
+          }}>
+            <div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(99, 102, 241, 0.2)', color: '#818cf8', border: '1px solid rgba(99, 102, 241, 0.4)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.6rem' }}>
+                <Briefcase size={13} /> Hub de Especialistas &amp; Consultoria ABN
+              </div>
+              <h2 style={{ fontSize: '1.65rem', fontWeight: 800, margin: '0 0 6px 0', fontFamily: 'Outfit' }}>
+                Mercado de Conhecimento &amp; Serviços Técnicos
+              </h2>
+              <p style={{ color: '#94a3b8', fontSize: '0.9rem', maxWidth: '620px', margin: 0 }}>
+                Monetize o seu conhecimento especializado. Publique serviços, defina preçários (fixo, por hora ou sob orçamento), receba encomendas diretas e acompanhe o ciclo de vida dos projetos.
+              </p>
+            </div>
+
+            <Link 
+              href="/dashboard/servicos"
+              style={{
+                background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+                color: '#ffffff',
+                textDecoration: 'none',
+                padding: '0.85rem 1.6rem',
+                borderRadius: '12px',
+                fontWeight: 700,
+                fontSize: '0.95rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 14px rgba(79, 70, 229, 0.4)',
+                border: 'none',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <span>Gerir Serviços &amp; Pedidos</span>
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+
           <div className={styles.progressGrid}>
             <div className={styles.progressCard}>
-              <h3>Consultorias &amp; Assessoria Técnica</h3>
+              <h3>Consultorias &amp; Contratos Ativos</h3>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', margin: '1rem 0' }}>
-                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary, #ff6b00)', fontFamily: 'Outfit' }}>
+                <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#4f46e5', fontFamily: 'Outfit' }}>
                   5<span style={{ fontSize: '1rem', color: '#64748b' }}> projetos</span>
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
-                    Demandas de especialidade técnica e diagnósticos ativos solicitados por empresas no Hub.
+                    Demandas de especialidade técnica e contratos em execução solicitados por empresas e startups no Hub ABN.
                   </p>
                 </div>
               </div>
             </div>
 
             <div className={styles.progressCard}>
-              <h3>Perfil de Especialista</h3>
+              <h3>Métricas de Prática &amp; Reputação</h3>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem', color: '#334155', fontWeight: 600 }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Credencial de Consultor ABN Ativa</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Catálogo de Serviços Disponível no Marketplace</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Star size={18} color="var(--primary, #ff6b00)" /> Índice de Satisfação: <strong>98%</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Star size={18} color="#f59e0b" /> Avaliação dos Clientes: <strong>4.9 / 5.0 ★</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle2 size={18} color="#16a34a" /> Taxa de Conclusão no Prazo: <strong>96%</strong></li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><TrendingUp size={18} color="#4f46e5" /> Faturação Acumulada: <strong>14.500 €</strong></li>
               </ul>
             </div>
           </div>
 
           <div className={styles.sectionTitle}>
-            <h2>Demandas de Especialistas Recentes</h2>
+            <h2>10 Áreas Estratégicas de Especialidade ABN</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.25rem' }}>
-              <span style={{ fontSize: '0.72rem', background: '#fff7ed', color: '#ea580c', fontWeight: 800, padding: '2px 8px', borderRadius: '6px' }}>Finanças &amp; Fiscalidade</span>
-              <h4 style={{ margin: '8px 0 4px 0', fontSize: '1rem', color: '#0f172a' }}>Estruturação Fiscal para PMEs</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#64748b' }}>Solicitação para apoio em enquadramento societário e compliance bancário.</p>
-            </div>
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.25rem' }}>
-              <span style={{ fontSize: '0.72rem', background: '#f0fdf4', color: '#16a34a', fontWeight: 800, padding: '2px 8px', borderRadius: '6px' }}>Tecnologia &amp; Produto</span>
-              <h4 style={{ margin: '8px 0 4px 0', fontSize: '1rem', color: '#0f172a' }}>Auditoria de Segurança &amp; Cloud</h4>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#64748b' }}>Análise de infraestrutura cloud e arquitetura de microsserviços.</p>
-            </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginBottom: '2rem' }}>
+            {[
+              'Consultoria', 'Contabilidade', 'Marketing', 'Direito empresarial', 
+              'Tecnologia', 'Recursos humanos', 'Gestão', 'Exportação', 'Financiamento', 'Estratégia'
+            ].map(cat => (
+              <Link 
+                key={cat}
+                href="/dashboard/servicos?view=market"
+                style={{
+                  background: '#f8fafc',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '10px',
+                  padding: '6px 14px',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  color: '#334155',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <Briefcase size={12} color="#6366f1" />
+                {cat}
+              </Link>
+            ))}
+          </div>
+
+          <div className={styles.sectionTitle}>
+            <h2>Ações Rápidas do Especialista</h2>
+          </div>
+
+          <div className={styles.tasks}>
+            <Link href="/dashboard/servicos" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={true} readOnly />
+                <span style={{ fontWeight: 600 }}>Cadastrar ou atualizar pacotes de serviços e valores no catálogo →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/servicos" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Responder a novos pedidos e cotações de empresas na caixa de entrada →</span>
+              </div>
+            </Link>
+            <Link href="/dashboard/servicos" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
+                <input type="checkbox" checked={false} readOnly />
+                <span style={{ fontWeight: 600 }}>Atualizar portfólio de cases com métricas quantificáveis de sucesso →</span>
+              </div>
+            </Link>
           </div>
         </>
       )}

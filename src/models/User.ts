@@ -132,6 +132,38 @@ const UserSchema = new mongoose.Schema({
     totalMenteesCount: { type: Number, default: 0 }
   },
 
+  // ── 9. PERFIL CONSULTOR / ESPECIALISTA ──
+  consultantProfile: {
+    headline: { type: String, default: '' },
+    specialties: [{ type: String }], // 'Consultoria', 'Contabilidade', 'Marketing', 'Direito empresarial', etc.
+    yearsOfExperience: { type: Number, default: 5 },
+    bio: { type: String, default: '' },
+    portfolio: [{
+      title: { type: String, required: true },
+      client: { type: String, default: '' },
+      description: { type: String, default: '' },
+      link: { type: String, default: '' },
+      resultMetric: { type: String, default: '' }, // ex: "+45% de Receita Fiscal", "Valuation de $2M alcançado"
+      date: { type: Date, default: Date.now }
+    }],
+    certifications: [{
+      title: { type: String },
+      issuer: { type: String },
+      year: { type: String }
+    }],
+    hourlyRate: { type: String, default: 'Sob Consulta' },
+    availability: {
+      days: [{ type: String }],
+      hours: { type: String, default: '09:00 - 18:00' },
+      mode: { type: String, enum: ['online', 'presencial', 'hibrido'], default: 'hibrido' },
+      isAcceptingProjects: { type: Boolean, default: true }
+    },
+    totalProjectsCompleted: { type: Number, default: 0 },
+    totalRevenue: { type: Number, default: 0 },
+    averageRating: { type: Number, default: 5.0 },
+    reviewsCount: { type: Number, default: 0 }
+  },
+
   createdAt: { type: Date, default: Date.now },
 });
 
