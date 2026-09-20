@@ -1,9 +1,6 @@
 .shopBanner {
   padding: 4rem 2rem;
-  background-image: url('/bannerlojaabn.png');
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  background: url('/bannerlojaabn.png') center/cover no-repeat;
   position: relative;
   overflow: hidden;
   min-height: 500px;
@@ -16,7 +13,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
   pointer-events: none;
   z-index: 1;
 }
