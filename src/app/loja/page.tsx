@@ -194,7 +194,12 @@ export default function Loja() {
                     <button
                       className={`btn-primary ${styles.ctaBtn}`}
                       disabled={product.status !== 'ativo' || (product.productType === 'physical' && product.stock === 0)}
-                      onClick={() => router.push(`/loja/checkout?productId=${product._id}`)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Buy button clicked, product ID:', product._id);
+                        router.push(`/loja/checkout?productId=${product._id}`);
+                      }}
                     >
                       {product.status !== 'ativo' ? 'Indisponível' :
                        product.productType === 'physical' && product.stock === 0 ? 'Esgotado' :
