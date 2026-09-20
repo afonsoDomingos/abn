@@ -3,12 +3,13 @@
 .header {
   padding: 160px 2rem 100px;
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
   text-align: center;
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  min-height: 400px;
 }
 
 .header::before {
