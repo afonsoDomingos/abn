@@ -33,10 +33,10 @@ export default function OurMission() {
         if (data.configs && data.configs.mission_images && data.configs.mission_images.length > 0) {
           setMissionImages(data.configs.mission_images);
         } else {
-          setMissionImages(['/mission_team.png']);
+          setMissionImages([]);
         }
       })
-      .catch(() => setMissionImages(['/mission_team.png']))
+      .catch(() => setMissionImages([]))
       .finally(() => setImageLoading(false));
   }, []);
 
@@ -86,7 +86,7 @@ export default function OurMission() {
               <div className={styles.wavyPattern}></div>
             </div>
             <div className={styles.imageWrapper}>
-              {imageLoading ? (
+              {imageLoading || missionImages.length === 0 ? (
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',

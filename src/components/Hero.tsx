@@ -135,17 +135,7 @@ export default function Hero() {
               />
             ))
           ) : (
-            <div
-              style={{
-                backgroundImage: `url('/hero_entrepreneurs.png')`,
-                opacity: 1,
-                position: 'absolute',
-                inset: 0,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center 20%',
-                zIndex: 2
-              }}
-            />
+            <div className={styles.spinner}></div>
           )}
         </div>
 
