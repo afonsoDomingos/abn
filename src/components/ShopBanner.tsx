@@ -34,9 +34,6 @@ export default function ShopBanner({ shopEnabled = false }: ShopBannerProps) {
             {shopEnabled ? 'Explorar Loja' : 'Avisar-me'}
           </Link>
         </div>
-        <div className={styles.shopBannerImage}>
-          <img src="/bannerlojaabn.png" alt="Loja ABN Banner" />
-        </div>
       </div>
     </section>
   );
