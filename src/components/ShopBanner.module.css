@@ -1,12 +1,13 @@
 .shopBanner {
   padding: 4rem 2rem;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.75) 100%), url('/bannerlojaabn.png');
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%), url('/bannerlojaabn.png');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   position: relative;
   overflow: hidden;
-  min-height: 400px;
+  min-height: 500px;
 }
 
 .shopBanner::before {
