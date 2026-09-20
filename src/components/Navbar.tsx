@@ -104,7 +104,7 @@ export default function Navbar() {
               <div className={styles.dropdownMenu}>
                 <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
                 <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
-                {shopEnabled && <Link href="/loja" onClick={closeMenu}>🛒 Loja ABN</Link>}
+                <Link href="/loja" onClick={closeMenu}>🛒 Loja ABN</Link>
                 <Link href="/oportunidades" onClick={closeMenu}>Oportunidades &amp; Bolsas</Link>
                 <Link href="/#cursos" onClick={closeMenu}>Academia &amp; Cursos</Link>
               </div>
@@ -239,7 +239,7 @@ export default function Navbar() {
           <div className={styles.drawerSectionTitle}>Programas &amp; Soluções</div>
           <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
           <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
-          {shopEnabled && <Link href="/loja" onClick={closeMenu}>🛒 Loja ABN</Link>}
+          <Link href="/loja" onClick={closeMenu}>🛒 Loja ABN</Link>
           <Link href="/oportunidades" onClick={closeMenu}>Oportunidades &amp; Bolsas</Link>
           <Link href="/#cursos" onClick={closeMenu}>Academia &amp; Cursos</Link>
 
