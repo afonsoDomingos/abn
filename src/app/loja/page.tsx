@@ -18,6 +18,8 @@ interface Product {
   image: string;
   status: string;
   stock: number;
+  productType?: 'digital' | 'physical' | 'service';
+  digital?: boolean;
 }
 
 const categoryIcons: Record<string, ReactNode> = {
