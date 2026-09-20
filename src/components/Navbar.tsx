@@ -162,10 +162,7 @@ export default function Navbar() {
             {currentUser ? (
               <UserMenu />
             ) : (
-              <>
-                <Link href="/login" className={styles.login}>{t.nav.login}</Link>
-                <Link href="/registro" className={`btn-primary ${styles.navbarBtn}`}>{t.nav.join}</Link>
-              </>
+              <Link href="/login" className={styles.login}>{t.nav.login}</Link>
             )}
           </div>
 
@@ -280,14 +277,9 @@ export default function Navbar() {
         <div className={styles.drawerActions}>
           <LanguageSelector />
           {!currentUser && (
-            <>
-              <Link href="/login" className={styles.drawerLogin} onClick={closeMenu}>
-                {t.nav.login}
-              </Link>
-              <Link href="/registro" className="btn-primary" onClick={closeMenu} style={{ textAlign: 'center' }}>
-                {t.nav.join}
-              </Link>
-            </>
+            <Link href="/login" className={styles.drawerLogin} onClick={closeMenu}>
+              {t.nav.login}
+            </Link>
           )}
         </div>
       </div>
