@@ -254,7 +254,7 @@ export default function Checkout() {
                       name="whatsapp"
                       value={formData.whatsapp}
                       onChange={handleInputChange}
-                      placeholder="84 123 4567"
+                      placeholder="87 123 4567"
                     />
                   </div>
                 </div>
@@ -312,7 +312,7 @@ export default function Checkout() {
                       value={formData.phoneNumber}
                       onChange={handleInputChange}
                       required
-                      placeholder="84 123 4567"
+                      placeholder={formData.paymentMethod === 'emola' ? '87 123 4567' : '84 123 4567'}
                     />
                   </div>
                 </div>
