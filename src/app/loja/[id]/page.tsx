@@ -28,8 +28,9 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (params.id) {
-      fetch(`/api/products/${params.id}`)
+    const productId = params.id;
+    if (productId) {
+      fetch(`/api/products/${productId}`)
         .then(res => res.json())
         .then(data => {
           if (data.product) {

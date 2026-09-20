@@ -24,12 +24,13 @@ const Order = mongoose.models.Order || mongoose.model('Order', OrderSchema);
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
     
-    const order = await Order.findById(params.id);
+    const { id } = await params;
+    const order = await Order.findById(id);
     
     if (!order) {
       return NextResponse.json(
@@ -50,15 +51,16 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
     
+    const { id } = await params;
     const body = await request.json();
     
     const order = await Order.findByIdAndUpdate(
-      params.id,
+      id,
       { 
         ...body,
         updatedAt: new Date()
