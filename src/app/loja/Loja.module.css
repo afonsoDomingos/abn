@@ -356,6 +356,8 @@
   border-top: 1px solid #e5e7eb;
   gap: 1rem;
   background: #f9fafb;
+  position: relative;
+  z-index: 10;
 }
 
 .priceBox {
@@ -381,11 +383,14 @@
   font-size: 0.85rem;
   padding: 0.55rem 1.25rem;
   white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .ctaBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* Loading skeletons */
