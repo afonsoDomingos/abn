@@ -267,7 +267,7 @@ export default function Checkout() {
                     className={`${styles.paymentMethod} ${formData.paymentMethod === 'emola' ? styles.active : ''}`}
                     onClick={() => handlePaymentMethodChange('emola')}
                   >
-                    <span className={styles.paymentIcon}>💚</span>
+                    <img src="/emola.png" alt="e-Mola" className={styles.paymentIcon} />
                     <span>e-Mola</span>
                   </button>
                   
@@ -276,7 +276,7 @@ export default function Checkout() {
                     className={`${styles.paymentMethod} ${formData.paymentMethod === 'mpesa' ? styles.active : ''}`}
                     onClick={() => handlePaymentMethodChange('mpesa')}
                   >
-                    <span className={styles.paymentIcon}>💙</span>
+                    <img src="/mpesa.png" alt="M-Pesa" className={styles.paymentIcon} />
                     <span>M-Pesa</span>
                   </button>
                 </div>

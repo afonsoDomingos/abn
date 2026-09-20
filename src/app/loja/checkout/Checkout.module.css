@@ -268,7 +268,9 @@
 }
 
 .paymentIcon {
-  font-size: 1.5rem;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 .submitButton {
