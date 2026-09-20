@@ -16,6 +16,9 @@ interface Product {
   status: string;
   stock: number;
   digital: boolean;
+  productType: 'digital' | 'physical' | 'service';
+  fileSize?: string;
+  duration?: string;
 }
 
 export default function ProductDetail() {
@@ -102,26 +105,44 @@ export default function ProductDetail() {
                     {product.status === 'ativo' ? '✅ Disponível' : '❌ Indisponível'}
                   </span>
                 </div>
-                {product.digital && (
-                  <div className={styles.metaItem}>
-                    <span className={styles.metaLabel}>Tipo:</span>
-                    <span className={styles.metaValue}>📦 Produto Digital</span>
-                  </div>
-                )}
-                {product.stock > 0 && (
+                <div className={styles.metaItem}>
+                  <span className={styles.metaLabel}>Tipo:</span>
+                  <span className={styles.metaValue}>
+                    {product.productType === 'digital' ? '📦 Produto Digital' :
+                     product.productType === 'service' ? '🎯 Serviço' :
+                     '📦 Produto Físico'}
+                  </span>
+                </div>
+                {product.productType === 'physical' && (
                   <div className={styles.metaItem}>
                     <span className={styles.metaLabel}>Stock:</span>
-                    <span className={styles.metaValue}>{product.stock} unidades</span>
+                    <span className={styles.metaValue}>
+                      {product.stock > 0 ? `${product.stock} unidades` : 'Esgotado'}
+                    </span>
+                  </div>
+                )}
+                {product.productType === 'digital' && product.fileSize && (
+                  <div className={styles.metaItem}>
+                    <span className={styles.metaLabel}>Tamanho:</span>
+                    <span className={styles.metaValue}>{product.fileSize}</span>
+                  </div>
+                )}
+                {product.productType === 'digital' && product.duration && (
+                  <div className={styles.metaItem}>
+                    <span className={styles.metaLabel}>Duração:</span>
+                    <span className={styles.metaValue}>{product.duration}</span>
                   </div>
                 )}
               </div>
 
               <button
                 className={`${styles.buyButton} btn-primary`}
-                disabled={product.status !== 'ativo' || product.stock === 0}
+                disabled={product.status !== 'ativo' || (product.productType === 'physical' && product.stock === 0)}
                 onClick={() => router.push(`/loja/checkout?productId=${product._id}`)}
               >
-                {product.status !== 'ativo' || product.stock === 0 ? 'Indisponível' : 'Comprar Agora'}
+                {product.status !== 'ativo' ? 'Indisponível' :
+                 product.productType === 'physical' && product.stock === 0 ? 'Esgotado' :
+                 'Comprar Agora'}
               </button>
 
               <div className={styles.trustBadges}>

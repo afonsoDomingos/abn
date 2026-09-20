@@ -13,6 +13,11 @@ interface Product {
   price: number;
   image: string;
   category: string;
+  productType: 'digital' | 'physical' | 'service';
+  stock: number;
+  digital: boolean;
+  fileSize?: string;
+  duration?: string;
 }
 
 export default function Checkout() {
@@ -162,6 +167,20 @@ export default function Checkout() {
                   <span>Impostos</span>
                   <span>Grátis</span>
                 </div>
+                <div className={styles.summaryRow}>
+                  <span>Tipo de Produto</span>
+                  <span>
+                    {product.productType === 'digital' ? '📦 Digital' :
+                     product.productType === 'service' ? '🎯 Serviço' :
+                     '📦 Físico'}
+                  </span>
+                </div>
+                {product.productType === 'physical' && (
+                  <div className={styles.summaryRow}>
+                    <span>Stock Disponível</span>
+                    <span>{product.stock} unidades</span>
+                  </div>
+                )}
                 {buyTogether && additionalProduct && (
                   <div className={styles.summaryRow}>
                     <span>Produto Adicional</span>

@@ -191,10 +191,12 @@ export default function Loja() {
                     </div>
                     <button
                       className={`btn-primary ${styles.ctaBtn}`}
-                      disabled={product.stock === 0}
+                      disabled={product.status !== 'ativo' || (product.productType === 'physical' && product.stock === 0)}
                       onClick={() => window.location.href = `/loja/checkout?productId=${product._id}`}
                     >
-                      {product.stock === 0 ? 'Esgotado' : 'Comprar'}
+                      {product.status !== 'ativo' ? 'Indisponível' :
+                       product.productType === 'physical' && product.stock === 0 ? 'Esgotado' :
+                       'Comprar'}
                     </button>
                   </div>
                 </div>
