@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ShoppingBag, Search, MapPin, Package, BookOpen, Wrench, Gem, Clock } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import styles from './Loja.module.css';
@@ -29,6 +30,7 @@ const categoryIcons: Record<string, ReactNode> = {
 };
 
 export default function Loja() {
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('Todos');
@@ -192,7 +194,7 @@ export default function Loja() {
                     <button
                       className={`btn-primary ${styles.ctaBtn}`}
                       disabled={product.status !== 'ativo' || (product.productType === 'physical' && product.stock === 0)}
-                      onClick={() => window.location.href = `/loja/checkout?productId=${product._id}`}
+                      onClick={() => router.push(`/loja/checkout?productId=${product._id}`)}
                     >
                       {product.status !== 'ativo' ? 'Indisponível' :
                        product.productType === 'physical' && product.stock === 0 ? 'Esgotado' :
