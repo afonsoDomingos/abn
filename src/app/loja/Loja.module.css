@@ -202,37 +202,60 @@
   gap: 0.75rem;
   flex-wrap: wrap;
   margin-bottom: 3rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
 }
 
 .filterBtn {
-  padding: 0.5rem 1.25rem;
+  padding: 0.6rem 1.25rem;
   border-radius: 50px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.6);
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #64748b;
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: 'Inter', sans-serif;
+  font-weight: 500;
 }
 
 .filterBtn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: rgba(212,175,55,0.06);
+  border-color: #ff6b00;
+  color: #ff6b00;
+  background: #fff7ed;
 }
 
 .filterBtn.active {
-  background: rgba(212,175,55,0.15);
-  border-color: var(--primary);
-  color: var(--primary);
+  background: #ff6b00;
+  border-color: #ff6b00;
+  color: #ffffff;
   font-weight: 600;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.75rem;
+}
+
+@media (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card {
