@@ -6,6 +6,7 @@ import Config from '../models/Config';
 import Hub from '../models/Hub';
 import Program from '../models/Program';
 import Team from '../models/Team';
+import Product from '../models/Product';
 import bcrypt from 'bcryptjs';
 
 export async function seedAdmin() {
@@ -662,6 +663,38 @@ export async function seedAdmin() {
       } else {
         await Team.findOneAndUpdate({ name: member.name, role: member.role }, member, { new: true });
         console.log(`Membro ${member.name} atualizado.`);
+      }
+    }
+
+    // Seed Products - Social Media Guide
+    const productsData = [
+      {
+        name: 'Guia Completo de Social Media para Empreendedores',
+        description: 'Este guia completo ensina como usar as redes sociais para crescer o seu negócio. Inclui estratégias para Instagram, Facebook, LinkedIn e TikTok, com exemplos práticos e templates prontos a usar. Ideal para empreendedores que querem aumentar a sua presença online e atrair mais clientes.',
+        price: 1500,
+        category: 'Marketing Digital',
+        image: '',
+        status: 'ativo',
+        stock: 0, // 0 para ilimitado (produto digital)
+        digital: true,
+        downloadUrl: 'https://example.com/guia-social-media.pdf',
+        order: 1,
+        productType: 'digital',
+        fileType: 'pdf',
+        fileSize: '15MB',
+        duration: '',
+        previewUrl: ''
+      }
+    ];
+
+    for (const product of productsData) {
+      const exists = await Product.findOne({ name: product.name });
+      if (!exists) {
+        await Product.create(product);
+        console.log(`Produto ${product.name} criado.`);
+      } else {
+        await Product.findOneAndUpdate({ name: product.name }, product, { new: true });
+        console.log(`Produto ${product.name} atualizado.`);
       }
     }
 

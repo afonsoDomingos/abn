@@ -217,6 +217,7 @@
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
+  background: #ffffff;
 }
 
 .adminHeader {

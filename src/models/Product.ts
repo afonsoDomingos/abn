@@ -11,6 +11,20 @@ const ProductSchema = new Schema({
   digital: { type: Boolean, default: false },
   downloadUrl: { type: String, default: '' },
   order: { type: Number, default: 0 },
+  // Enhanced fields for different product types
+  productType: { 
+    type: String, 
+    enum: ['digital', 'physical', 'service'], 
+    default: 'digital' 
+  },
+  fileType: { 
+    type: String, 
+    enum: ['pdf', 'video', 'audio', 'image', 'zip', 'other'], 
+    default: 'pdf' 
+  },
+  fileSize: { type: String, default: '' }, // e.g., "15MB"
+  duration: { type: String, default: '' }, // for videos/courses, e.g., "2h 30min"
+  previewUrl: { type: String, default: '' }, // preview video/image
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

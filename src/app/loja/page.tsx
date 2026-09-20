@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ShoppingBag } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import styles from './Loja.module.css';
@@ -70,7 +71,7 @@ export default function Loja() {
         
         <header className={styles.header} style={{ backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(10, 10, 10, 0.95) 100%), url('${bannerUrl}')` }}>
           <div className={styles.container}>
-            <span className={styles.tag}>🛒 Loja ABN</span>
+            <span className={styles.tag}><ShoppingBag size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Loja ABN</span>
             <h1 className="text-gradient-gold">Em Breve</h1>
             <p>A loja ABN estará disponível em breve. Esteja atento!</p>
           </div>
@@ -132,7 +133,7 @@ export default function Loja() {
 
       <header className={styles.header} style={{ backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(10, 10, 10, 0.95) 100%), url('${bannerUrl}')` }}>
         <div className={styles.container}>
-          <span className={styles.tag}>🛒 Loja ABN</span>
+          <span className={styles.tag}><ShoppingBag size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Loja ABN</span>
           <h1 className="text-gradient-gold">Produtos e Serviços</h1>
           <p>Encontre os melhores produtos para impulsionar o seu negócio.</p>
         </div>

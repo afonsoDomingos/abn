@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { ShoppingBag } from 'lucide-react';
 import styles from './Config.module.css';
 
 export default function AdminConfigPage() {
@@ -1262,7 +1263,7 @@ export default function AdminConfigPage() {
 
         {/* Loja ABN Config */}
         <section className={`glass ${styles.section}`}>
-          <h3>🛒 Loja ABN</h3>
+          <h3><ShoppingBag size={18} style={{ verticalAlign: 'middle', marginRight: '8px' }} /> Loja ABN</h3>
           <p style={{ opacity: 0.7, fontSize: '0.85rem', marginBottom: '1.2rem' }}>
             Configure a visibilidade da Loja ABN. Quando ativada, a loja será acessível publicamente.
           </p>

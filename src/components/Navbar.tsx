@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { ShoppingBag } from 'lucide-react';
 import styles from './Navbar.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 import LanguageSelector from './LanguageSelector';
@@ -104,7 +105,6 @@ export default function Navbar() {
               <div className={styles.dropdownMenu}>
                 <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
                 <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
-                <Link href="/loja" onClick={closeMenu}>🛒 Loja ABN</Link>
                 <Link href="/oportunidades" onClick={closeMenu}>Oportunidades &amp; Bolsas</Link>
                 <Link href="/#cursos" onClick={closeMenu}>Academia &amp; Cursos</Link>
               </div>
@@ -153,6 +153,7 @@ export default function Navbar() {
             </div>
 
             <Link href="/contacto">Contacto</Link>
+            <Link href="/loja" onClick={closeMenu}><ShoppingBag size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Loja ABN</Link>
           </div>
 
           <div className={styles.actions}>
@@ -239,7 +240,6 @@ export default function Navbar() {
           <div className={styles.drawerSectionTitle}>Programas &amp; Soluções</div>
           <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
           <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
-          <Link href="/loja" onClick={closeMenu}>🛒 Loja ABN</Link>
           <Link href="/oportunidades" onClick={closeMenu}>Oportunidades &amp; Bolsas</Link>
           <Link href="/#cursos" onClick={closeMenu}>Academia &amp; Cursos</Link>
 
@@ -274,6 +274,7 @@ export default function Navbar() {
           </div>
 
           <Link href="/contacto" onClick={closeMenu} style={{ fontWeight: 800, color: 'var(--primary)', marginTop: '0.5rem' }}>Contacto</Link>
+          <Link href="/loja" onClick={closeMenu} style={{ fontWeight: 800, color: 'var(--primary)', marginTop: '0.5rem' }}><ShoppingBag size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Loja ABN</Link>
         </nav>
 
         <div className={styles.drawerActions}>

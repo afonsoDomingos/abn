@@ -18,6 +18,7 @@ import {
   TrendingUp,
   FileText,
   Calendar,
+  ShoppingBag,
   Layers,
   ArrowRight,
   Check,
@@ -544,7 +545,7 @@ export default function ServicosConsultoriaPage() {
           style={{ marginLeft: 'auto', color: '#ff6b00' }}
         >
           <Globe size={17} />
-          <span>Mercado de Especialistas ABN 🛒</span>
+          <span>Mercado de Especialistas ABN <ShoppingBag size={16} style={{ verticalAlign: 'middle', marginLeft: '4px' }} /></span>
         </button>
       </nav>
 
