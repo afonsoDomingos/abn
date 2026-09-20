@@ -317,3 +317,163 @@ export async function sendEventRegistrationEmail(email: string, name: string, ev
     html: emailLayout(content, 'Eventos e Sessões ABN'),
   });
 }
+
+/**
+ * 8. Confirmação de Pedido na Loja ABN
+ */
+export async function sendOrderConfirmationEmail(
+  email: string,
+  name: string,
+  orderId: string,
+  productName: string,
+  total: number,
+  paymentMethod: string
+) {
+  const content = `
+    <h2 style="color: #0f172a; margin-top: 0; font-size: 20px;">Pedido Confirmado - Loja ABN</h2>
+    <p>Olá, <strong>${name}</strong>,</p>
+    <p>O seu pedido foi processado com sucesso na Loja ABN.</p>
+
+    <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 14px;">
+      <table width="100%" border="0" cellpadding="4" cellspacing="0" style="color: #334155;">
+        <tr>
+          <td width="30%" style="font-weight: 700; color: #475569;">Pedido #:</td>
+          <td>${orderId.toString().slice(-8)}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 700; color: #475569;">Produto:</td>
+          <td>${productName}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 700; color: #475569;">Total:</td>
+          <td style="color: #ff6b00; font-weight: 700;">Mt ${total.toLocaleString()} MZN</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 700; color: #475569;">Pagamento:</td>
+          <td>${paymentMethod.toUpperCase()}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 16px; margin: 22px 0; border-radius: 6px; font-size: 14px; color: #065f46;">
+      <strong style="color: #064e3b;">Pagamento Confirmado!</strong><br/>
+      O seu pagamento foi processado com sucesso. Se for um produto digital, receberá o link de download em breve.
+    </div>
+
+    <p style="font-size: 14px; color: #64748b;">
+      Agradecemos pela sua preferência!
+    </p>
+  `;
+
+  return sendEmail({
+    to: email,
+    subject: `Pedido Confirmado - Loja ABN`,
+    html: emailLayout(content, 'Loja ABN'),
+  });
+}
+
+/**
+ * 9. Link de Download para Produto Digital
+ */
+export async function sendDigitalProductDownloadEmail(
+  email: string,
+  name: string,
+  productName: string,
+  downloadUrl: string,
+  orderId: string
+) {
+  const content = `
+    <h2 style="color: #0f172a; margin-top: 0; font-size: 20px;">Download Disponível - Loja ABN</h2>
+    <p>Olá, <strong>${name}</strong>,</p>
+    <p>O seu pagamento foi confirmado e o download do produto <strong>${productName}</strong> já está disponível.</p>
+
+    <div style="background-color: #f8fafc; border-left: 4px solid #ff6b00; padding: 16px; margin: 22px 0; border-radius: 6px; font-size: 14px; color: #334155;">
+      <strong style="color: #0f172a;">Instruções:</strong><br/>
+      1. Clique no botão abaixo para fazer o download;<br/>
+      2. Guarde o ficheiro no seu dispositivo;<br/>
+      3. O link é válido por tempo limitado.
+    </div>
+
+    <div style="text-align: center; margin: 30px 0 16px 0;">
+      <a href="${downloadUrl}" style="background-color: #ff6b00; color: #ffffff; text-decoration: none; padding: 13px 30px; border-radius: 6px; font-weight: 700; font-size: 14px; display: inline-block;">
+        📥 Download do Produto
+      </a>
+    </div>
+
+    <div style="background-color: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 14px; margin: 20px 0; font-size: 13px; color: #92400e;">
+      <strong>Nota:</strong> Se tiver alguma dificuldade com o download, entre em contacto connosco.
+    </div>
+
+    <p style="font-size: 14px; color: #64748b;">
+      Pedido #${orderId.toString().slice(-8)}
+    </p>
+  `;
+
+  return sendEmail({
+    to: email,
+    subject: `Download Disponível: ${productName}`,
+    html: emailLayout(content, 'Loja ABN'),
+  });
+}
+
+/**
+ * 10. Notificação de Pagamento Falhado
+ */
+export async function sendPaymentFailedEmail(
+  email: string,
+  name: string,
+  productName: string,
+  orderId: string,
+  total: number
+) {
+  const checkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://abnafrobiznetwork.com'}/loja/checkout?orderId=${orderId}`;
+  const content = `
+    <h2 style="color: #dc2626; margin-top: 0; font-size: 20px;">Pagamento Falhado - Loja ABN</h2>
+    <p>Olá, <strong>${name}</strong>,</p>
+    <p>Infelizmente, o pagamento do seu pedido foi recusado ou expirou.</p>
+
+    <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 14px;">
+      <table width="100%" border="0" cellpadding="4" cellspacing="0" style="color: #991b1b;">
+        <tr>
+          <td width="30%" style="font-weight: 700; color: #7f1d1d;">Pedido #:</td>
+          <td>${orderId.toString().slice(-8)}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 700; color: #7f1d1d;">Produto:</td>
+          <td>${productName}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 700; color: #7f1d1d;">Valor:</td>
+          <td>Mt ${total.toLocaleString()} MZN</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="background-color: #fef2f2; border-left: 4px solid #dc2626; padding: 16px; margin: 22px 0; border-radius: 6px; font-size: 14px; color: #991b1b;">
+      <strong style="color: #7f1d1d;">O que pode ter acontecido:</strong><br/>
+      • Saldo insuficiente;<br/>
+      • Tempo limite do pagamento expirado;<br/>
+      • Pagamento cancelado pelo utilizador.
+    </div>
+
+    <p style="font-size: 14px; color: #64748b;">
+      Se ainda deseja adquirir este produto, pode tentar novamente:
+    </p>
+
+    <div style="text-align: center; margin: 30px 0 16px 0;">
+      <a href="${checkoutUrl}" style="background-color: #0f172a; color: #ffffff; text-decoration: none; padding: 13px 30px; border-radius: 6px; font-weight: 700; font-size: 14px; display: inline-block;">
+        Tentar Pagamento Novamente
+      </a>
+    </div>
+
+    <p style="font-size: 14px; color: #64748b;">
+      Se precisar de ajuda, entre em contacto connosco.
+    </p>
+  `;
+
+  return sendEmail({
+    to: email,
+    subject: `Pagamento Falhado - Loja ABN`,
+    html: emailLayout(content, 'Loja ABN'),
+  });
+}

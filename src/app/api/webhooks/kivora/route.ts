@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import mongoose from 'mongoose';
 import crypto from 'crypto';
+import { 
+  sendOrderConfirmationEmail, 
+  sendDigitalProductDownloadEmail,
+  sendPaymentFailedEmail 
+} from '@/lib/email';
 
 const OrderSchema = new mongoose.Schema({
   productId: String,
@@ -66,9 +71,20 @@ export async function POST(request: NextRequest) {
       
       console.log('Order marked as paid:', order._id);
       
-      // TODO: Send confirmation email
-      // TODO: Send download link for digital products
-      // TODO: Notify admin
+      // Send confirmation email
+      await sendOrderConfirmationEmail(
+        order.customerEmail,
+        order.customerName,
+        order._id.toString(),
+        order.productName,
+        order.total,
+        order.paymentMethod
+      );
+      
+      // TODO: If digital product, send download link
+      // This would require fetching the product to get downloadUrl
+      
+      // TODO: Notify admin of new paid order
       
     } else if (type === 'payment.failed' || data.status === 'failed') {
       order.status = 'failed';
@@ -78,6 +94,15 @@ export async function POST(request: NextRequest) {
       await order.save();
       
       console.log('Order marked as failed:', order._id);
+      
+      // Send payment failed email
+      await sendPaymentFailedEmail(
+        order.customerEmail,
+        order.customerName,
+        order.productName,
+        order._id.toString(),
+        order.total
+      );
     }
     
     return NextResponse.json({ success: true });
