@@ -94,7 +94,7 @@ export default function Home() {
             <div className={styles.footerContainer}>
               <div className={styles.footerBar}>
                 <div className={styles.copyright}>
-                  Copyright © ABN {new Date().getFullYear()} | Powered by <a href="http://isvibe.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Vibe</a>
+                  Copyright © ABN {new Date().getFullYear()} | Powered By Wehosthere <img src="/wehosthere.png" alt="Wehosthere" style={{ height: '20px', marginLeft: '8px', verticalAlign: 'middle' }} />
                 </div>
                 
                 <div className={styles.socials}>
