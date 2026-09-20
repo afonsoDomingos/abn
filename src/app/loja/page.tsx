@@ -32,7 +32,7 @@ export default function Loja() {
   const [categories, setCategories] = useState<string[]>([]);
   const [shopEnabled, setShopEnabled] = useState(false);
 
-  const [bannerUrl, setBannerUrl] = useState('/partners_hero.png');
+  const [bannerUrl, setBannerUrl] = useState('/bannerlojaabn.png');
 
   useEffect(() => {
     // Check if shop is enabled

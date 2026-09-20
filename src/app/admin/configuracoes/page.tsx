@@ -66,7 +66,7 @@ export default function AdminConfigPage() {
     marketplace: '/partners_hero.png',
     programas: '/hero_entrepreneurs.png',
     mensagem_presidente: '/abn-cover.jpg',
-    loja: '/partners_hero.png'
+    loja: '/bannerlojaabn.png'
   });
 
   const [shopEnabled, setShopEnabled] = useState(false);
