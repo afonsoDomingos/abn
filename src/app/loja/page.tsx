@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ShoppingBag, Search, MapPin, Package, BookOpen, Wrench, Gem, Clock } from 'lucide-react';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import styles from './Loja.module.css';
@@ -168,7 +169,7 @@ export default function Loja() {
           ) : (
             <div className={styles.grid}>
               {filtered.map((product, i) => (
-                <div key={product._id} className={`${styles.card} glass`} style={{ animationDelay: `${i * 0.08}s` }}>
+                <Link key={product._id} href={`/loja/${product._id}`} className={styles.card} style={{ animationDelay: `${i * 0.08}s` }}>
                   <div className={styles.cardImage}>
                     {product.image ? (
                       <img src={product.image} alt={product.name} />
@@ -189,11 +190,12 @@ export default function Loja() {
                     <button
                       className={`btn-primary ${styles.ctaBtn}`}
                       disabled={product.stock === 0}
+                      onClick={(e) => e.preventDefault()}
                     >
                       {product.stock === 0 ? 'Esgotado' : 'Comprar'}
                     </button>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
