@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ShoppingBag, Search, MapPin } from 'lucide-react';
+import { ShoppingBag, Search, MapPin, Package, BookOpen, Wrench, Gem, Clock } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import styles from './Loja.module.css';
@@ -82,14 +82,10 @@ export default function Loja() {
         <section className={styles.comingSoonSection}>
           <div className={styles.comingSoonCard}>
             <div className={styles.comingSoonIcon}>
-              <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6 2L3 6v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
-              </svg>
+              <ShoppingBag size={64} />
             </div>
             <div className={styles.comingSoonContent}>
-              <span className={styles.comingSoonBadge}>🚀 EM BREVE</span>
+              <span className={styles.comingSoonBadge}>EM BREVE</span>
               <h2 className={styles.comingSoonTitle}>Loja ABN</h2>
               <p className={styles.comingSoonDesc}>
                 Estamos a preparar uma plataforma completa de produtos e serviços para empreendedores. 
@@ -104,19 +100,19 @@ export default function Loja() {
               </div>
               <div className={styles.comingSoonFeatures}>
                 <div className={styles.feature}>
-                  <span>📦</span>
+                  <Package size={24} />
                   <span>Produtos Digitais</span>
                 </div>
                 <div className={styles.feature}>
-                  <span>📚</span>
+                  <BookOpen size={24} />
                   <span>Cursos e Formação</span>
                 </div>
                 <div className={styles.feature}>
-                  <span>🎯</span>
+                  <Wrench size={24} />
                   <span>Ferramentas Empresariais</span>
                 </div>
                 <div className={styles.feature}>
-                  <span>💎</span>
+                  <Gem size={24} />
                   <span>Conteúdos Premium</span>
                 </div>
               </div>
