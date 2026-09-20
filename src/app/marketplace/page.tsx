@@ -27,6 +27,7 @@ export default function Marketplace() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('Todos');
   const [categories, setCategories] = useState<string[]>([]);
+  const [shopEnabled, setShopEnabled] = useState(false);
 
   const [bannerUrl, setBannerUrl] = useState('/partners_hero.png');
 
@@ -49,6 +50,9 @@ export default function Marketplace() {
         if (data.configs?.page_banners?.marketplace) {
           setBannerUrl(data.configs.page_banners.marketplace);
         }
+        if (data.configs?.shop_enabled !== undefined) {
+          setShopEnabled(data.configs.shop_enabled);
+        }
       })
       .catch(() => {});
   }, []);
@@ -67,26 +71,28 @@ export default function Marketplace() {
         </div>
       </header>
 
-      {/* Banner: Loja ABN está a caminho */}
-      <div className={styles.comingSoonBanner}>
-        <div className={styles.comingSoonContent}>
-          <div className={styles.comingSoonIcon}>
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M6 2L3 6v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V6l-3-4z"></path>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <path d="M16 10a4 4 0 0 1-8 0"></path>
-            </svg>
-          </div>
-          <div className={styles.comingSoonText}>
-            <span className={styles.comingSoonBadge}>🚀 EM BREVE</span>
-            <h3 className={styles.comingSoonTitle}>Loja ABN</h3>
-            <p className={styles.comingSoonDesc}>Uma plataforma completa de produtos e serviços para empreendedores. Esteja atento!</p>
-          </div>
-          <div className={styles.comingSoonDecoration}>
-            <div className={styles.pulseDot}></div>
+      {/* Banner: Loja ABN está a caminho (apenas se loja não estiver ativada) */}
+      {!shopEnabled && (
+        <div className={styles.comingSoonBanner}>
+          <div className={styles.comingSoonContent}>
+            <div className={styles.comingSoonIcon}>
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 2L3 6v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+            </div>
+            <div className={styles.comingSoonText}>
+              <span className={styles.comingSoonBadge}>🚀 EM BREVE</span>
+              <h3 className={styles.comingSoonTitle}>Loja ABN</h3>
+              <p className={styles.comingSoonDesc}>Uma plataforma completa de produtos e serviços para empreendedores. Esteja atento!</p>
+            </div>
+            <div className={styles.comingSoonDecoration}>
+              <div className={styles.pulseDot}></div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <section className={styles.content}>
         <div className={styles.container}>

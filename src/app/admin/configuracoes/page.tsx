@@ -64,8 +64,11 @@ export default function AdminConfigPage() {
     parceiros: '/partners_hero.png',
     marketplace: '/partners_hero.png',
     programas: '/hero_entrepreneurs.png',
-    mensagem_presidente: '/abn-cover.jpg'
+    mensagem_presidente: '/abn-cover.jpg',
+    loja: '/partners_hero.png'
   });
+
+  const [shopEnabled, setShopEnabled] = useState(false);
 
   const [presidentMsg, setPresidentMsg] = useState({
     title: 'Seja muito bem-vindo(a) à AfroBiz Network (ABN)',
@@ -113,6 +116,9 @@ export default function AdminConfigPage() {
               ...prev,
               ...data.configs.page_banners
             }));
+          }
+          if (data.configs.shop_enabled !== undefined) {
+            setShopEnabled(data.configs.shop_enabled);
           }
         }
         setLoading(false);
@@ -1189,7 +1195,8 @@ export default function AdminConfigPage() {
               { id: 'parceiros', label: 'Página de Parceiros' },
               { id: 'marketplace', label: 'Página de Marketplace' },
               { id: 'programas', label: 'Página de Programas' },
-              { id: 'mensagem_presidente', label: 'Página da Mensagem do Presidente' }
+              { id: 'mensagem_presidente', label: 'Página da Mensagem do Presidente' },
+              { id: 'loja', label: 'Página de Loja' }
             ].map(page => (
               <div key={page.id} className={styles.field} style={{ marginBottom: '1.25rem' }}>
                 <label>{page.label}</label>
@@ -1250,6 +1257,33 @@ export default function AdminConfigPage() {
           </div>
           <button className="btn-primary" onClick={() => saveConfig('page_banners', pageBanners)} disabled={saving} style={{ marginTop: '1.5rem' }}>
             {saving ? 'A guardar...' : 'Atualizar Banners das Páginas'}
+          </button>
+        </section>
+
+        {/* Loja ABN Config */}
+        <section className={`glass ${styles.section}`}>
+          <h3>🛒 Loja ABN</h3>
+          <p style={{ opacity: 0.7, fontSize: '0.85rem', marginBottom: '1.2rem' }}>
+            Configure a visibilidade da Loja ABN. Quando ativada, a loja será acessível publicamente.
+          </p>
+          <div className={styles.field}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={shopEnabled}
+                onChange={e => setShopEnabled(e.target.checked)}
+                style={{ width: '20px', height: '20px', accentColor: '#ff6b00' }}
+              />
+              <span style={{ fontSize: '1rem', fontWeight: 600 }}>Ativar Loja ABN Publicamente</span>
+            </label>
+            <p style={{ fontSize: '0.8rem', opacity: 0.6, marginTop: '0.5rem', marginLeft: '2.75rem' }}>
+              {shopEnabled 
+                ? '✅ A loja será visível para todos os visitantes na página /loja' 
+                : '❌ A loja ficará oculta e mostrará mensagem "Em Breve"'}
+            </p>
+          </div>
+          <button className="btn-primary" onClick={() => saveConfig('shop_enabled', shopEnabled)} disabled={saving} style={{ marginTop: '1rem' }}>
+            {saving ? 'A guardar...' : '💾 Guardar Configuração da Loja'}
           </button>
         </section>
 

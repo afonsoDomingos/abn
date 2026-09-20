@@ -31,7 +31,8 @@ import {
   UserCheck,
   Building,
   Award,
-  Layers
+  Layers,
+  ShoppingBag
 } from 'lucide-react';
 
 interface NavItem {
@@ -98,6 +99,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { href: '/admin/noticias', label: 'Notícias', icon: <Newspaper size={18} /> },
         { href: '/admin/galeria', label: 'Galeria', icon: <ImageIcon size={18} /> },
         { href: '/admin/oportunidades', label: 'Oportunidades', icon: <Target size={18} /> },
+        { href: '/admin/loja', label: 'Loja ABN', icon: <ShoppingBag size={18} /> },
       ]
     },
     {
