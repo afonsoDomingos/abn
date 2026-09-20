@@ -279,6 +279,11 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  display: none;
+}
+
+.paymentIconText.show {
+  display: block;
 }
 
 .submitButton {

@@ -267,7 +267,16 @@ export default function Checkout() {
                     className={`${styles.paymentMethod} ${formData.paymentMethod === 'emola' ? styles.active : ''}`}
                     onClick={() => handlePaymentMethodChange('emola')}
                   >
-                    <div className={styles.paymentIcon} style={{ color: '#00b140', fontSize: '2rem', fontWeight: 'bold' }}>e-Mola</div>
+                    <img 
+                      src="/emola.png" 
+                      alt="e-Mola" 
+                      className={styles.paymentIcon}
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling?.classList.add('show');
+                      }}
+                    />
+                    <span className={styles.paymentIconText} style={{ color: '#00b140', display: 'none' }}>e-Mola</span>
                     <span>e-Mola</span>
                   </button>
                   
@@ -276,7 +285,16 @@ export default function Checkout() {
                     className={`${styles.paymentMethod} ${formData.paymentMethod === 'mpesa' ? styles.active : ''}`}
                     onClick={() => handlePaymentMethodChange('mpesa')}
                   >
-                    <div className={styles.paymentIcon} style={{ color: '#00a4e4', fontSize: '2rem', fontWeight: 'bold' }}>M-Pesa</div>
+                    <img 
+                      src="/mpesa.png" 
+                      alt="M-Pesa" 
+                      className={styles.paymentIcon}
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling?.classList.add('show');
+                      }}
+                    />
+                    <span className={styles.paymentIconText} style={{ color: '#00a4e4', display: 'none' }}>M-Pesa</span>
                     <span>M-Pesa</span>
                   </button>
                 </div>
