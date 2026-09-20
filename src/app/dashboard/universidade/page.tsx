@@ -21,7 +21,6 @@ import {
   Search,
   Rocket,
   ArrowRight,
-  Search,
   FileText,
   Award
 } from 'lucide-react';
