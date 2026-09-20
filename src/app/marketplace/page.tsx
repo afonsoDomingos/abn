@@ -86,6 +86,13 @@ export default function Marketplace() {
               <span className={styles.comingSoonBadge}>🚀 EM BREVE</span>
               <h3 className={styles.comingSoonTitle}>Loja ABN</h3>
               <p className={styles.comingSoonDesc}>Uma plataforma completa de produtos e serviços para empreendedores. Esteja atento!</p>
+              <div className={styles.poweredBySection}>
+                <span className={styles.poweredByLabel}>Powered By</span>
+                <a href="https://www.wehosthere.com/" target="_blank" rel="noopener noreferrer" className={styles.wehosthereLink}>
+                  <img src="/wehosthere.png" alt="Wehosthere" className={styles.wehosthereLogo} />
+                  <span>Wehosthere</span>
+                </a>
+              </div>
             </div>
             <div className={styles.comingSoonDecoration}>
               <div className={styles.pulseDot}></div>

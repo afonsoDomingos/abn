@@ -92,6 +92,13 @@ export default function Loja() {
                 Estamos a preparar uma plataforma completa de produtos e serviços para empreendedores. 
                 Produtos digitais, cursos, materiais de formação e muito mais.
               </p>
+              <div className={styles.poweredBySection}>
+                <span className={styles.poweredByLabel}>Powered By</span>
+                <a href="https://www.wehosthere.com/" target="_blank" rel="noopener noreferrer" className={styles.wehosthereLink}>
+                  <img src="/wehosthere.png" alt="Wehosthere" className={styles.wehosthereLogo} />
+                  <span>Wehosthere</span>
+                </a>
+              </div>
               <div className={styles.comingSoonFeatures}>
                 <div className={styles.feature}>
                   <span>📦</span>

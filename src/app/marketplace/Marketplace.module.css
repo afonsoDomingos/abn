@@ -274,8 +274,49 @@
 .comingSoonDesc {
   font-size: 0.85rem;
   color: rgba(255,255,255,0.6);
-  margin: 0;
+  margin: 0 0 1rem 0;
   line-height: 1.4;
+}
+
+/* Powered By Section for Coming Soon Banner */
+.poweredBySection {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.poweredByLabel {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.wehosthereLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  color: rgba(255,255,255,0.7);
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  padding: 0.4rem 0.8rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.wehosthereLink:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.wehosthereLogo {
+  height: 18px;
+  width: auto;
 }
 
 .comingSoonDecoration {
