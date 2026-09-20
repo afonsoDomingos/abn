@@ -1,7 +1,7 @@
 // Kivora Payments API Integration
 
-const KIVORA_API_URL = 'https://www.kivorapayments.com/v1';
-const KIVORA_API_KEY = process.env.KIVORA_API_KEY || 'sk_test_xxxxxxxxx';
+const KIVORA_API_URL = `${process.env.KIVORA_BASE_URL || 'https://www.kivorapayments.com'}/v1`;
+const KIVORA_API_KEY = process.env.KIVORA_API_KEY;
 
 export interface KivoraC2BRequest {
   phone: string;
