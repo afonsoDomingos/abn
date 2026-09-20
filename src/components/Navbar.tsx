@@ -12,6 +12,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hubs, setHubs] = useState<Array<{ name: string; slug: string }>>([]);
   const [currentUser, setCurrentUser] = useState<any | null>(null);
+  const [shopEnabled, setShopEnabled] = useState(false);
 
   // Fetch Hubs & check user session on mount
   useEffect(() => {
@@ -24,26 +25,38 @@ export default function Navbar() {
       })
       .catch(() => { });
 
-    const checkUser = async () => {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        try {
-          setCurrentUser(JSON.parse(storedUser));
-        } catch (e) { }
-      }
-
-      try {
-        const res = await fetch('/api/user/profile');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.user) {
-            setCurrentUser(data.user);
-            localStorage.setItem('user', JSON.stringify(data.user));
-          }
+    // Fetch shop enabled status
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs?.shop_enabled !== undefined) {
+          setShopEnabled(data.configs.shop_enabled);
         }
-      } catch (e) { }
-    };
+      })
+      .catch(() => { });
+  }, []);
 
+  const checkUser = async () => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setCurrentUser(JSON.parse(storedUser));
+      } catch (e) { }
+    }
+
+    try {
+      const res = await fetch('/api/user/profile');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.user) {
+          setCurrentUser(data.user);
+          localStorage.setItem('user', JSON.stringify(data.user));
+        }
+      }
+    } catch (e) { }
+  };
+
+  useEffect(() => {
     checkUser();
 
     window.addEventListener('user-profile-updated', checkUser);
@@ -91,6 +104,7 @@ export default function Navbar() {
               <div className={styles.dropdownMenu}>
                 <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
                 <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
+                {shopEnabled && <Link href="/loja" onClick={closeMenu}>🛒 Loja ABN</Link>}
                 <Link href="/oportunidades" onClick={closeMenu}>Oportunidades &amp; Bolsas</Link>
                 <Link href="/#cursos" onClick={closeMenu}>Academia &amp; Cursos</Link>
               </div>
@@ -225,6 +239,7 @@ export default function Navbar() {
           <div className={styles.drawerSectionTitle}>Programas &amp; Soluções</div>
           <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
           <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
+          {shopEnabled && <Link href="/loja" onClick={closeMenu}>🛒 Loja ABN</Link>}
           <Link href="/oportunidades" onClick={closeMenu}>Oportunidades &amp; Bolsas</Link>
           <Link href="/#cursos" onClick={closeMenu}>Academia &amp; Cursos</Link>
 
