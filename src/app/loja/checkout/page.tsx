@@ -32,7 +32,7 @@ export default function Checkout() {
     name: '',
     email: '',
     whatsapp: '',
-    paymentMethod: 'emola',
+    paymentMethod: 'mpesa',
     phoneNumber: ''
   });
 
@@ -264,24 +264,6 @@ export default function Checkout() {
                 <div className={styles.paymentMethods}>
                   <button
                     type="button"
-                    className={`${styles.paymentMethod} ${formData.paymentMethod === 'emola' ? styles.active : ''}`}
-                    onClick={() => handlePaymentMethodChange('emola')}
-                  >
-                    <img 
-                      src="/emola.png" 
-                      alt="e-Mola" 
-                      className={styles.paymentIcon}
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        e.currentTarget.nextElementSibling?.classList.add('show');
-                      }}
-                    />
-                    <span className={styles.paymentIconText} style={{ color: '#00b140', display: 'none' }}>e-Mola</span>
-                    <span>e-Mola</span>
-                  </button>
-                  
-                  <button
-                    type="button"
                     className={`${styles.paymentMethod} ${formData.paymentMethod === 'mpesa' ? styles.active : ''}`}
                     onClick={() => handlePaymentMethodChange('mpesa')}
                   >
@@ -297,11 +279,29 @@ export default function Checkout() {
                     <span className={styles.paymentIconText} style={{ color: '#00a4e4', display: 'none' }}>M-Pesa</span>
                     <span>M-Pesa</span>
                   </button>
+                  
+                  <button
+                    type="button"
+                    className={`${styles.paymentMethod} ${formData.paymentMethod === 'emola' ? styles.active : ''}`}
+                    onClick={() => handlePaymentMethodChange('emola')}
+                  >
+                    <img 
+                      src="/emola.png" 
+                      alt="e-Mola" 
+                      className={styles.paymentIcon}
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling?.classList.add('show');
+                      }}
+                    />
+                    <span className={styles.paymentIconText} style={{ color: '#00b140', display: 'none' }}>e-Mola</span>
+                    <span>e-Mola</span>
+                  </button>
                 </div>
 
                 <div className={styles.formGroup}>
                   <label htmlFor="phoneNumber">
-                    {formData.paymentMethod === 'emola' ? 'Número e-Mola *' : 'Número M-Pesa *'}
+                    {formData.paymentMethod === 'mpesa' ? 'Número M-Pesa *' : 'Número e-Mola *'}
                   </label>
                   <div className={styles.phoneInput}>
                     <span className={styles.countryCode}>+258</span>
@@ -312,7 +312,7 @@ export default function Checkout() {
                       value={formData.phoneNumber}
                       onChange={handleInputChange}
                       required
-                      placeholder={formData.paymentMethod === 'emola' ? '87 123 4567' : '84 123 4567'}
+                      placeholder={formData.paymentMethod === 'mpesa' ? '84 123 4567' : '87 123 4567'}
                     />
                   </div>
                 </div>
