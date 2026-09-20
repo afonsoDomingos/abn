@@ -5,6 +5,7 @@ import { ShoppingBag, Search, MapPin } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import styles from './Loja.module.css';
+import type { ReactNode } from 'react';
 
 interface Product {
   _id: string;
@@ -17,7 +18,7 @@ interface Product {
   stock: number;
 }
 
-const categoryIcons: Record<string, JSX.Element> = {
+const categoryIcons: Record<string, ReactNode> = {
   'Tecnologia': <Search size={16} />,
   'Marketing': <Search size={16} />,
   'Consultoria': <Search size={16} />,

@@ -5,6 +5,7 @@ import { Search, MapPin, Megaphone, Palette, Laptop, Briefcase } from 'lucide-re
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import styles from './Marketplace.module.css';
+import type { ReactNode } from 'react';
 
 interface Service {
   _id: string;
@@ -15,7 +16,7 @@ interface Service {
   status: string;
 }
 
-const categoryIcons: Record<string, JSX.Element> = {
+const categoryIcons: Record<string, ReactNode> = {
   'Marketing Digital': <Megaphone size={16} />,
   'Incubação': <Briefcase size={16} />,
   'Design': <Palette size={16} />,
