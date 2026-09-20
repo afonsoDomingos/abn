@@ -169,19 +169,21 @@ export default function Loja() {
           ) : (
             <div className={styles.grid}>
               {filtered.map((product, i) => (
-                <Link key={product._id} href={`/loja/${product._id}`} className={styles.card} style={{ animationDelay: `${i * 0.08}s` }}>
-                  <div className={styles.cardImage}>
-                    {product.image ? (
-                      <img src={product.image} alt={product.name} />
-                    ) : (
-                      <div className={styles.placeholderImage}>
-                        {categoryIcons[product.category] || '📦'}
-                      </div>
-                    )}
-                  </div>
-                  <span className={styles.category}>{product.category}</span>
-                  <h3 className={styles.cardTitle}>{product.name}</h3>
-                  <p className={styles.cardDesc}>{product.description}</p>
+                <div key={product._id} className={styles.card} style={{ animationDelay: `${i * 0.08}s` }}>
+                  <Link href={`/loja/${product._id}`} className={styles.cardLink}>
+                    <div className={styles.cardImage}>
+                      {product.image ? (
+                        <img src={product.image} alt={product.name} />
+                      ) : (
+                        <div className={styles.placeholderImage}>
+                          {categoryIcons[product.category] || '📦'}
+                        </div>
+                      )}
+                    </div>
+                    <span className={styles.category}>{product.category}</span>
+                    <h3 className={styles.cardTitle}>{product.name}</h3>
+                    <p className={styles.cardDesc}>{product.description}</p>
+                  </Link>
                   <div className={styles.cardFooter}>
                     <div className={styles.priceBox}>
                       <span className={styles.priceLabel}>Preço</span>
@@ -190,12 +192,12 @@ export default function Loja() {
                     <button
                       className={`btn-primary ${styles.ctaBtn}`}
                       disabled={product.stock === 0}
-                      onClick={(e) => e.preventDefault()}
+                      onClick={() => window.location.href = `/loja/checkout?productId=${product._id}`}
                     >
                       {product.stock === 0 ? 'Esgotado' : 'Comprar'}
                     </button>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           )}

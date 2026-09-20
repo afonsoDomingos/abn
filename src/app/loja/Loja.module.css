@@ -266,8 +266,6 @@
   overflow: hidden;
   animation: fadeUp 0.5s ease both;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-decoration: none;
-  color: inherit;
   height: 100%;
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -277,6 +275,14 @@
   transform: translateY(-6px);
   box-shadow: 0 20px 40px rgba(0,0,0,0.15);
   border-color: #ff6b00;
+}
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes fadeUp {
