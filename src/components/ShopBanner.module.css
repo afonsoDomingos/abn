@@ -1,0 +1,134 @@
+.shopBanner {
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.shopBanner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 107, 0, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.shopBannerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.shopBannerText {
+  color: white;
+}
+
+.shopBadge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 107, 0, 0.15);
+  border: 1px solid rgba(255, 107, 0, 0.3);
+  color: #ff6b00;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+
+.shopTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 1rem 0;
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.2;
+}
+
+.shopDescription {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.shopCta {
+  display: inline-block;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.shopCta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
+}
+
+.shopBannerImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shopBannerImage img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 107, 0, 0.2);
+}
+
+@media (max-width: 992px) {
+  .shopBannerContent {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .shopDescription {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .shopBannerImage {
+    order: -1;
+    margin-bottom: 2rem;
+  }
+
+  .shopTitle {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .shopBanner {
+    padding: 3rem 1.5rem;
+  }
+
+  .shopTitle {
+    font-size: 1.75rem;
+  }
+
+  .shopDescription {
+    font-size: 1rem;
+  }
+
+  .shopBannerImage img {
+    max-width: 100%;
+  }
+}
