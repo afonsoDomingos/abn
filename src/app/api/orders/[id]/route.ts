@@ -22,49 +22,62 @@ const OrderSchema = new mongoose.Schema({
 
 const Order = mongoose.models.Order || mongoose.model('Order', OrderSchema);
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     await connectDB();
     
-    const orders = await Order.find().sort({ createdAt: -1 });
+    const order = await Order.findById(params.id);
     
-    return NextResponse.json({ orders });
+    if (!order) {
+      return NextResponse.json(
+        { error: 'Pedido não encontrado' },
+        { status: 404 }
+      );
+    }
+    
+    return NextResponse.json({ order });
   } catch (error) {
-    console.error('Error fetching orders:', error);
+    console.error('Error fetching order:', error);
     return NextResponse.json(
-      { error: 'Erro ao buscar pedidos' },
+      { error: 'Erro ao buscar pedido' },
       { status: 500 }
     );
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     await connectDB();
     
     const body = await request.json();
     
-    const order = await Order.create({
-      productId: body.productId,
-      productName: body.productName,
-      productPrice: body.productPrice,
-      customerName: body.customerName,
-      customerEmail: body.customerEmail,
-      customerPhone: body.customerPhone,
-      customerWhatsApp: body.customerWhatsApp || '',
-      paymentMethod: body.paymentMethod,
-      buyTogether: body.buyTogether,
-      total: body.total
-    });
+    const order = await Order.findByIdAndUpdate(
+      params.id,
+      { 
+        ...body,
+        updatedAt: new Date()
+      },
+      { new: true }
+    );
     
-    return NextResponse.json({ 
-      success: true, 
-      orderId: order._id 
-    });
+    if (!order) {
+      return NextResponse.json(
+        { error: 'Pedido não encontrado' },
+        { status: 404 }
+      );
+    }
+    
+    return NextResponse.json({ order });
   } catch (error) {
-    console.error('Error creating order:', error);
+    console.error('Error updating order:', error);
     return NextResponse.json(
-      { error: 'Erro ao criar pedido' },
+      { error: 'Erro ao atualizar pedido' },
       { status: 500 }
     );
   }

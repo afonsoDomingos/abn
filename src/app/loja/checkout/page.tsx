@@ -83,6 +83,7 @@ export default function Checkout() {
       customerName: formData.name,
       customerEmail: formData.email,
       customerPhone: formData.phoneNumber,
+      customerWhatsApp: formData.whatsapp,
       paymentMethod: formData.paymentMethod,
       buyTogether,
       total: buyTogether && additionalProduct 
@@ -91,7 +92,8 @@ export default function Checkout() {
     };
 
     try {
-      const response = await fetch('/api/orders', {
+      // Create order first
+      const orderResponse = await fetch('/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -99,13 +101,15 @@ export default function Checkout() {
         body: JSON.stringify(orderData)
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        // Redirect to payment confirmation or success page
-        router.push(`/loja/checkout/success?orderId=${data.orderId}`);
-      } else {
+      if (!orderResponse.ok) {
         alert('Erro ao processar o pedido. Tente novamente.');
+        return;
       }
+
+      const orderDataResult = await orderResponse.json();
+      
+      // Redirect to success page (will poll for payment status)
+      router.push(`/loja/checkout/success?orderId=${orderDataResult.orderId}`);
     } catch (error) {
       console.error('Error submitting order:', error);
       alert('Erro ao processar o pedido. Tente novamente.');

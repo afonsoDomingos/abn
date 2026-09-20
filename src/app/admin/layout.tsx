@@ -28,6 +28,7 @@ import {
   ChevronRight,
   Menu,
   Users as UsersIcon,
+  Receipt,
   UserCheck,
   Building,
   Award,
@@ -100,6 +101,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { href: '/admin/galeria', label: 'Galeria', icon: <ImageIcon size={18} /> },
         { href: '/admin/oportunidades', label: 'Oportunidades', icon: <Target size={18} /> },
         { href: '/admin/loja', label: 'Loja ABN', icon: <ShoppingBag size={18} /> },
+        { href: '/admin/pedidos', label: 'Pedidos', icon: <Receipt size={18} /> },
       ]
     },
     {
