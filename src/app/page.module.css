@@ -142,44 +142,6 @@
   opacity: 0.8;
 }
 
-/* Level 3: White Partner Section */
-.footerBottom {
-  background-color: #ffffff;
-  padding: 1.5rem 2rem;
-  border-top: 1px solid #eaeaea;
-}
-
-.supportPartner {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-}
-
-.coatOfArms {
-  flex-shrink: 0;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.05));
-}
-
-.partnerInfo {
-  display: flex;
-  flex-direction: column;
-}
-
-.partnerHeading {
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #1c1917;
-  margin-bottom: 1px;
-}
-
-.partnerSubtext {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
 /* Responsive styles */
 @media (max-width: 992px) {
   .footerGrid {
@@ -213,13 +175,5 @@
     text-align: center;
   }
 
-  .footerBottom {
-    padding: 2rem 1.5rem;
-  }
 
-  .supportPartner {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-  }
 }

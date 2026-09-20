@@ -676,43 +676,6 @@
   font-weight: 600;
 }
 
-.footerBottom {
-  background-color: #ffffff;
-  padding: 1.5rem 2rem;
-  border-top: 1px solid #eaeaea;
-}
-
-.supportPartner {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-}
-
-.coatOfArms {
-  flex-shrink: 0;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.05));
-}
-
-.partnerInfo {
-  display: flex;
-  flex-direction: column;
-}
-
-.partnerHeading {
-  font-size: 0.85rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #1c1917;
-  margin-bottom: 2px;
-}
-
-.partnerSubtext {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
 /* Supported Companies Section */
 .supportedCompaniesSection {
   padding: 100px 2rem;
@@ -871,12 +834,6 @@
     flex-direction: column;
     gap: 1.5rem;
     text-align: center;
-  }
-
-  .supportPartner {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
   }
 
   .tabSelector {

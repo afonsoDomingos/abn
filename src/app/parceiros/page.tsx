@@ -927,29 +927,7 @@ ${formData.msg}`;
             </div>
           </div>
         </div>
-        
-        {/* Level 3: White Partner Section */}
-        <div className={styles.footerBottom}>
-          <div className={styles.footerContainer}>
-            <div className={styles.supportPartner}>
-              <svg viewBox="0 0 40 40" width="30" height="30" className={styles.coatOfArms}>
-                <path d="M20 2 L 35 12 L 35 28 L 20 38 L 5 28 L 5 12 Z" fill="#2a4fa6" />
-                <path d="M20 8 L 28 14 L 28 26 L 20 32 L 12 26 L 12 14 Z" fill="#ffffff" />
-                <circle cx="20" cy="20" r="4" fill="#ff6b00" />
-              </svg>
-              <div className={styles.partnerInfo}>
-                <p className={styles.partnerHeading}>
-                  {language === 'pt' ? 'Iniciativa ABN Ecosystem' : 'ABN Ecosystem Initiative'}
-                </p>
-                <p className={styles.partnerSubtext}>
-                  {language === 'pt' 
-                    ? 'Parceiro para o empoderamento económico e aceleração empresarial' 
-                    : 'Partner for business acceleration and economic empowerment'}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </footer>
     </main>
   );
