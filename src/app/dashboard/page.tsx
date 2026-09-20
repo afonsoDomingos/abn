@@ -32,8 +32,7 @@ import {
   Globe,
   Compass,
   Handshake,
-  Landmark,
-  Search
+  Landmark
 } from 'lucide-react';
 import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Dashboard.module.css';
