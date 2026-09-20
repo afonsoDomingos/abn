@@ -145,7 +145,7 @@
 /* Level 3: White Partner Section */
 .footerBottom {
   background-color: #ffffff;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   border-top: 1px solid #eaeaea;
 }
 
@@ -166,16 +166,16 @@
 }
 
 .partnerHeading {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #1c1917;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .partnerSubtext {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   font-weight: 500;
 }
