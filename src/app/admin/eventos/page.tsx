@@ -486,7 +486,7 @@ export default function AdminEventosPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid #e2e8f0' }}>
               <input
                 type="text"
-                placeholder="🔍 Pesquisar por nome, email ou empresa..."
+                placeholder="Pesquisar por nome, email ou empresa..."
                 value={inscriptionSearch}
                 onChange={e => setInscriptionSearch(e.target.value)}
                 style={{

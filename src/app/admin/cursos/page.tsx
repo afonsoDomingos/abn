@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { BookOpen, Plus, Edit, Trash2, Users, Eye, EyeOff, Video, Award, CheckCircle, FileText, X, FileUp, Check, ShieldAlert, Lock, Unlock } from 'lucide-react';
+import { BookOpen, Plus, Edit, Trash2, Users, Eye, EyeOff, Video, Award, CheckCircle, FileText, X, FileUp, Check, ShieldAlert, Lock, Unlock, Search } from 'lucide-react';
 
 interface Lesson {
   title: string;
@@ -487,7 +487,7 @@ export default function AdminCursosPage() {
                       border: '1px solid rgba(255,255,255,0.2)',
                       backdropFilter: 'blur(4px)'
                     }}>
-                      🔍 Ver Capa Inteira
+                      <Search size={14} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Ver Capa Inteira
                     </span>
                   </div>
                 )}
@@ -747,7 +747,7 @@ export default function AdminCursosPage() {
                         >
                           <img src={image} alt="Preview Capa" style={{ width: '100%', maxHeight: '220px', objectFit: 'contain' }} />
                           <span style={{ position: 'absolute', bottom: '6px', right: '8px', background: 'rgba(15,23,42,0.85)', color: '#fff', fontSize: '0.7rem', padding: '3px 8px', borderRadius: '4px', fontWeight: 600 }}>
-                            🔍 Ampliar Capa
+                            <Search size={14} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Ampliar Capa
                           </span>
                         </div>
                       )}
@@ -1479,7 +1479,7 @@ export default function AdminCursosPage() {
               <div>
                 <input
                   type="text"
-                  placeholder="🔍 Pesquisar por nome ou email..."
+                  placeholder="Pesquisar por nome ou email..."
                   value={participantSearch}
                   onChange={e => setParticipantSearch(e.target.value)}
                   style={{

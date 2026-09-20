@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Search, MapPin } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import styles from './Loja.module.css';
@@ -17,12 +17,13 @@ interface Product {
   stock: number;
 }
 
-const categoryIcons: Record<string, string> = {
-  'Tecnologia': '💻',
-  'Marketing': '📣',
-  'Consultoria': '💼',
-  'Formação': '📚',
-  'Serviços': '🛠️',
+const categoryIcons: Record<string, JSX.Element> = {
+  'Tecnologia': <Search size={16} />,
+  'Marketing': <Search size={16} />,
+  'Consultoria': <Search size={16} />,
+  'Formação': <Search size={16} />,
+  'Serviços': <Search size={16} />,
+  'Todos': <MapPin size={16} />,
 };
 
 export default function Loja() {
@@ -152,7 +153,7 @@ export default function Loja() {
                     className={`${styles.filterBtn} ${filter === cat ? styles.active : ''}`}
                     onClick={() => setFilter(cat)}
                   >
-                    {categoryIcons[cat] || '📌'} {cat}
+                    {categoryIcons[cat] || <MapPin size={16} />} {cat}
                   </button>
                 ))
             }
@@ -164,7 +165,7 @@ export default function Loja() {
             </div>
           ) : filtered.length === 0 ? (
             <div className={styles.empty}>
-              <span>🔍</span>
+              <Search size={48} />
               <p>Nenhum produto encontrado nesta categoria.</p>
             </div>
           ) : (

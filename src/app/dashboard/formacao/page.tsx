@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { Search } from 'lucide-react';
 
 function FormacaoPageInner() {
   const isCoursePaid = (course: any) => {
@@ -516,7 +517,7 @@ function FormacaoPageInner() {
                       backdropFilter: 'blur(4px)',
                       boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
                     }}>
-                      🔍 Ver Capa Completa
+                      <Search size={14} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Ver Capa Completa
                     </span>
                   </div>
                 )}

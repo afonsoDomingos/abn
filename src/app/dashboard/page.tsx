@@ -28,6 +28,7 @@ import {
   AlertCircle,
   Zap,
   BarChart2,
+  Search,
   Globe,
   Compass,
   Handshake,
@@ -1497,8 +1498,8 @@ export default function DashboardPage() {
             </div>
 
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.35rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}>
-                🔍
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.75rem' }}>
+                <Search size={20} />
               </div>
               <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
                 Radar de Scouting de Startups

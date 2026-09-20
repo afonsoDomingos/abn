@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { getClubStepTitle } from '@/lib/clubUtils';
+import { MapPin } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -1634,7 +1635,7 @@ const canProceed = () => {
                     </div>
                     {selectedProgram?.isClub && (
                       <div className={styles.reservadoAbn}>
-                        <span>📌 Espaço reservado à ABN</span>
+                        <span><MapPin size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Espaço reservado à ABN</span>
                         <span>Nº de membro atribuído: ___________________________</span>
                       </div>
                     )}
@@ -1759,7 +1760,7 @@ const canProceed = () => {
 
                       <div style={{ marginTop: '1rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '1.25rem' }}>
                         <h4 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontSize: '0.95rem', fontWeight: 800 }}>
-                          📌 Instruções de Pagamento ({form.metodoPagamento.toUpperCase()})
+                          <MapPin size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Instruções de Pagamento ({form.metodoPagamento.toUpperCase()})
                         </h4>
 
                         {form.metodoPagamento === 'mpesa' && (

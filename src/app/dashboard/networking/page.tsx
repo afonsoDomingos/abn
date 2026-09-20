@@ -393,7 +393,7 @@ export default function NetworkingPage() {
               textAlign: 'center', 
               color: '#64748b' 
             }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '0.8rem' }}>🔍</div>
+              <div style={{ marginBottom: '0.8rem' }}><Search size={48} /></div>
               <h3 style={{ margin: '0 0 0.4rem 0', color: '#0f172a', fontFamily: 'Outfit' }}>Nenhum membro encontrado</h3>
               <p style={{ margin: 0, fontSize: '0.9rem' }}>Tente ajustar a sua pesquisa ou selecione outra categoria.</p>
             </div>

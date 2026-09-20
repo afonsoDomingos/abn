@@ -103,7 +103,7 @@ export default function AdminUsuariosPage() {
       <div className={styles.controls}>
         <input
           type="text"
-          placeholder="🔍  Pesquisar por nome ou email..."
+          placeholder="Pesquisar por nome ou email..."
           className={styles.search}
           value={search}
           onChange={e => setSearch(e.target.value)}

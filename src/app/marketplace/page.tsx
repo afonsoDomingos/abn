@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Search, MapPin, Megaphone, Palette, Laptop, Briefcase } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import styles from './Marketplace.module.css';
@@ -14,12 +15,13 @@ interface Service {
   status: string;
 }
 
-const categoryIcons: Record<string, string> = {
-  'Marketing Digital': '📣',
-  'Incubação': '',
-  'Design': '🎨',
-  'Consultoria': '',
-  'Tecnologia': '💻',
+const categoryIcons: Record<string, JSX.Element> = {
+  'Marketing Digital': <Megaphone size={16} />,
+  'Incubação': <Briefcase size={16} />,
+  'Design': <Palette size={16} />,
+  'Consultoria': <Briefcase size={16} />,
+  'Tecnologia': <Laptop size={16} />,
+  'Todos': <MapPin size={16} />,
 };
 
 export default function Marketplace() {
@@ -114,7 +116,7 @@ export default function Marketplace() {
                     className={`${styles.filterBtn} ${filter === cat ? styles.active : ''}`}
                     onClick={() => setFilter(cat)}
                   >
-                    {categoryIcons[cat] || '📌'} {cat}
+                    {categoryIcons[cat] || <MapPin size={16} />} {cat}
                   </button>
                 ))
             }
@@ -126,7 +128,7 @@ export default function Marketplace() {
             </div>
           ) : filtered.length === 0 ? (
             <div className={styles.empty}>
-              <span>🔍</span>
+              <Search size={48} />
               <p>Nenhum serviço encontrado nesta categoria.</p>
             </div>
           ) : (
@@ -134,7 +136,7 @@ export default function Marketplace() {
               {filtered.map((service, i) => (
                 <div key={service._id} className={`${styles.card} glass`} style={{ animationDelay: `${i * 0.08}s` }}>
                   <div className={styles.cardIcon}>
-                    {categoryIcons[service.category] || '📌'}
+                    {categoryIcons[service.category] || <MapPin size={32} />}
                   </div>
                   <span className={styles.category}>{service.category}</span>
                   <h3 className={styles.cardTitle}>{service.name}</h3>

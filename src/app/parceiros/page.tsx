@@ -5,6 +5,7 @@ import styles from "./Parceiros.module.css";
 import { useLanguage } from "@/lib/LanguageContext";
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { Search } from 'lucide-react';
 
 export default function Parceiros() {
   const { t, language } = useLanguage();
@@ -175,7 +176,7 @@ ${formData.msg}`;
         { icon: "", title: "Expansão de Rede", desc: "Expandir a sua rede de contactos em vários países africanos e da diáspora." },
         { icon: "📢", title: "Visibilidade de Marca", desc: "Aumentar a visibilidade e autoridade da sua marca ou carreira no ecossistema." },
         { icon: "", title: "Projetos de Impacto", desc: "Desenvolver e colaborar em projetos de elevado impacto socioeconómico." },
-        { icon: "🔍", title: "Novas Oportunidades", desc: "Identificar novos clientes, fornecedores, parceiros e potenciais investidores." },
+        { icon: "", title: "Novas Oportunidades", desc: "Identificar novos clientes, fornecedores, parceiros e potenciais investidores." },
         { icon: "📅", title: "Programas Exclusivos", desc: "Participar em conferências, feiras, missões empresariais e programas fechados." },
         { icon: "🌱", title: "Fomento de Empreendedorismo", desc: "Contribuir activamente para o fortalecimento do empreendedorismo em África." },
         { icon: "🏆", title: "Posicionamento Setorial", desc: "Posicionar-se como uma autoridade e referência no seu setor de atuação." },
@@ -305,7 +306,7 @@ ${formData.msg}`;
         { icon: "", title: "Network Expansion", desc: "Expand your contact network across multiple African countries and the diaspora." },
         { icon: "📢", title: "Brand Visibility", desc: "Increase the visibility and authority of your brand or career in the ecosystem." },
         { icon: "", title: "Impact Projects", desc: "Develop and collaborate on high socio-economic impact projects." },
-        { icon: "🔍", title: "New Opportunities", desc: "Identify new clients, suppliers, partners, and potential investors." },
+        { icon: "", title: "New Opportunities", desc: "Identify new clients, suppliers, partners, and potential investors." },
         { icon: "📅", title: "Exclusive Programs", desc: "Participate in conferences, trade fairs, business missions, and closed programs." },
         { icon: "🌱", title: "Foster Entrepreneurship", desc: "Actively contribute to strengthening entrepreneurship across Africa." },
         { icon: "🏆", title: "Sectored Positioning", desc: "Position yourself as an authority and reference in your field of work." },

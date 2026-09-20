@@ -18,6 +18,7 @@ import {
   TrendingUp,
   CheckCircle2,
   Clock,
+  Search,
   Rocket,
   ArrowRight,
   Search,
@@ -605,14 +606,14 @@ export default function UniversidadePage() {
           <h4 style={{ fontSize: '1.1rem', fontWeight: 800, margin: '0 0 1rem 0', color: '#0f172a' }}>Como a Universidade Pode Conectar-se ao Ecossistema</h4>
           <div className={styles.cardsGrid}>
             {[
-              { icon: '🔍', title: 'Procurar Startups', desc: 'Encontre startups e empreendedores interessados em projetos de investigação aplicada, co-criação e acesso a infraestrutura académica.', link: '/dashboard/oportunidades', label: 'Explorar Startups' },
-              { icon: '', title: 'Conectar com Empresas', desc: 'Estabeleça projetos de inovação aberta com PMEs e corporações que necessitam de expertise académica, R&D e capital humano especializado.', link: '/dashboard/networking', label: 'Ver Empresas' },
-              { icon: '', title: 'Encontrar Parceiros ABN', desc: 'Procure universidades parceiras, centros de investigação e aceleradoras que possam co-financiar e co-executar programas de impacto.', link: '/dashboard/networking', label: 'Explorar Parcerias' },
-              { icon: '🌍', title: 'Participar em Desafios', desc: 'Submeta soluções e equipas académicas aos desafios de inovação lançados por empresas parceiras no ecossistema ABN.', link: '/dashboard/oportunidades', label: 'Ver Desafios' }
+              { icon: <Search size={32} />, title: 'Procurar Startups', desc: 'Encontre startups e empreendedores interessados em projetos de investigação aplicada, co-criação e acesso a infraestrutura académica.', link: '/dashboard/oportunidades', label: 'Explorar Startups' },
+              { icon: <Briefcase size={32} />, title: 'Conectar com Empresas', desc: 'Estabeleça projetos de inovação aberta com PMEs e corporações que necessitam de expertise académica, R&D e capital humano especializado.', link: '/dashboard/networking', label: 'Ver Empresas' },
+              { icon: <Building2 size={32} />, title: 'Encontrar Parceiros ABN', desc: 'Procure universidades parceiras, centros de investigação e aceleradoras que possam co-financiar e co-executar programas de impacto.', link: '/dashboard/networking', label: 'Explorar Parcerias' },
+              { icon: <Globe size={32} />, title: 'Participar em Desafios', desc: 'Submeta soluções e equipas académicas aos desafios de inovação lançados por empresas parceiras no ecossistema ABN.', link: '/dashboard/oportunidades', label: 'Ver Desafios' }
             ].map((item, i) => (
               <div key={i} className={styles.card}>
                 <div>
-                  <div style={{ fontSize: '2.2rem', marginBottom: '0.75rem' }}>{item.icon}</div>
+                  <div style={{ marginBottom: '0.75rem' }}>{item.icon}</div>
                   <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>{item.title}</h4>
                   <p style={{ margin: 0, fontSize: '0.88rem', color: '#475569', lineHeight: 1.5 }}>{item.desc}</p>
                 </div>

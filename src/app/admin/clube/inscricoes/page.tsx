@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { getClubStepTitle } from '@/lib/clubUtils';
+import { MapPin } from 'lucide-react';
 import styles from './Inscricoes.module.css';
 
 interface Inscricao {
@@ -146,7 +147,7 @@ export default function AdminInscricoesClubePage() {
         <input
           type="text"
           className={styles.searchInput}
-          placeholder="🔍 Pesquisar por nome, e-mail ou empresa..."
+          placeholder="Pesquisar por nome, e-mail ou empresa..."
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
@@ -293,7 +294,7 @@ export default function AdminInscricoesClubePage() {
               {/* Áreas de Interesse */}
               {selected.areasInteresse && selected.areasInteresse.length > 0 && (
                 <div className={styles.detailSection}>
-                  <h4 className={styles.detailSectionTitle}>📌 Áreas de Interesse</h4>
+                  <h4 className={styles.detailSectionTitle}><MapPin size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Áreas de Interesse</h4>
                   <div className={styles.tagList}>
                     {selected.areasInteresse.map(a => <span key={a} className={styles.tag}>{a}</span>)}
                   </div>

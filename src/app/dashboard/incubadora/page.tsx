@@ -230,7 +230,7 @@ export default function IncubadoraPage() {
           <FileText size={16} /> Avaliações ({evaluations.length})
         </button>
         <button className={`${styles.tabButton} ${activeTab === 'scout' ? styles.tabActive : ''}`} onClick={() => setActiveTab('scout')} style={{ background: activeTab === 'scout' ? undefined : '#fef3c7', color: activeTab === 'scout' ? undefined : '#b45309', border: activeTab === 'scout' ? undefined : '1px solid #fde68a' }}>
-          <Search size={16} /> Radar de Startups 🔍
+          <Search size={16} /> Radar de Startups
         </button>
       </div>
 

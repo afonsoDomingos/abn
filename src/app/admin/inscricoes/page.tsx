@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Search } from 'lucide-react';
 
 interface UnifiedInscription {
   _id: string;
@@ -240,7 +241,7 @@ export default function AdminInscricoesPage() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem', padding: '1.5rem', borderRadius: '16px', background: '#ffffff', border: '1px solid #e2e8f0' }}>
         <input
           type="text"
-          placeholder="🔍 Pesquisar por nome, email ou empresa..."
+          placeholder="Pesquisar por nome, email ou empresa..."
           value={search}
           onChange={e => setSearch(e.target.value)}
           style={{
@@ -389,7 +390,7 @@ export default function AdminInscricoesPage() {
                         cursor: 'pointer'
                       }}
                     >
-                      🔍 Ver Respostas
+                      <Search size={14} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Ver Respostas
                     </button>
                   </td>
                 </tr>
