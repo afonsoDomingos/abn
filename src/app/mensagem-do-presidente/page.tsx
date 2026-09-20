@@ -12,6 +12,7 @@ import styles from './page.module.css';
 export default function MensagemDoPresidentePage() {
   const { t, language } = useLanguage();
   const [bannerUrl, setBannerUrl] = useState<string>('');
+  const [shopEnabled, setShopEnabled] = useState(false);
 
   useEffect(() => {
     fetch('/api/config')
@@ -19,6 +20,9 @@ export default function MensagemDoPresidentePage() {
       .then(data => {
         if (data.configs?.page_banners?.mensagem_presidente) {
           setBannerUrl(data.configs.page_banners.mensagem_presidente);
+        }
+        if (data.configs?.shop_enabled !== undefined) {
+          setShopEnabled(data.configs.shop_enabled);
         }
       })
       .catch(() => {});
@@ -92,7 +96,7 @@ export default function MensagemDoPresidentePage() {
             <div className={styles.footerContainer}>
               <div className={styles.footerBar}>
                 <div className={styles.copyright}>
-                  Copyright © ABN {new Date().getFullYear()} | Powered By <a href="https://www.wehosthere.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>Wehosthere <img src="/wehosthere.png" alt="Wehosthere" style={{ height: '30px', verticalAlign: 'middle' }} /></a>
+                  Copyright © ABN {new Date().getFullYear()} {!shopEnabled && <> | Powered By <a href="https://www.wehosthere.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>Wehosthere <img src="/wehosthere.png" alt="Wehosthere" style={{ height: '30px', verticalAlign: 'middle' }} /></a></>}
                 </div>
                 <div className={styles.socials}>
                   <a href="https://www.instagram.com/abnafrobiznetwork?igsh=dTlvYndmcXA4NmVh" target="_blank" aria-label="Instagram">

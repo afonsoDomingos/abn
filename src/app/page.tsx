@@ -19,9 +19,22 @@ import ScrollToTop from "@/components/ScrollToTop";
 import styles from "./page.module.css";
 import { useLanguage } from "@/lib/LanguageContext";
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const { t, language } = useLanguage();
+  const [shopEnabled, setShopEnabled] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs?.shop_enabled !== undefined) {
+          setShopEnabled(data.configs.shop_enabled);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <>
@@ -94,7 +107,7 @@ export default function Home() {
             <div className={styles.footerContainer}>
               <div className={styles.footerBar}>
                 <div className={styles.copyright}>
-                  Copyright © ABN {new Date().getFullYear()} | Powered By <a href="https://www.wehosthere.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>Wehosthere <img src="/wehosthere.png" alt="Wehosthere" style={{ height: '30px', verticalAlign: 'middle' }} /></a>
+                  Copyright © ABN {new Date().getFullYear()} {!shopEnabled && <> | Powered By <a href="https://www.wehosthere.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>Wehosthere <img src="/wehosthere.png" alt="Wehosthere" style={{ height: '30px', verticalAlign: 'middle' }} /></a></>}
                 </div>
                 
                 <div className={styles.socials}>

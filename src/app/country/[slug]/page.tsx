@@ -84,6 +84,7 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
 
   // Global Partners
   const [globalPartners, setGlobalPartners] = useState<any[]>([]);
+  const [shopEnabled, setShopEnabled] = useState(false);
 
   useEffect(() => {
     // 1. Fetch Hub details
@@ -114,6 +115,9 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
       .then(data => {
         if (data.configs && data.configs.partners_content) {
           setGlobalPartners(data.configs.partners_content);
+        }
+        if (data.configs?.shop_enabled !== undefined) {
+          setShopEnabled(data.configs.shop_enabled);
         }
       })
       .catch(() => {});
@@ -547,7 +551,7 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
           </div>
 
           <div className={styles.bottomBar}>
-            <span>Copyright © ABN {new Date().getFullYear()} | Powered By <a href="https://www.wehosthere.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>Wehosthere <img src="/wehosthere.png" alt="Wehosthere" style={{ height: '30px', verticalAlign: 'middle' }} /></a></span>
+            <span>Copyright © ABN {new Date().getFullYear()} {!shopEnabled && <> | Powered By <a href="https://www.wehosthere.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>Wehosthere <img src="/wehosthere.png" alt="Wehosthere" style={{ height: '30px', verticalAlign: 'middle' }} /></a></>}</span>
           </div>
         </div>
       </footer>
