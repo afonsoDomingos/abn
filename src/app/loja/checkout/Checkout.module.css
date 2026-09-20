@@ -274,6 +274,13 @@
   display: block;
 }
 
+.paymentIconText {
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .submitButton {
   width: 100%;
   padding: 1rem 2rem;
