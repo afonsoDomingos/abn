@@ -6,11 +6,24 @@ const ProductSchema = new Schema({
   price: { type: Number, required: true },
   category: { type: String, required: true },
   image: { type: String, default: '' },
-  status: { type: String, enum: ['ativo', 'inativo'], default: 'ativo' },
+  status: { 
+    type: String, 
+    enum: ['ativo', 'pendente', 'aprovado', 'rejeitado', 'inativo'], 
+    default: 'ativo' 
+  },
   stock: { type: Number, default: 0 },
   digital: { type: Boolean, default: false },
   downloadUrl: { type: String, default: '' },
   order: { type: Number, default: 0 },
+  
+  // Dados do Vendedor / Empreendedor
+  sellerId: { type: Schema.Types.ObjectId, ref: 'User' },
+  sellerName: { type: String, default: '' },
+  sellerBusiness: { type: String, default: '' },
+  sellerWhatsApp: { type: String, default: '' },
+  approvalNotes: { type: String, default: '' },
+  reviewedAt: { type: Date },
+
   // Enhanced fields for different product types
   productType: { 
     type: String, 

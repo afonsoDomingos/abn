@@ -5,10 +5,24 @@ import Product from '@/models/Product';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     await dbConnect();
-    const products = await Product.find({ status: 'ativo' }).sort({ order: 1, createdAt: -1 });
+    const { searchParams } = new URL(request.url);
+    const requestedStatus = searchParams.get('status');
+
+    let query: any = { status: { $in: ['ativo', 'aprovado'] } };
+
+    if (requestedStatus) {
+      // Se um status específico for solicitado (ex: 'pendente' ou 'todos' pelo admin)
+      if (requestedStatus === 'todos') {
+        query = {};
+      } else {
+        query = { status: requestedStatus };
+      }
+    }
+
+    const products = await Product.find(query).sort({ order: 1, createdAt: -1 });
     return NextResponse.json({ success: true, products });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });

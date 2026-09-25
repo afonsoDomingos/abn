@@ -40,6 +40,12 @@ const BusinessSchema = new mongoose.Schema({
     type: { type: String, enum: ['produto', 'servico'], default: 'produto' },
     active: { type: Boolean, default: true },
     showInStore: { type: Boolean, default: true },
+    storeApproval: { 
+      type: String, 
+      enum: ['pendente', 'aprovado', 'rejeitado', 'rascunho'], 
+      default: 'pendente' 
+    },
+    approvalNotes: { type: String, default: '' },
     image: { type: String, default: '' }
   }],
   clients: [{

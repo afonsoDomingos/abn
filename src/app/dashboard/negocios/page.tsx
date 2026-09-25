@@ -209,6 +209,7 @@ export default function NegociosPage() {
         type: prodType, 
         active: true,
         showInStore: prodShowInStore,
+        storeApproval: prodShowInStore ? 'pendente' : 'rascunho',
         image: prodImage
       }
     ];
@@ -232,7 +233,11 @@ export default function NegociosPage() {
         setProdImage('');
         setProdShowInStore(true);
         setModalType(null);
-        showNotification('success', 'Item adicionado e configurado para a Loja ABN!');
+        if (prodShowInStore) {
+          showNotification('success', 'Item submetido com sucesso! Está em análise pela equipe ABN para entrar na loja.');
+        } else {
+          showNotification('success', 'Item adicionado ao seu catálogo interno!');
+        }
       }
     } catch {
       showNotification('error', 'Erro ao salvar produto.');
@@ -721,9 +726,19 @@ export default function NegociosPage() {
                           {item.type}
                         </span>
                         {item.showInStore !== false && (
-                          <span style={{ fontSize: '0.68rem', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: '#dcfce7', color: '#15803d' }}>
-                            🏪 Na Loja ABN
-                          </span>
+                          item.storeApproval === 'aprovado' ? (
+                            <span style={{ fontSize: '0.68rem', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: '#dcfce7', color: '#15803d' }}>
+                              ✅ Aprovado na Loja
+                            </span>
+                          ) : item.storeApproval === 'rejeitado' ? (
+                            <span style={{ fontSize: '0.68rem', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: '#fee2e2', color: '#b91c1c' }} title={item.approvalNotes || 'Não aprovado'}>
+                              ❌ Não Aprovado
+                            </span>
+                          ) : (
+                            <span style={{ fontSize: '0.68rem', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: '#fef3c7', color: '#b45309' }}>
+                              ⏳ Em Análise pela ABN
+                            </span>
+                          )
                         )}
                       </div>
                       <button onClick={() => handleRemoveProduct(idx)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }} title="Remover">
