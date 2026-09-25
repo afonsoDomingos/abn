@@ -87,7 +87,7 @@ export default function ShopNavbar({ onSearch, onSelectCategory }: ShopNavbarPro
             Categorias
           </button>
 
-          <Link href="/registro?perfil=empreendedor" className={`${styles.navLink} ${styles.sellerLink}`}>
+          <Link href="/loja/vender" className={`${styles.navLink} ${styles.sellerLink}`}>
             Vender na ABN
           </Link>
 

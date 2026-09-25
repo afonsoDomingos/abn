@@ -320,7 +320,7 @@ export default function Loja() {
             </a>
 
             {/* Card 2: Quero vender */}
-            <Link href="/registro?perfil=empreendedor" className={`${styles.heroActionCard} ${styles.cardSell}`}>
+            <Link href="/loja/vender" className={`${styles.heroActionCard} ${styles.cardSell}`}>
               <div className={styles.heroCardIconWrap}>
                 <Store size={24} />
               </div>
@@ -478,7 +478,7 @@ export default function Loja() {
               <h2 className={styles.sellerHeading}>
                 O seu negócio merece mais clientes.
               </h2>
-              <Link href="/registro?perfil=empreendedor" className={styles.sellerBtn}>
+              <Link href="/loja/vender" className={styles.sellerBtn}>
                 <Store size={18} />
                 Abrir a minha loja
               </Link>
