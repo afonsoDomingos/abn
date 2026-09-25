@@ -16,6 +16,21 @@ export default function ShopNavbar({ onSearch, onSelectCategory }: ShopNavbarPro
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentUser, setCurrentUser] = useState<any | null>(null);
+  const [cartCount, setCartCount] = useState<number>(0);
+
+  const updateCartCount = () => {
+    try {
+      const stored = localStorage.getItem('abn_cart');
+      if (stored) {
+        const items = JSON.parse(stored);
+        setCartCount(Array.isArray(items) ? items.length : 0);
+      } else {
+        setCartCount(0);
+      }
+    } catch {
+      setCartCount(0);
+    }
+  };
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -34,6 +49,17 @@ export default function ShopNavbar({ onSearch, onSelectCategory }: ShopNavbarPro
         }
       })
       .catch(() => {});
+
+    updateCartCount();
+
+    const handleStorage = () => updateCartCount();
+    window.addEventListener('storage', handleStorage);
+    window.addEventListener('cart-updated', handleStorage);
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      window.removeEventListener('cart-updated', handleStorage);
+    };
   }, []);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -101,6 +127,9 @@ export default function ShopNavbar({ onSearch, onSelectCategory }: ShopNavbarPro
 
           <Link href="/loja/checkout" className={styles.cartBtn} title="Carrinho">
             <ShoppingCart size={20} />
+            {cartCount > 0 && (
+              <span className={styles.cartBadge}>{cartCount > 9 ? '9+' : cartCount}</span>
+            )}
           </Link>
         </nav>
       </div>

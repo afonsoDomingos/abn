@@ -13,6 +13,8 @@ export default function CheckoutSuccess() {
   const [orderStatus, setOrderStatus] = useState<'pending' | 'paid' | 'failed'>('pending');
   const [loading, setLoading] = useState(true);
 
+  const [order, setOrder] = useState<any | null>(null);
+
   useEffect(() => {
     if (orderId) {
       // Poll for order status
@@ -22,6 +24,7 @@ export default function CheckoutSuccess() {
           const data = await response.json();
           
           if (data.order) {
+            setOrder(data.order);
             setOrderStatus(data.order.status);
             
             if (data.order.status === 'paid') {
@@ -44,6 +47,18 @@ export default function CheckoutSuccess() {
       return () => clearInterval(interval);
     }
   }, [orderId]);
+
+  const handleWhatsAppNotify = () => {
+    if (!order) return;
+    const phone = '258840000000'; // Número oficial de suporte/atendimento ABN
+    const msg = `Olá ABN! Gostaria de confirmar meu pedido #${orderId}.\n\n` +
+      `📦 Item: ${order.productName}\n` +
+      `💰 Valor: ${order.total ? Number(order.total).toLocaleString() : order.productPrice} MT\n` +
+      `👤 Cliente: ${order.customerName}\n` +
+      `💳 Método: ${order.paymentMethod?.toUpperCase()}\n\n` +
+      `Podem verificar o status da entrega/acesso?`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+  };
 
   if (!orderId) {
     return (
@@ -89,7 +104,27 @@ export default function CheckoutSuccess() {
                 </ul>
               </div>
 
-              <div className={styles.actions}>
+              <div className={styles.actions} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', width: '100%', maxWidth: '380px', margin: '1.5rem auto 0' }}>
+                <button 
+                  onClick={handleWhatsAppNotify} 
+                  style={{
+                    background: '#25D366',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '12px',
+                    padding: '12px 20px',
+                    fontWeight: 700,
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    boxShadow: '0 4px 14px rgba(37, 211, 102, 0.3)'
+                  }}
+                >
+                  💬 Confirmar no WhatsApp da ABN / Vendedor
+                </button>
                 <button onClick={() => router.push('/loja')} className="btn-primary">
                   Continuar a Comprar
                 </button>

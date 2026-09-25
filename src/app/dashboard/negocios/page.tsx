@@ -98,6 +98,8 @@ export default function NegociosPage() {
   const [prodDesc, setProdDesc] = useState('');
   const [prodPrice, setProdPrice] = useState('');
   const [prodType, setProdType] = useState<'produto' | 'servico'>('produto');
+  const [prodShowInStore, setProdShowInStore] = useState(true);
+  const [prodImage, setProdImage] = useState('');
 
   // Formulário Cliente
   const [clientName, setClientName] = useState('');
@@ -200,7 +202,15 @@ export default function NegociosPage() {
 
     const updatedList = [
       ...(business.productsAndServices || []),
-      { name: prodName.trim(), description: prodDesc, price: prodPrice, type: prodType, active: true }
+      { 
+        name: prodName.trim(), 
+        description: prodDesc, 
+        price: prodPrice, 
+        type: prodType, 
+        active: true,
+        showInStore: prodShowInStore,
+        image: prodImage
+      }
     ];
 
     try {
@@ -219,8 +229,10 @@ export default function NegociosPage() {
         setProdName('');
         setProdDesc('');
         setProdPrice('');
+        setProdImage('');
+        setProdShowInStore(true);
         setModalType(null);
-        showNotification('success', 'Item adicionado ao catálogo!');
+        showNotification('success', 'Item adicionado e configurado para a Loja ABN!');
       }
     } catch {
       showNotification('error', 'Erro ao salvar produto.');
@@ -700,17 +712,31 @@ export default function NegociosPage() {
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
-              {business.productsAndServices.map((item: ProductService, idx: number) => (
-                <div key={idx} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              {business.productsAndServices.map((item: any, idx: number) => (
+                <div key={idx} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '0.75rem' }}>
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                      <span style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', padding: '2px 8px', borderRadius: '6px', background: item.type === 'produto' ? '#e0f2fe' : '#fef3c7', color: item.type === 'produto' ? '#0369a1' : '#b45309' }}>
-                        {item.type}
-                      </span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '4px' }}>
+                      <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                        <span style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', padding: '2px 8px', borderRadius: '6px', background: item.type === 'produto' ? '#e0f2fe' : '#fef3c7', color: item.type === 'produto' ? '#0369a1' : '#b45309' }}>
+                          {item.type}
+                        </span>
+                        {item.showInStore !== false && (
+                          <span style={{ fontSize: '0.68rem', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: '#dcfce7', color: '#15803d' }}>
+                            🏪 Na Loja ABN
+                          </span>
+                        )}
+                      </div>
                       <button onClick={() => handleRemoveProduct(idx)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }} title="Remover">
                         <Trash2 size={16} />
                       </button>
                     </div>
+
+                    {item.image && (
+                      <div style={{ width: '100%', height: '110px', borderRadius: '10px', overflow: 'hidden', marginBottom: '10px', background: '#f1f5f9' }}>
+                        <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </div>
+                    )}
+
                     <h4 style={{ margin: '0 0 4px 0', fontSize: '1rem', color: '#0f172a' }}>{item.name}</h4>
                     <p style={{ fontSize: '0.82rem', color: '#64748b', margin: '0 0 12px 0', lineHeight: 1.4 }}>{item.description}</p>
                   </div>
@@ -1093,9 +1119,35 @@ export default function NegociosPage() {
                 </div>
               </div>
               <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: 700, color: '#334155' }}>Descrição da Proposta de Valor</label>
-                <textarea rows={3} value={prodDesc} onChange={e => setProdDesc(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1' }} />
+                <label style={{ fontSize: '0.8rem', fontWeight: 700, color: '#334155' }}>Foto ou Imagem do Item (URL)</label>
+                <input 
+                  type="text" 
+                  value={prodImage} 
+                  onChange={e => setProdImage(e.target.value)} 
+                  placeholder="https://exemplo.com/imagem.jpg" 
+                  style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1' }} 
+                />
               </div>
+
+              <div style={{ background: '#f8fafc', padding: '12px 14px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', margin: 0 }}>
+                  <input 
+                    type="checkbox" 
+                    checked={prodShowInStore} 
+                    onChange={e => setProdShowInStore(e.target.checked)} 
+                    style={{ width: '18px', height: '18px', accentColor: '#16a34a' }}
+                  />
+                  <div>
+                    <span style={{ fontSize: '0.86rem', fontWeight: 700, color: '#0f172a', display: 'block' }}>
+                      🏪 Exibir na Loja Pública ABN
+                    </span>
+                    <span style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                      O item ficará visível para milhares de visitantes e membros da rede na página /loja.
+                    </span>
+                  </div>
+                </label>
+              </div>
+
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
                 <button type="button" onClick={() => setModalType(null)} className="btn-outline" style={{ padding: '10px 18px' }}>Cancelar</button>
                 <button type="submit" className="btn-primary" disabled={saving} style={{ padding: '10px 20px' }}>

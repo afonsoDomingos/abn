@@ -33,13 +33,14 @@ const BusinessSchema = new mongoose.Schema({
   isIncubated: { type: Boolean, default: false },
   incubationPhase: { type: String, enum: ['Ideação', 'Validação', 'Mínimo Produto Viável (MVP)', 'Tração & Escala', 'Crescimento', 'Escala'], default: 'Ideação' },
   
-  // ── GESTÃO DO NEGÓCIO (PRODUTOS, CLIENTES, FORNECEDORES, EQUIPA, METAS, DOCUMENTOS) ──
   productsAndServices: [{
     name: { type: String, required: true },
     description: { type: String, default: '' },
     price: { type: String, default: '' },
     type: { type: String, enum: ['produto', 'servico'], default: 'produto' },
-    active: { type: Boolean, default: true }
+    active: { type: Boolean, default: true },
+    showInStore: { type: Boolean, default: true },
+    image: { type: String, default: '' }
   }],
   clients: [{
     name: { type: String, required: true },

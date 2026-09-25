@@ -210,6 +210,32 @@ export default function Loja() {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleActionClick = (item: ProductItem) => {
+    // Adicionar item ao carrinho no localStorage
+    try {
+      const stored = localStorage.getItem('abn_cart');
+      let cart: any[] = stored ? JSON.parse(stored) : [];
+      const exists = cart.some((i: any) => i._id === item._id);
+      if (!exists) {
+        cart.push({
+          _id: item._id,
+          name: item.name,
+          price: item.price,
+          category: item.category,
+          image: item.image || ''
+        });
+        localStorage.setItem('abn_cart', JSON.stringify(cart));
+        window.dispatchEvent(new Event('cart-updated'));
+      }
+    } catch {}
+
+    if (item.actionHref) {
+      router.push(item.actionHref);
+    } else {
+      router.push(`/loja/checkout?productId=${item._id}`);
+    }
+  };
+
   // Coleta unificada de todos os itens do ecossistema
   const allItems: ProductItem[] = [
     ...products,
@@ -410,7 +436,7 @@ export default function Loja() {
                           <span className={styles.priceTag}>{item.priceFormatted}</span>
                           <button
                             className={styles.btnAction}
-                            onClick={() => router.push(item.actionHref || `/loja/checkout?productId=${item._id}`)}
+                            onClick={() => handleActionClick(item)}
                           >
                             {item.actionText || 'Comprar'}
                           </button>
@@ -456,7 +482,7 @@ export default function Loja() {
                           <span className={styles.priceTag}>{item.priceFormatted}</span>
                           <button
                             className={styles.btnAction}
-                            onClick={() => router.push(item.actionHref || '/loja')}
+                            onClick={() => handleActionClick(item)}
                           >
                             {item.actionText}
                           </button>
