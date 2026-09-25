@@ -68,12 +68,20 @@ export async function GET(request: NextRequest) {
     });
 
     // Find local registered users for this country
-    // Normalize search query for common accents (e.g. Moçambique / Mocambique)
-    const countryKeyword = hub.name.split('-')[0].trim().replace(/[çÇ]/g, '[cç]');
+    // Normalize search query to match both accented and non-accented country names
+    const rawCountry = hub.name.split('-')[0].split('(')[0].trim();
+    const countryPattern = rawCountry
+      .replace(/[aáàãâäAÁÀÃÂÄ]/g, '[aáàãâä]')
+      .replace(/[eéèêëEÉÈÊË]/g, '[eéèêë]')
+      .replace(/[iíìîïIÍÌÎÏ]/g, '[iíìîï]')
+      .replace(/[oóòõôöOÓÒÕÔÖ]/g, '[oóòõôö]')
+      .replace(/[uúùûüUÚÙÛÜ]/g, '[uúùûü]')
+      .replace(/[cçCÇ]/g, '[cç]');
+
     const localUsers = await User.find({
       $or: [
-        { country: { $regex: new RegExp(countryKeyword, 'i') } },
-        { nationality: { $regex: new RegExp(countryKeyword, 'i') } }
+        { country: { $regex: new RegExp(countryPattern, 'i') } },
+        { nationality: { $regex: new RegExp(countryPattern, 'i') } }
       ]
     }).select('name email role profileImage company sector city country phone createdAt').sort({ createdAt: -1 });
 

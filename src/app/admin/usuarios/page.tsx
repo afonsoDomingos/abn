@@ -16,6 +16,7 @@ interface User {
 const roleLabels: Record<string, { label: string; color: string }> = {
   admin: { label: 'Admin', color: '#d4af37' },
   collaborator: { label: 'Colaborador', color: '#ff6b00' },
+  representative: { label: 'Representante', color: '#10b981' },
   empreendedor: { label: 'Empreendedor', color: '#2e8b57' },
   startup: { label: 'Startup', color: '#3b82f6' },
   investidor: { label: 'Investidor', color: '#a855f7' },
@@ -109,13 +110,13 @@ export default function AdminUsuariosPage() {
           onChange={e => setSearch(e.target.value)}
         />
         <div className={styles.filters}>
-          {['todos', 'empreendedor', 'startup', 'investidor', 'mentor', 'collaborator', 'admin'].map(r => (
+          {['todos', 'empreendedor', 'startup', 'investidor', 'mentor', 'representative', 'collaborator', 'admin'].map(r => (
             <button
               key={r}
               className={`${styles.filterBtn} ${filter === r ? styles.active : ''}`}
               onClick={() => setFilter(r)}
             >
-              {r.charAt(0).toUpperCase() + r.slice(1)}
+              {r === 'representative' ? 'Representantes' : (r.charAt(0).toUpperCase() + r.slice(1))}
             </button>
           ))}
         </div>
@@ -229,6 +230,7 @@ export default function AdminUsuariosPage() {
                   <option value="startup">Startup</option>
                   <option value="investidor">Investidor</option>
                   <option value="mentor">Mentor</option>
+                  <option value="representative">Representante de Delegação</option>
                   <option value="collaborator">Colaborador</option>
                   <option value="admin">Admin</option>
                 </select>

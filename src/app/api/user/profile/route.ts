@@ -89,7 +89,7 @@ export async function PUT(request: Request) {
       ? user.roles 
       : [user.role || 'empreendedor'];
 
-    const userData = { 
+    const userData: any = { 
       id: String(user._id), 
       name: user.name, 
       email: user.email, 
@@ -98,18 +98,24 @@ export async function PUT(request: Request) {
       profileImage: user.profileImage 
     };
 
+    if (user.representativeProfile?.hubSlug) {
+      userData.hubSlug = user.representativeProfile.hubSlug;
+    }
+
     const response = NextResponse.json({ 
       success: true, 
       user: user.toObject()
     });
 
-    response.cookies.set('abn_session', encodeURIComponent(JSON.stringify(userData)), {
-      httpOnly: false,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 dias
-      path: '/',
-    });
+    if (sessionId === targetId) {
+      response.cookies.set('abn_session', encodeURIComponent(JSON.stringify(userData)), {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 7, // 7 dias
+        path: '/',
+      });
+    }
 
     return response;
   } catch (error: any) {
