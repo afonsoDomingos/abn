@@ -12,26 +12,30 @@ import {
   ArrowRight, 
   ShoppingCart,
   Store,
-  Video
+  Video,
+  ExternalLink
 } from 'lucide-react';
 import ShopNavbar from '@/components/ShopNavbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import styles from './LojaModern.module.css';
 
-interface Product {
+interface ProductItem {
   _id: string;
   name: string;
   description: string;
-  price: number;
+  price: number | string;
+  priceFormatted?: string;
   category: string;
-  image: string;
-  status: string;
-  stock: number;
-  productType?: 'digital' | 'physical' | 'service';
-  digital?: boolean;
+  image?: string;
+  tag?: string;
+  actionText?: string;
+  actionHref?: string;
+  icon?: any;
+  bgClass?: string;
+  isDashed?: boolean;
 }
 
-// 1. Categorias Oficiais da Loja
+// 1. Categorias Oficiais da Loja (5 categorias conforme o design)
 const STORE_CATEGORIES = [
   { id: 'Formações', name: 'Formações', icon: GraduationCap },
   { id: 'Serviços', name: 'Serviços', icon: Briefcase },
@@ -40,72 +44,75 @@ const STORE_CATEGORIES = [
   { id: 'Programas ABN', name: 'Programas ABN', icon: Users },
 ];
 
-// Destaques fixos/curados conforme imagem de referência
-const DEFAULT_FEATURED = [
+// Destaques oficiais de referência exibidos quando nenhuma categoria estiver selecionada
+const DEFAULT_FEATURED: ProductItem[] = [
   {
     _id: 'default-1',
     tag: 'ABN Academia',
     name: 'Curso Empreendedor Profissional',
-    subtitle: 'Online · 12 a 17 de Outubro',
+    description: 'Online · 12 a 17 de Outubro com certificação executiva da rede ABN.',
     price: 2000,
     priceFormatted: '2.000 MT',
     category: 'Formações',
     bgClass: 'bgDark',
     icon: GraduationCap,
     actionText: 'Comprar',
-    href: '/loja/checkout?item=curso-empreendedor'
+    actionHref: '/loja/checkout?item=curso-empreendedor'
   },
   {
     _id: 'default-2',
     tag: 'ABN',
     name: 'Adesão ao Clube dos Empreendedores',
-    subtitle: 'Rede, mentoria e oportunidades',
-    price: 0,
+    description: 'Rede exclusiva, mentoria e oportunidades de negócios por toda África.',
+    price: 'Adesão',
     priceFormatted: 'Adesão ABN',
     category: 'Programas ABN',
     bgClass: 'bgGreen',
     icon: Users,
     actionText: 'Aderir',
-    href: '/registro?type=clube'
+    actionHref: '/registro?type=clube'
   },
   {
     _id: 'default-3',
     tag: 'ABN',
     name: 'ABN Business Leaders Connect',
-    subtitle: 'Encontro online · 7 e 8 de Outubro',
-    price: 0,
+    description: 'Encontro executivo online de líderes e fundadores · 7 e 8 de Outubro.',
+    price: 'Inscrição',
     priceFormatted: 'Inscrição',
     category: 'Eventos',
     bgClass: 'bgGold',
     icon: Video,
     actionText: 'Reservar',
-    href: '/eventos'
+    actionHref: '/eventos'
   },
   {
     _id: 'default-4',
     tag: 'Empreendedor da Rede',
-    name: 'Soluções & Produtos de Empreendedores',
-    subtitle: 'Produtos e serviços de alta qualidade',
-    price: 0,
+    name: 'Produtos e Soluções dos Empreendedores',
+    description: 'Catálogo de produtos físicos e digitais produzidos pelos membros ABN.',
+    price: 'Consultar',
     priceFormatted: 'Consultar',
     category: 'Produtos',
     bgClass: 'bgPlaceholder',
     isDashed: true,
     actionText: 'Comprar',
-    href: '/marketplace'
+    actionHref: '/marketplace'
   }
 ];
 
 export default function Loja() {
   const router = useRouter();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductItem[]>([]);
+  const [courses, setCourses] = useState<ProductItem[]>([]);
+  const [services, setServices] = useState<ProductItem[]>([]);
+  const [events, setEvents] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [bannerUrl, setBannerUrl] = useState('/bannerlojaabn.png');
 
   useEffect(() => {
-    // Buscar configurações (banner personalizado se houver)
+    // Buscar configurações (banner)
     fetch('/api/config')
       .then(res => res.json())
       .then(data => {
@@ -115,21 +122,84 @@ export default function Loja() {
       })
       .catch(() => {});
 
-    // Buscar produtos da API
-    fetch('/api/products')
-      .then(res => res.json())
-      .then(data => {
-        if (data.products && data.products.length > 0) {
-          setProducts(data.products);
-        }
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    // Carregar em paralelo: Produtos, Cursos, Serviços e Eventos da plataforma
+    Promise.all([
+      fetch('/api/products').then(res => res.json()).catch(() => ({ products: [] })),
+      fetch('/api/courses').then(res => res.json()).catch(() => ({ courses: [] })),
+      fetch('/api/services').then(res => res.json()).catch(() => ({ services: [] })),
+      fetch('/api/events').then(res => res.json()).catch(() => ({ events: [] }))
+    ]).then(([prodData, coursesData, servData, eventsData]) => {
+      // 1. Produtos do catálogo
+      if (prodData.products && Array.isArray(prodData.products)) {
+        setProducts(prodData.products.map((p: any) => ({
+          _id: p._id,
+          name: p.name,
+          description: p.description,
+          price: p.price,
+          priceFormatted: p.price > 0 ? `${Number(p.price).toLocaleString()} MT` : 'Gratuito',
+          category: p.category || 'Produtos',
+          image: p.image,
+          tag: 'Loja ABN',
+          actionText: 'Comprar',
+          actionHref: `/loja/checkout?productId=${p._id}`
+        })));
+      }
+
+      // 2. Cursos / Formações da ABN Academia
+      if (coursesData.courses && Array.isArray(coursesData.courses)) {
+        setCourses(coursesData.courses.map((c: any) => ({
+          _id: c._id,
+          name: c.title,
+          description: c.desc || `${c.lessons || 1} aulas · ${c.duration || 'Flexível'}`,
+          price: c.price || 'Gratuito',
+          priceFormatted: typeof c.price === 'number' ? `${c.price.toLocaleString()} MT` : c.price,
+          category: 'Formações',
+          image: c.image,
+          tag: 'ABN Academia',
+          actionText: 'Ver Formação',
+          actionHref: `/#cursos`
+        })));
+      }
+
+      // 3. Serviços de Especialistas / Consultoria
+      if (servData.services && Array.isArray(servData.services)) {
+        setServices(servData.services.map((s: any) => ({
+          _id: s._id,
+          name: s.name,
+          description: s.description,
+          price: s.price || 'Sob Consulta',
+          priceFormatted: s.price || 'Sob Consulta',
+          category: 'Serviços',
+          image: s.consultantAvatar,
+          tag: s.consultantName || 'Especialista ABN',
+          actionText: 'Contratar',
+          actionHref: `/marketplace`
+        })));
+      }
+
+      // 4. Eventos e Summits
+      if (eventsData.events && Array.isArray(eventsData.events)) {
+        setEvents(eventsData.events.map((e: any) => ({
+          _id: e._id,
+          name: e.title,
+          description: `${e.location || 'Online'} · ${e.date || ''}`,
+          price: 'Inscrição',
+          priceFormatted: 'Aberto',
+          category: 'Eventos',
+          image: e.imageUrl,
+          tag: e.category || 'Evento ABN',
+          actionText: 'Reservar',
+          actionHref: `/eventos`
+        })));
+      }
+
+      setLoading(false);
+    }).catch(() => setLoading(false));
   }, []);
 
   const handleCategoryClick = (categoryId: string) => {
     if (selectedCategory === categoryId) {
-      setSelectedCategory(null);
+      setSelectedCategory(null); // Desmarcar para ver destaques gerais
     } else {
       setSelectedCategory(categoryId);
     }
@@ -140,17 +210,70 @@ export default function Loja() {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Filtragem dinâmica de produtos
-  const dynamicFilteredProducts = products.filter(p => {
-    const matchesCategory = !selectedCategory || 
-      (p.category?.toLowerCase() || '').includes(selectedCategory.toLowerCase()) ||
-      selectedCategory.toLowerCase().includes(p.category?.toLowerCase() || '');
+  // Coleta unificada de todos os itens do ecossistema
+  const allItems: ProductItem[] = [
+    ...products,
+    ...courses,
+    ...services,
+    ...events,
+    {
+      _id: 'clube-membro',
+      name: 'Adesão ao Clube dos Empreendedores',
+      description: 'Acesso prioritário a rodadas de negócios, mentoria e networking internacional.',
+      price: 'Adesão ABN',
+      priceFormatted: 'Adesão ABN',
+      category: 'Programas ABN',
+      tag: 'ABN',
+      actionText: 'Aderir',
+      actionHref: '/registro?type=clube'
+    },
+    {
+      _id: 'programa-incubacao',
+      name: 'Programa de Incubação & Aceleração',
+      description: 'Apoio técnico, espaço e captação de investimento para a sua empresa ou startup.',
+      price: 'Candidatura',
+      priceFormatted: 'Inscrições Abertas',
+      category: 'Programas ABN',
+      tag: 'ABN Incubadora',
+      actionText: 'Candidatar',
+      actionHref: '/incubacao'
+    }
+  ];
 
-    const matchesSearch = !searchQuery || 
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchQuery.toLowerCase());
+  // FILTRAGEM INTELIGENTE
+  const filteredItems = allItems.filter(item => {
+    // 1. Filtro por Categoria
+    let matchesCat = true;
+    if (selectedCategory) {
+      const catLower = (item.category || '').toLowerCase();
+      const selLower = selectedCategory.toLowerCase();
 
-    return matchesCategory && matchesSearch;
+      if (selectedCategory === 'Formações') {
+        matchesCat = catLower.includes('form') || catLower.includes('curso') || catLower.includes('academ');
+      } else if (selectedCategory === 'Serviços') {
+        matchesCat = catLower.includes('serv') || catLower.includes('consult') || catLower.includes('market') || catLower.includes('design') || catLower.includes('contab');
+      } else if (selectedCategory === 'Produtos') {
+        matchesCat = catLower.includes('prod') || catLower.includes('loja') || catLower.includes('físic') || catLower.includes('digit');
+      } else if (selectedCategory === 'Eventos') {
+        matchesCat = catLower.includes('event') || catLower.includes('summit') || catLower.includes('confer');
+      } else if (selectedCategory === 'Programas ABN') {
+        matchesCat = catLower.includes('program') || catLower.includes('clube') || catLower.includes('incub');
+      } else {
+        matchesCat = catLower.includes(selLower);
+      }
+    }
+
+    // 2. Filtro por Barra de Pesquisa
+    let matchesSearch = true;
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      matchesSearch = (item.name || '').toLowerCase().includes(query) ||
+                      (item.description || '').toLowerCase().includes(query) ||
+                      (item.category || '').toLowerCase().includes(query) ||
+                      (item.tag || '').toLowerCase().includes(query);
+    }
+
+    return matchesCat && matchesSearch;
   });
 
   return (
@@ -226,6 +349,7 @@ export default function Loja() {
                   key={cat.id}
                   className={`${styles.categoryCard} ${isActive ? styles.categoryCardActive : ''}`}
                   onClick={() => handleCategoryClick(cat.id)}
+                  title={`Filtrar por ${cat.name}`}
                 >
                   <div className={styles.categoryIconWrap}>
                     <Icon size={20} />
@@ -244,7 +368,7 @@ export default function Loja() {
               {searchQuery 
                 ? `Resultados para "${searchQuery}"`
                 : selectedCategory 
-                ? `Destaques em ${selectedCategory}` 
+                ? `Explorando: ${selectedCategory} (${filteredItems.length})` 
                 : 'Em destaque esta semana'}
             </h2>
             <Link 
@@ -263,48 +387,51 @@ export default function Loja() {
             </div>
           ) : (
             <div className={styles.productsGrid}>
-              {/* Se houver produtos cadastrados na BD e categoria ou busca ativa */}
-              {dynamicFilteredProducts.length > 0 ? (
-                dynamicFilteredProducts.map((p) => (
-                  <div key={p._id} className={styles.productCard}>
-                    <div className={styles.cardTopBanner} style={{ background: '#f3f4f6' }}>
-                      {p.image ? (
-                        <img src={p.image} alt={p.name} className={styles.cardTopImage} />
-                      ) : (
-                        <div className={styles.cardTopPlaceholder} style={{ color: '#476a52' }}>
-                          <Package size={40} />
-                        </div>
-                      )}
-                    </div>
-                    <div className={styles.cardBody}>
-                      <span className={styles.cardTag}>{p.category || 'ABN'}</span>
-                      <h3 className={styles.cardTitle}>{p.name}</h3>
-                      <p className={styles.cardSubtitle}>{p.description}</p>
+              {/* Se o usuário selecionou uma categoria OU digitou na busca */}
+              {(selectedCategory || searchQuery.trim()) ? (
+                filteredItems.length > 0 ? (
+                  filteredItems.map((item) => (
+                    <div key={item._id} className={styles.productCard}>
+                      <div className={styles.cardTopBanner} style={{ background: '#f3f4f6' }}>
+                        {item.image ? (
+                          <img src={item.image} alt={item.name} className={styles.cardTopImage} />
+                        ) : (
+                          <div className={styles.cardTopPlaceholder} style={{ color: '#476a52' }}>
+                            <Package size={40} />
+                          </div>
+                        )}
+                      </div>
+                      <div className={styles.cardBody}>
+                        <span className={styles.cardTag}>{item.tag || item.category}</span>
+                        <h3 className={styles.cardTitle}>{item.name}</h3>
+                        <p className={styles.cardSubtitle}>{item.description}</p>
 
-                      <div className={styles.cardFooter}>
-                        <span className={styles.priceTag}>
-                          {p.price > 0 ? `${p.price.toLocaleString()} MT` : 'Gratuito'}
-                        </span>
-                        <button
-                          className={styles.btnAction}
-                          onClick={() => router.push(`/loja/checkout?productId=${p._id}`)}
-                        >
-                          Comprar
-                        </button>
+                        <div className={styles.cardFooter}>
+                          <span className={styles.priceTag}>{item.priceFormatted}</span>
+                          <button
+                            className={styles.btnAction}
+                            onClick={() => router.push(item.actionHref || `/loja/checkout?productId=${item._id}`)}
+                          >
+                            {item.actionText || 'Comprar'}
+                          </button>
+                        </div>
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div className={styles.emptyState} style={{ gridColumn: '1 / -1' }}>
+                    <Package size={42} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
+                    <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: '#111827' }}>
+                      Nenhum item encontrado
+                    </h3>
+                    <p>Não encontramos nenhum item correspondente na categoria selecionada.</p>
                   </div>
-                ))
-              ) : (selectedCategory || searchQuery) ? (
-                <div className={styles.emptyState} style={{ gridColumn: '1 / -1' }}>
-                  <Package size={40} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
-                  <p>Nenhum item encontrado correspondente à pesquisa no momento.</p>
-                </div>
+                )
               ) : (
-                /* Cards padrão fiéis à referência */
+                /* Estado Inicial de Destaques da Semana */
                 DEFAULT_FEATURED.map((item) => {
                   const TopIcon = item.icon;
-                  const isBgClass = (styles as any)[item.bgClass] || '';
+                  const isBgClass = (styles as any)[item.bgClass || ''] || '';
                   return (
                     <div 
                       key={item._id} 
@@ -323,13 +450,13 @@ export default function Loja() {
                       <div className={styles.cardBody}>
                         <span className={styles.cardTag}>{item.tag}</span>
                         <h3 className={styles.cardTitle}>{item.name}</h3>
-                        <p className={styles.cardSubtitle}>{item.subtitle}</p>
+                        <p className={styles.cardSubtitle}>{item.description}</p>
 
                         <div className={styles.cardFooter}>
                           <span className={styles.priceTag}>{item.priceFormatted}</span>
                           <button
                             className={styles.btnAction}
-                            onClick={() => router.push(item.href)}
+                            onClick={() => router.push(item.actionHref || '/loja')}
                           >
                             {item.actionText}
                           </button>
