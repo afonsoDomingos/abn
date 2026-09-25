@@ -10,12 +10,11 @@ import {
   Calendar, 
   Users, 
   ArrowRight, 
-  ShoppingBag, 
-  Video, 
+  ShoppingCart,
   Store,
-  Layers
+  Video
 } from 'lucide-react';
-import Navbar from '@/components/Navbar';
+import ShopNavbar from '@/components/ShopNavbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import styles from './LojaModern.module.css';
 
@@ -32,7 +31,7 @@ interface Product {
   digital?: boolean;
 }
 
-// 1. Categorias Oficiais da Loja (conforme imagem)
+// 1. Categorias Oficiais da Loja
 const STORE_CATEGORIES = [
   { id: 'Formações', name: 'Formações', icon: GraduationCap },
   { id: 'Serviços', name: 'Serviços', icon: Briefcase },
@@ -41,7 +40,7 @@ const STORE_CATEGORIES = [
   { id: 'Programas ABN', name: 'Programas ABN', icon: Users },
 ];
 
-// Destaques fixos/curados conforme imagem caso a base de dados ainda esteja inicial
+// Destaques fixos/curados conforme imagem de referência
 const DEFAULT_FEATURED = [
   {
     _id: 'default-1',
@@ -102,8 +101,20 @@ export default function Loja() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [bannerUrl, setBannerUrl] = useState('/bannerlojaabn.png');
 
   useEffect(() => {
+    // Buscar configurações (banner personalizado se houver)
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs?.page_banners?.loja) {
+          setBannerUrl(data.configs.page_banners.loja);
+        }
+      })
+      .catch(() => {});
+
     // Buscar produtos da API
     fetch('/api/products')
       .then(res => res.json())
@@ -118,42 +129,93 @@ export default function Loja() {
 
   const handleCategoryClick = (categoryId: string) => {
     if (selectedCategory === categoryId) {
-      setSelectedCategory(null); // Desmarca para ver todos
+      setSelectedCategory(null);
     } else {
       setSelectedCategory(categoryId);
     }
   };
 
-  // Filtragem dinâmica de produtos do banco de dados
-  const dynamicFilteredProducts = selectedCategory
-    ? products.filter(p => {
-        const cat = p.category?.toLowerCase() || '';
-        const selected = selectedCategory.toLowerCase();
-        return cat.includes(selected) || selected.includes(cat);
-      })
-    : products;
+  const scrollToCategories = () => {
+    const el = document.getElementById('explore-categorias');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Filtragem dinâmica de produtos
+  const dynamicFilteredProducts = products.filter(p => {
+    const matchesCategory = !selectedCategory || 
+      (p.category?.toLowerCase() || '').includes(selectedCategory.toLowerCase()) ||
+      selectedCategory.toLowerCase().includes(p.category?.toLowerCase() || '');
+
+    const matchesSearch = !searchQuery || 
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <main className={styles.lojaPage}>
-      <Navbar />
+      {/* Menu Especial da Loja (Barra de busca, categorias, vender na ABN, entrar, carrinho) */}
+      <ShopNavbar 
+        onSearch={(term) => setSearchQuery(term)} 
+        onSelectCategory={scrollToCategories}
+      />
 
-      {/* Hero Header Limpo */}
-      <header className={styles.heroHeader}>
-        <div className={styles.heroContent}>
-          <div className={styles.badge}>
-            <ShoppingBag size={15} />
-            <span>Loja & Ecossistema ABN</span>
+      {/* Hero com a Imagem de Fundo Oficial ABN e os dois Cards (Quero Comprar / Quero Vender) */}
+      <section 
+        className={styles.shopHero} 
+        style={{ backgroundImage: `url('${bannerUrl}')` }}
+      >
+        <div className={styles.shopHeroOverlay}></div>
+        
+        <div className={styles.shopHeroContainer}>
+          {/* Lado Esquerdo: Textos do Banner */}
+          <div className={styles.shopHeroLeft}>
+            <span className={styles.shopTag}>LOJA DIGITAL DA ABN</span>
+            <h1 className={styles.shopHeading}>
+              Bem-vindo à loja dos empreendedores.
+            </h1>
+            <p className={styles.shopSubheading}>
+              Compre a quem faz negócio na rede ABN — ou abra a sua loja e venda a mais de 10 000 empreendedores.
+            </p>
           </div>
-          <h1 className={styles.heroTitle}>Explore e Conecte-se</h1>
-          <p className={styles.heroSub}>
-            Encontre formações certificadas, serviços empresariais e produtos criados pela rede de empreendedores ABN.
-          </p>
+
+          {/* Lado Direito: Cards de Ação */}
+          <div className={styles.shopHeroCards}>
+            {/* Card 1: Quero comprar */}
+            <a href="#explore-categorias" className={`${styles.heroActionCard} ${styles.cardBuy}`}>
+              <div className={styles.heroCardIconWrap}>
+                <ShoppingCart size={24} />
+              </div>
+              <h3 className={styles.heroCardTitle}>Quero comprar</h3>
+              <p className={styles.heroCardDesc}>
+                Produtos, serviços e formações de empreendedores de confiança.
+              </p>
+              <span className={styles.heroCardLink}>
+                Explorar a loja <ArrowRight size={15} />
+              </span>
+            </a>
+
+            {/* Card 2: Quero vender */}
+            <Link href="/registro?perfil=empreendedor" className={`${styles.heroActionCard} ${styles.cardSell}`}>
+              <div className={styles.heroCardIconWrap}>
+                <Store size={24} />
+              </div>
+              <h3 className={styles.heroCardTitle}>Quero vender</h3>
+              <p className={styles.heroCardDesc}>
+                Abra a sua loja em minutos e chegue a clientes em toda a rede ABN.
+              </p>
+              <span className={styles.heroCardLink}>
+                Abrir a minha loja <ArrowRight size={15} />
+              </span>
+            </Link>
+          </div>
         </div>
-      </header>
+      </section>
 
       <div className={styles.container}>
         {/* 1. SEÇÃO EXPLORE POR CATEGORIA */}
-        <section className={styles.sectionCategory}>
+        <section id="explore-categorias" className={styles.sectionCategory}>
           <h2 className={styles.sectionTitle}>Explore por categoria</h2>
           <div className={styles.categoryGrid}>
             {STORE_CATEGORIES.map(cat => {
@@ -179,9 +241,16 @@ export default function Loja() {
         <section className={styles.sectionFeatured}>
           <div className={styles.featuredHeader}>
             <h2 className={styles.sectionTitle}>
-              {selectedCategory ? `Destaques em ${selectedCategory}` : 'Em destaque esta semana'}
+              {searchQuery 
+                ? `Resultados para "${searchQuery}"`
+                : selectedCategory 
+                ? `Destaques em ${selectedCategory}` 
+                : 'Em destaque esta semana'}
             </h2>
-            <Link href={selectedCategory ? `/marketplace?cat=${encodeURIComponent(selectedCategory)}` : '/marketplace'} className={styles.seeAllLink}>
+            <Link 
+              href={selectedCategory ? `/marketplace?cat=${encodeURIComponent(selectedCategory)}` : '/marketplace'} 
+              className={styles.seeAllLink}
+            >
               Ver tudo <ArrowRight size={14} />
             </Link>
           </div>
@@ -194,9 +263,9 @@ export default function Loja() {
             </div>
           ) : (
             <div className={styles.productsGrid}>
-              {/* Se houver produtos cadastrados na BD e categoria ativa, exibe os do BD */}
+              {/* Se houver produtos cadastrados na BD e categoria ou busca ativa */}
               {dynamicFilteredProducts.length > 0 ? (
-                dynamicFilteredProducts.map((p, idx) => (
+                dynamicFilteredProducts.map((p) => (
                   <div key={p._id} className={styles.productCard}>
                     <div className={styles.cardTopBanner} style={{ background: '#f3f4f6' }}>
                       {p.image ? (
@@ -226,13 +295,13 @@ export default function Loja() {
                     </div>
                   </div>
                 ))
-              ) : selectedCategory ? (
+              ) : (selectedCategory || searchQuery) ? (
                 <div className={styles.emptyState} style={{ gridColumn: '1 / -1' }}>
                   <Package size={40} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
-                  <p>Nenhum item encontrado nesta categoria no momento.</p>
+                  <p>Nenhum item encontrado correspondente à pesquisa no momento.</p>
                 </div>
               ) : (
-                /* Cards padrão de referência fiel à imagem */
+                /* Cards padrão fiéis à referência */
                 DEFAULT_FEATURED.map((item) => {
                   const TopIcon = item.icon;
                   const isBgClass = (styles as any)[item.bgClass] || '';
