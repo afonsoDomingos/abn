@@ -42,6 +42,27 @@ export default function AdminHubsPage() {
   // Image upload loading state
   const [uploadingImage, setUploadingImage] = useState(false);
 
+  // Representative Modal States
+  const [repModalHub, setRepModalHub] = useState<any | null>(null);
+  const [repModalLoading, setRepModalLoading] = useState(false);
+  const [repModalSaving, setRepModalSaving] = useState(false);
+  const [repModalMode, setRepModalMode] = useState<'existing' | 'new'>('existing');
+  const [repModalCandidates, setRepModalCandidates] = useState<any[]>([]);
+  const [repModalCandidateSearch, setRepModalCandidateSearch] = useState('');
+  const [repModalSelectedUserId, setRepModalSelectedUserId] = useState('');
+  const [repModalCurrentRep, setRepModalCurrentRep] = useState<any | null>(null);
+  const [repModalTitle, setRepModalTitle] = useState('Representante Oficial');
+  const [repModalPhone, setRepModalPhone] = useState('');
+  const [repModalImage, setRepModalImage] = useState('');
+  const [repModalNewUser, setRepModalNewUser] = useState({ name: '', email: '', password: '', phone: '' });
+  const [repModalPermissions, setRepModalPermissions] = useState({
+    canEditInfo: true,
+    canManageEvents: true,
+    canManageTeam: true,
+    canManagePartners: true,
+    canViewMembers: true
+  });
+
   // Form states
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
@@ -115,6 +136,139 @@ export default function AdminHubsPage() {
   const triggerToast = (text: string) => {
     setMsg(text);
     setTimeout(() => setMsg(''), 3000);
+  };
+
+  // Open Representative Modal
+  const openRepModal = async (hub: any) => {
+    setRepModalHub(hub);
+    setRepModalLoading(true);
+    setRepModalCandidateSearch('');
+    setRepModalSelectedUserId('');
+    setRepModalMode('existing');
+    setRepModalNewUser({ name: '', email: '', password: '', phone: '' });
+    setRepModalPhone('');
+    setRepModalImage('');
+    setRepModalTitle(`Representante da Delegação - ${hub.name}`);
+    setRepModalPermissions({
+      canEditInfo: true,
+      canManageEvents: true,
+      canManageTeam: true,
+      canManagePartners: true,
+      canViewMembers: true
+    });
+
+    try {
+      const res = await fetch(`/api/admin/hubs/${hub.slug}/representative`);
+      const data = await res.json();
+      if (data.success) {
+        setRepModalCandidates(data.candidates || []);
+        if (data.currentRepresentative) {
+          setRepModalCurrentRep(data.currentRepresentative);
+          setRepModalSelectedUserId(data.currentRepresentative.id);
+          setRepModalTitle(data.currentRepresentative.title || `Representante da Delegação - ${hub.name}`);
+          setRepModalPhone(data.currentRepresentative.phone || '');
+          setRepModalImage(data.currentRepresentative.profileImage || '');
+          if (data.currentRepresentative.permissions) {
+            setRepModalPermissions(data.currentRepresentative.permissions);
+          }
+        } else {
+          setRepModalCurrentRep(null);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setRepModalLoading(false);
+    }
+  };
+
+  const closeRepModal = () => {
+    setRepModalHub(null);
+    setRepModalCurrentRep(null);
+  };
+
+  // Save Representative Assignment
+  const handleSaveRepresentative = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!repModalHub) return;
+
+    if (repModalMode === 'existing' && !repModalSelectedUserId) {
+      alert('Selecione um utilizador da lista.');
+      return;
+    }
+
+    if (repModalMode === 'new') {
+      if (!repModalNewUser.name || !repModalNewUser.email || !repModalNewUser.password) {
+        alert('Preencha o nome, email e palavra-passe do novo utilizador.');
+        return;
+      }
+      if (repModalNewUser.password.length < 6) {
+        alert('A palavra-passe deve conter pelo menos 6 caracteres.');
+        return;
+      }
+    }
+
+    setRepModalSaving(true);
+    try {
+      const payload: any = {
+        title: repModalTitle,
+        permissions: repModalPermissions,
+        phone: repModalPhone,
+        image: repModalImage
+      };
+
+      if (repModalMode === 'existing') {
+        payload.userId = repModalSelectedUserId;
+      } else {
+        payload.newUser = repModalNewUser;
+      }
+
+      const res = await fetch(`/api/admin/hubs/${repModalHub.slug}/representative`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        triggerToast(data.message || 'Representante atribuído com sucesso!');
+        closeRepModal();
+        loadHubs();
+      } else {
+        alert(data.error || 'Erro ao atribuir representante.');
+      }
+    } catch {
+      alert('Erro na conexão com o servidor.');
+    } finally {
+      setRepModalSaving(false);
+    }
+  };
+
+  // Remove Representative Assignment
+  const handleRemoveRepresentative = async () => {
+    if (!repModalHub) return;
+    if (!confirm(`Deseja remover o representante da Delegação de ${repModalHub.name}? O utilizador deixará de ter permissões sobre esta delegação.`)) {
+      return;
+    }
+
+    setRepModalSaving(true);
+    try {
+      const res = await fetch(`/api/admin/hubs/${repModalHub.slug}/representative`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      if (data.success) {
+        triggerToast(data.message || 'Representante removido com sucesso!');
+        closeRepModal();
+        loadHubs();
+      } else {
+        alert(data.error || 'Erro ao remover representante.');
+      }
+    } catch {
+      alert('Erro na conexão com o servidor.');
+    } finally {
+      setRepModalSaving(false);
+    }
   };
 
   // Open Create Mode
@@ -351,6 +505,37 @@ export default function AdminHubsPage() {
                     <h3>{hub.name}</h3>
                     <span className={styles.slugBadge}>/country/{hub.slug}</span>
                     <p>{hub.description}</p>
+
+                    {/* Representative info box */}
+                    {hub.representativeUser || (hub.representative && hub.representative.name) ? (
+                      <div className={styles.repBadgeBox}>
+                        <img 
+                          src={hub.representativeUser?.profileImage || hub.representative?.image || '/default-avatar.png'} 
+                          alt="Representante" 
+                          className={styles.repAvatar}
+                        />
+                        <div className={styles.repInfo}>
+                          <div className={styles.repName}>
+                            {hub.representativeUser?.name || hub.representative?.name}
+                          </div>
+                          <div className={styles.repRole}>
+                            👑 {hub.representative?.role || hub.representativeUser?.representativeProfile?.title || 'Representante Oficial'}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className={styles.repEmptyBox}>
+                        <span>⚠️ Sem Representante atribuído</span>
+                      </div>
+                    )}
+
+                    <button 
+                      type="button" 
+                      className={styles.manageRepBtn} 
+                      onClick={() => openRepModal(hub)}
+                    >
+                      <span>👤</span> Gerir Representante
+                    </button>
                     
                     <div className={styles.hubCardActions}>
                       <button className={styles.editBtn} onClick={() => startEdit(hub.slug)}>Editar</button>
@@ -927,6 +1112,310 @@ export default function AdminHubsPage() {
             </button>
           </div>
         </form>
+      )}
+
+      {/* Modal: Gerir Representante */}
+      {repModalHub && (
+        <div className={styles.modalOverlay} onClick={(e) => { if (e.target === e.currentTarget) closeRepModal(); }}>
+          <div className={styles.modalDialog}>
+            <div className={styles.modalHeader}>
+              <div>
+                <h2>Gerir Representante: {repModalHub.name}</h2>
+                <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Atribua ou configure as permissões do responsável por este país</span>
+              </div>
+              <button type="button" className={styles.closeModalBtn} onClick={closeRepModal}>&times;</button>
+            </div>
+
+            {repModalLoading ? (
+              <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
+                <div className={styles.spinnerSmall} style={{ width: '30px', height: '30px', marginBottom: '1rem' }}></div>
+                <div>A carregar dados do representante...</div>
+              </div>
+            ) : (
+              <form onSubmit={handleSaveRepresentative}>
+                <div className={styles.modalBody}>
+                  {/* Current assigned representative banner */}
+                  {repModalCurrentRep ? (
+                    <div style={{ 
+                      background: '#f0fdf4', 
+                      border: '1px solid #bbf7d0', 
+                      borderRadius: '12px', 
+                      padding: '1rem', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      gap: '1rem'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <img 
+                          src={repModalCurrentRep.profileImage || '/default-avatar.png'} 
+                          alt={repModalCurrentRep.name} 
+                          style={{ width: '45px', height: '45px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #22c55e' }} 
+                        />
+                        <div>
+                          <div style={{ fontWeight: 700, color: '#166534', fontSize: '0.95rem' }}>
+                            {repModalCurrentRep.name}
+                          </div>
+                          <div style={{ fontSize: '0.8rem', color: '#15803d' }}>
+                            {repModalCurrentRep.email} {repModalCurrentRep.phone ? `• ${repModalCurrentRep.phone}` : ''}
+                          </div>
+                          <div style={{ fontSize: '0.75rem', color: '#16a34a', marginTop: '2px', fontWeight: 600 }}>
+                            Atualmente ativo como Representante
+                          </div>
+                        </div>
+                      </div>
+                      <button 
+                        type="button" 
+                        onClick={handleRemoveRepresentative}
+                        disabled={repModalSaving}
+                        style={{
+                          background: '#fee2e2',
+                          border: '1px solid #fca5a5',
+                          color: '#b91c1c',
+                          padding: '6px 12px',
+                          borderRadius: '8px',
+                          fontSize: '0.8rem',
+                          fontWeight: 700,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Desvincular
+                      </button>
+                    </div>
+                  ) : (
+                    <div style={{ background: '#fffbeb', border: '1px solid #fef3c7', borderRadius: '12px', padding: '0.85rem 1rem', fontSize: '0.85rem', color: '#92400e' }}>
+                      ℹ️ Esta delegação ainda não possui um representante oficial com acesso dedicado atribuído.
+                    </div>
+                  )}
+
+                  {/* Switch between Existing User or Create New User */}
+                  <div className={styles.tabSwitch}>
+                    <button 
+                      type="button" 
+                      className={`${styles.tabSwitchBtn} ${repModalMode === 'existing' ? styles.tabSwitchBtnActive : ''}`}
+                      onClick={() => setRepModalMode('existing')}
+                    >
+                      Utilizador Existente
+                    </button>
+                    <button 
+                      type="button" 
+                      className={`${styles.tabSwitchBtn} ${repModalMode === 'new' ? styles.tabSwitchBtnActive : ''}`}
+                      onClick={() => setRepModalMode('new')}
+                    >
+                      + Criar Novo Representante
+                    </button>
+                  </div>
+
+                  {repModalMode === 'existing' ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                      <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#334155' }}>
+                        Pesquisar Utilizador Registado
+                      </label>
+                      <input 
+                        type="text" 
+                        placeholder="Filtrar por nome, email ou país..." 
+                        value={repModalCandidateSearch}
+                        onChange={e => setRepModalCandidateSearch(e.target.value)}
+                        style={{
+                          background: '#f8fafc',
+                          border: '1px solid #cbd5e1',
+                          padding: '0.65rem 1rem',
+                          borderRadius: '10px',
+                          fontSize: '0.9rem',
+                          outline: 'none'
+                        }}
+                      />
+                      <div className={styles.candidateList}>
+                        {repModalCandidates
+                          .filter(c => {
+                            if (!repModalCandidateSearch) return true;
+                            const q = repModalCandidateSearch.toLowerCase();
+                            return (
+                              c.name?.toLowerCase().includes(q) || 
+                              c.email?.toLowerCase().includes(q) ||
+                              c.country?.toLowerCase().includes(q)
+                            );
+                          })
+                          .slice(0, 50)
+                          .map((candidate: any) => {
+                            const isSelected = repModalSelectedUserId === candidate.id;
+                            return (
+                              <div 
+                                key={candidate.id} 
+                                className={`${styles.candidateItem} ${isSelected ? styles.candidateItemSelected : ''}`}
+                                onClick={() => {
+                                  setRepModalSelectedUserId(candidate.id);
+                                  if (candidate.phone) setRepModalPhone(candidate.phone);
+                                  if (candidate.profileImage) setRepModalImage(candidate.profileImage);
+                                }}
+                              >
+                                <img 
+                                  src={candidate.profileImage || '/default-avatar.png'} 
+                                  alt={candidate.name} 
+                                  style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} 
+                                />
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>
+                                    {candidate.name}
+                                  </div>
+                                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                                    {candidate.email} {candidate.country ? `• ${candidate.country}` : ''}
+                                  </div>
+                                </div>
+                                <span style={{ fontSize: '0.75rem', background: '#f1f5f9', padding: '2px 8px', borderRadius: '6px', color: '#475569' }}>
+                                  {candidate.role}
+                                </span>
+                              </div>
+                            );
+                          })}
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                      <div className={styles.formGroup} style={{ gridColumn: 'span 2' }}>
+                        <label>Nome Completo *</label>
+                        <input 
+                          value={repModalNewUser.name} 
+                          onChange={e => setRepModalNewUser({ ...repModalNewUser, name: e.target.value })} 
+                          placeholder="Ex: Amílcar Cabral" 
+                          required 
+                        />
+                      </div>
+                      <div className={styles.formGroup}>
+                        <label>Email de Acesso *</label>
+                        <input 
+                          type="email" 
+                          value={repModalNewUser.email} 
+                          onChange={e => setRepModalNewUser({ ...repModalNewUser, email: e.target.value })} 
+                          placeholder="rep@afrobiznetwork.com" 
+                          required 
+                        />
+                      </div>
+                      <div className={styles.formGroup}>
+                        <label>Palavra-passe Provisória *</label>
+                        <input 
+                          type="password" 
+                          value={repModalNewUser.password} 
+                          onChange={e => setRepModalNewUser({ ...repModalNewUser, password: e.target.value })} 
+                          placeholder="Mínimo 6 caracteres" 
+                          required 
+                        />
+                      </div>
+                      <div className={styles.formGroup} style={{ gridColumn: 'span 2' }}>
+                        <label>Telefone / WhatsApp</label>
+                        <input 
+                          value={repModalNewUser.phone} 
+                          onChange={e => {
+                            setRepModalNewUser({ ...repModalNewUser, phone: e.target.value });
+                            setRepModalPhone(e.target.value);
+                          }} 
+                          placeholder="+258 84 000 0000" 
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Representative Title & Contact */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginTop: '0.5rem' }}>
+                    <div className={styles.formGroup}>
+                      <label>Título / Cargo Oficial</label>
+                      <input 
+                        value={repModalTitle} 
+                        onChange={e => setRepModalTitle(e.target.value)} 
+                        placeholder={`Representante da Delegação - ${repModalHub.name}`} 
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label>Telefone de Contacto Oficial</label>
+                      <input 
+                        value={repModalPhone} 
+                        onChange={e => setRepModalPhone(e.target.value)} 
+                        placeholder="+258 84 000 0000" 
+                      />
+                    </div>
+                  </div>
+
+                  {/* Permissions Checklist */}
+                  <div style={{ marginTop: '0.5rem' }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#ff6b00', display: 'block', marginBottom: '0.5rem' }}>
+                      Permissões de Acesso do Representante
+                    </label>
+                    <div className={styles.permGrid}>
+                      <label className={styles.permCard}>
+                        <input 
+                          type="checkbox" 
+                          checked={repModalPermissions.canEditInfo} 
+                          onChange={e => setRepModalPermissions({ ...repModalPermissions, canEditInfo: e.target.checked })} 
+                        />
+                        <div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>Editar Informações da Delegação</div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Pode atualizar descrição, endereço físico, contactos, redes sociais e FAQs.</div>
+                        </div>
+                      </label>
+
+                      <label className={styles.permCard}>
+                        <input 
+                          type="checkbox" 
+                          checked={repModalPermissions.canManageEvents} 
+                          onChange={e => setRepModalPermissions({ ...repModalPermissions, canManageEvents: e.target.checked })} 
+                        />
+                        <div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>Gerir Eventos e Atividades Locais</div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Pode criar, editar e publicar os eventos e webinars locais da delegação.</div>
+                        </div>
+                      </label>
+
+                      <label className={styles.permCard}>
+                        <input 
+                          type="checkbox" 
+                          checked={repModalPermissions.canManageTeam} 
+                          onChange={e => setRepModalPermissions({ ...repModalPermissions, canManageTeam: e.target.checked })} 
+                        />
+                        <div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>Gerir Equipa Local</div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Pode adicionar e remover membros e gestores da equipa local da delegação.</div>
+                        </div>
+                      </label>
+
+                      <label className={styles.permCard}>
+                        <input 
+                          type="checkbox" 
+                          checked={repModalPermissions.canManagePartners} 
+                          onChange={e => setRepModalPermissions({ ...repModalPermissions, canManagePartners: e.target.checked })} 
+                        />
+                        <div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>Gerir Parceiros Locais</div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Pode associar empresas, instituições e parceiros locais ao hub.</div>
+                        </div>
+                      </label>
+
+                      <label className={styles.permCard}>
+                        <input 
+                          type="checkbox" 
+                          checked={repModalPermissions.canViewMembers} 
+                          onChange={e => setRepModalPermissions({ ...repModalPermissions, canViewMembers: e.target.checked })} 
+                        />
+                        <div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>Consultar Membros & Empreendedores do País</div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Pode visualizar o diretório de empreendedores registados neste país.</div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.modalFooter}>
+                  <button type="button" className="btn-outline" onClick={closeRepModal} disabled={repModalSaving}>
+                    Cancelar
+                  </button>
+                  <button type="submit" className="btn-primary" disabled={repModalSaving}>
+                    {repModalSaving ? 'A guardar...' : 'Guardar Atribuição'}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Rotas que requerem autenticação
-const protectedRoutes = ['/dashboard', '/admin', '/api/admin', '/api/user/profile'];
+const protectedRoutes = ['/dashboard', '/admin', '/api/admin', '/api/user/profile', '/delegacao', '/api/delegacao'];
 
 // Rotas do admin que requerem role "admin"
 const adminRoutes = ['/admin', '/api/admin'];
+
+// Rotas exclusivas de delegação (Representante ou Admin)
+const delegacaoRoutes = ['/delegacao', '/api/delegacao'];
 
 // Rotas de autenticação (redireciona para dashboard se já logado)
 const authRoutes = ['/login', '/registro'];
@@ -14,7 +17,7 @@ export function middleware(request: NextRequest) {
 
   // Ler o cookie de sessão
   const sessionCookie = request.cookies.get('abn_session');
-  let session: { id: string; name: string; email: string; role: string } | null = null;
+  let session: { id: string; name: string; email: string; role: string; hubSlug?: string } | null = null;
 
   if (sessionCookie) {
     try {
@@ -27,12 +30,15 @@ export function middleware(request: NextRequest) {
   const isAuthenticated = !!session;
   const isAdmin = session?.role === 'admin';
   const isCollaborator = session?.role === 'collaborator';
+  const isRepresentative = session?.role === 'representative';
   const hasAdminAccess = isAdmin || isCollaborator;
 
   // Se já está logado e tenta aceder às páginas de auth, redireciona
   if (authRoutes.some(r => pathname.startsWith(r))) {
     if (isAuthenticated) {
-      const redirectTo = hasAdminAccess ? '/admin' : '/dashboard';
+      let redirectTo = '/dashboard';
+      if (hasAdminAccess) redirectTo = '/admin';
+      else if (isRepresentative) redirectTo = '/delegacao';
       return NextResponse.redirect(new URL(redirectTo, request.url));
     }
     return NextResponse.next();
@@ -70,6 +76,18 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
+  // Rota de delegação — verifica se tem role representative ou admin
+  const isDelegacaoRoute = delegacaoRoutes.some(r => pathname.startsWith(r));
+  if (isDelegacaoRoute && !(isAdmin || isRepresentative)) {
+    if (isApiRoute) {
+      return new NextResponse(JSON.stringify({ success: false, error: 'Acesso negado. Apenas representantes de delegação ou administradores.' }), {
+        status: 403,
+        headers: { 'content-type': 'application/json' }
+      });
+    }
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
   return NextResponse.next();
 }
 
@@ -79,6 +97,8 @@ export const config = {
     '/admin/:path*',
     '/api/admin/:path*',
     '/api/user/profile',
+    '/delegacao/:path*',
+    '/api/delegacao/:path*',
     '/login',
     '/registro',
   ],

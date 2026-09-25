@@ -34,7 +34,8 @@ export async function POST(request: Request) {
       email: user.email, 
       role: user.role, 
       roles: userRoles,
-      profileImage: user.profileImage 
+      profileImage: user.profileImage,
+      hubSlug: user.representativeProfile?.hubSlug || ''
     };
 
     const response = NextResponse.json({ success: true, user: userData });

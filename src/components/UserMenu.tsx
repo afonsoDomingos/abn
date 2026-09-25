@@ -142,6 +142,16 @@ export default function UserMenu() {
           >
             {dashboardLabel}
           </Link>
+          {(user.role === 'representative' || user.role === 'admin') && (
+            <Link
+              href="/delegacao"
+              onClick={() => setIsOpen(false)}
+              className={styles.menuItem}
+              style={{ color: '#de9b35', fontWeight: 600 }}
+            >
+              🏛️ {user.role === 'representative' ? 'Portal da Delegação' : 'Portal da Delegação'}
+            </Link>
+          )}
           <Link
             href={profilePath}
             onClick={() => setIsOpen(false)}

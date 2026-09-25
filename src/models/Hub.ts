@@ -44,6 +44,7 @@ export interface IHub extends Document {
   youtubeUrl?: string;
   events: IHubEvent[];
   representative: IHubRepresentative;
+  representativeUser?: mongoose.Types.ObjectId;
   team: IHubTeamMember[];
   partners?: IHubPartner[];
 }
@@ -82,6 +83,7 @@ const HubSchema = new Schema<IHub>({
   linkedinUrl: { type: String },
   youtubeUrl: { type: String },
   events: [HubEventSchema],
+  representativeUser: { type: Schema.Types.ObjectId, ref: 'User' },
   representative: {
     name: { type: String, default: '' },
     role: { type: String, default: '' },

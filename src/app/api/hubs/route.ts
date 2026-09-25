@@ -8,7 +8,9 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     await dbConnect();
-    const hubs = await Hub.find({}, 'name slug image description').sort({ name: 1 });
+    const hubs = await Hub.find({}, 'name slug image description representative representativeUser address phone email')
+      .populate('representativeUser', 'name email profileImage role representativeProfile')
+      .sort({ name: 1 });
     return NextResponse.json({ success: true, hubs });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });

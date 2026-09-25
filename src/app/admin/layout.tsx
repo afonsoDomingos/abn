@@ -120,6 +120,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { href: '/admin/pagamentos', label: t.admin.payments, icon: <CreditCard size={18} /> },
         { href: '/admin/configuracoes', label: t.admin.settings, icon: <Settings size={18} /> },
         { href: '/admin/hubs', label: 'Delegações', icon: <Building2 size={18} /> },
+        { href: '/delegacao', label: 'Portal Delegação', icon: <Award size={18} /> },
       ]
     }
   ];

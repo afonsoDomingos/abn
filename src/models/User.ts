@@ -9,9 +9,22 @@ const UserSchema = new mongoose.Schema({
     enum: [
       'empreendedor', 'startup', 'empresa', 'investidor', 'mentor', 
       'consultor', 'parceiro', 'universidade', 'incubadora', 'organizacao', 
-      'admin', 'collaborator'
+      'admin', 'collaborator', 'representative'
     ], 
     default: 'empreendedor' 
+  },
+  representativeProfile: {
+    hubSlug: { type: String, default: '' },
+    title: { type: String, default: 'Representante Oficial' },
+    permissions: {
+      canEditInfo: { type: Boolean, default: true },
+      canManageEvents: { type: Boolean, default: true },
+      canManageTeam: { type: Boolean, default: true },
+      canManagePartners: { type: Boolean, default: true },
+      canViewMembers: { type: Boolean, default: true }
+    },
+    assignedAt: { type: Date, default: Date.now },
+    assignedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   },
   roles: {
     type: [String],
