@@ -139,10 +139,10 @@ export default function Home() {
           </div>
 
         </footer>
-
-        <FloatingWhatsApp />
-        <ScrollToTop />
       </main>
+
+      <FloatingWhatsApp />
+      <ScrollToTop />
     </>
   );
 }

@@ -1,4 +1,4 @@
-﻿import mongoose, { Schema, Document, models, model } from 'mongoose';
+import mongoose, { Schema, Document, models, model } from 'mongoose';
 
 export interface IInscricaoClube extends Document {
   nomeCompleto: string;
