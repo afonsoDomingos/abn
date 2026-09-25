@@ -3,6 +3,8 @@ import { cookies } from 'next/headers';
 import dbConnect from '@/lib/mongodb';
 import Business from '@/models/Business';
 import Product from '@/models/Product';
+import User from '@/models/User';
+import { sendProductApprovedEmail, sendProductRejectedEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -141,6 +143,20 @@ export async function PUT(request: Request) {
     }
 
     await business.save();
+
+    // Disparar e-mail assíncrono para o vendedor
+    try {
+      const ownerUser = await User.findById(business.owner);
+      if (ownerUser && ownerUser.email) {
+        if (action === 'aprovar') {
+          sendProductApprovedEmail(ownerUser.email, ownerUser.name || business.name, item.name).catch(() => {});
+        } else if (action === 'rejeitar') {
+          sendProductRejectedEmail(ownerUser.email, ownerUser.name || business.name, item.name, notes).catch(() => {});
+        }
+      }
+    } catch (e) {
+      console.error('[Email Notification Error]', e);
+    }
 
     return NextResponse.json({ success: true, message: `Produto ${action === 'aprovar' ? 'aprovado' : 'rejeitado'} com sucesso!` });
   } catch (error: any) {

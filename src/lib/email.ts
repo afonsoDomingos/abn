@@ -477,3 +477,157 @@ export async function sendPaymentFailedEmail(
     html: emailLayout(content, 'Loja ABN'),
   });
 }
+
+/**
+ * 11. Notificação de Submissão de Produto para o Empreendedor
+ */
+export async function sendProductSubmittedEmail(
+  email: string,
+  sellerName: string,
+  productName: string,
+  price: string
+) {
+  const content = `
+    <h2 style="color: #1b4d3e; margin-top: 0; font-size: 20px;">Submissão de Produto Recebida - Loja ABN</h2>
+    <p>Olá, <strong>${sellerName}</strong>,</p>
+    <p>O seu produto foi submetido com sucesso para análise pela equipe de curadoria da <strong>AfroBiz Network (ABN)</strong>.</p>
+
+    <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 14px;">
+      <p style="margin: 4px 0;"><strong>Produto:</strong> ${productName}</p>
+      <p style="margin: 4px 0;"><strong>Preço Proposto:</strong> ${price}</p>
+      <p style="margin: 4px 0;"><strong>Status:</strong> <span style="background: #fef3c7; color: #b45309; padding: 2px 8px; border-radius: 6px; font-weight: 700;">Em Análise</span></p>
+    </div>
+
+    <p style="font-size: 14px; color: #475569; line-height: 1.5;">
+      A nossa equipe verifica os detalhes para assegurar a qualidade e conformidade com o ecossistema. 
+      Você receberá um novo e-mail assim que a revisão for concluída.
+    </p>
+
+    <div style="text-align: center; margin: 30px 0 16px 0;">
+      <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://abnafrobiznetwork.com'}/dashboard/negocios" style="background-color: #de9b35; color: #111418; text-decoration: none; padding: 13px 30px; border-radius: 6px; font-weight: 700; font-size: 14px; display: inline-block;">
+        Ver no Meu Painel
+      </a>
+    </div>
+  `;
+
+  return sendEmail({
+    to: email,
+    subject: `Produto em Análise: ${productName} - Loja ABN`,
+    html: emailLayout(content, 'Loja ABN'),
+  });
+}
+
+/**
+ * 12. Notificação de Produto Aprovado para o Empreendedor
+ */
+export async function sendProductApprovedEmail(
+  email: string,
+  sellerName: string,
+  productName: string
+) {
+  const content = `
+    <h2 style="color: #15803d; margin-top: 0; font-size: 20px;">🎉 Parabéns! Produto Aprovado na Loja ABN</h2>
+    <p>Olá, <strong>${sellerName}</strong>,</p>
+    <p>Temos o prazer de informar que o seu produto <strong>${productName}</strong> foi aprovado e já se encontra publicado na <strong>Loja Oficial da ABN</strong>!</p>
+
+    <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 14px; color: #166534;">
+      <p style="margin: 4px 0; font-weight: 700;">✅ O seu item está visível para milhares de visitantes e empreendedores de toda a rede.</p>
+      <p style="margin: 4px 0;">Quando um cliente realizar um pedido, você será notificado imediatamente para gerir o atendimento e a entrega.</p>
+    </div>
+
+    <div style="text-align: center; margin: 30px 0 16px 0;">
+      <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://abnafrobiznetwork.com'}/loja" style="background-color: #1b4d3e; color: #ffffff; text-decoration: none; padding: 13px 30px; border-radius: 6px; font-weight: 700; font-size: 14px; display: inline-block;">
+        Ver na Loja Pública
+      </a>
+    </div>
+  `;
+
+  return sendEmail({
+    to: email,
+    subject: `✅ Produto Aprovado: ${productName} está no ar na Loja ABN!`,
+    html: emailLayout(content, 'Loja ABN'),
+  });
+}
+
+/**
+ * 13. Notificação de Produto Rejeitado com Feedback
+ */
+export async function sendProductRejectedEmail(
+  email: string,
+  sellerName: string,
+  productName: string,
+  notes?: string
+) {
+  const content = `
+    <h2 style="color: #b91c1c; margin-top: 0; font-size: 20px;">Atualização sobre o seu Produto - Loja ABN</h2>
+    <p>Olá, <strong>${sellerName}</strong>,</p>
+    <p>A equipe de moderação revisou a submissão do produto <strong>${productName}</strong> e foram identificados pontos que precisam de atenção.</p>
+
+    <div style="background-color: #fef2f2; border-left: 4px solid #dc2626; padding: 16px; margin: 20px 0; border-radius: 6px; font-size: 14px; color: #991b1b;">
+      <strong>Motivo / Observações da Equipe:</strong><br/>
+      ${notes || 'O item necessita de melhorias na descrição, imagens ou conformidade com os termos da loja ABN.'}
+    </div>
+
+    <p style="font-size: 14px; color: #475569;">
+      Não se preocupe: você pode aceder ao seu painel, ajustar as informações e reenviar o produto para nova avaliação.
+    </p>
+
+    <div style="text-align: center; margin: 30px 0 16px 0;">
+      <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://abnafrobiznetwork.com'}/dashboard/negocios" style="background-color: #0f172a; color: #ffffff; text-decoration: none; padding: 13px 30px; border-radius: 6px; font-weight: 700; font-size: 14px; display: inline-block;">
+        Ajustar Produto no Painel
+      </a>
+    </div>
+  `;
+
+  return sendEmail({
+    to: email,
+    subject: `Atualização sobre a Submissão: ${productName} - Loja ABN`,
+    html: emailLayout(content, 'Loja ABN'),
+  });
+}
+
+/**
+ * 14. Alerta de Nova Venda para o Vendedor / Empreendedor
+ */
+export async function sendNewSaleSellerEmail(
+  sellerEmail: string,
+  sellerName: string,
+  productName: string,
+  orderId: string,
+  customerName: string,
+  customerPhone: string,
+  customerWhatsApp: string,
+  total: number
+) {
+  const content = `
+    <h2 style="color: #15803d; margin-top: 0; font-size: 20px;">🎉 Nova Venda Realizada na Loja ABN!</h2>
+    <p>Olá, <strong>${sellerName}</strong>,</p>
+    <p>Excelente notícia! Um cliente acabou de efetuar um pedido para o seu produto na <strong>Loja ABN</strong>.</p>
+
+    <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 14px;">
+      <p style="margin: 4px 0;"><strong>Pedido:</strong> #${orderId.toString().slice(-8)}</p>
+      <p style="margin: 4px 0;"><strong>Item:</strong> ${productName}</p>
+      <p style="margin: 4px 0;"><strong>Valor Total:</strong> ${total.toLocaleString()} MT</p>
+      <hr style="border: none; border-top: 1px solid #dcfce7; margin: 10px 0;" />
+      <p style="margin: 4px 0;"><strong>Cliente:</strong> ${customerName}</p>
+      <p style="margin: 4px 0;"><strong>Telefone:</strong> ${customerPhone || 'Não informado'}</p>
+      <p style="margin: 4px 0;"><strong>WhatsApp:</strong> ${customerWhatsApp || customerPhone || 'Não informado'}</p>
+    </div>
+
+    <p style="font-size: 14px; color: #475569;">
+      Acesse o seu painel ou entre em contacto com o cliente para coordenar o envio ou a entrega do serviço.
+    </p>
+
+    <div style="text-align: center; margin: 30px 0 16px 0;">
+      <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://abnafrobiznetwork.com'}/dashboard/negocios" style="background-color: #de9b35; color: #111418; text-decoration: none; padding: 13px 30px; border-radius: 6px; font-weight: 700; font-size: 14px; display: inline-block;">
+        Ver Detalhes do Pedido
+      </a>
+    </div>
+  `;
+
+  return sendEmail({
+    to: sellerEmail,
+    subject: `🎉 Nova Venda na Loja ABN: ${productName} (#${orderId.toString().slice(-8)})`,
+    html: emailLayout(content, 'Loja ABN'),
+  });
+}

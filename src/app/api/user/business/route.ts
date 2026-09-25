@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import dbConnect from '@/lib/mongodb';
 import Business from '@/models/Business';
+import User from '@/models/User';
+import { sendProductSubmittedEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -95,6 +97,27 @@ export async function PUT(request: Request) {
       updateData,
       { new: true, upsert: true }
     );
+
+    // Se houve submissão de produto com showInStore para análise, enviar e-mail de confirmação ao empreendedor
+    if (productsAndServices && Array.isArray(productsAndServices)) {
+      const newlyPending = productsAndServices.filter((p: any) => p.showInStore && p.storeApproval === 'pendente');
+      if (newlyPending.length > 0) {
+        try {
+          const user = await User.findById(session.id);
+          if (user && user.email) {
+            const lastItem = newlyPending[newlyPending.length - 1];
+            sendProductSubmittedEmail(
+              user.email,
+              user.name || name,
+              lastItem.name,
+              lastItem.price || 'Sob Consulta'
+            ).catch(() => {});
+          }
+        } catch (e) {
+          console.error('[Resend Error on Submission]', e);
+        }
+      }
+    }
 
     return NextResponse.json({ success: true, business });
   } catch (error: any) {

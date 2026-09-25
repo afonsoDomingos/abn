@@ -57,6 +57,46 @@ export async function POST(request: NextRequest) {
       total: body.total
     });
     
+    // Buscar se o produto possui vendedor registrado para notificá-lo por email
+    try {
+      if (body.productId) {
+        const Product = (await import('@/models/Product')).default;
+        const User = (await import('@/models/User')).default;
+        const { sendNewSaleSellerEmail, sendOrderConfirmationEmail } = await import('@/lib/email');
+
+        const product = await Product.findById(body.productId);
+        if (product && product.sellerId) {
+          const seller = await User.findById(product.sellerId);
+          if (seller && seller.email) {
+            sendNewSaleSellerEmail(
+              seller.email,
+              seller.name || product.sellerBusiness || 'Vendedor',
+              product.name,
+              order._id.toString(),
+              body.customerName,
+              body.customerPhone,
+              body.customerWhatsApp || '',
+              body.total || product.price
+            ).catch(() => {});
+          }
+        }
+
+        // Email de confirmação para o cliente comprador
+        if (body.customerEmail) {
+          sendOrderConfirmationEmail(
+            body.customerEmail,
+            body.customerName,
+            body.productName,
+            order._id.toString(),
+            body.total,
+            body.paymentMethod
+          ).catch(() => {});
+        }
+      }
+    } catch (e) {
+      console.error('[Order Notification Error]', e);
+    }
+
     return NextResponse.json({ 
       success: true, 
       orderId: order._id 
