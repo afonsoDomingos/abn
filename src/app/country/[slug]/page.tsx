@@ -551,7 +551,7 @@ export default function CountryHubPage({ params }: { params: Promise<{ slug: str
           </div>
 
           <div className={styles.bottomBar}>
-            <span>Copyright © ABN {new Date().getFullYear()} {!shopEnabled && <> | Powered By <a href="https://www.wehosthere.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>Wehosthere <img src="/wehosthere.png" alt="Wehosthere" style={{ height: '30px', verticalAlign: 'middle' }} /></a></>}</span>
+            <span>Copyright © ABN {new Date().getFullYear()} {!shopEnabled && <> | Powered By <a href="https://www.wehosthere.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>Wehosthere <img src="/wehosthere.png" alt="Wehosthere" style={{ height: '60px', verticalAlign: 'middle', objectFit: 'contain' }} /></a></>}</span>
           </div>
         </div>
       </footer>
