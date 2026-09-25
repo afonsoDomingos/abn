@@ -69,8 +69,8 @@ export default function CheckoutSuccess() {
               <p>O seu pedido está a ser processado. Por favor, aguarde...</p>
               <p className={styles.orderId}>Pedido #{orderId}</p>
               <div className={styles.info}>
-                <p>💡 Verifique o seu telemóvel para autorizar o pagamento.</p>
-                <p>⏱️ Esta página será atualizada automaticamente.</p>
+                <p>Verifique o seu telemóvel para autorizar o pagamento.</p>
+                <p>Esta página será atualizada automaticamente.</p>
               </div>
             </div>
           ) : orderStatus === 'paid' ? (

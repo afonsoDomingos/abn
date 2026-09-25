@@ -1,0 +1,484 @@
+.lojaPage {
+  min-height: 100vh;
+  background-color: #f7f6f2; /* Tom de fundo leve e sofisticado da referência */
+  color: #1a1a1a;
+  padding-bottom: 80px;
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Hero / Header da Loja */
+.heroHeader {
+  padding: 120px 1.5rem 40px;
+  background: linear-gradient(180deg, rgba(247, 246, 242, 0.9) 0%, #f7f6f2 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.heroContent {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(22, 101, 52, 0.1);
+  color: #1b4d3e;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.heroTitle {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+.heroSub {
+  font-size: 1.05rem;
+  color: #4b5563;
+  max-width: 600px;
+}
+
+/* 1. SEÇÃO EXPLORE POR CATEGORIA */
+.sectionCategory {
+  padding: 2.5rem 0 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.categoryCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  text-align: left;
+  width: 100%;
+}
+
+.categoryCard:hover {
+  transform: translateY(-2px);
+  border-color: #d1d5db;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.categoryCardActive {
+  background: #ffffff;
+  border: 2px solid #1b4d3e !important;
+  box-shadow: 0 4px 14px rgba(27, 77, 62, 0.12);
+}
+
+.categoryIconWrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #f3f4f6;
+  color: #1b4d3e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.categoryCardActive .categoryIconWrap {
+  background: #1b4d3e;
+  color: #ffffff;
+}
+
+.categoryName {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* 2. SEÇÃO DESTAQUES */
+.sectionFeatured {
+  padding: 2rem 0 3rem;
+}
+
+.featuredHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.seeAllLink {
+  color: #1b4d3e;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.seeAllLink:hover {
+  opacity: 0.8;
+}
+
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+/* Card de Produto / Destaque */
+.productCard {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  position: relative;
+}
+
+.productCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}
+
+.dashedBorderCard {
+  border: 1.5px dashed #cbd5e1;
+}
+
+/* Topo do Card */
+.cardTopBanner {
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cardTopImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardTopPlaceholder {
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Variantes de cores do topo conforme na imagem de referência */
+.bgDark {
+  background: #181c20;
+  color: #dfaa37;
+}
+
+.bgGreen {
+  background: #476a52;
+  color: #ffffff;
+}
+
+.bgGold {
+  background: #de9b35;
+  color: #ffffff;
+}
+
+.bgPlaceholder {
+  background: #eae8e1;
+  color: #6b7280;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Corpo do Card */
+.cardBody {
+  padding: 1.25rem 1.25rem 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  margin-bottom: 0.35rem;
+}
+
+.cardTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.35;
+  margin-bottom: 0.35rem;
+  font-family: 'Outfit', sans-serif;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardSubtitle {
+  font-size: 0.8rem;
+  color: #6b7280;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Rodapé do Card */
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.priceTag {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #111827;
+  font-family: 'Outfit', sans-serif;
+}
+
+.btnAction {
+  padding: 0.5rem 1.15rem;
+  border-radius: 8px;
+  background: #111827;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btnAction:hover {
+  background: #1f2937;
+  transform: scale(1.02);
+}
+
+.btnActionGold {
+  background: #111827;
+}
+
+/* 3. BANNER "VENDER NA ABN" */
+.sellerSection {
+  padding: 1.5rem 0 3rem;
+}
+
+.sellerBanner {
+  background: #476a52; /* Verde sofisticado da ABN */
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2.5rem;
+  align-items: center;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(47, 85, 60, 0.2);
+}
+
+.sellerLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sellerTag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #e5b352;
+  margin-bottom: 0.75rem;
+}
+
+.sellerHeading {
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  font-family: 'Outfit', sans-serif;
+  color: #ffffff;
+}
+
+.sellerBtn {
+  background: #de9b35; /* Dourado / mostarda quente */
+  color: #111827;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.sellerBtn:hover {
+  background: #eab308;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Passos 1, 2, 3 no banner */
+.sellerSteps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.stepCard {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 1.5rem 1.25rem;
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+}
+
+.stepNumber {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #de9b35;
+  color: #111827;
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.stepTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+}
+
+.stepDesc {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.45;
+}
+
+/* Skeletons & Empty State */
+.loadingGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.skeletonCard {
+  height: 280px;
+  border-radius: 16px;
+  background: #e5e7eb;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px dashed #d1d5db;
+  color: #6b7280;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 1024px) {
+  .categoryGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .productsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .sellerBanner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .categoryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .sellerSteps {
+    grid-template-columns: 1fr;
+  }
+  .sellerBanner {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .categoryGrid {
+    grid-template-columns: 1fr;
+  }
+  .productsGrid {
+    grid-template-columns: 1fr;
+  }
+}
