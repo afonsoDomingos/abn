@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Globe } from 'lucide-react';
 import styles from './Navbar.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 import LanguageSelector from './LanguageSelector';
@@ -14,6 +14,7 @@ export default function Navbar() {
   const [hubs, setHubs] = useState<Array<{ name: string; slug: string }>>([]);
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [shopEnabled, setShopEnabled] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState('Moçambique');
 
   // Fetch Hubs & check user session on mount
   useEffect(() => {
@@ -84,6 +85,14 @@ export default function Navbar() {
   const dashboardPath = currentUser?.role === 'admin' ? '/admin' : '/dashboard';
   const dashboardLabel = currentUser?.role === 'admin' ? 'Painel Admin' : 'Ir para o Meu Painel';
 
+  const countries = [
+    { name: 'Moçambique', currency: 'MZN', flag: '🇲🇴' },
+    { name: 'Angola', currency: 'AOA', flag: '🇦🇴' },
+    { name: 'Guiné-Bissau', currency: 'XOF', flag: '🇬🇼' },
+    { name: 'São Tomé e Príncipe', currency: 'STN', flag: '🇸🇹' },
+    { name: 'Cabo Verde', currency: 'CVE', flag: '🇨🇻' }
+  ];
+
   return (
     <>
       <nav className={styles.navbar}>
@@ -97,51 +106,40 @@ export default function Navbar() {
           </Link>
 
           <div className={styles.links}>
-            {/* 1. Programas & Soluções Dropdown */}
+            <Link href="/">Início</Link>
+
+            {/* Programas Dropdown */}
             <div className={styles.dropdown}>
               <span className={styles.dropdownTrigger}>
-                {language === 'pt' ? 'Programas & Soluções' : 'Programs & Solutions'} <span className={styles.arrow}>▼</span>
+                Programas <span className={styles.arrow}>▼</span>
               </span>
               <div className={styles.dropdownMenu}>
-                <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
-                <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
-                <Link href="/oportunidades" onClick={closeMenu}>Oportunidades &amp; Bolsas</Link>
-                <Link href="/#cursos" onClick={closeMenu}>Academia &amp; Cursos</Link>
+                <Link href="/programas/startup-180" onClick={closeMenu}>ABN Startup 180</Link>
+                <Link href="/programas/clube-empreendedores" onClick={closeMenu}>Clube dos Empreendedores</Link>
+                <Link href="/programas/clubes-startups-mocambique" onClick={closeMenu}>Clubes das Startups (Moçambique)</Link>
+                <Link href="/programas/clubes-startups-angola" onClick={closeMenu}>Clubes das Startups (Angola)</Link>
+                <Link href="/programas/mentalidade-empreendedora" onClick={closeMenu}>Mentalidade Empreendedora</Link>
               </div>
             </div>
 
-            {/* 2. Mídia & Conteúdo Dropdown */}
-            <div className={styles.dropdown}>
-              <span className={styles.dropdownTrigger}>
-                {language === 'pt' ? 'Mídia & Conteúdo' : 'Media & Content'} <span className={styles.arrow}>▼</span>
-              </span>
-              <div className={styles.dropdownMenu}>
-                <Link href="/noticias" onClick={closeMenu}>Notícias &amp; Atualidades</Link>
-                <Link href="/eventos" onClick={closeMenu}>Eventos &amp; Summits</Link>
-                <Link href="/galeria" onClick={closeMenu}>Galeria de Fotos</Link>
-                <Link href="/#artigos" onClick={closeMenu}>A Voz do Empreendedor</Link>
-              </div>
-            </div>
+            <Link href="/academia">Academia</Link>
+            <Link href="/loja" onClick={closeMenu}><ShoppingBag size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Loja ABN</Link>
+            <Link href="/especialistas">Especialistas</Link>
+            <Link href="/parceiros">Parceiros</Link>
 
-            {/* 3. Sobre ABN Dropdown */}
+            {/* Representações Dropdown */}
             <div className={styles.dropdown}>
               <span className={styles.dropdownTrigger}>
-                {language === 'pt' ? 'Sobre ABN' : 'About ABN'} <span className={styles.arrow}>▼</span>
+                Representações <span className={styles.arrow}>▼</span>
               </span>
               <div className={styles.dropdownMenu}>
-                <Link href="/impacto" onClick={closeMenu}>{t.nav.impact}</Link>
-                <Link href="/mensagem-do-presidente" onClick={closeMenu}>Mensagem do Presidente</Link>
-                <Link href="/equipa" onClick={closeMenu}>Equipa Executiva</Link>
-                <Link href="/especialistas" onClick={closeMenu}>Especialistas &amp; Mentores</Link>
-                <Link href="/parceiros" onClick={closeMenu}>{t.nav.connections}</Link>
-                <div className={styles.divider}></div>
-                <div className={styles.dropdownHeader}>
-                  {language === 'pt' ? 'Delegações / Hubs' : 'Hubs'}
-                </div>
                 {hubs.length === 0 ? (
-                  <Link href="/country/quinebissau" onClick={closeMenu}>
-                    Guiné-Bissau
-                  </Link>
+                  <>
+                    <Link href="/country/quinebissau" onClick={closeMenu}>Guiné-Bissau</Link>
+                    <Link href="/country/angola" onClick={closeMenu}>Angola</Link>
+                    <Link href="/country/saotome" onClick={closeMenu}>São Tomé e Príncipe</Link>
+                    <Link href="/country/caboverde" onClick={closeMenu}>Cabo Verde</Link>
+                  </>
                 ) : (
                   hubs.map(hub => (
                     <Link key={hub.slug} href={`/country/${hub.slug}`} onClick={closeMenu}>
@@ -152,17 +150,52 @@ export default function Navbar() {
               </div>
             </div>
 
+            <Link href="/impacto">Impacto</Link>
+
+            {/* Sobre Dropdown */}
+            <div className={styles.dropdown}>
+              <span className={styles.dropdownTrigger}>
+                Sobre <span className={styles.arrow}>▼</span>
+              </span>
+              <div className={styles.dropdownMenu}>
+                <Link href="/#missao" onClick={closeMenu}>Quem Somos</Link>
+                <Link href="/mensagem-do-presidente" onClick={closeMenu}>Mensagem do Presidente</Link>
+                <Link href="/equipa" onClick={closeMenu}>Equipa</Link>
+                <Link href="/noticias" onClick={closeMenu}>Notícias</Link>
+                <Link href="/galeria" onClick={closeMenu}>Galeria</Link>
+              </div>
+            </div>
+
             <Link href="/contacto">Contacto</Link>
-            <Link href="/loja" onClick={closeMenu}><ShoppingBag size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Loja ABN</Link>
           </div>
 
           <div className={styles.actions}>
+            {/* Currency Selector */}
+            <div className={styles.currencySelector}>
+              <select 
+                value={selectedCountry} 
+                onChange={(e) => setSelectedCountry(e.target.value)}
+                className={styles.currencySelect}
+              >
+                {countries.map(country => (
+                  <option key={country.name} value={country.name}>
+                    {country.flag} {country.currency}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <LanguageSelector />
+
+            {/* Botões fixos */}
+            <Link href="/programas/clube-empreendedores" className={styles.btnClub}>
+              Aderir ao Clube
+            </Link>
 
             {currentUser ? (
               <UserMenu />
             ) : (
-              <Link href="/login" className={styles.login}>{t.nav.login}</Link>
+              <Link href="/login" className={styles.btnLogin}>Entrar</Link>
             )}
           </div>
 
@@ -234,51 +267,53 @@ export default function Navbar() {
             </div>
           )}
 
-          <div className={styles.drawerSectionTitle}>Programas &amp; Soluções</div>
-          <Link href="/incubacao" onClick={closeMenu}>{t.nav.incubator}</Link>
-          <Link href="/marketplace" onClick={closeMenu}>{t.nav.marketplace}</Link>
-          <Link href="/oportunidades" onClick={closeMenu}>Oportunidades &amp; Bolsas</Link>
-          <Link href="/#cursos" onClick={closeMenu}>Academia &amp; Cursos</Link>
+          <Link href="/" onClick={closeMenu}>Início</Link>
 
-          <div className={styles.drawerSectionTitle}>Mídia &amp; Conteúdo</div>
-          <Link href="/noticias" onClick={closeMenu}>Notícias &amp; Atualidades</Link>
-          <Link href="/eventos" onClick={closeMenu}>Eventos &amp; Summits</Link>
-          <Link href="/galeria" onClick={closeMenu}>Galeria de Fotos</Link>
-          <Link href="/#artigos" onClick={closeMenu}>A Voz do Empreendedor</Link>
+          <div className={styles.drawerSectionTitle}>Programas</div>
+          <Link href="/programas/startup-180" onClick={closeMenu}>ABN Startup 180</Link>
+          <Link href="/programas/clube-empreendedores" onClick={closeMenu}>Clube dos Empreendedores</Link>
+          <Link href="/programas/clubes-startups-mocambique" onClick={closeMenu}>Clubes das Startups (Moçambique)</Link>
+          <Link href="/programas/clubes-startups-angola" onClick={closeMenu}>Clubes das Startups (Angola)</Link>
+          <Link href="/programas/mentalidade-empreendedora" onClick={closeMenu}>Mentalidade Empreendedora</Link>
 
-          <div className={styles.drawerSectionTitle}>Sobre ABN</div>
-          <Link href="/impacto" onClick={closeMenu}>{t.nav.impact}</Link>
-          <Link href="/mensagem-do-presidente" onClick={closeMenu}>Mensagem do Presidente</Link>
-          <Link href="/equipa" onClick={closeMenu}>Equipa Executiva</Link>
-          <Link href="/especialistas" onClick={closeMenu}>Especialistas &amp; Mentores</Link>
-          <Link href="/parceiros" onClick={closeMenu}>{t.nav.connections}</Link>
+          <Link href="/academia" onClick={closeMenu}>Academia</Link>
+          <Link href="/loja" onClick={closeMenu}><ShoppingBag size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Loja ABN</Link>
+          <Link href="/especialistas" onClick={closeMenu}>Especialistas</Link>
+          <Link href="/parceiros" onClick={closeMenu}>Parceiros</Link>
 
-          <div className={styles.drawerSectionTitle}>
-            {language === 'pt' ? 'Delegações' : language === 'fr' ? 'Délégations' : 'Hubs'}
-          </div>
-          <div className={styles.drawerHubsList}>
-            {hubs.length === 0 ? (
-              <Link href="/country/quinebissau" onClick={closeMenu} className={styles.drawerHubLink}>
-                Guiné-Bissau
+          <div className={styles.drawerSectionTitle}>Representações</div>
+          {hubs.length === 0 ? (
+            <>
+              <Link href="/country/quinebissau" onClick={closeMenu} className={styles.drawerHubLink}>Guiné-Bissau</Link>
+              <Link href="/country/angola" onClick={closeMenu} className={styles.drawerHubLink}>Angola</Link>
+              <Link href="/country/saotome" onClick={closeMenu} className={styles.drawerHubLink}>São Tomé e Príncipe</Link>
+              <Link href="/country/caboverde" onClick={closeMenu} className={styles.drawerHubLink}>Cabo Verde</Link>
+            </>
+          ) : (
+            hubs.map(hub => (
+              <Link key={hub.slug} href={`/country/${hub.slug}`} onClick={closeMenu} className={styles.drawerHubLink}>
+                {hub.name}
               </Link>
-            ) : (
-              hubs.map(hub => (
-                <Link key={hub.slug} href={`/country/${hub.slug}`} onClick={closeMenu} className={styles.drawerHubLink}>
-                  {hub.name}
-                </Link>
-              ))
-            )}
-          </div>
+            ))
+          )}
+
+          <Link href="/impacto" onClick={closeMenu}>Impacto</Link>
+
+          <div className={styles.drawerSectionTitle}>Sobre</div>
+          <Link href="/#missao" onClick={closeMenu}>Quem Somos</Link>
+          <Link href="/mensagem-do-presidente" onClick={closeMenu}>Mensagem do Presidente</Link>
+          <Link href="/equipa" onClick={closeMenu}>Equipa</Link>
+          <Link href="/noticias" onClick={closeMenu}>Notícias</Link>
+          <Link href="/galeria" onClick={closeMenu}>Galeria</Link>
 
           <Link href="/contacto" onClick={closeMenu} style={{ fontWeight: 800, color: 'var(--primary)', marginTop: '0.5rem' }}>Contacto</Link>
-          <Link href="/loja" onClick={closeMenu} style={{ fontWeight: 800, color: 'var(--primary)', marginTop: '0.5rem' }}><ShoppingBag size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Loja ABN</Link>
         </nav>
 
         <div className={styles.drawerActions}>
           <LanguageSelector />
           {!currentUser && (
             <Link href="/login" className={styles.drawerLogin} onClick={closeMenu}>
-              {t.nav.login}
+              Entrar
             </Link>
           )}
         </div>
