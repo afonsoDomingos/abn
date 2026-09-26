@@ -146,6 +146,31 @@ export default function HomeTeam() {
     }
   }
 
+  if (loading) {
+    return (
+      <section className={styles.section} id="equipa">
+        <div className={styles.container}>
+          <div className={styles.grid}>
+            {[0, 1, 2, 3].map(i => (
+              <div key={i} className={styles.skeletonCard}>
+                <div className={styles.skeletonImg} />
+                <div className={styles.skeletonBody}>
+                  <div className={styles.skeletonLine} style={{ width: '50%' }} />
+                  <div className={styles.skeletonLine} style={{ width: '80%' }} />
+                  <div className={styles.skeletonLine} style={{ width: '65%' }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (team.length === 0) {
+    return null; // Hide section if no team members available
+  }
+
   return (
     <section className={styles.section} id="equipa">
       <div className={styles.container}>
@@ -186,106 +211,88 @@ export default function HomeTeam() {
           </div>
         </div>
 
-        {/* Skeleton loaders */}
-        {loading ? (
+        <div 
+          className={styles.carouselContainer}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
           <div className={styles.grid}>
-            {[0, 1, 2, 3].map(i => (
-              <div key={i} className={styles.skeletonCard}>
-                <div className={styles.skeletonImg} />
-                <div className={styles.skeletonBody}>
-                  <div className={styles.skeletonLine} style={{ width: '50%' }} />
-                  <div className={styles.skeletonLine} style={{ width: '80%' }} />
-                  <div className={styles.skeletonLine} style={{ width: '65%' }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div 
-            className={styles.carouselContainer}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          >
-            <div className={styles.grid}>
-              {displayMembers.map((member, idx) => {
-                const { color, bg } = getRoleMeta(member.role);
-                return (
-                  <div
-                    key={`${member._id}-${idx}`}
-                    className={styles.card}
-                  >
-                    {/* Photo */}
-                    <div className={styles.imageWrapper}>
-                      <img
-                        src={member.image && member.image.trim() ? member.image : '/abn-logo.png'}
-                        alt=""
-                        className={styles.image}
-                        style={
-                          !member.image || !member.image.trim()
-                            ? { objectFit: 'contain', padding: '24px', background: '#0d1322' }
-                            : { objectFit: 'cover' }
-                        }
-                        onError={(e) => {
-                          const target = e.currentTarget as HTMLImageElement;
-                          target.onerror = null;
-                          target.src = '/abn-logo.png';
-                          target.style.objectFit = 'contain';
-                          target.style.padding = '24px';
-                          target.style.background = '#0d1322';
-                        }}
-                      />
-                      <div className={styles.imageGradient} />
-                    </div>
-
-                    {/* Info */}
-                    <div className={styles.cardContent}>
-                      <span className={styles.roleBadge} style={{ color, background: bg, borderColor: `${color}33` }}>
-                        {member.role}
-                      </span>
-                      <h3 className={styles.name}>{member.name}</h3>
-                      {member.department && <p className={styles.dept}>{member.department}</p>}
-
-                      {member.expertise && member.expertise.length > 0 && (
-                        <>
-                          <div className={styles.divider} />
-                          <div className={styles.tags}>
-                            {member.expertise.slice(0, 3).map((e, i) => (
-                              <span key={i} className={styles.tag}>{e}</span>
-                            ))}
-                          </div>
-                        </>
-                      )}
-                    </div>
+            {displayMembers.map((member, idx) => {
+              const { color, bg } = getRoleMeta(member.role);
+              return (
+                <div
+                  key={`${member._id}-${idx}`}
+                  className={styles.card}
+                >
+                  {/* Photo */}
+                  <div className={styles.imageWrapper}>
+                    <img
+                      src={member.image && member.image.trim() ? member.image : '/abn-logo.png'}
+                      alt=""
+                      className={styles.image}
+                      style={
+                        !member.image || !member.image.trim()
+                          ? { objectFit: 'contain', padding: '24px', background: '#0d1322' }
+                          : { objectFit: 'cover' }
+                      }
+                      onError={(e) => {
+                        const target = e.currentTarget as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = '/abn-logo.png';
+                        target.style.objectFit = 'contain';
+                        target.style.padding = '24px';
+                        target.style.background = '#0d1322';
+                      }}
+                    />
+                    <div className={styles.imageGradient} />
                   </div>
-                );
-              })}
-            </div>
 
-            {/* Pagination dots */}
-            {team.length > cardsPerPage && (
-              <div className={styles.dotsContainer}>
-                {team.map((_, dotIdx) => (
-                  <button
-                    key={dotIdx}
-                    className={`${styles.dot} ${startIndex === dotIdx ? styles.dotActive : ''}`}
-                    onClick={() => setStartIndex(dotIdx)}
-                    aria-label={`Membro ${dotIdx + 1}`}
-                  />
-                ))}
-              </div>
-            )}
+                  {/* Info */}
+                  <div className={styles.cardContent}>
+                    <span className={styles.roleBadge} style={{ color, background: bg, borderColor: `${color}33` }}>
+                      {member.role}
+                    </span>
+                    <h3 className={styles.name}>{member.name}</h3>
+                    {member.department && <p className={styles.dept}>{member.department}</p>}
+
+                    {member.expertise && member.expertise.length > 0 && (
+                      <>
+                        <div className={styles.divider} />
+                        <div className={styles.tags}>
+                          {member.expertise.slice(0, 3).map((e, i) => (
+                            <span key={i} className={styles.tag}>{e}</span>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        )}
+
+          {/* Pagination dots */}
+          {team.length > cardsPerPage && (
+            <div className={styles.dotsContainer}>
+              {team.map((_, dotIdx) => (
+                <button
+                  key={dotIdx}
+                  className={`${styles.dot} ${startIndex === dotIdx ? styles.dotActive : ''}`}
+                  onClick={() => setStartIndex(dotIdx)}
+                  aria-label={`Membro ${dotIdx + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Bottom CTA */}
-        {!loading && (
-          <div className={styles.ctaStrip}>
-            <p>Quer conhecer <span>toda a equipa</span> e os seus perfis detalhados?</p>
-            <Link href="/equipa" className={styles.ctaLink}>
-              Ver equipa completa →
-            </Link>
-          </div>
-        )}
+        <div className={styles.ctaStrip}>
+          <p>Quer conhecer <span>toda a equipa</span> e os seus perfis detalhados?</p>
+          <Link href="/equipa" className={styles.ctaLink}>
+            Ver equipa completa →
+          </Link>
+        </div>
       </div>
     </section>
   );

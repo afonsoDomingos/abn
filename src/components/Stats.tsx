@@ -89,55 +89,62 @@ export default function Stats() {
               setLoaded(true);
             }
           })
-          .catch(() => {});
+          .catch(() => {
+            // If no data available, hide the section
+            setStats([]);
+          });
       });
   }, [language]);
 
   return (
-    <section className={styles.statsSection} id="impacto">
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <span className={styles.badge}>
-            {language === 'pt' ? 'Dados em Tempo Real' : 'Real-Time Data'}
-          </span>
-          <h2 className={styles.title}>
-            {language === 'pt' ? 'Nosso Impacto' : 'Our Impact'}
-          </h2>
-          <p className={styles.subtitle}>
-            {language === 'pt'
-              ? 'Números reais da nossa plataforma de empreendedorismo'
-              : 'Real numbers from our entrepreneurship platform'}
-          </p>
-        </div>
+    <>
+      {stats.length > 0 && (
+        <section className={styles.statsSection} id="impacto">
+          <div className={styles.container}>
+            <div className={styles.header}>
+              <span className={styles.badge}>
+                {language === 'pt' ? 'Dados em Tempo Real' : 'Real-Time Data'}
+              </span>
+              <h2 className={styles.title}>
+                {language === 'pt' ? 'Nosso Impacto' : 'Our Impact'}
+              </h2>
+              <p className={styles.subtitle}>
+                {language === 'pt'
+                  ? 'Números reais da nossa plataforma de empreendedorismo'
+                  : 'Real numbers from our entrepreneurship platform'}
+              </p>
+            </div>
 
-        <div className={styles.grid}>
-          {stats.map((stat, i) => {
-            const color = COLORS[i % COLORS.length];
-            const icon = ICON_MAP[stat.iconKey ?? 'default'];
-            return (
-              <motion.div
-                key={i}
-                className={styles.statCard}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <div className={styles.iconBox} style={{ background: `${color}14`, color }}>
-                  {icon}
-                </div>
-                <div className={styles.value} style={{ color }}>
-                  {!loaded && stat.value === '...'
-                    ? <span className={styles.skeleton} />
-                    : stat.value}
-                </div>
-                <div className={styles.label}>{stat.label}</div>
-                <div className={styles.accentLine} style={{ background: color }} />
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+            <div className={styles.grid}>
+              {stats.map((stat, i) => {
+                const color = COLORS[i % COLORS.length];
+                const icon = ICON_MAP[stat.iconKey ?? 'default'];
+                return (
+                  <motion.div
+                    key={i}
+                    className={styles.statCard}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-50px' }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                  >
+                    <div className={styles.iconBox} style={{ background: `${color}14`, color }}>
+                      {icon}
+                    </div>
+                    <div className={styles.value} style={{ color }}>
+                      {!loaded && stat.value === '...'
+                        ? <span className={styles.skeleton} />
+                        : stat.value}
+                    </div>
+                    <div className={styles.label}>{stat.label}</div>
+                    <div className={styles.accentLine} style={{ background: color }} />
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+    </>
   );
 }

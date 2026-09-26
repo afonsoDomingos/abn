@@ -44,7 +44,9 @@ function derivedCategory(m: Specialist): string {
     const dept = (m.department || '').toLowerCase();
     const role = (m.role || '').toLowerCase();
     const exp = (m.expertise || []).join(' ').toLowerCase();
-    if (dept.includes('tec') || dept.includes('inovação') || role.includes('ia') || role.includes('meal') || exp.includes('power bi'))
+    if (dept.includes('meal') || role.includes('meal'))
+        return 'MEAL & Análise';
+    if (dept.includes('tec') || dept.includes('inovação') || role.includes('ia') || exp.includes('power bi'))
         return 'Tecnologia';
     if (dept.includes('invest') || dept.includes('finan') || exp.includes('capital'))
         return 'Finanças';
@@ -80,7 +82,7 @@ const FALLBACK: Specialist[] = [
         role: 'Especialista em MEAL & Análise de Dados',
         department: 'Monitoria, Avaliação e Aprendizagem',
         expertise: ['Power BI', 'Indicadores de Desempenho', 'Psicologia Comunitária', 'M&E'],
-        category: 'Tecnologia', image: '', country: 'Moçambique'
+        category: 'MEAL & Análise', image: '', country: 'Moçambique'
     },
     {
         _id: 'fs5', name: 'Dr. Amadou Diallo',
@@ -98,7 +100,7 @@ const FALLBACK: Specialist[] = [
     }
 ];
 
-const ALL_CATEGORIES = ['Todos', 'Tecnologia', 'Finanças', 'Inclusão & Impacto', 'Desenvolvimento'];
+const ALL_CATEGORIES = ['Todos', 'Tecnologia', 'Finanças', 'Inclusão & Impacto', 'Desenvolvimento', 'MEAL & Análise'];
 
 export default function EspecialistasPage() {
     const [specialists, setSpecialists] = useState<Specialist[]>(FALLBACK);

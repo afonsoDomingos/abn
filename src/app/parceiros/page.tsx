@@ -36,41 +36,12 @@ export default function Parceiros() {
   const [sent, setSent] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const partnersLogos = [
-    { name: 'African Union', logo: '' },
-    { name: 'AfDB', logo: '' },
-    { name: 'UNDP', logo: '' },
-    { name: 'TechHub Luanda', logo: '' },
-    { name: 'Startup Moçambique', logo: '' },
-    { name: 'Global Invest', logo: '' },
-  ];
+  const partnersLogos: any[] = []; // Empty - will be populated via config API
 
-  const defaultSupportedCompanies = [
-    {
-      name: 'TechAfrica Solutions',
-      location: 'Luanda, Angola',
-      desc: 'Especialistas em transformar processos analógicos em experiências digitais de alta performance.',
-      icon: '',
-      phase: 'Crescimento'
-    },
-    {
-      name: 'AgroEco Moçambique',
-      location: 'Maputo, Moçambique',
-      desc: 'Soluções sustentáveis e inovadoras para pequenos e médios produtores agrícolas.',
-      icon: '',
-      phase: 'Validação'
-    },
-    {
-      name: 'AfroStyle Fashion',
-      location: 'Maputo, Moçambique',
-      desc: 'Design de moda contemporânea inspirado em tecidos e padrões tradicionais africanos.',
-      icon: '',
-      phase: 'Ideação'
-    }
-  ];
+  const defaultSupportedCompanies: any[] = []; // Empty - will be populated via config API
 
-  const [partnersList, setPartnersList] = useState<any[]>(partnersLogos);
-  const [supportedCompaniesList, setSupportedCompaniesList] = useState<any[]>(defaultSupportedCompanies);
+  const [partnersList, setPartnersList] = useState<any[]>([]);
+  const [supportedCompaniesList, setSupportedCompaniesList] = useState<any[]>([]);
   const [bannerUrl, setBannerUrl] = useState('/partners_hero.png');
 
   useEffect(() => {

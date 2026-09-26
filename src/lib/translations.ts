@@ -35,8 +35,8 @@ export const translations = {
     },
     stats: {
       s1: "Startups Incubadas",
-      s2: "Capital Captado",
-      s3: "Mentores Especialistas",
+      s2: "Mentores Especialistas",
+      s3: "Representações Nacionais",
       s4: "Países em África"
     },
     partners: {
@@ -234,8 +234,8 @@ export const translations = {
     },
     stats: {
       s1: "Incubated Startups",
-      s2: "Capital Raised",
-      s3: "Expert Mentors",
+      s2: "Expert Mentors",
+      s3: "National Representations",
       s4: "Countries in Africa"
     },
     partners: {

@@ -18,20 +18,16 @@ export default function ShopBanner({ shopEnabled = false }: ShopBannerProps) {
             <span>LOJA ABN</span>
           </div>
           <h2 className={styles.shopTitle}>
-            {shopEnabled 
-              ? 'Produtos e Serviços para Empreendedores' 
-              : 'Em Breve: Loja ABN'}
+            Produtos e Serviços para Empreendedores
           </h2>
           <p className={styles.shopDescription}>
-            {shopEnabled
-              ? 'Descubra cursos, materiais de formação e ferramentas para impulsionar o seu negócio.'
-              : 'Estamos a preparar uma plataforma completa de produtos e serviços para empreendedores.'}
+            Descubra cursos, materiais de formação e ferramentas para impulsionar o seu negócio.
           </p>
           <Link 
             href="/loja" 
             className={`btn-primary ${styles.shopCta}`}
           >
-            {shopEnabled ? 'Explorar Loja' : 'Avisar-me'}
+            Explorar Loja
           </Link>
         </div>
       </div>

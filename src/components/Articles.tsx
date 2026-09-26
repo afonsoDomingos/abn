@@ -90,6 +90,22 @@ export default function Articles() {
     comunicado: styles.badgeNews
   };
 
+  if (loading) {
+    return (
+      <section className={styles.section} id="artigos">
+        <div className={styles.container}>
+          <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-muted)' }}>
+            <p>A carregar notícias do banco de dados...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (articles.length === 0) {
+    return null; // Hide section if no articles available
+  }
+
   return (
     <section className={styles.section} id="artigos">
       <div className={styles.container}>
@@ -102,75 +118,65 @@ export default function Articles() {
           </a>
         </div>
 
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-muted)' }}>
-            <p>A carregar notícias do banco de dados...</p>
-          </div>
-        ) : articles.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-muted)' }}>
-            <p>Nenhuma notícia publicada no momento.</p>
-          </div>
-        ) : (
-          <div className={`${styles.grid} ${articles.length >= 6 ? styles.scrollableGrid : ''}`}>
-            {articles.map((item: any, index: number) => {
-              const title = item.title;
-              const desc = item.desc;
-              const location = item.location || 'África';
-              
-              const imgPath = item.img || '';
-              const badgeClass = badgeStyleMap[item.type] || styles.badgeNews;
-              
-              let typeLabel = item.type;
-              if (item.type === 'news') typeLabel = language === 'pt' ? 'Notícia' : 'News';
-              else if (item.type === 'sucesso') typeLabel = language === 'pt' ? 'História de Sucesso' : 'Success Story';
-              else if (item.type === 'comunicado') typeLabel = language === 'pt' ? 'Comunicado' : 'Announcement';
-              else if (item.type === 'photos') typeLabel = language === 'pt' ? 'Galeria' : 'Photos';
-              else if (item.type === 'article') typeLabel = language === 'pt' ? 'Artigo' : 'Article';
+        <div className={`${styles.grid} ${articles.length >= 6 ? styles.scrollableGrid : ''}`}>
+          {articles.map((item: any, index: number) => {
+            const title = item.title;
+            const desc = item.desc;
+            const location = item.location || 'África';
+            
+            const imgPath = item.img || '';
+            const badgeClass = badgeStyleMap[item.type] || styles.badgeNews;
+            
+            let typeLabel = item.type;
+            if (item.type === 'news') typeLabel = language === 'pt' ? 'Notícia' : 'News';
+            else if (item.type === 'sucesso') typeLabel = language === 'pt' ? 'História de Sucesso' : 'Success Story';
+            else if (item.type === 'comunicado') typeLabel = language === 'pt' ? 'Comunicado' : 'Announcement';
+            else if (item.type === 'photos') typeLabel = language === 'pt' ? 'Galeria' : 'Photos';
+            else if (item.type === 'article') typeLabel = language === 'pt' ? 'Artigo' : 'Article';
 
-              return (
-                <article key={item._id || index} className={styles.card}>
-                  <div className={styles.imageWrapper}>
-                    <span className={`${styles.typeBadge} ${badgeClass}`}>
-                      {typeLabel}
-                    </span>
-                    <img 
-                      src={imgPath || '/noticiadefautl.png'} 
-                      alt={title} 
-                      className={styles.image} 
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.currentTarget;
-                        if (!target.src.includes('noticiadefautl.png')) {
-                          target.src = '/noticiadefautl.png';
-                        }
-                      }}
-                    />
+            return (
+              <article key={item._id || index} className={styles.card}>
+                <div className={styles.imageWrapper}>
+                  <span className={`${styles.typeBadge} ${badgeClass}`}>
+                    {typeLabel}
+                  </span>
+                  <img 
+                    src={imgPath || '/noticiadefautl.png'} 
+                    alt={title} 
+                    className={styles.image} 
+                    loading="lazy"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (!target.src.includes('noticiadefautl.png')) {
+                        target.src = '/noticiadefautl.png';
+                      }
+                    }}
+                  />
+                </div>
+                <div className={styles.content}>
+                  <div className={styles.locationWrapper}>
+                    <span className={styles.location}>{location}</span>
                   </div>
-                  <div className={styles.content}>
-                    <div className={styles.locationWrapper}>
-                      <span className={styles.location}>{location}</span>
+                  <h3 className={styles.articleTitle}>{title}</h3>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                    <span className={styles.date} style={{ margin: 0 }}>{item.date}</span>
+                    <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+                      <span title="Visualizações" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>{viewsMap[item.title] || 0} visualizações</span>
+                      <span title="Comentários" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>{(commentsMap[item.title] || []).length} comentários</span>
                     </div>
-                    <h3 className={styles.articleTitle}>{title}</h3>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                      <span className={styles.date} style={{ margin: 0 }}>{item.date}</span>
-                      <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                        <span title="Visualizações" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>{viewsMap[item.title] || 0} visualizações</span>
-                        <span title="Comentários" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>{(commentsMap[item.title] || []).length} comentários</span>
-                      </div>
-                    </div>
-                    <p className={styles.desc}>{desc}</p>
-                    <button 
-                      className={styles.readMoreBtn} 
-                      onClick={() => handleOpenArticle(item, title, desc, location)}
-                    >
-                      {language === 'pt' ? 'Ler mais' : 'Read more'}
-                    </button>
                   </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
+                  <p className={styles.desc}>{desc}</p>
+                  <button 
+                    className={styles.readMoreBtn} 
+                    onClick={() => handleOpenArticle(item, title, desc, location)}
+                  >
+                    {language === 'pt' ? 'Ler mais' : 'Read more'}
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
 
       {selectedArticle && (

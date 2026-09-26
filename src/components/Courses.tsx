@@ -74,6 +74,10 @@ export default function Courses() {
     );
   }
 
+  if (courses.length === 0) {
+    return null; // Hide section if no courses available
+  }
+
   return (
     <section className={styles.section} id="cursos">
       <div className={styles.container}>

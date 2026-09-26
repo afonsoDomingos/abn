@@ -32,7 +32,7 @@ export default async function ImpactoPage() {
     { value: '968', label: 'Alumni' },
     { value: '14+', label: 'Parceiros Privados' },
     { value: '13%', label: 'Mulheres Empreendedoras' },
-    { value: '5K+', label: 'Empregos Apoiados' }
+    { value: '5', label: 'Países' }
   ];
 
   const reports = configMap['reports_content'] || [
@@ -47,13 +47,6 @@ export default async function ImpactoPage() {
       img: '/articles/nilza.png',
       category: 'Energia Renovável',
       statsSnippet: 'Energia limpa para centenas de famílias'
-    },
-    {
-      title: 'Gala de Empreendedorismo Orange Corners',
-      desc: 'Evento anual promovido pelo Orange Corners Moçambique que reuniu centenas de ex-alunos e investidores para celebrar o desenvolvimento socioeconómico.',
-      img: '/articles/gala.png',
-      category: 'Ecossistema',
-      statsSnippet: 'Mais de 20 investidores presentes'
     }
   ];
 

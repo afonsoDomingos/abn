@@ -57,7 +57,7 @@ const FALLBACK_SPECIALISTS: Specialist[] = [
     role: 'Especialista em MEAL & Análise de Dados',
     department: 'Monitoria, Avaliação e Aprendizagem',
     expertise: ['Power BI', 'Indicadores de Desempenho', 'Psicologia Comunitária', 'M&E'],
-    category: 'Tecnologia',
+    category: 'MEAL & Análise',
     image: ''
   },
   {
@@ -80,7 +80,7 @@ const FALLBACK_SPECIALISTS: Specialist[] = [
   }
 ];
 
-const CATEGORIES = ['Todos', 'Tecnologia', 'Finanças', 'Inclusão & Impacto', 'Desenvolvimento'];
+const CATEGORIES = ['Todos', 'Tecnologia', 'Finanças', 'Inclusão & Impacto', 'Desenvolvimento', 'MEAL & Análise'];
 
 function slugify(text: string): string {
   return (text || '')
@@ -128,7 +128,9 @@ export default function HomeSpecialists() {
               email: m.email,
               website: m.website,
               phone: m.phone,
-              category: m.department?.toLowerCase().includes('tec') || m.role?.toLowerCase().includes('ia') || m.role?.toLowerCase().includes('meal')
+              category: m.department?.toLowerCase().includes('meal') || m.role?.toLowerCase().includes('meal')
+                ? 'MEAL & Análise'
+                : m.department?.toLowerCase().includes('tec') || m.role?.toLowerCase().includes('ia')
                 ? 'Tecnologia'
                 : m.department?.toLowerCase().includes('invest') || m.department?.toLowerCase().includes('finan')
                 ? 'Finanças'
