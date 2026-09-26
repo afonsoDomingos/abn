@@ -1,11 +1,357 @@
-'use client';
+import { Metadata } from 'next';
+import CountryHubClient from './CountryHubClient';
 
-import { useEffect, useState, use } from 'react';
-import Navbar from '@/components/Navbar';
-import styles from './CountryHub.module.css';
-import { useLanguage } from '@/lib/LanguageContext';
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  
+  const countryNames: Record<string, string> = {
+    quinebissau: 'Guiné-Bissau',
+    angola: 'Angola',
+    caboverde: 'Cabo Verde',
+    saotome: 'São Tomé e Príncipe',
+    mocambique: 'Moçambique'
+  };
+  
+  const countryName = countryNames[slug] || slug;
+  
+  return {
+    title: `ABN ${countryName} – Representação Nacional`,
+    description: `Delegação ABN em ${countryName}: incubação, formação, mentoria e networking para empreendedores locais.`,
+    openGraph: {
+      title: `ABN ${countryName} – Representação Nacional`,
+      description: `Delegação ABN em ${countryName}: incubação, formação, mentoria e networking para empreendedores locais.`,
+      url: `https://abnafrobiznetwork.com/country/${slug}`,
+    },
+  };
+}
 
-const fallbackHubs: Record<string, any> = {
+export default function CountryHubPage({ params }: { params: Promise<{ slug: string }> }) {
+  return <CountryHubClient params={params} />;
+}
+  const { language } = useLanguage();
+  const { slug } = use(params);
+  
+  const [hub, setHub] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  
+  // Events tab selection
+  const [activeTab, setActiveTab] = useState<'future' | 'past'>('future');
+  
+  // FAQs expanded state
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  
+  // Contact form state
+  const [contactName, setContactName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactMsg, setContactMsg] = useState('');
+  const [sendingContact, setSendingContact] = useState(false);
+  const [contactResult, setContactResult] = useState('');
+
+  // Global Partners
+  const [globalPartners, setGlobalPartners] = useState<any[]>([]);
+  const [shopEnabled, setShopEnabled] = useState(false);
+
+  useEffect(() => {
+    // 1. Fetch Hub details
+    fetch(`/api/hubs/${slug}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.hub) {
+          setHub(data.hub);
+        } else if (fallbackHubs[slug]) {
+          setHub(fallbackHubs[slug]);
+        } else {
+          setError(data.error || 'Delegação não encontrada.');
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        if (fallbackHubs[slug]) {
+          setHub(fallbackHubs[slug]);
+        } else {
+          setError('Erro na conexão com o servidor.');
+        }
+        setLoading(false);
+      });
+
+    // 2. Fetch global partners for the logo bar
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.configs && data.configs.partners_content) {
+          setGlobalPartners(data.configs.partners_content);
+        }
+        if (data.configs?.shop_enabled !== undefined) {
+          setShopEnabled(data.configs.shop_enabled);
+        }
+      })
+      .catch(() => {});
+  }, [slug]);
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSendingContact(true);
+    setContactResult('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: contactName,
+          email: contactEmail,
+          message: `[DELEGAÇÃO ${hub?.name || slug}] ${contactMsg}`
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setContactResult('Mensagem enviada com sucesso!');
+        setContactName('');
+        setContactEmail('');
+        setContactMsg('');
+      } else {
+        setContactResult(data.error || 'Erro ao enviar a mensagem.');
+      }
+    } catch {
+      setContactResult('Erro de conexão. Tente novamente.');
+    } finally {
+      setSendingContact(false);
+    }
+  };
+
+  const filteredEvents = hub?.events?.filter((ev: any) => 
+    activeTab === 'future' ? ev.type === 'future' : ev.type === 'past'
+  ) || [];
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '4rem 1.5rem', color: '#0f172a', fontWeight: 600 }}>
+        A carregar informações da delegação...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ textAlign: 'center', padding: '4rem 1.5rem', color: '#dc2626', fontWeight: 600 }}>
+        {error}
+      </div>
+    );
+  }
+
+  if (!hub) {
+    return (
+      <div style={{ textAlign: 'center', padding: '4rem 1.5rem', color: '#64748b', fontWeight: 600 }}>
+        Delegação não encontrada.
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.countryHub}>
+      <Navbar />
+      
+      {/* Hero Section */}
+      <header className={styles.hero} style={{ backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(10, 10, 10, 0.9) 100%), url('${hub.image || '/partners_hero.png'}')` }}>
+        <div className={styles.container}>
+          <h1 className="text-gradient-gold">ABN {hub.name}</h1>
+          <p className={styles.heroDescription}>
+            {hub.description}
+          </p>
+          <div className={styles.contactInfo}>
+            <span>📍 {hub.address}</span>
+            <span>📧 {hub.email}</span>
+            {hub.phone && <span>📞 {hub.phone}</span>}
+          </div>
+        </div>
+      </header>
+
+      {/* Representative Section */}
+      {hub.representative && (
+        <section className={styles.section}>
+          <div className={styles.container}>
+            <div className={styles.representativeCard}>
+              <div className={styles.representativeImage}>
+                {hub.representative.image ? (
+                  <img src={hub.representative.image} alt={hub.representative.name} />
+                ) : (
+                  <div className={styles.representativePlaceholder}>
+                    {getInitials(hub.representative.name)}
+                  </div>
+                )}
+              </div>
+              <div className={styles.representativeInfo}>
+                <h3>{hub.representative.name}</h3>
+                <p className={styles.representativeRole}>{hub.representative.role}</p>
+                <div className={styles.representativeContact}>
+                  <span>📧 {hub.representative.email}</span>
+                  {hub.representative.phone && <span>📞 {hub.representative.phone}</span>}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Steps Section */}
+      {hub.steps && hub.steps.length > 0 && (
+        <section className={styles.section}>
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>Como Funciona</h2>
+            <div className={styles.stepsGrid}>
+              {hub.steps.map((step: any, i: number) => (
+                <div key={i} className={styles.stepCard}>
+                  <div className={styles.stepNumber}>{i + 1}</div>
+                  <h3>{step.title}</h3>
+                  <p>{step.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Events Section */}
+      {hub.events && hub.events.length > 0 && (
+        <section className={styles.section}>
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>Eventos</h2>
+            <div className={styles.tabs}>
+              <button 
+                className={`${styles.tab} ${activeTab === 'future' ? styles.activeTab : ''}`}
+                onClick={() => setActiveTab('future')}
+              >
+                Próximos Eventos
+              </button>
+              <button 
+                className={`${styles.tab} ${activeTab === 'past' ? styles.activeTab : ''}`}
+                onClick={() => setActiveTab('past')}
+              >
+                Eventos Passados
+              </button>
+            </div>
+            <div className={styles.eventsGrid}>
+              {filteredEvents.map((event: any, i: number) => (
+                <div key={i} className={styles.eventCard}>
+                  {event.image && <img src={event.image} alt={event.title} className={styles.eventImage} />}
+                  <div className={styles.eventContent}>
+                    <h3>{event.title}</h3>
+                    <p className={styles.eventDate}>{event.date}</p>
+                    <p>{event.description}</p>
+                    {event.link && (
+                      <a href={event.link} target="_blank" rel="noopener noreferrer" className={styles.eventLink}>
+                        Saiba mais →
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* FAQs Section */}
+      {hub.faqs && hub.faqs.length > 0 && (
+        <section className={styles.section}>
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>Perguntas Frequentes</h2>
+            <div className={styles.faqsList}>
+              {hub.faqs.map((faq: any, i: number) => (
+                <div key={i} className={styles.faqItem}>
+                  <button 
+                    className={styles.faqQuestion}
+                    onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
+                  >
+                    {faq.question}
+                    <span className={styles.faqIcon}>{expandedFaq === i ? '−' : '+'}</span>
+                  </button>
+                  {expandedFaq === i && (
+                    <div className={styles.faqAnswer}>
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Contact Form */}
+      <section className={styles.section}>
+        <div className={styles.container}>
+          <h2 className={styles.sectionTitle}>Contacte a Delegação</h2>
+          <form onSubmit={handleContactSubmit} className={styles.contactForm}>
+            <div className={styles.formGroup}>
+              <label>Nome *</label>
+              <input
+                type="text"
+                required
+                value={contactName}
+                onChange={e => setContactName(e.target.value)}
+                placeholder="Seu nome completo"
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label>Email *</label>
+              <input
+                type="email"
+                required
+                value={contactEmail}
+                onChange={e => setContactEmail(e.target.value)}
+                placeholder="seu@email.com"
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label>Mensagem *</label>
+              <textarea
+                required
+                value={contactMsg}
+                onChange={e => setContactMsg(e.target.value)}
+                placeholder="Como podemos ajudar?"
+                rows={4}
+              />
+            </div>
+            <button type="submit" className="btn-primary" disabled={sendingContact}>
+              {sendingContact ? 'A enviar...' : 'Enviar Mensagem'}
+            </button>
+            {contactResult && (
+              <div className={contactResult.includes('sucesso') ? styles.successMsg : styles.errorMsg}>
+                {contactResult}
+              </div>
+            )}
+          </form>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      {globalPartners.length > 0 && (
+        <section className={styles.section}>
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>Parceiros Globais</h2>
+            <div className={styles.partnersGrid}>
+              {globalPartners.map((partner: any, i: number) => (
+                <div key={i} className={styles.partnerLogo}>
+                  {partner.logo ? (
+                    <img src={partner.logo} alt={partner.name} />
+                  ) : (
+                    <span>{partner.name}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
+
+function getInitials(name: string): string {
+  return name.split(' ').filter(Boolean).slice(0, 2).map(n => n[0].toUpperCase()).join('');
+}const fallbackHubs: Record<string, any> = {
   quinebissau: {
     name: 'Guiné-Bissau',
     slug: 'quinebissau',

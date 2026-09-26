@@ -19,6 +19,14 @@ export default function CookieConsent() {
     setLeaving(true);
     setTimeout(() => {
       localStorage.setItem("abn_cookie_consent", accepted ? "accepted" : "declined");
+      if (accepted && typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'analytics_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted'
+        });
+      }
       setVisible(false);
       setLeaving(false);
     }, 400);

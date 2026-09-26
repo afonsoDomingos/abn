@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://afrobiznetwork.com"),
+  metadataBase: new URL("https://abnafrobiznetwork.com"),
   title: {
     default: "AfroBiz Network (ABN) – Ecossistema africano de empreendedorismo e negócios",
     template: "%s | AfroBiz Network (ABN)"
@@ -43,19 +44,19 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_PT",
-    url: "https://afrobiznetwork.com",
+    url: "https://abnafrobiznetwork.com",
     title: "AfroBiz Network (ABN) – Ecossistema africano de empreendedorismo e negócios",
     description: "Ecossistema africano de empreendedorismo com representações em cinco países: incubação, formação, mentoria, loja digital, oportunidades e parcerias.",
     siteName: "AfroBiz Network (ABN)",
     images: [
       {
-        url: "/hero_entrepreneurs.png",
+        url: "https://abnafrobiznetwork.com/hero_entrepreneurs.png",
         width: 1200,
         height: 630,
         alt: "AfroBiz Network Banner - Conectando África ao Mundo",
       },
       {
-        url: "/abn-logo.png",
+        url: "https://abnafrobiznetwork.com/abn-logo.png",
         width: 512,
         height: 512,
         alt: "ABN Logo",
@@ -66,7 +67,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AfroBiz Network (ABN) – Ecossistema africano de empreendedorismo e negócios",
     description: "Ecossistema africano de empreendedorismo com representações em cinco países: incubação, formação, mentoria, loja digital, oportunidades e parcerias.",
-    images: ["/hero_entrepreneurs.png"],
+    images: ["https://abnafrobiznetwork.com/hero_entrepreneurs.png"],
     creator: "@afrobiznetwork"
   },
   robots: {
@@ -93,6 +94,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXX');
+            // Nota: Substituir G-XXXXXXXXXX pelo ID real do Google Analytics
+          `}
+        </Script>
+      </head>
       <body>
         <LanguageProvider>
           {children}
