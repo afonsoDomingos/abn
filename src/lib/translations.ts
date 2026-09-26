@@ -27,10 +27,10 @@ export const translations = {
     },
     hero: {
       badge: "Acelere o seu negócio africano",
-      title: "Impulsionando Startups e PMEs em África",
-      desc: "A ABN – AfroBiz Network é o principal ecossistema de negócios e empreendedorismo para o mercado africano e afrodescendente. Conectamos startups, PMEs, mentores, investidores e parceiros estratégicos para impulsionar o crescimento de impacto global.",
-      start: "Começar Agora",
-      impact: "Ver Impacto",
+      title: "Um ecossistema africano para fazer negócios crescer",
+      desc: "Formação, mentoria, incubação, clientes e parceiros para empreendedores em Moçambique, Angola, Guiné-Bissau, São Tomé e Príncipe e Cabo Verde.",
+      start: "Aderir ao Clube",
+      impact: "Abrir a minha loja",
       offer: "OFERTA: Website + Portfólio com 4 meses grátis"
     },
     stats: {
@@ -109,7 +109,7 @@ export const translations = {
     essence: {
       badge: "Quem Somos",
       title: "QUEM SOMOS",
-      text: "A ABN — Afrobiz Network LTDA é uma plataforma internacional de inovação, empreendedorismo e impacto global, consolidada como uma entidade independente e estratégica de alcance internacional.",
+      text: "A ABN – AfroBiz Network é um ecossistema africano de empreendedorismo e negócios que liga empreendedores, startups, PMEs, especialistas, investidores e instituições. Com sede em Maputo e Representações Nacionais em Angola, Guiné-Bissau, São Tomé e Príncipe e Cabo Verde, a ABN promove a incubação e aceleração de negócios, a educação empreendedora, a mentoria e a consultoria, as redes de oportunidades e parcerias, a sustentabilidade ambiental e a responsabilidade social, e contribui para melhores políticas públicas de apoio ao empreendedorismo. O ecossistema ABN é gerido pela Afrobiz Network ABN, SU, Lda.",
       conectaText: "Criada para fortalecer o empreendedorismo africano e afrodescendente, a ABN conecta:",
       connections: ["Empreendedores", "Empresas", "Investidores", "Instituições", "Líderes", "Mercados globais"],
       closing: "Promovendo oportunidades, inovação, desenvolvimento sustentável e integração económica entre África e o mundo.",
@@ -308,7 +308,7 @@ export const translations = {
     essence: {
       badge: "Who We Are",
       title: "WHO WE ARE",
-      text: "ABN — Afrobiz Network LTDA is an international platform for innovation, entrepreneurship, and global impact, consolidated as an independent and strategic entity of international scope.",
+      text: "ABN – AfroBiz Network is an African entrepreneurship and business ecosystem that connects entrepreneurs, startups, SMEs, specialists, investors, and institutions. With headquarters in Maputo and National Representations in Angola, Guinea-Bissau, São Tomé and Príncipe, and Cape Verde, ABN promotes business incubation and acceleration, entrepreneurial education, mentoring and consulting, networks of opportunities and partnerships, environmental sustainability and social responsibility, and contributes to better public policies supporting entrepreneurship. The ABN ecosystem is managed by Afrobiz Network ABN, SU, Lda.",
       conectaText: "Created to strengthen African and Afro-descendant entrepreneurship, ABN connects:",
       connections: ["Entrepreneurs", "Companies", "Investors", "Institutions", "Leaders", "Global markets"],
       closing: "Promoting opportunities, innovation, sustainable development, and economic integration between Africa and the world.",
@@ -507,7 +507,7 @@ export const translations = {
     essence: {
       badge: "Qui Sommes-Nous",
       title: "QUI SOMMES-NOUS",
-      text: "ABN — Afrobiz Network LTDA est une plateforme internationale d'innovation, d'entrepreneuriat et d'impact mondial, consolidée comme une entité indépendante et stratégique de portée internationale.",
+      text: "ABN – AfroBiz Network est un écosystème africain d'entrepreneuriat et de negócios qui relie des entrepreneurs, des startups, des PME, des spécialistes, des investisseurs et des institutions. Avec son siège à Maputo et des Représentations Nationales en Angola, Guinée-Bissau, São Tomé et Príncipe et Cap-Vert, l'ABN promeut l'incubation et l'accélération des entreprises, l'éducation entrepreneuriale, le mentorat et le conseil, les réseaux d'opportunités et de partenariats, la durabilité environnementale et la responsabilité sociale, et contribue à de meilleures politiques publiques de soutien à l'entrepreneuriat. L'écosystème ABN est géré par Afrobiz Network ABN, SU, Lda.",
       conectaText: "Créée pour renforcer l'entrepreneuriat africain et afrodescendant, l'ABN connecte :",
       connections: ["Entrepreneurs", "Entreprises", "Investisseurs", "Institutions", "Leaders", "Marchés mondiaux"],
       closing: "Promouvant les opportunités, l'innovation, le développement durable et l'intégration économique entre l'Afrique et le monde.",

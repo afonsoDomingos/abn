@@ -161,7 +161,10 @@ export default function Hero() {
             </p>
             <div className={styles.ctaWrapper}>
               <a href="/registro" className="btn-primary">
-                {language === 'pt' ? 'Junte-se a nós' : 'Join us'}
+                {language === 'pt' ? 'Aderir ao Clube' : 'Join the Club'}
+              </a>
+              <a href="/loja/vender" className="btn-secondary">
+                {language === 'pt' ? 'Abrir a minha loja' : 'Open my store'}
               </a>
             </div>
 

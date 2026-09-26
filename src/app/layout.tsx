@@ -15,10 +15,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://afrobiznetwork.com"),
   title: {
-    default: "AfroBiz Network (ABN) — Conectando África ao Mundo",
+    default: "AfroBiz Network (ABN) – Ecossistema africano de empreendedorismo e negócios",
     template: "%s | AfroBiz Network (ABN)"
   },
-  description: "O principal ecossistema de negócios e aceleração empresarial em África. Conectamos startups, PMEs, mentores, investidores e parceiros estratégicos com programas de incubação, eventos e acesso a capital.",
+  description: "Ecossistema africano de empreendedorismo com representações em cinco países: incubação, formação, mentoria, loja digital, oportunidades e parcerias.",
   keywords: [
     "ABN",
     "AfroBiz Network",
@@ -44,8 +44,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pt_PT",
     url: "https://afrobiznetwork.com",
-    title: "AfroBiz Network (ABN) — Conectando África ao Mundo",
-    description: "O principal ecossistema de negócios e aceleração empresarial em África. Conectamos startups, PMEs, mentores e investidores.",
+    title: "AfroBiz Network (ABN) – Ecossistema africano de empreendedorismo e negócios",
+    description: "Ecossistema africano de empreendedorismo com representações em cinco países: incubação, formação, mentoria, loja digital, oportunidades e parcerias.",
     siteName: "AfroBiz Network (ABN)",
     images: [
       {
@@ -64,8 +64,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AfroBiz Network (ABN) — Conectando África ao Mundo",
-    description: "O principal ecossistema de negócios e aceleração empresarial em África.",
+    title: "AfroBiz Network (ABN) – Ecossistema africano de empreendedorismo e negócios",
+    description: "Ecossistema africano de empreendedorismo com representações em cinco países: incubação, formação, mentoria, loja digital, oportunidades e parcerias.",
     images: ["/hero_entrepreneurs.png"],
     creator: "@afrobiznetwork"
   },

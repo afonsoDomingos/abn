@@ -86,7 +86,7 @@ function emailLayout(content: string, subtitle?: string) {
         <!-- Footer -->
         <div style="background-color: #f8fafc; padding: 14px 28px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b;">
           <p style="margin: 0 0 3px 0; font-weight: 700; color: #475569; font-size: 12px;">ABN - AfroBiz Network</p>
-          <p style="margin: 0 0 3px 0; color: #94a3b8; font-size: 11px;">© ${new Date().getFullYear()} AfroBiz Network Lda. Todos os direitos reservados.</p>
+          <p style="margin: 0 0 3px 0; color: #94a3b8; font-size: 11px;">© ${new Date().getFullYear()} Afrobiz Network ABN, SU, Lda. Todos os direitos reservados.</p>
           
           <!-- Partner Credit -->
           <div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e2e8f0; text-align: center;">
