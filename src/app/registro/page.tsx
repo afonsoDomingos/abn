@@ -213,6 +213,7 @@ export default function RegisterPage() {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [consentCommunications, setConsentCommunications] = useState(false);
 
   // Alternar categoria de perfil
   const toggleRole = (roleId: string) => {
@@ -1050,6 +1051,20 @@ export default function RegisterPage() {
 
               <div style={{ background: 'rgba(255,107,0,0.06)', border: '1px solid rgba(255,107,0,0.2)', padding: '1rem', borderRadius: '12px', fontSize: '0.82rem', color: '#475569', lineHeight: 1.5 }}>
                 ℹ️ Ao clicar em <strong>"Ativar Conta e Entrar no Dashboard"</strong>, a sua conta multi-perfil será criada instantaneamente e terá acesso imediato às ferramentas personalizadas do ecossistema ABN.
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '1rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px' }}>
+                <input
+                  type="checkbox"
+                  id="consentCommunications"
+                  checked={consentCommunications}
+                  onChange={e => setConsentCommunications(e.target.checked)}
+                  required
+                  style={{ marginTop: '0.25rem', width: '18px', height: '18px', cursor: 'pointer' }}
+                />
+                <label htmlFor="consentCommunications" style={{ fontSize: '0.85rem', color: '#334155', lineHeight: 1.5, cursor: 'pointer', margin: 0 }}>
+                  <strong>Concordo em receber comunicações da ABN</strong> — incluindo newsletters, oportunidades de negócios, eventos e informações relevantes do ecossistema AfroBiz Network. Pode cancelar esta subscrição a qualquer momento nas definições da sua conta.
+                </label>
               </div>
 
               <div className={styles.stepActions}>

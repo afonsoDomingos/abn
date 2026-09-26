@@ -112,8 +112,6 @@ interface UserProfile {
   birthDate?: string;
   gender?: string;
   nationality?: string;
-  passportBioPage?: string;
-  passportPhoto?: string;
   educationLevel?: string;
   howHeardAboutUs?: string;
 }
@@ -157,15 +155,11 @@ export default function PerfilPage() {
   const [birthDate, setBirthDate] = useState('');
   const [gender, setGender] = useState('');
   const [nationality, setNationality] = useState('');
-  const [passportBioPage, setPassportBioPage] = useState('');
-  const [passportPhoto, setPassportPhoto] = useState('');
   const [educationLevel, setEducationLevel] = useState('');
   const [howHeardAboutUs, setHowHeardAboutUs] = useState('');
 
   // Upload & Submissão
   const [uploading, setUploading] = useState(false);
-  const [uploadingBio, setUploadingBio] = useState(false);
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState({ type: '', text: '' });
@@ -203,8 +197,6 @@ export default function PerfilPage() {
           setBirthDate(u.birthDate || '');
           setGender(u.gender || '');
           setNationality(u.nationality || '');
-          setPassportBioPage(u.passportBioPage || '');
-          setPassportPhoto(u.passportPhoto || '');
           setEducationLevel(u.educationLevel || '');
           setHowHeardAboutUs(u.howHeardAboutUs || '');
         } else {
@@ -264,13 +256,11 @@ export default function PerfilPage() {
     setSkills(prev => prev.filter(s => s !== sk));
   };
 
-  const handleFileUpload = async (file: File, type: 'avatar' | 'passportBio' | 'passportPhoto') => {
+  const handleFileUpload = async (file: File, type: 'avatar') => {
     const formData = new FormData();
     formData.append('file', file);
 
     if (type === 'avatar') setUploading(true);
-    else if (type === 'passportBio') setUploadingBio(true);
-    else setUploadingPhoto(true);
 
     try {
       const res = await fetch('/api/upload', {
@@ -280,8 +270,6 @@ export default function PerfilPage() {
       const data = await res.json();
       if (data.success && data.url) {
         if (type === 'avatar') setProfileImage(data.url);
-        else if (type === 'passportBio') setPassportBioPage(data.url);
-        else setPassportPhoto(data.url);
         
         setMsg({ type: 'success', text: 'Ficheiro carregado com sucesso! Clique em Guardar Alterações para salvar.' });
       } else {
@@ -291,8 +279,6 @@ export default function PerfilPage() {
       setMsg({ type: 'error', text: 'Erro de ligação ao carregar ficheiro.' });
     } finally {
       if (type === 'avatar') setUploading(false);
-      else if (type === 'passportBio') setUploadingBio(false);
-      else setUploadingPhoto(false);
     }
   };
 
@@ -335,8 +321,6 @@ export default function PerfilPage() {
           birthDate,
           gender,
           nationality,
-          passportBioPage,
-          passportPhoto,
           educationLevel,
           howHeardAboutUs,
           password: password || undefined

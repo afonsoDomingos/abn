@@ -55,8 +55,6 @@ interface User {
   birthDate?: string;
   gender?: string;
   nationality?: string;
-  passportBioPage?: string;
-  passportPhoto?: string;
   educationLevel?: string;
   howHeardAboutUs?: string;
   department?: string;
@@ -78,15 +76,11 @@ export default function ColaboradorPerfil() {
   const [birthDate, setBirthDate] = useState('');
   const [gender, setGender] = useState('');
   const [nationality, setNationality] = useState('');
-  const [passportBioPage, setPassportBioPage] = useState('');
-  const [passportPhoto, setPassportPhoto] = useState('');
   const [educationLevel, setEducationLevel] = useState('');
   const [howHeardAboutUs, setHowHeardAboutUs] = useState('');
   const [department, setDepartment] = useState('');
 
   const [uploading, setUploading] = useState(false);
-  const [uploadingBio, setUploadingBio] = useState(false);
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState({ type: '', text: '' });
@@ -111,8 +105,6 @@ export default function ColaboradorPerfil() {
           setBirthDate(u.birthDate || '');
           setGender(u.gender || '');
           setNationality(u.nationality || '');
-          setPassportBioPage(u.passportBioPage || '');
-          setPassportPhoto(u.passportPhoto || '');
           setEducationLevel(u.educationLevel || '');
           setHowHeardAboutUs(u.howHeardAboutUs || '');
           setDepartment(u.department || '');
@@ -132,13 +124,11 @@ export default function ColaboradorPerfil() {
       });
   }, []);
 
-  const handleFileUpload = async (file: File, type: 'avatar' | 'passportBio' | 'passportPhoto') => {
+  const handleFileUpload = async (file: File, type: 'avatar') => {
     const formData = new FormData();
     formData.append('file', file);
 
     if (type === 'avatar') setUploading(true);
-    else if (type === 'passportBio') setUploadingBio(true);
-    else setUploadingPhoto(true);
 
     try {
       const res = await fetch('/api/upload', {
@@ -148,8 +138,6 @@ export default function ColaboradorPerfil() {
       const data = await res.json();
       if (data.success && data.url) {
         if (type === 'avatar') setProfileImage(data.url);
-        else if (type === 'passportBio') setPassportBioPage(data.url);
-        else setPassportPhoto(data.url);
         
         setMsg({ type: 'success', text: 'Ficheiro carregado com sucesso! Clique em Guardar Alterações para salvar.' });
       } else {
@@ -159,8 +147,6 @@ export default function ColaboradorPerfil() {
       setMsg({ type: 'error', text: 'Erro de ligação ao carregar ficheiro.' });
     } finally {
       if (type === 'avatar') setUploading(false);
-      else if (type === 'passportBio') setUploadingBio(false);
-      else setUploadingPhoto(false);
     }
   };
 
@@ -190,8 +176,6 @@ export default function ColaboradorPerfil() {
           birthDate,
           gender,
           nationality,
-          passportBioPage,
-          passportPhoto,
           educationLevel,
           howHeardAboutUs,
           department,
@@ -423,70 +407,6 @@ export default function ColaboradorPerfil() {
                 onChange={e => setBio(e.target.value)} 
                 placeholder="Conte-nos brevemente sobre si ou sobre o seu negócio..."
               />
-            </div>
-
-            {/* Documentação */}
-            <h4 style={{ margin: '1.5rem 0 0.5rem 0', color: 'var(--primary)', borderBottom: '1px solid rgba(0,0,0,0.08)', paddingBottom: '0.5rem' }}>
-              📄 Documentos do Passaporte
-            </h4>
-            <div className={styles.grid}>
-              <div className={styles.field}>
-                <label>Página de Dados do Passaporte</label>
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <input 
-                    value={passportBioPage} 
-                    onChange={e => setPassportBioPage(e.target.value)} 
-                    placeholder="URL do ficheiro ou carregue abaixo"
-                    style={{ flex: 1 }}
-                  />
-                  <label style={{ background: '#f5f5f4', border: '1px solid #d6d3d1', padding: '10px 14px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>
-                    {uploadingBio ? '⏳...' : '📁 Subir'}
-                    <input 
-                      type="file" 
-                      accept="image/*,.pdf" 
-                      onChange={e => {
-                        const file = e.target.files?.[0];
-                        if (file) handleFileUpload(file, 'passportBio');
-                      }}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-                </div>
-                {passportBioPage && (
-                  <a href={passportBioPage} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.78rem', color: 'var(--primary)', textDecoration: 'underline', marginTop: '2px' }}>
-                    🔗 Ver documento carregado
-                  </a>
-                )}
-              </div>
-
-              <div className={styles.field}>
-                <label>Fotografia do Passaporte</label>
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <input 
-                    value={passportPhoto} 
-                    onChange={e => setPassportPhoto(e.target.value)} 
-                    placeholder="URL da foto ou carregue abaixo"
-                    style={{ flex: 1 }}
-                  />
-                  <label style={{ background: '#f5f5f4', border: '1px solid #d6d3d1', padding: '10px 14px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>
-                    {uploadingPhoto ? '⏳...' : '📷 Subir'}
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={e => {
-                        const file = e.target.files?.[0];
-                        if (file) handleFileUpload(file, 'passportPhoto');
-                      }}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-                </div>
-                {passportPhoto && (
-                  <a href={passportPhoto} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.78rem', color: 'var(--primary)', textDecoration: 'underline', marginTop: '2px' }}>
-                    📷 Ver foto do passaporte
-                  </a>
-                )}
-              </div>
             </div>
 
             {/* Palavra-passe */}

@@ -63,9 +63,7 @@ const UserSchema = new mongoose.Schema({
     default: 'verificado'
   },
   
-  // Documentos & Formação
-  passportBioPage: { type: String, default: '' }, // URL da página de dados do passaporte
-  passportPhoto: { type: String, default: '' },   // URL da foto do passaporte
+  // Formação
   educationLevel: { type: String, default: '' },  // Nível Máximo de Escolaridade
   howHeardAboutUs: { type: String, default: '' }, // Como ficou a saber sobre a ABN
   // Recuperação de password

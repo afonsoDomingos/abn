@@ -11,7 +11,7 @@ export async function PUT(request: Request) {
     const { 
       id, name, email, password, profileImage, phone, country, city, company, sector, sectors,
       website, linkedin, socialLinks, bio, interests, languages, experience, skills, roles, role,
-      birthDate, gender, nationality, passportBioPage, passportPhoto, educationLevel, howHeardAboutUs 
+      birthDate, gender, nationality, educationLevel, howHeardAboutUs 
     } = body;
     
     const cookieStore = await cookies();
@@ -66,8 +66,6 @@ export async function PUT(request: Request) {
     if (birthDate !== undefined) updateData.birthDate = birthDate;
     if (gender !== undefined) updateData.gender = gender;
     if (nationality !== undefined) updateData.nationality = nationality;
-    if (passportBioPage !== undefined) updateData.passportBioPage = passportBioPage;
-    if (passportPhoto !== undefined) updateData.passportPhoto = passportPhoto;
     if (educationLevel !== undefined) updateData.educationLevel = educationLevel;
     if (howHeardAboutUs !== undefined) updateData.howHeardAboutUs = howHeardAboutUs;
     

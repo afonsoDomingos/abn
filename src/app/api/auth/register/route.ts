@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const { 
       name, email, password, role, roles, phone, country, city, company, sector, sectors, website,
       linkedin, socialLinks, bio, interests, languages, experience, skills, profileImage,
-      birthDate, gender, nationality, passportBioPage, passportPhoto, educationLevel, howHeardAboutUs
+      birthDate, gender, nationality, educationLevel, howHeardAboutUs
     } = await request.json();
 
     if (!name || !email || !password) {
@@ -65,8 +65,6 @@ export async function POST(request: Request) {
       birthDate: birthDate || '',
       gender: gender || '',
       nationality: nationality || '',
-      passportBioPage: passportBioPage || '',
-      passportPhoto: passportPhoto || '',
       educationLevel: educationLevel || '',
       howHeardAboutUs: howHeardAboutUs || '',
     });
