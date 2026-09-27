@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import styles from './EventosPublic.module.css';
 
 interface EventItem {
@@ -8,11 +9,18 @@ interface EventItem {
   title: string;
   description: string;
   date: string;
+  endDate?: string;
   location: string;
   type: 'upcoming' | 'past';
   category: 'Conferência' | 'Feira' | 'Missão Empresarial' | 'Summit ABN' | 'Outro';
   imageUrl?: string;
   link?: string;
+  program?: any[];
+  speakers?: any[];
+  countries?: string[];
+  tickets?: any[];
+  sponsorshipPackages?: any[];
+  sponsors?: any[];
 }
 
 interface EventosClientProps {
@@ -205,9 +213,9 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
                   </div>
 
                   <div className={styles.cardFooter}>
-                    <button className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.85rem' }} onClick={() => setSelectedEvent(ev)}>
+                    <Link href={`/eventos/${encodeURIComponent(ev.title)}`} className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
                       Ver Detalhes
-                    </button>
+                    </Link>
                     {ev.type === 'upcoming' && (
                       <button 
                         className="btn-primary" 

@@ -4,6 +4,7 @@ const EventSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   date: { type: String, required: true },
+  endDate: { type: String, default: '' }, // Data de fim para eventos com múltiplos dias
   location: { type: String, required: true },
   type: { type: String, enum: ['upcoming', 'past'], default: 'upcoming' },
   category: { 
@@ -13,6 +14,58 @@ const EventSchema = new Schema({
   },
   imageUrl: { type: String, default: '' },
   link: { type: String, default: '' },
+  
+  // Programa do evento
+  program: [{ 
+    time: { type: String },
+    title: { type: String },
+    speaker: { type: String },
+    description: { type: String }
+  }],
+  
+  // Oradores/palestrantes
+  speakers: [{
+    name: { type: String, required: true },
+    role: { type: String, default: '' },
+    company: { type: String, default: '' },
+    photo: { type: String, default: '' },
+    bio: { type: String, default: '' }
+  }],
+  
+  // Países participantes
+  countries: [{ type: String }], // Moçambique, Angola, Guiné-Bissau, São Tomé e Príncipe, Cabo Verde
+  
+  // Bilhetes
+  tickets: [{
+    type: { type: String, enum: ['empreendedor', 'empresa'], required: true },
+    name: { type: String, required: true }, // ex: "Bilhete Standard", "VIP Empresarial"
+    price: { type: Number, required: true },
+    currency: { type: String, default: 'MT' },
+    description: { type: String, default: '' },
+    benefits: [{ type: String }],
+    available: { type: Number, default: 0 }, // 0 = ilimitado
+    includes: [{ type: String }] // ex: "Acesso a todas as sessões", "Coffee break", "Material"
+  }],
+  
+  // Pacotes de patrocínio
+  sponsorshipPackages: [{
+    name: { type: String, required: true }, // ex: "Bronze", "Prata", "Ouro"
+    price: { type: Number, required: true },
+    currency: { type: String, default: 'MT' },
+    description: { type: String, default: '' },
+    benefits: [{ type: String }],
+    visibility: [{ type: String }], // ex: "Logo no site", "Banner", "Mesa redonda"
+    includes: [{ type: String }]
+  }],
+  
+  // Patrocinadores (logótipos)
+  sponsors: [{
+    name: { type: String, required: true },
+    logo: { type: String, default: '' },
+    level: { type: String, enum: ['gold', 'silver', 'bronze', 'partner'], default: 'partner' },
+    website: { type: String, default: '' }
+  }],
+  
   createdAt: { type: Date, default: Date.now }
 });
 
