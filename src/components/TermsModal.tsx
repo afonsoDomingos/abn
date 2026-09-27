@@ -128,6 +128,7 @@ export default function TermsModal({ isOpen, onClose, onAccept }: TermsModalProp
             display: flex;
             flex-direction: column;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin: auto;
           }
 
           .terms-modal-header {
