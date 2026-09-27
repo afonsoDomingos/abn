@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ShoppingBag, Globe } from 'lucide-react';
 import styles from './Navbar.module.css';
@@ -14,6 +14,49 @@ export default function Navbar() {
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [shopEnabled, setShopEnabled] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('Moçambique');
+  
+  // Scroll functionality
+  const linksRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScrollability = () => {
+    const container = linksRef.current;
+    if (!container) return;
+
+    setCanScrollLeft(container.scrollLeft > 0);
+    setCanScrollRight(
+      container.scrollLeft < container.scrollWidth - container.clientWidth
+    );
+  };
+
+  useEffect(() => {
+    const container = linksRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      checkScrollability();
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      checkScrollability();
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleWheel = (e: React.WheelEvent) => {
+    if (linksRef.current) {
+      e.preventDefault();
+      linksRef.current.scrollLeft += e.deltaY;
+    }
+  };
 
   // Check user session on mount
   useEffect(() => {
@@ -95,7 +138,11 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <div className={styles.links}>
+          <div 
+            ref={linksRef}
+            className={`${styles.links} ${canScrollLeft ? styles.canScrollLeft : ''} ${canScrollRight ? styles.canScrollRight : ''}`}
+            onWheel={handleWheel}
+          >
             <Link href="/">Início</Link>
 
             {/* Programas Dropdown */}

@@ -68,6 +68,49 @@
   display: flex;
   gap: 2rem;
   white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  max-width: 100%;
+}
+
+.links::-webkit-scrollbar {
+  display: none;
+}
+
+/* Scroll indicators - fade effect */
+.navbar .links::before,
+.navbar .links::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.navbar .links::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 1), transparent);
+}
+
+.navbar .links::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 1), transparent);
+}
+
+.navbar .links.can-scroll-left::before {
+  opacity: 1;
+}
+
+.navbar .links.can-scroll-right::after {
+  opacity: 1;
 }
 
 .links a {
