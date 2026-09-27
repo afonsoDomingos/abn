@@ -15,7 +15,21 @@ import {
   Trash2,
   ExternalLink,
   Tag,
-  AlertCircle
+  AlertCircle,
+  Users,
+  DollarSign,
+  Settings,
+  FileText,
+  Globe,
+  Shield,
+  Star,
+  TrendingUp,
+  CreditCard,
+  Package,
+  Layers,
+  Ban,
+  Unlock,
+  Lock
 } from 'lucide-react';
 import styles from './Loja.module.css';
 
@@ -52,10 +66,49 @@ interface Submission {
   approvalNotes: string;
 }
 
+interface Seller {
+  _id: string;
+  businessName: string;
+  category: string;
+  ownerName: string;
+  ownerEmail: string;
+  ownerPhone: string;
+  status: 'ativo' | 'pendente' | 'suspenso' | 'bloqueado';
+  verified: boolean;
+  country: string;
+  createdAt: string;
+}
+
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+  description: string;
+  active: boolean;
+  order: number;
+}
+
+interface Order {
+  _id: string;
+  orderNumber: string;
+  buyerName: string;
+  buyerEmail: string;
+  sellerName: string;
+  productName: string;
+  total: number;
+  status: 'pendente' | 'processando' | 'enviado' | 'concluido' | 'cancelado';
+  paymentMethod: string;
+  paymentStatus: 'pendente' | 'pago' | 'falhou';
+  createdAt: string;
+}
+
 export default function AdminLojaPage() {
-  const [activeTab, setActiveTab] = useState<'produtos' | 'moderacao'>('moderacao');
+  const [activeTab, setActiveTab] = useState<'moderacao' | 'produtos' | 'vendedores' | 'categorias' | 'pedidos' | 'destaques' | 'configuracoes'>('moderacao');
   const [products, setProducts] = useState<Product[]>([]);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [sellers, setSellers] = useState<Seller[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -79,6 +132,9 @@ export default function AdminLojaPage() {
   useEffect(() => {
     fetchProducts();
     fetchSubmissions();
+    fetchSellers();
+    fetchCategories();
+    fetchOrders();
   }, []);
 
   const fetchProducts = () => {
@@ -104,11 +160,84 @@ export default function AdminLojaPage() {
       .catch(err => console.error(err));
   };
 
+  const fetchSellers = () => {
+    // Mock data for now - will need API endpoint
+    setSellers([
+      {
+        _id: '1',
+        businessName: 'Tech Solutions Lda',
+        category: 'Tecnologia',
+        ownerName: 'João Silva',
+        ownerEmail: 'joao@techsolutions.com',
+        ownerPhone: '+258 84 123 4567',
+        status: 'ativo',
+        verified: true,
+        country: 'Moçambique',
+        createdAt: '2026-01-15'
+      },
+      {
+        _id: '2',
+        businessName: 'Fashion Style',
+        category: 'Moda',
+        ownerName: 'Maria Santos',
+        ownerEmail: 'maria@fashionstyle.com',
+        ownerPhone: '+258 84 987 6543',
+        status: 'pendente',
+        verified: false,
+        country: 'Angola',
+        createdAt: '2026-02-01'
+      }
+    ]);
+  };
+
+  const fetchCategories = () => {
+    // Mock data for now - will need API endpoint
+    setCategories([
+      { _id: '1', name: 'Formações', slug: 'formacoes', description: 'Cursos e workshops', active: true, order: 1 },
+      { _id: '2', name: 'Serviços', slug: 'servicos', description: 'Serviços profissionais', active: true, order: 2 },
+      { _id: '3', name: 'Produtos', slug: 'produtos', description: 'Produtos físicos e digitais', active: true, order: 3 },
+      { _id: '4', name: 'Eventos', slug: 'eventos', description: 'Eventos e conferências', active: true, order: 4 },
+      { _id: '5', name: 'Programas ABN', slug: 'programas', description: 'Programas oficiais ABN', active: true, order: 5 }
+    ]);
+  };
+
+  const fetchOrders = () => {
+    // Mock data for now - will need API endpoint
+    setOrders([
+      {
+        _id: '1',
+        orderNumber: 'ORD-2026-001',
+        buyerName: 'Pedro Costa',
+        buyerEmail: 'pedro@email.com',
+        sellerName: 'Tech Solutions Lda',
+        productName: 'Curso de Marketing Digital',
+        total: 15000,
+        status: 'concluido',
+        paymentMethod: 'M-Pesa',
+        paymentStatus: 'pago',
+        createdAt: '2026-03-01'
+      },
+      {
+        _id: '2',
+        orderNumber: 'ORD-2026-002',
+        buyerName: 'Ana Ferreira',
+        buyerEmail: 'ana@email.com',
+        sellerName: 'Fashion Style',
+        productName: 'Vestido Elegante',
+        total: 3500,
+        status: 'pendente',
+        paymentMethod: 'e-Mola',
+        paymentStatus: 'pendente',
+        createdAt: '2026-03-05'
+      }
+    ]);
+  };
+
   const handleModerate = async (businessId: string, itemId: string, action: 'aprovar' | 'rejeitar') => {
     let notes = '';
     if (action === 'rejeitar') {
       const inputNotes = prompt('Motivo da rejeição (opcional):');
-      if (inputNotes === null) return; // cancelou
+      if (inputNotes === null) return;
       notes = inputNotes;
     }
 
@@ -121,7 +250,7 @@ export default function AdminLojaPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setMsg(` Produto ${action === 'aprovar' ? 'aprovado e publicado na loja' : 'rejeitado'}!`);
+        setMsg(`Produto ${action === 'aprovar' ? 'aprovado e publicado na loja' : 'rejeitado'}!`);
         setTimeout(() => setMsg(''), 4000);
         fetchSubmissions();
         fetchProducts();
@@ -222,7 +351,7 @@ export default function AdminLojaPage() {
       const data = await res.json();
 
       if (data.success) {
-        setMsg(editingId ? ' Produto atualizado!' : ' Produto criado!');
+        setMsg(editingId ? 'Produto actualizado!' : 'Produto criado!');
         setTimeout(() => setMsg(''), 3000);
         setShowForm(false);
         fetchProducts();
@@ -247,7 +376,7 @@ export default function AdminLojaPage() {
       const data = await res.json();
       if (data.success) {
         setProducts(prev => prev.filter(p => p._id !== id));
-        setMsg(' Produto removido com sucesso!');
+        setMsg('Produto removido com sucesso!');
         setTimeout(() => setMsg(''), 3000);
       } else {
         alert(data.error || 'Erro ao remover produto.');
@@ -259,6 +388,16 @@ export default function AdminLojaPage() {
 
   const pendingSubmissions = submissions.filter(s => s.storeApproval === 'pendente');
 
+  const tabs = [
+    { id: 'moderacao' as const, label: 'Moderação', icon: Clock, count: pendingSubmissions.length },
+    { id: 'produtos' as const, label: 'Produtos', icon: ShoppingBag, count: products.length },
+    { id: 'vendedores' as const, label: 'Vendedores', icon: Users, count: sellers.length },
+    { id: 'categorias' as const, label: 'Categorias', icon: Tag, count: categories.length },
+    { id: 'pedidos' as const, label: 'Pedidos', icon: Package, count: orders.length },
+    { id: 'destaques' as const, label: 'Destaques', icon: Star, count: 0 },
+    { id: 'configuracoes' as const, label: 'Configurações', icon: Settings, count: 0 },
+  ];
+
   return (
     <div className={styles.page}>
       {/* Cabeçalho */}
@@ -266,71 +405,66 @@ export default function AdminLojaPage() {
         <div>
           <h1 className="text-gradient-gold">Gestão da Loja ABN</h1>
           <p className={styles.subtitle}>
-            {products.length} produtos registados · {pendingSubmissions.length} submissões aguardando moderação
+            {products.length} produtos · {sellers.length} vendedores · {orders.length} pedidos · {pendingSubmissions.length} submissões pendentes
           </p>
         </div>
-        <button 
-          className={`btn-primary ${styles.addBtn}`} 
-          onClick={() => {
-            setActiveTab('produtos');
-            showForm ? setShowForm(false) : handleCreateClick();
-          }}
-        >
-          {showForm ? ' Cancelar' : '+ Novo Produto Direto'}
-        </button>
+        {activeTab === 'produtos' && (
+          <button 
+            className={`btn-primary ${styles.addBtn}`} 
+            onClick={() => {
+              showForm ? setShowForm(false) : handleCreateClick();
+            }}
+          >
+            {showForm ? 'Cancelar' : '+ Novo Produto'}
+          </button>
+        )}
       </div>
 
       {msg && <div className={styles.successMsg}>{msg}</div>}
 
-      {/* Abas Superiores de Gestão */}
-      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
-        <button
-          onClick={() => setActiveTab('moderacao')}
-          style={{
-            background: activeTab === 'moderacao' ? '#de9b35' : 'rgba(255,255,255,0.06)',
-            color: activeTab === 'moderacao' ? '#111418' : '#ffffff',
-            border: 'none',
-            padding: '10px 18px',
-            borderRadius: '10px',
-            fontWeight: 700,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            fontSize: '0.9rem'
-          }}
-        >
-          <Clock size={16} />
-          Moderação de Empreendedores
-          {pendingSubmissions.length > 0 && (
-            <span style={{ background: '#ef4444', color: '#fff', fontSize: '0.72rem', padding: '2px 7px', borderRadius: '999px', fontWeight: 900 }}>
-              {pendingSubmissions.length}
-            </span>
-          )}
-        </button>
-
-        <button
-          onClick={() => setActiveTab('produtos')}
-          style={{
-            background: activeTab === 'produtos' ? '#de9b35' : 'rgba(255,255,255,0.06)',
-            color: activeTab === 'produtos' ? '#111418' : '#ffffff',
-            border: 'none',
-            padding: '10px 18px',
-            borderRadius: '10px',
-            fontWeight: 700,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            fontSize: '0.9rem'
-          }}
-        >
-          <ShoppingBag size={16} />
-          Produtos na Loja ({products.length})
-        </button>
+      {/* Abas de Navegação */}
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+        {tabs.map(tab => {
+          const Icon = tab.icon;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              style={{
+                background: activeTab === tab.id ? '#de9b35' : 'rgba(255,255,255,0.06)',
+                color: activeTab === tab.id ? '#111418' : '#ffffff',
+                border: 'none',
+                padding: '10px 16px',
+                borderRadius: '10px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '0.85rem',
+                transition: 'all 0.2s'
+              }}
+            >
+              <Icon size={16} />
+              {tab.label}
+              {tab.count > 0 && (
+                <span style={{ 
+                  background: activeTab === tab.id ? 'rgba(0,0,0,0.2)' : '#de9b35', 
+                  color: activeTab === tab.id ? '#ffffff' : '#111418',
+                  fontSize: '0.72rem', 
+                  padding: '2px 7px', 
+                  borderRadius: '999px', 
+                  fontWeight: 900 
+                }}>
+                  {tab.count}
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
-      {/* ABA 1: MODERAÇÃO DE PRODUTOS DE EMPREENDEDORES */}
+      {/* ABA: MODERAÇÃO */}
       {activeTab === 'moderacao' && (
         <div>
           <div style={{ marginBottom: '1.5rem' }}>
@@ -477,7 +611,7 @@ export default function AdminLojaPage() {
         </div>
       )}
 
-      {/* ABA 2: PRODUTOS OFICIAIS E CADASTRO DIRETO */}
+      {/* ABA: PRODUTOS */}
       {activeTab === 'produtos' && (
         <div>
           {showForm && (
@@ -577,7 +711,7 @@ export default function AdminLojaPage() {
                       style={{ flex: 1 }}
                     />
                     <label style={{ cursor: 'pointer', padding: '10px 14px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontSize: '0.9rem' }}>
-                      {uploadingImage ? '...' : ' Subir Imagem'}
+                      {uploadingImage ? '...' : 'Subir Imagem'}
                       <input
                         type="file"
                         accept="image/*"
@@ -655,16 +789,312 @@ export default function AdminLojaPage() {
                   </div>
                   <div className={styles.cardActions}>
                     <button className={styles.editBtn} onClick={() => handleEditClick(product)}>
-                       Editar
+                      Editar
                     </button>
                     <button className={styles.deleteBtn} onClick={() => handleDelete(product._id)}>
-                       Remover
+                      Remover
                     </button>
                   </div>
                 </div>
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* ABA: VENDEDORES */}
+      {activeTab === 'vendedores' && (
+        <div>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'Outfit', margin: '0 0 6px' }}>
+              Gestão de Vendedores
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+              Liste, crie, edite, verifique, suspenda, active e encerre contas de vendedores.
+            </p>
+          </div>
+
+          <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', overflow: 'hidden' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ background: 'rgba(255,255,255,0.08)' }}>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Vendedor</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Categoria</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>País</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Estado</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Verificado</th>
+                  <th style={{ padding: '14px', textAlign: 'right', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sellers.map(seller => (
+                  <tr key={seller._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                    <td style={{ padding: '14px' }}>
+                      <div style={{ fontWeight: 700, color: '#ffffff' }}>{seller.businessName}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>{seller.ownerName}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>{seller.ownerEmail}</div>
+                    </td>
+                    <td style={{ padding: '14px', color: 'rgba(255,255,255,0.8)' }}>{seller.category}</td>
+                    <td style={{ padding: '14px', color: 'rgba(255,255,255,0.8)' }}>{seller.country}</td>
+                    <td style={{ padding: '14px' }}>
+                      <span style={{
+                        padding: '4px 10px',
+                        borderRadius: '8px',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        background: seller.status === 'ativo' ? '#22c55e' : seller.status === 'pendente' ? '#f59e0b' : seller.status === 'suspenso' ? '#f97316' : '#ef4444',
+                        color: '#ffffff'
+                      }}>
+                        {seller.status}
+                      </span>
+                    </td>
+                    <td style={{ padding: '14px' }}>
+                      {seller.verified ? (
+                        <Shield size={18} style={{ color: '#22c55e' }} />
+                      ) : (
+                        <Shield size={18} style={{ color: 'rgba(255,255,255,0.3)' }} />
+                      )}
+                    </td>
+                    <td style={{ padding: '14px', textAlign: 'right' }}>
+                      <button style={{ padding: '6px 12px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '6px', color: '#ffffff', fontSize: '0.8rem', cursor: 'pointer', marginRight: '4px' }}>
+                        Editar
+                      </button>
+                      <button style={{ padding: '6px 12px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '6px', color: '#ffffff', fontSize: '0.8rem', cursor: 'pointer' }}>
+                        Detalhes
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ABA: CATEGORIAS */}
+      {activeTab === 'categorias' && (
+        <div>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'Outfit', margin: '0 0 6px' }}>
+              Gestão de Categorias
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+              Crie, edite, remova, active/desactive e ordene categorias de produtos.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            {categories.map(category => (
+              <div key={category._id} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                  <Tag size={24} style={{ color: '#de9b35' }} />
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button style={{ padding: '6px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '6px', color: '#ffffff', cursor: 'pointer' }}>
+                      <Edit3 size={14} />
+                    </button>
+                    <button style={{ padding: '6px', background: 'rgba(239, 68, 68, 0.2)', border: 'none', borderRadius: '6px', color: '#ef4444', cursor: 'pointer' }}>
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </div>
+                <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>{category.name}</h3>
+                <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>{category.description}</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>
+                  <span>Slug: {category.slug}</span>
+                  <span style={{ color: category.active ? '#22c55e' : '#ef4444' }}>
+                    {category.active ? 'Activo' : 'Inactivo'}
+                  </span>
+                </div>
+              </div>
+            ))}
+            <button style={{ background: 'rgba(222, 155, 53, 0.2)', border: '2px dashed #de9b35', borderRadius: '16px', padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#de9b35', cursor: 'pointer', minHeight: '200px' }}>
+              <Plus size={32} style={{ marginBottom: '0.5rem' }} />
+              <span style={{ fontWeight: 700 }}>Nova Categoria</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ABA: PEDIDOS */}
+      {activeTab === 'pedidos' && (
+        <div>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'Outfit', margin: '0 0 6px' }}>
+              Gestão de Pedidos
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+              Consulte, filtre, veja o estado, verifique vendedor/comprador, valor, comissão e repasse.
+            </p>
+          </div>
+
+          <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', overflow: 'hidden' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ background: 'rgba(255,255,255,0.08)' }}>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Pedido</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Comprador</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Vendedor</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Produto</th>
+                  <th style={{ padding: '14px', textAlign: 'right', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Total</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Estado</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Pagamento</th>
+                  <th style={{ padding: '14px', textAlign: 'right', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map(order => (
+                  <tr key={order._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                    <td style={{ padding: '14px' }}>
+                      <div style={{ fontWeight: 700, color: '#de9b35' }}>{order.orderNumber}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>{order.createdAt}</div>
+                    </td>
+                    <td style={{ padding: '14px' }}>
+                      <div style={{ color: '#ffffff' }}>{order.buyerName}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>{order.buyerEmail}</div>
+                    </td>
+                    <td style={{ padding: '14px', color: 'rgba(255,255,255,0.8)' }}>{order.sellerName}</td>
+                    <td style={{ padding: '14px', color: 'rgba(255,255,255,0.8)' }}>{order.productName}</td>
+                    <td style={{ padding: '14px', textAlign: 'right', fontWeight: 700, color: '#ffffff' }}>{order.total.toLocaleString()} MT</td>
+                    <td style={{ padding: '14px' }}>
+                      <span style={{
+                        padding: '4px 10px',
+                        borderRadius: '8px',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        background: order.status === 'concluido' ? '#22c55e' : order.status === 'pendente' ? '#f59e0b' : order.status === 'cancelado' ? '#ef4444' : '#3b82f6',
+                        color: '#ffffff'
+                      }}>
+                        {order.status}
+                      </span>
+                    </td>
+                    <td style={{ padding: '14px' }}>
+                      <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.8)' }}>{order.paymentMethod}</div>
+                      <span style={{
+                        padding: '2px 8px',
+                        borderRadius: '6px',
+                        fontSize: '0.7rem',
+                        fontWeight: 700,
+                        background: order.paymentStatus === 'pago' ? '#22c55e' : '#f59e0b',
+                        color: '#ffffff'
+                      }}>
+                        {order.paymentStatus}
+                      </span>
+                    </td>
+                    <td style={{ padding: '14px', textAlign: 'right' }}>
+                      <button style={{ padding: '6px 12px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '6px', color: '#ffffff', fontSize: '0.8rem', cursor: 'pointer' }}>
+                        Detalhes
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ABA: DESTAQUES */}
+      {activeTab === 'destaques' && (
+        <div>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'Outfit', margin: '0 0 6px' }}>
+              Gestão de Destaques Pagos
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+              Gerir planos de destaque e ver destaques activos e expirados.
+            </p>
+          </div>
+
+          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.15)', borderRadius: '20px', padding: '4rem 2rem', textAlign: 'center' }}>
+            <Star size={44} style={{ color: '#de9b35', margin: '0 auto 1rem' }} />
+            <h3 style={{ color: '#ffffff', marginBottom: '0.5rem' }}>Gestão de Destaques</h3>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>Esta funcionalidade permite configurar planos de destaque pago para aumentar a visibilidade dos produtos na Loja.</p>
+            <button style={{ marginTop: '1.5rem', padding: '12px 24px', background: '#de9b35', border: 'none', borderRadius: '10px', color: '#111418', fontWeight: 700, cursor: 'pointer' }}>
+              Configurar Planos de Destaque
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ABA: CONFIGURAÇÕES */}
+      {activeTab === 'configuracoes' && (
+        <div>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'Outfit', margin: '0 0 6px' }}>
+              Configurações da Loja
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+              Gestão de comissões, tabela de preços, Termos e Condições, FAQ e estado das lojas.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+              <DollarSign size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
+              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Comissões</h3>
+              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+                Defina regras de comissão por categoria e plano.
+              </p>
+              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+                Configurar
+              </button>
+            </div>
+
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+              <TrendingUp size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
+              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Tabela de Preços</h3>
+              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+                Configure preços usados na Loja.
+              </p>
+              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+                Configurar
+              </button>
+            </div>
+
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+              <FileText size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
+              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Termos e Condições</h3>
+              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+                Edite/actualize os Termos da Loja e mantenha histórico.
+              </p>
+              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+                Editar
+              </button>
+            </div>
+
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+              <AlertCircle size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
+              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>FAQ da Loja</h3>
+              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+                Crie perguntas, edite respostas, active/desactive e ordene.
+              </p>
+              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+                Gerir FAQ
+              </button>
+            </div>
+
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+              <Store size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
+              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Estado das Lojas</h3>
+              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+                Active, suspenda, bloqueie ou encerre lojas.
+              </p>
+              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+                Gerir Estados
+              </button>
+            </div>
+
+            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+              <Layers size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
+              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Planos</h3>
+              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+                Crie, edite, defina preço, duração e benefícios.
+              </p>
+              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+                Gerir Planos
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
