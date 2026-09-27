@@ -35,13 +35,22 @@ export default function Footer({ shopEnabled = false }: FooterProps) {
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <p style={{ margin: 0 }}>
-              <strong>Afrobiz Network ABN, SU, Lda</strong>
+              <strong>AFROBIZ NETWORK ABN, SU, LDA</strong>
             </p>
             <p style={{ margin: 0 }}>
-              N.º único de entidade legal: 105074664
+              Sociedade Unipessoal, Limitada
             </p>
             <p style={{ margin: 0 }}>
               NUIT: 402200456
+            </p>
+            <p style={{ margin: 0 }}>
+              N.º da entidade legal: 105074664
+            </p>
+            <p style={{ margin: 0 }}>
+              Data de constituição: 02 de Junho de 2026
+            </p>
+            <p style={{ margin: 0 }}>
+              Administrador: Culpa Francisco Xavier Lissamo
             </p>
             <p style={{ margin: 0, marginTop: '0.75rem' }}>
               Av. Maria de Lurdes Mutola, Q.60, casa n.º 01,<br />
@@ -62,6 +71,11 @@ export default function Footer({ shopEnabled = false }: FooterProps) {
             Contactos
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <p style={{ margin: 0 }}>
+              <a href="https://www.abnafrobiznetwork.com/loja" target="_blank" rel="noopener noreferrer" style={{ color: '#de9b35', textDecoration: 'none' }}>
+                www.abnafrobiznetwork.com/loja
+              </a>
+            </p>
             <p style={{ margin: 0 }}>
               <a href="mailto:info@abnafrobiznetwork.com" style={{ color: '#de9b35', textDecoration: 'none' }}>
                 info@abnafrobiznetwork.com
@@ -111,6 +125,9 @@ export default function Footer({ shopEnabled = false }: FooterProps) {
             </Link>
             <Link href="/privacidade" style={{ color: '#94a3b8', textDecoration: 'none' }}>
               Política de Privacidade
+            </Link>
+            <Link href="/loja/termos" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+              Termos da Loja
             </Link>
           </div>
         </div>

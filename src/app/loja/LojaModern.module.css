@@ -236,6 +236,62 @@
 }
 
 /* =========================================
+   1.5 SEÇÃO FILTRO POR PAÍS
+========================================= */
+.sectionCountry {
+  padding: 2rem 0;
+  background: #ffffff;
+  border-radius: 20px;
+  margin-top: 1.5rem;
+}
+
+.countryGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.75rem;
+}
+
+.countryCard {
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.75rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.countryCard:hover {
+  border-color: #de9b35;
+  background: #fffbeb;
+  transform: translateY(-1px);
+}
+
+.countryCardActive {
+  border-color: #de9b35;
+  background: linear-gradient(135deg, #de9b35 0%, #f5c76e 100%);
+  color: #111827;
+}
+
+.countryFlag {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.countryName {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #374151;
+}
+
+.countryCardActive .countryName {
+  color: #111827;
+}
+
+/* =========================================
    2. SEÇÃO DESTAQUES
 ========================================= */
 .sectionFeatured {
@@ -622,6 +678,98 @@
     grid-template-columns: 1fr;
   }
   .productsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* FAQ SECTION */
+.faqSection {
+  padding: 4rem 0;
+  background: #ffffff;
+  border-radius: 20px;
+  margin-top: 3rem;
+}
+
+.faqHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.faqHeader h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 0.5rem;
+}
+
+.faqHeader p {
+  color: #6b7280;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.faqCard {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.faqCard:hover {
+  border-color: #de9b35;
+  box-shadow: 0 4px 12px rgba(222, 155, 53, 0.1);
+}
+
+.faqQuestion {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.75rem;
+}
+
+.faqAnswer {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #4b5563;
+  margin: 0;
+}
+
+.termsLink {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.termsBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #de9b35 0%, #f5c76e 100%);
+  color: #111827;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.termsBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(222, 155, 53, 0.3);
+}
+
+@media (max-width: 768px) {
+  .faqGrid {
     grid-template-columns: 1fr;
   }
 }

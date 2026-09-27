@@ -94,8 +94,8 @@ export default function VenderNaABN() {
               <span className={styles.statLabel}>Controlo Total dos Seus Preços</span>
             </div>
             <div className={styles.statItem}>
-              <span className={styles.statValue}>54</span>
-              <span className={styles.statLabel}>Países e Delegações em Expansão</span>
+              <span className={styles.statValue}>5</span>
+              <span className={styles.statLabel}>Países com Representações</span>
             </div>
           </div>
         </div>
@@ -216,6 +216,13 @@ export default function VenderNaABN() {
               <h4 className={styles.faqQuestion}>Como controlo os meus pedidos?</h4>
               <p className={styles.faqAnswer}>
                 Tem acesso a um painel de controlo dedicado onde vê os novos pedidos, dados de contacto dos compradores e histórico de vendas.
+              </p>
+            </div>
+
+            <div className={styles.faqCard}>
+              <h4 className={styles.faqQuestion}>Quanto custa vender na ABN?</h4>
+              <p className={styles.faqAnswer}>
+                Abrir uma loja na ABN é gratuito. O Vendedor define os preços dos seus produtos ou serviços e, sobre cada Pedido concluído, é aplicada uma comissão de acordo com o plano e a categoria do Item, conforme a Tabela de Preços em vigor. Também poderão existir serviços opcionais de visibilidade e destaque pago, destinados a aumentar a exposição dos produtos ou serviços dentro da Loja.
               </p>
             </div>
           </div>

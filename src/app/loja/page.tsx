@@ -44,6 +44,16 @@ const STORE_CATEGORIES = [
   { id: 'Programas ABN', name: 'Programas ABN', icon: Users },
 ];
 
+// Países disponíveis para filtro
+const STORE_COUNTRIES = [
+  { id: 'Todos', name: 'Todos os Países', flag: '🌍' },
+  { id: 'Moçambique', name: 'Moçambique', flag: '🇲🇴' },
+  { id: 'Angola', name: 'Angola', flag: '🇦🇴' },
+  { id: 'Guiné-Bissau', name: 'Guiné-Bissau', flag: '🇬🇼' },
+  { id: 'São Tomé e Príncipe', name: 'São Tomé e Príncipe', flag: '🇸🇹' },
+  { id: 'Cabo Verde', name: 'Cabo Verde', flag: '🇨🇻' },
+];
+
 // Destaques oficiais de referência exibidos quando nenhuma categoria estiver selecionada
 const DEFAULT_FEATURED: ProductItem[] = [
   {
@@ -109,6 +119,7 @@ export default function Loja() {
   const [events, setEvents] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState(() => {
     // Initialise from ?q= URL param (server-side safe fallback: '')
     if (typeof window !== 'undefined') {
@@ -180,7 +191,7 @@ export default function Loja() {
           image: s.consultantAvatar,
           tag: s.consultantName || 'Especialista ABN',
           actionText: 'Contratar',
-          actionHref: `/marketplace`
+          actionHref: `/loja`
         })));
       }
 
@@ -209,6 +220,14 @@ export default function Loja() {
       setSelectedCategory(null); // Desmarcar para ver destaques gerais
     } else {
       setSelectedCategory(categoryId);
+    }
+  };
+
+  const handleCountryClick = (countryId: string) => {
+    if (selectedCountry === countryId) {
+      setSelectedCountry(null); // Desmarcar para ver todos
+    } else {
+      setSelectedCountry(countryId);
     }
   };
 
@@ -296,7 +315,14 @@ export default function Loja() {
       }
     }
 
-    // 2. Filtro por Barra de Pesquisa
+    // 2. Filtro por País (só para itens que têm sellerCountry)
+    let matchesCountry = true;
+    if (selectedCountry && selectedCountry !== 'Todos') {
+      const itemCountry = (item as any).sellerCountry || 'Moçambique';
+      matchesCountry = itemCountry === selectedCountry;
+    }
+
+    // 3. Filtro por Barra de Pesquisa
     let matchesSearch = true;
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
@@ -306,7 +332,7 @@ export default function Loja() {
                       (item.tag || '').toLowerCase().includes(query);
     }
 
-    return matchesCat && matchesSearch;
+    return matchesCat && matchesCountry && matchesSearch;
   });
 
   return (
@@ -394,6 +420,27 @@ export default function Loja() {
           </div>
         </section>
 
+        {/* 1.5 SEÇÃO FILTRO POR PAÍS */}
+        <section className={styles.sectionCountry}>
+          <h2 className={styles.sectionTitle}>Filtrar por país do vendedor</h2>
+          <div className={styles.countryGrid}>
+            {STORE_COUNTRIES.map(country => {
+              const isActive = selectedCountry === country.id;
+              return (
+                <button
+                  key={country.id}
+                  className={`${styles.countryCard} ${isActive ? styles.countryCardActive : ''}`}
+                  onClick={() => handleCountryClick(country.id)}
+                  title={`Filtrar por ${country.name}`}
+                >
+                  <span className={styles.countryFlag}>{country.flag}</span>
+                  <span className={styles.countryName}>{country.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
         {/* 2. SEÇÃO EM DESTAQUE ESTA SEMANA */}
         <section id="produtos-lista" className={styles.sectionFeatured}>
           <div className={styles.featuredHeader}>
@@ -405,22 +452,22 @@ export default function Loja() {
                   ? `Explorando: ${selectedCategory} (${filteredItems.length})` 
                   : 'Em destaque esta semana'}
               </h2>
-              {(searchQuery || selectedCategory) && (
+              {(searchQuery || selectedCategory || selectedCountry) && (
                 <button
                   type="button"
                   className={styles.clearSearchBtn}
-                  onClick={() => { setSearchQuery(''); setSelectedCategory(null); }}
+                  onClick={() => { setSearchQuery(''); setSelectedCategory(null); setSelectedCountry(null); }}
                 >
                   ✕ Limpar filtro
                 </button>
               )}
             </div>
-            <Link 
-              href={selectedCategory ? `/marketplace?cat=${encodeURIComponent(selectedCategory)}` : '/marketplace'} 
+            <button
+              onClick={() => { setSearchQuery(''); setSelectedCategory(null); }}
               className={styles.seeAllLink}
             >
               Ver tudo <ArrowRight size={14} />
-            </Link>
+            </button>
           </div>
 
           {loading ? (
@@ -553,6 +600,45 @@ export default function Loja() {
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* 4. FAQ DA LOJA */}
+        <section className={styles.faqSection}>
+          <div className={styles.faqHeader}>
+            <h2 className={styles.sectionTitle}>Perguntas Frequentes</h2>
+            <p className={styles.sectionDesc}>Dúvidas sobre a Loja Digital ABN</p>
+          </div>
+          <div className={styles.faqGrid}>
+            <div className={styles.faqCard}>
+              <h3 className={styles.faqQuestion}>Quanto custa vender na ABN?</h3>
+              <p className={styles.faqAnswer}>
+                Abrir uma loja na ABN é gratuito. O Vendedor define os preços dos seus produtos ou serviços e, sobre cada Pedido concluído, é aplicada uma comissão de acordo com o plano e a categoria do Item, conforme a Tabela de Preços em vigor. Também poderão existir serviços opcionais de visibilidade e destaque pago, destinados a aumentar a exposição dos produtos ou serviços dentro da Loja.
+              </p>
+            </div>
+            <div className={styles.faqCard}>
+              <h3 className={styles.faqQuestion}>Como funcionam os pagamentos?</h3>
+              <p className={styles.faqAnswer}>
+                Os pagamentos são processados através de M-Pesa, e-Mola, transferência bancária e outros meios disponíveis. A ABN retém o valor até à confirmação da entrega e transfere ao vendedor deduzida a comissão.
+              </p>
+            </div>
+            <div className={styles.faqCard}>
+              <h3 className={styles.faqQuestion}>Posso devolver um produto?</h3>
+              <p className={styles.faqAnswer}>
+                Sim, tem direito de desistência de 7 dias após receber o produto. Produtos digitais já descarregados ou serviços já iniciados não são elegíveis para devolução.
+              </p>
+            </div>
+            <div className={styles.faqCard}>
+              <h3 className={styles.faqQuestion}>A ABN é vendedora dos produtos?</h3>
+              <p className={styles.faqAnswer}>
+                Não. A ABN actua como intermediária. O contrato de compra e venda é celebrado directamente entre o Vendedor e o Comprador, salvo quando a própria ABN é a vendedora.
+              </p>
+            </div>
+          </div>
+          <div className={styles.termsLink}>
+            <Link href="/loja/termos" className={styles.termsBtn}>
+              Ver Termos e Condições da Loja
+            </Link>
           </div>
         </section>
       </div>

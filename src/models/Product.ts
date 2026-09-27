@@ -21,6 +21,7 @@ const ProductSchema = new Schema({
   sellerName: { type: String, default: '' },
   sellerBusiness: { type: String, default: '' },
   sellerWhatsApp: { type: String, default: '' },
+  sellerCountry: { type: String, default: 'Moçambique' }, // País do vendedor
   approvalNotes: { type: String, default: '' },
   reviewedAt: { type: Date },
 
