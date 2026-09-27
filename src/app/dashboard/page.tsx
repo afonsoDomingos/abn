@@ -32,7 +32,10 @@ import {
   Globe,
   Compass,
   Handshake,
-  Landmark
+  Landmark,
+  Settings,
+  User,
+  Edit3
 } from 'lucide-react';
 import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Dashboard.module.css';
@@ -325,6 +328,67 @@ export default function DashboardPage() {
       )}
       
       {/* ─────────────────────────────────────────────────────────────
+         BANNER: COMPLETAR PERFIL (se score < 100)
+      ───────────────────────────────────────────────────────────── */}
+      {score < 100 && (
+        <div style={{
+          background: 'linear-gradient(135deg, #ff6b00 0%, #ea580c 100%)',
+          color: '#ffffff',
+          borderRadius: '16px',
+          padding: '1.25rem 1.75rem',
+          marginBottom: '1.5rem',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '1rem',
+          boxShadow: '0 8px 20px rgba(255, 107, 0, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.2)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              background: 'rgba(255, 255, 255, 0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <User size={22} color="#ffffff" />
+            </div>
+            <div>
+              <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', fontWeight: 800, fontFamily: 'Outfit' }}>
+                Complete o seu Perfil para Maximizar Oportunidades
+              </h3>
+              <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.9)' }}>
+                Perfil {score}% completo. Adicione categorias, detalhes e contactos para ser mais visível na rede.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/dashboard/perfil"
+            style={{
+              background: '#ffffff',
+              color: '#ff6b00',
+              textDecoration: 'none',
+              padding: '0.75rem 1.5rem',
+              borderRadius: '10px',
+              fontWeight: 800,
+              fontSize: '0.9rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+            }}
+          >
+            <Edit3 size={16} />
+            <span>Editar Perfil</span>
+          </Link>
+        </div>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
          BARRA SUPERIOR: BOAS-VINDAS MULTI-PERFIL & SELETOR DE VISÃO
       ───────────────────────────────────────────────────────────── */}
       <div style={{
@@ -357,12 +421,36 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          {/* Badge Perfil Ativo */}
-          <div style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '16px', padding: '0.85rem 1.25rem', textAlign: 'right' }}>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Visão Ativa</div>
-            <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#ff6b00', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end', marginTop: '2px' }}>
-              {currentRoleInfo.title}
+          {/* Badge Perfil Ativo + Botão Editar Perfil */}
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+            <div style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '16px', padding: '0.85rem 1.25rem', textAlign: 'right' }}>
+              <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Visão Ativa</div>
+              <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#ff6b00', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end', marginTop: '2px' }}>
+                {currentRoleInfo.title}
+              </div>
             </div>
+            <Link
+              href="/dashboard/perfil"
+              style={{
+                background: 'rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: '12px',
+                padding: '0.85rem 1.25rem',
+                color: '#ffffff',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '0.85rem',
+                fontWeight: 700,
+                transition: 'all 0.2s ease',
+                cursor: 'pointer'
+              }}
+              title="Editar Perfil e Categorias"
+            >
+              <Edit3 size={18} />
+              <span>Editar Perfil</span>
+            </Link>
           </div>
         </div>
 
