@@ -60,9 +60,7 @@ export default function VenderNaABN() {
           const data = await response.json();
           if (data.userFound) {
             setTermsAccepted(data.accepted);
-            if (!data.accepted) {
-              setTermsModalOpen(true);
-            }
+            // Não abrir modal automaticamente - apenas guardar estado
           }
         }
       } catch (e) {
@@ -288,10 +286,35 @@ export default function VenderNaABN() {
         <div className={styles.finalCta}>
           <h3>Pronto para fazer o seu negócio crescer?</h3>
           <p>Não perca a oportunidade de posicionar a sua marca diante da maior comunidade de negócios.</p>
-          <button onClick={handleCtaClick} className={styles.btnPrimary}>
-            <Store size={20} />
-            {currentUser ? 'Ir para o Painel de Negócios' : 'Começar a Vender Agora'}
-          </button>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button onClick={handleCtaClick} className={styles.btnPrimary}>
+              <Store size={20} />
+              {currentUser ? 'Ir para o Painel de Negócios' : 'Começar a Vender Agora'}
+            </button>
+            {!termsAccepted && (
+              <button 
+                onClick={() => setTermsModalOpen(true)}
+                style={{
+                  background: 'var(--primary)',
+                  color: '#ffffff',
+                  padding: '12px 28px',
+                  border: 'none',
+                  borderRadius: '0px',
+                  fontWeight: 700,
+                  fontSize: '0.85rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                <ShieldCheck size={20} />
+                Aceitar Termos da Loja
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

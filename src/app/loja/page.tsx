@@ -167,9 +167,7 @@ export default function Loja() {
           const data = await response.json();
           if (data.userFound) {
             setTermsAccepted(data.accepted);
-            if (!data.accepted) {
-              setTermsModalOpen(true);
-            }
+            // Não abrir modal automaticamente - apenas guardar estado
           }
         }
       } catch (e) {
@@ -706,6 +704,15 @@ export default function Loja() {
             <Link href="/loja/termos" className={styles.termsBtn}>
               Ver Termos e Condições da Loja
             </Link>
+            {!termsAccepted && (
+              <button 
+                onClick={() => setTermsModalOpen(true)}
+                className={styles.termsBtn}
+                style={{ marginLeft: '1rem', background: 'var(--primary)', color: '#ffffff', border: 'none' }}
+              >
+                Aceitar Termos
+              </button>
+            )}
           </div>
         </section>
       </div>
