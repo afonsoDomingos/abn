@@ -4,18 +4,34 @@ Este documento lista todos os dados oficiais da ABN que precisam de ser fornecid
 
 ---
 
-## 1. Google Analytics
+## 1. Google Analytics e Search Console
 
-**Estado Actual:** Placeholder
-**Localização:** `src/app/layout.tsx` (linhas 99, 107)
+**Estado Actual:** 
+- Google Analytics: Placeholder (`G-XXXXXXXXXX`)
+- Google Search Console: ✅ Verificado
+
+**Localização:** `src/app/layout.tsx` (linhas 98-109)
 
 ```typescript
-// ACTUAL (placeholder)
-src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
-gtag('config', 'G-XXXXXXXXXX');
+// ACTUAL
+<meta name="google-site-verification" content="mvgmWQRkmaikckgseUhfIFk2WRR7AUDrUyiBbOTdgok" />
+<Script
+  src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+  strategy="afterInteractive"
+/>
+<Script id="google-analytics" strategy="afterInteractive">
+  {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    // Nota: Substituir G-XXXXXXXXXX pelo ID real do Google Analytics
+  `}
+</Script>
 ```
 
 **Necessário:**
+- [x] Google Search Console Verification (✅ Concluído)
 - [ ] Google Analytics ID real (formato: `G-XXXXXXXXXX` ou `UA-XXXXXXXXX-X`)
 - [ ] Confirmar se deve ser Google Analytics 4 (GA4) ou Universal Analytics
 
