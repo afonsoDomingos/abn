@@ -25,7 +25,7 @@ export default function ProgramasPage() {
             <div className={styles.programIcon}>🤝</div>
             <h2>Clube dos Empreendedores</h2>
             <p>Comunidade exclusiva para networking, mentoria e oportunidades de negócios.</p>
-            <a href="/programas/clube-empreendedores" className={styles.btn}>Saber mais</a>
+            <a href="/clube-empreendedores" className={styles.btn}>Saber mais</a>
           </div>
 
           <div className={styles.programCard}>

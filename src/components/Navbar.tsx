@@ -105,7 +105,7 @@ export default function Navbar() {
               </span>
               <div className={styles.dropdownMenu}>
                 <Link href="/programas/startup-180" onClick={closeMenu}>ABN Startup 180</Link>
-                <Link href="/programas/clube-empreendedores" onClick={closeMenu}>Clube dos Empreendedores</Link>
+                <Link href="/clube-empreendedores" onClick={closeMenu}>Clube dos Empreendedores</Link>
                 <Link href="/programas/clubes-startups-mocambique" onClick={closeMenu}>Clubes das Startups (Moçambique)</Link>
                 <Link href="/programas/clubes-startups-angola" onClick={closeMenu}>Clubes das Startups (Angola)</Link>
                 <Link href="/programas/mentalidade-empreendedora" onClick={closeMenu}>Mentalidade Empreendedora</Link>
@@ -254,7 +254,7 @@ export default function Navbar() {
 
           <div className={styles.drawerSectionTitle}>Programas</div>
           <Link href="/programas/startup-180" onClick={closeMenu}>ABN Startup 180</Link>
-          <Link href="/programas/clube-empreendedores" onClick={closeMenu}>Clube dos Empreendedores</Link>
+          <Link href="/clube-empreendedores" onClick={closeMenu}>Clube dos Empreendedores</Link>
           <Link href="/programas/clubes-startups-mocambique" onClick={closeMenu}>Clubes das Startups (Moçambique)</Link>
           <Link href="/programas/clubes-startups-angola" onClick={closeMenu}>Clubes das Startups (Angola)</Link>
           <Link href="/programas/mentalidade-empreendedora" onClick={closeMenu}>Mentalidade Empreendedora</Link>

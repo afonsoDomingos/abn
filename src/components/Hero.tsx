@@ -41,7 +41,7 @@ export default function Hero() {
   const SEARCH_ITEMS = [
     { title: language === 'pt' ? 'ABN Startup 180 (Incubação & Aceleração)' : 'ABN Startup 180 (Incubation)', type: language === 'pt' ? 'Programa' : 'Program', link: '/incubacao' },
     { title: language === 'pt' ? 'Mentalidade Empreendedora' : 'Entrepreneurial Mindset', type: language === 'pt' ? 'Capacitação' : 'Training', link: '/incubacao' },
-    { title: language === 'pt' ? 'Clube dos Empreendedores & Network' : 'Entrepreneurs Club & Network', type: language === 'pt' ? 'Comunidade' : 'Community', link: '/incubacao' },
+    { title: language === 'pt' ? 'Clube dos Empreendedores & Network' : 'Entrepreneurs Club & Network', type: language === 'pt' ? 'Comunidade' : 'Community', link: '/clube-empreendedores' },
     { title: language === 'pt' ? 'Bolsas de Estudo e Financiamentos' : 'Grants & Funding Opportunities', type: language === 'pt' ? 'Oportunidade' : 'Opportunity', link: '/oportunidades' },
     { title: language === 'pt' ? 'Rede de Mentores e Especialistas' : 'Mentor & Expert Network', type: language === 'pt' ? 'Mentoria' : 'Mentorship', link: '/especialistas' },
     { title: language === 'pt' ? 'Cursos Certificados e Bootcamps' : 'Certified Courses & Bootcamps', type: language === 'pt' ? 'Academia' : 'Academy', link: '/dashboard/formacao' },
