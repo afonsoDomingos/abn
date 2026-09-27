@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Globe, ChevronDown } from 'lucide-react';
 import styles from './Delegacao.module.css';
 
 interface HubEvent {
@@ -29,6 +30,12 @@ export default function DelegacaoPortalPage() {
   const [error, setError] = useState('');
   const [toastMsg, setToastMsg] = useState('');
   const [saving, setSaving] = useState(false);
+
+  // Admin delegation selector
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [allHubs, setAllHubs] = useState<any[]>([]);
+  const [selectedHubSlug, setSelectedHubSlug] = useState('');
+  const [showHubSelector, setShowHubSelector] = useState(false);
 
   // Active tab
   const [activeTab, setActiveTab] = useState<'info' | 'events' | 'team' | 'partners' | 'members'>('info');
@@ -93,9 +100,26 @@ export default function DelegacaoPortalPage() {
     setTimeout(() => setToastMsg(''), 3500);
   };
 
+  const loadAllHubs = async () => {
+    try {
+      const res = await fetch('/api/hubs');
+      const data = await res.json();
+      if (data.success && data.hubs) {
+        setAllHubs(data.hubs);
+      }
+    } catch (err) {
+      console.error('Error loading hubs:', err);
+    }
+  };
+
+  const getDelegacaoUrl = () => {
+    return selectedHubSlug ? `/api/delegacao/me?slug=${selectedHubSlug}` : '/api/delegacao/me';
+  };
+
   const loadData = () => {
     setLoading(true);
-    fetch('/api/delegacao/me')
+    const url = selectedHubSlug ? `/api/delegacao/me?slug=${selectedHubSlug}` : '/api/delegacao/me';
+    fetch(url)
       .then(res => res.json())
       .then(data => {
         if (data.success && data.hub) {
@@ -133,8 +157,37 @@ export default function DelegacaoPortalPage() {
   };
 
   useEffect(() => {
+    // Check if user is admin
+    const checkAdmin = async () => {
+      try {
+        const cookieStore = await fetch('/api/user/profile', { method: 'GET' });
+        if (cookieStore.ok) {
+          const data = await cookieStore.json();
+          if (data.user && (data.user.role === 'admin' || data.user.roles?.includes('admin'))) {
+            setIsAdmin(true);
+            await loadAllHubs();
+          }
+        }
+      } catch (err) {
+        console.error('Error checking admin status:', err);
+      }
+    };
+
+    checkAdmin();
     loadData();
-  }, []);
+  }, [selectedHubSlug]);
+
+  useEffect(() => {
+    // Close dropdown when clicking outside
+    const handleClickOutside = (e: MouseEvent) => {
+      if (showHubSelector) {
+        setShowHubSelector(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showHubSelector]);
 
   // Save General Info (Tab 1)
   const handleSaveInfo = async (e: React.FormEvent) => {
@@ -146,7 +199,8 @@ export default function DelegacaoPortalPage() {
 
     setSaving(true);
     try {
-      const res = await fetch('/api/delegacao/me', {
+      const url = selectedHubSlug ? `/api/delegacao/me?slug=${selectedHubSlug}` : '/api/delegacao/me';
+      const res = await fetch(url, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -203,7 +257,7 @@ export default function DelegacaoPortalPage() {
 
     setSaving(true);
     try {
-      const res = await fetch('/api/delegacao/me', {
+      const res = await fetch(getDelegacaoUrl(), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ events: updatedEvents })
@@ -234,7 +288,7 @@ export default function DelegacaoPortalPage() {
     const updatedEvents = events.filter((_, i) => i !== index);
     setSaving(true);
     try {
-      const res = await fetch('/api/delegacao/me', {
+      const res = await fetch(getDelegacaoUrl(), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ events: updatedEvents })
@@ -273,7 +327,7 @@ export default function DelegacaoPortalPage() {
 
     setSaving(true);
     try {
-      const res = await fetch('/api/delegacao/me', {
+      const res = await fetch(getDelegacaoUrl(), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ team: updatedTeam })
@@ -302,7 +356,7 @@ export default function DelegacaoPortalPage() {
     const updatedTeam = team.filter((_, i) => i !== index);
     setSaving(true);
     try {
-      const res = await fetch('/api/delegacao/me', {
+      const res = await fetch(getDelegacaoUrl(), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ team: updatedTeam })
@@ -340,7 +394,7 @@ export default function DelegacaoPortalPage() {
 
     setSaving(true);
     try {
-      const res = await fetch('/api/delegacao/me', {
+      const res = await fetch(getDelegacaoUrl(), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ partners: updatedPartners })
@@ -368,7 +422,7 @@ export default function DelegacaoPortalPage() {
     const updatedPartners = partners.filter((_, i) => i !== index);
     setSaving(true);
     try {
-      const res = await fetch('/api/delegacao/me', {
+      const res = await fetch(getDelegacaoUrl(), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ partners: updatedPartners })
@@ -431,6 +485,88 @@ export default function DelegacaoPortalPage() {
               <span></span> Delegação de {hub.name}
             </div>
           </div>
+
+          {/* Admin Hub Selector */}
+          {isAdmin && allHubs.length > 0 && (
+            <div style={{ position: 'relative', zIndex: 100 }}>
+              <button
+                onClick={() => setShowHubSelector(!showHubSelector)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'rgba(255, 107, 0, 0.1)',
+                  border: '1px solid rgba(255, 107, 0, 0.3)',
+                  color: '#ff6b00',
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <Globe size={16} />
+                <span>{hub.name}</span>
+                <ChevronDown size={16} />
+              </button>
+
+              {showHubSelector && (
+                <div style={{
+                  position: 'absolute',
+                  top: '100%',
+                  left: 0,
+                  marginTop: '8px',
+                  background: '#1e293b',
+                  border: '1px solid #334155',
+                  borderRadius: '8px',
+                  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
+                  minWidth: '280px',
+                  maxHeight: '400px',
+                  overflowY: 'auto',
+                  zIndex: 1000
+                }}>
+                  <div style={{
+                    padding: '12px 16px',
+                    borderBottom: '1px solid #334155',
+                    fontSize: '0.8rem',
+                    fontWeight: 700,
+                    color: '#94a3b8',
+                    textTransform: 'uppercase'
+                  }}>
+                    Seleccionar Delegação
+                  </div>
+                  {allHubs.map((h) => (
+                    <button
+                      key={h.slug}
+                      onClick={() => {
+                        setSelectedHubSlug(h.slug);
+                        setShowHubSelector(false);
+                      }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        width: '100%',
+                        padding: '10px 16px',
+                        background: selectedHubSlug === h.slug ? 'rgba(255, 107, 0, 0.1)' : 'transparent',
+                        border: 'none',
+                        color: selectedHubSlug === h.slug ? '#ff6b00' : '#e2e8f0',
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        textAlign: 'left'
+                      }}
+                    >
+                      <Globe size={14} />
+                      <span>{h.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           <div className={styles.topRight}>
             <Link 
