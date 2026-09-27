@@ -244,6 +244,13 @@ const UserSchema = new mongoose.Schema({
     }
   },
 
+  // Aceitação de Termos e Condições da Loja
+  lojaTermsAccepted: {
+    accepted: { type: Boolean, default: false },
+    acceptedAt: { type: Date },
+    acceptedVersion: { type: String, default: '1.0' }
+  },
+
   createdAt: { type: Date, default: Date.now },
 });
 

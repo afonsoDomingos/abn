@@ -19,11 +19,16 @@ import {
 } from 'lucide-react';
 import ShopNavbar from '@/components/ShopNavbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
+import TermsModal from '@/components/TermsModal';
 import styles from './Vender.module.css';
 
 export default function VenderNaABN() {
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<any | null>(null);
+  
+  // Terms acceptance
+  const [termsModalOpen, setTermsModalOpen] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem('user');
@@ -41,7 +46,58 @@ export default function VenderNaABN() {
         }
       })
       .catch(() => {});
+
+    // Verificar aceitação de termos
+    const checkTermsAcceptance = async () => {
+      try {
+        const user = stored ? JSON.parse(stored) : null;
+        if (user && user._id) {
+          const response = await fetch('/api/user/loja-terms', {
+            headers: {
+              'x-user-id': user._id
+            }
+          });
+          const data = await response.json();
+          if (data.userFound) {
+            setTermsAccepted(data.accepted);
+            if (!data.accepted) {
+              setTermsModalOpen(true);
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Erro ao verificar aceitação de termos:', e);
+      }
+    };
+
+    checkTermsAcceptance();
   }, []);
+
+  const handleAcceptTerms = async () => {
+    try {
+      const user = currentUser;
+      if (user && user._id) {
+        const response = await fetch('/api/user/loja-terms', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-user-id': user._id
+          },
+          body: JSON.stringify({
+            accepted: true,
+            version: '1.0'
+          })
+        });
+        const data = await response.json();
+        if (data.success) {
+          setTermsAccepted(true);
+          setTermsModalOpen(false);
+        }
+      }
+    } catch (e) {
+      console.error('Erro ao aceitar termos:', e);
+    }
+  };
 
   const handleCtaClick = () => {
     if (currentUser) {
@@ -240,6 +296,13 @@ export default function VenderNaABN() {
       </div>
 
       <FloatingWhatsApp />
+      
+      {/* Modal de Aceitação de Termos */}
+      <TermsModal 
+        isOpen={termsModalOpen}
+        onClose={() => setTermsModalOpen(false)}
+        onAccept={handleAcceptTerms}
+      />
     </main>
   );
 }

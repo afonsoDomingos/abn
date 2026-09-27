@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import ShopNavbar from '@/components/ShopNavbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
+import TermsModal from '@/components/TermsModal';
 import styles from './LojaModern.module.css';
 
 interface ProductItem {
@@ -128,6 +129,11 @@ export default function Loja() {
     return '';
   });
   const [bannerUrl, setBannerUrl] = useState('/bannerlojaabn.png');
+  
+  // Terms acceptance
+  const [termsModalOpen, setTermsModalOpen] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
     // Buscar configurações (banner)
@@ -139,6 +145,39 @@ export default function Loja() {
         }
       })
       .catch(() => {});
+
+    // Verificar se o utilizador está logado
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setCurrentUser(JSON.parse(storedUser));
+      } catch (e) {}
+    }
+
+    // Verificar aceitação de termos
+    const checkTermsAcceptance = async () => {
+      try {
+        const user = storedUser ? JSON.parse(storedUser) : null;
+        if (user && user._id) {
+          const response = await fetch('/api/user/loja-terms', {
+            headers: {
+              'x-user-id': user._id
+            }
+          });
+          const data = await response.json();
+          if (data.userFound) {
+            setTermsAccepted(data.accepted);
+            if (!data.accepted) {
+              setTermsModalOpen(true);
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Erro ao verificar aceitação de termos:', e);
+      }
+    };
+
+    checkTermsAcceptance();
 
     // Carregar em paralelo: Produtos, Cursos, Serviços e Eventos da plataforma
     Promise.all([
@@ -234,6 +273,32 @@ export default function Loja() {
   const scrollToCategories = () => {
     const el = document.getElementById('explore-categorias');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleAcceptTerms = async () => {
+    try {
+      const user = currentUser;
+      if (user && user._id) {
+        const response = await fetch('/api/user/loja-terms', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-user-id': user._id
+          },
+          body: JSON.stringify({
+            accepted: true,
+            version: '1.0'
+          })
+        });
+        const data = await response.json();
+        if (data.success) {
+          setTermsAccepted(true);
+          setTermsModalOpen(false);
+        }
+      }
+    } catch (e) {
+      console.error('Erro ao aceitar termos:', e);
+    }
   };
 
   const handleActionClick = (item: ProductItem) => {
@@ -646,6 +711,13 @@ export default function Loja() {
       </div>
 
       <FloatingWhatsApp />
+      
+      {/* Modal de Aceitação de Termos */}
+      <TermsModal 
+        isOpen={termsModalOpen}
+        onClose={() => setTermsModalOpen(false)}
+        onAccept={handleAcceptTerms}
+      />
     </main>
   );
 }
