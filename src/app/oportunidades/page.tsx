@@ -30,6 +30,7 @@ export default async function PublicOportunidadesPage() {
     description: opp.description,
     applyLink: opp.applyLink || '',
     location: opp.location || '',
+    country: opp.country || 'Todos',
     provider: opp.provider || ''
   }));
 

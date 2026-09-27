@@ -13,7 +13,11 @@ interface OpportunityItem {
   applyLink: string;
   imageUrl?: string;
   location?: string;
+  country?: string;
   provider?: string;
+  isPaid?: boolean;
+  paidBy?: string;
+  status?: string;
 }
 
 export default function AdminOportunidadesPage() {
@@ -33,8 +37,11 @@ export default function AdminOportunidadesPage() {
   const [description, setDescription] = useState('');
   const [applyLink, setApplyLink] = useState('');
   const [location, setLocation] = useState('');
+  const [country, setCountry] = useState('Todos');
   const [provider, setProvider] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [isPaid, setIsPaid] = useState(false);
+  const [paidBy, setPaidBy] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
 
   useEffect(() => {
@@ -70,8 +77,11 @@ export default function AdminOportunidadesPage() {
     setDescription(opp.description || '');
     setApplyLink(opp.applyLink || '');
     setLocation(opp.location || '');
+    setCountry(opp.country || 'Todos');
     setProvider(opp.provider || '');
     setImageUrl(opp.imageUrl || '');
+    setIsPaid(opp.isPaid || false);
+    setPaidBy(opp.paidBy || '');
     setShowForm(true);
   };
 
@@ -84,8 +94,11 @@ export default function AdminOportunidadesPage() {
     setDescription('');
     setApplyLink('');
     setLocation('');
+    setCountry('Todos');
     setProvider('');
     setImageUrl('');
+    setIsPaid(false);
+    setPaidBy('');
     setShowForm(true);
   };
 
@@ -121,8 +134,11 @@ export default function AdminOportunidadesPage() {
       description,
       applyLink,
       location,
+      country,
       provider,
-      imageUrl
+      imageUrl,
+      isPaid,
+      paidBy
     };
 
     try {
@@ -266,6 +282,18 @@ export default function AdminOportunidadesPage() {
               />
             </div>
             <div className={styles.field}>
+              <label>País (para filtro)</label>
+              <select value={country} onChange={e => setCountry(e.target.value)}>
+                <option value="Todos">Todos os países</option>
+                <option value="Moçambique">Moçambique</option>
+                <option value="Angola">Angola</option>
+                <option value="Guiné-Bissau">Guiné-Bissau</option>
+                <option value="São Tomé e Príncipe">São Tomé e Príncipe</option>
+                <option value="Cabo Verde">Cabo Verde</option>
+                <option value="Online">Online/Global</option>
+              </select>
+            </div>
+            <div className={styles.field}>
               <label>Localização / Formato</label>
               <input
                 value={location}
@@ -273,6 +301,23 @@ export default function AdminOportunidadesPage() {
                 placeholder="Ex: Maputo, Moçambique ou Online"
               />
             </div>
+            <div className={styles.field}>
+              <label>Anúncio Pago?</label>
+              <select value={isPaid ? 'true' : 'false'} onChange={e => setIsPaid(e.target.value === 'true')}>
+                <option value="false">Não (gratuito)</option>
+                <option value="true">Sim (pago)</option>
+              </select>
+            </div>
+            {isPaid && (
+              <div className={styles.field}>
+                <label>Pago por (Organização)</label>
+                <input
+                  value={paidBy}
+                  onChange={e => setPaidBy(e.target.value)}
+                  placeholder="Nome da organização que pagou"
+                />
+              </div>
+            )}
             <div className={`${styles.field} ${styles.fullWidth}`}>
               <label>Foto de Capa (URL ou Upload)</label>
               <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>

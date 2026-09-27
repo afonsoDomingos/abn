@@ -13,7 +13,11 @@ const OpportunitySchema = new mongoose.Schema({
   applyLink: { type: String, default: '' },
   imageUrl: { type: String, default: '' },
   location: { type: String, default: '' }, // e.g. "Moçambique", "Online"
+  country: { type: String, default: 'Todos' }, // País específico ou "Todos"
   provider: { type: String, default: '' }, // e.g. "ABN", "Tony Elumelu Foundation"
+  isPaid: { type: Boolean, default: false }, // Se o anúncio é pago
+  paidBy: { type: String, default: '' }, // Organização que pagou
+  status: { type: String, enum: ['pendente', 'aprovado', 'rejeitado'], default: 'pendente' },
   createdAt: { type: Date, default: Date.now }
 });
 
