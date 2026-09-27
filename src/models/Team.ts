@@ -16,6 +16,8 @@ const TeamSchema = new Schema({
   type: { type: String, default: 'Especialista' },
   country: { type: String, default: 'Moçambique' },
   views: { type: Number, default: 0 },
+  mentorshipPrice: { type: Number, default: 0 }, // Preço por sessão de mentoria (0 = gratuito)
+  mentorshipCurrency: { type: String, default: 'MT' }, // Moeda do preço
   status: { type: String, enum: ['ativo', 'inativo'], default: 'ativo' },
   createdAt: { type: Date, default: Date.now }
 });

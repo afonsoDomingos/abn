@@ -22,6 +22,8 @@ interface Specialist {
   phone?: string;
   category?: string;
   views?: number;
+  mentorshipPrice?: number;
+  mentorshipCurrency?: string;
 }
 
 export function slugify(text: string): string {
@@ -112,6 +114,18 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [coverUrl, setCoverUrl] = useState('/abn-cover.jpg');
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [bookingData, setBookingData] = useState({
+    date: '',
+    time: '',
+    topic: '',
+    objective: '',
+    menteeName: '',
+    menteeEmail: '',
+    menteePhone: '',
+  });
+  const [bookingLoading, setBookingLoading] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
 
   useEffect(() => {
     if (!rawSlug) return;
@@ -180,6 +194,58 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
         setCopied(true);
         setTimeout(() => setCopied(false), 2500);
       });
+    }
+  };
+
+  const handleBookingSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!specialist) return;
+    
+    setBookingLoading(true);
+
+    try {
+      const userStr = localStorage.getItem('user');
+      const user = userStr ? JSON.parse(userStr) : null;
+
+      const menteeName = user?.name || bookingData.menteeName;
+      const menteeEmail = user?.email || bookingData.menteeEmail;
+
+      await fetch('/api/mentorship', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mentor: specialist._id,
+          mentee: user?._id,
+          menteeName,
+          menteeEmail,
+          menteePhone: bookingData.menteePhone,
+          topic: bookingData.topic,
+          objective: bookingData.objective,
+          date: bookingData.date,
+          time: bookingData.time,
+          duration: '60 min',
+          price: specialist.mentorshipPrice || 0,
+        })
+      });
+
+      setBookingSuccess(true);
+      setTimeout(() => {
+        setShowBookingModal(false);
+        setBookingSuccess(false);
+        setBookingData({
+          date: '',
+          time: '',
+          topic: '',
+          objective: '',
+          menteeName: '',
+          menteeEmail: '',
+          menteePhone: '',
+        });
+      }, 3000);
+    } catch (err) {
+      console.error('Erro ao reservar:', err);
+    } finally {
+      setBookingLoading(false);
     }
   };
 
@@ -299,12 +365,25 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
                 Solicite uma sessão de mentoria ou consultoria diretamente com {specialist.name.split(' ')[0]}.
               </p>
 
-              <Link
-                href={`/contacto?assunto=Solicitar+Mentoria+com+${encodeURIComponent(specialist.name)}`}
+              {specialist.mentorshipPrice && specialist.mentorshipPrice > 0 ? (
+                <div className={styles.priceTag}>
+                  <span className={styles.priceValue}>
+                    {specialist.mentorshipCurrency || 'MT'} {specialist.mentorshipPrice.toLocaleString()}
+                  </span>
+                  <span className={styles.pricePeriod}>/sessão</span>
+                </div>
+              ) : (
+                <div className={styles.priceTag}>
+                  <span className={styles.priceValue}>Gratuito</span>
+                </div>
+              )}
+
+              <button
+                onClick={() => setShowBookingModal(true)}
                 className={styles.ctaBtnPrimary}
               >
-                Agendar Mentoria
-              </Link>
+                Reservar Mentoria
+              </button>
 
               <button className={styles.shareBtn} onClick={handleCopyLink}>
                 Copiar Link deste Perfil
@@ -347,6 +426,122 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
             )}
           </div>
         </div>
+
+        {/* Booking Modal */}
+        {showBookingModal && specialist && (
+          <div className={styles.modalOverlay} onClick={() => setShowBookingModal(false)}>
+            <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.modalHeader}>
+                <h2>Reservar Mentoria</h2>
+                <button className={styles.modalClose} onClick={() => setShowBookingModal(false)}>✕</button>
+              </div>
+
+              {bookingSuccess ? (
+                <div className={styles.successMessage}>
+                  <div className={styles.successIcon}>✓</div>
+                  <h3>Reserva Enviada!</h3>
+                  <p>A sua solicitação de mentoria foi enviada com sucesso. {specialist.name.split(' ')[0]} entrará em contacto brevemente.</p>
+                </div>
+              ) : (
+                <form className={styles.bookingForm} onSubmit={handleBookingSubmit}>
+                  <div className={styles.formRow}>
+                    <div className={styles.formField}>
+                      <label>Data *</label>
+                      <input
+                        type="date"
+                        required
+                        value={bookingData.date}
+                        onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
+                        min={new Date().toISOString().split('T')[0]}
+                      />
+                    </div>
+                    <div className={styles.formField}>
+                      <label>Hora *</label>
+                      <input
+                        type="time"
+                        required
+                        value={bookingData.time}
+                        onChange={(e) => setBookingData({ ...bookingData, time: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className={styles.formField}>
+                    <label>Tópico da Mentoria *</label>
+                    <input
+                      type="text"
+                      required
+                      value={bookingData.topic}
+                      onChange={(e) => setBookingData({ ...bookingData, topic: e.target.value })}
+                      placeholder="Ex: Estratégia de crescimento, Finanças, Marketing..."
+                    />
+                  </div>
+
+                  <div className={styles.formField}>
+                    <label>Objectivo da Sessão</label>
+                    <textarea
+                      rows={3}
+                      value={bookingData.objective}
+                      onChange={(e) => setBookingData({ ...bookingData, objective: e.target.value })}
+                      placeholder="Descreva o que pretende alcançar nesta sessão..."
+                    />
+                  </div>
+
+                  {!localStorage.getItem('user') && (
+                    <>
+                      <div className={styles.formRow}>
+                        <div className={styles.formField}>
+                          <label>Nome Completo *</label>
+                          <input
+                            type="text"
+                            required
+                            value={bookingData.menteeName}
+                            onChange={(e) => setBookingData({ ...bookingData, menteeName: e.target.value })}
+                          />
+                        </div>
+                        <div className={styles.formField}>
+                          <label>Email *</label>
+                          <input
+                            type="email"
+                            required
+                            value={bookingData.menteeEmail}
+                            onChange={(e) => setBookingData({ ...bookingData, menteeEmail: e.target.value })}
+                          />
+                        </div>
+                      </div>
+                      <div className={styles.formField}>
+                        <label>Telefone</label>
+                        <input
+                          type="tel"
+                          value={bookingData.menteePhone}
+                          onChange={(e) => setBookingData({ ...bookingData, menteePhone: e.target.value })}
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  {specialist.mentorshipPrice && specialist.mentorshipPrice > 0 && (
+                    <div className={styles.priceSummary}>
+                      <span>Total a pagar:</span>
+                      <span className={styles.totalPrice}>
+                        {specialist.mentorshipCurrency || 'MT'} {specialist.mentorshipPrice.toLocaleString()}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className={styles.formActions}>
+                    <button type="button" className={styles.cancelBtn} onClick={() => setShowBookingModal(false)}>
+                      Cancelar
+                    </button>
+                    <button type="submit" className={styles.submitBtn} disabled={bookingLoading}>
+                      {bookingLoading ? 'A enviar...' : 'Confirmar Reserva'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
 
       </main>
       <FloatingWhatsApp />
