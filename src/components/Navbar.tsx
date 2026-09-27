@@ -115,7 +115,17 @@ export default function Navbar() {
             <Link href="/academia">Academia</Link>
             <Link href="/loja" onClick={closeMenu}><ShoppingBag size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Loja ABN</Link>
             <Link href="/especialistas">Especialistas</Link>
-            <Link href="/parceiros">Parceiros</Link>
+
+            {/* Parceiros Dropdown */}
+            <div className={styles.dropdown}>
+              <span className={styles.dropdownTrigger}>
+                Parceiros <span className={styles.arrow}>▼</span>
+              </span>
+              <div className={styles.dropdownMenu}>
+                <Link href="/parceiros" onClick={closeMenu}>Ver Parceiros</Link>
+                <Link href="/seja-parceiro" onClick={closeMenu}>Seja Parceiro</Link>
+              </div>
+            </div>
 
             {/* Representações Dropdown */}
             <div className={styles.dropdown}>
@@ -262,7 +272,10 @@ export default function Navbar() {
           <Link href="/academia" onClick={closeMenu}>Academia</Link>
           <Link href="/loja" onClick={closeMenu}><ShoppingBag size={16} style={{ verticalAlign: 'middle', marginRight: '4px' }} /> Loja ABN</Link>
           <Link href="/especialistas" onClick={closeMenu}>Especialistas</Link>
-          <Link href="/parceiros" onClick={closeMenu}>Parceiros</Link>
+
+          <div className={styles.drawerSectionTitle}>Parceiros</div>
+          <Link href="/parceiros" onClick={closeMenu}>Ver Parceiros</Link>
+          <Link href="/seja-parceiro" onClick={closeMenu}>Seja Parceiro</Link>
 
           <div className={styles.drawerSectionTitle}>Representações</div>
           <Link href="/representacoes" onClick={closeMenu}>Ver Todas as Representações</Link>
