@@ -58,10 +58,17 @@
 }
 
 /* Barra de Pesquisa */
-.searchForm {
+.searchWrapper {
   flex: 1;
   max-width: 540px;
   position: relative;
+}
+
+.searchForm {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .searchIcon {
@@ -78,7 +85,7 @@
   background: #1f242b;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  padding: 0.65rem 1rem 0.65rem 2.6rem;
+  padding: 0.65rem 6.5rem 0.65rem 2.6rem;
   color: #ffffff;
   font-size: 0.85rem;
   outline: none;
@@ -93,6 +100,203 @@
   background: #252b34;
   border-color: #de9b35;
   box-shadow: 0 0 0 3px rgba(222, 155, 53, 0.15);
+}
+
+.clearBtn {
+  position: absolute;
+  right: 5.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  transition: all 0.2s ease;
+}
+
+.clearBtn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.searchSubmitBtn {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #de9b35;
+  color: #111418;
+  border: none;
+  border-radius: 999px;
+  padding: 0.42rem 0.9rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.searchSubmitBtn:hover {
+  background: #f0ac48;
+  transform: translateY(-50%) scale(1.02);
+}
+
+/* Backdrop para fechar dropdown */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: transparent;
+}
+
+/* Dropdown de sugestões e preview rápido */
+.searchDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #181d24;
+  border: 1px solid rgba(222, 155, 53, 0.35);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 20px rgba(222, 155, 53, 0.08);
+  z-index: 1001;
+  overflow: hidden;
+  padding: 0.75rem;
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dropdownHeader {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  padding: 0.35rem 0.65rem;
+  margin-bottom: 2px;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.dropdownItem:hover {
+  background: rgba(222, 155, 53, 0.12);
+}
+
+.itemSearchIcon {
+  color: #de9b35;
+  flex-shrink: 0;
+}
+
+.itemName {
+  flex: 1;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.itemCategory {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.dropdownEmpty {
+  padding: 0.85rem 0.65rem;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+}
+
+.dropdownCategories {
+  margin-top: 0.5rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.catLabel {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  margin-bottom: 0.4rem;
+  padding-left: 0.4rem;
+}
+
+.catPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.catPill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.catPill:hover {
+  background: #de9b35;
+  color: #111418;
+  border-color: #de9b35;
+}
+
+.dropdownFooter {
+  margin-top: 0.65rem;
+  padding: 0.6rem 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #de9b35;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.18s ease;
+}
+
+.dropdownFooter:hover {
+  background: rgba(222, 155, 53, 0.1);
 }
 
 /* Navegação Direita */

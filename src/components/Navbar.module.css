@@ -423,7 +423,6 @@
 
 .drawerHubLink {
   padding-left: 1.5rem;
-}
   font-weight: 500;
   color: var(--foreground);
   transition: all 0.2s;

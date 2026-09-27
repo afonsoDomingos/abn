@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { 
   GraduationCap, 
   Briefcase, 
@@ -102,13 +102,20 @@ const DEFAULT_FEATURED: ProductItem[] = [
 
 export default function Loja() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [courses, setCourses] = useState<ProductItem[]>([]);
   const [services, setServices] = useState<ProductItem[]>([]);
   const [events, setEvents] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(() => {
+    // Initialise from ?q= URL param (server-side safe fallback: '')
+    if (typeof window !== 'undefined') {
+      return new URLSearchParams(window.location.search).get('q') || '';
+    }
+    return '';
+  });
   const [bannerUrl, setBannerUrl] = useState('/bannerlojaabn.png');
 
   useEffect(() => {
@@ -388,15 +395,26 @@ export default function Loja() {
         </section>
 
         {/* 2. SEÇÃO EM DESTAQUE ESTA SEMANA */}
-        <section className={styles.sectionFeatured}>
+        <section id="produtos-lista" className={styles.sectionFeatured}>
           <div className={styles.featuredHeader}>
-            <h2 className={styles.sectionTitle}>
-              {searchQuery 
-                ? `Resultados para "${searchQuery}"`
-                : selectedCategory 
-                ? `Explorando: ${selectedCategory} (${filteredItems.length})` 
-                : 'Em destaque esta semana'}
-            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <h2 className={styles.sectionTitle}>
+                {searchQuery 
+                  ? `Resultados para "${searchQuery}" (${filteredItems.length})`
+                  : selectedCategory 
+                  ? `Explorando: ${selectedCategory} (${filteredItems.length})` 
+                  : 'Em destaque esta semana'}
+              </h2>
+              {(searchQuery || selectedCategory) && (
+                <button
+                  type="button"
+                  className={styles.clearSearchBtn}
+                  onClick={() => { setSearchQuery(''); setSelectedCategory(null); }}
+                >
+                  ✕ Limpar filtro
+                </button>
+              )}
+            </div>
             <Link 
               href={selectedCategory ? `/marketplace?cat=${encodeURIComponent(selectedCategory)}` : '/marketplace'} 
               className={styles.seeAllLink}

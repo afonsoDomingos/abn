@@ -30,8 +30,9 @@ const programDetails: Record<string, { title: string; description: string; icon:
   }
 };
 
-export default function ProgramDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const program = programDetails[params.slug || '']];
+export default async function ProgramDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const program = programDetails[slug || ''];
 
   if (!program) {
     return (

@@ -247,6 +247,29 @@
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.clearSearchBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(222, 155, 53, 0.15);
+  color: #925f12;
+  border: 1px solid rgba(222, 155, 53, 0.35);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: all 0.2s ease;
+}
+
+.clearSearchBtn:hover {
+  background: rgba(222, 155, 53, 0.28);
+  color: #784c0c;
 }
 
 .seeAllLink {

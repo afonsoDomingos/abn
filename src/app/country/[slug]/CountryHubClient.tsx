@@ -480,7 +480,7 @@ export default function CountryHubClient({ params }: { params: Promise<{ slug: s
             <p>Faça parte da comunidade ABN e aceda a networking, mentoria e oportunidades de negócios.</p>
             <div className={styles.ctaPrice}>
               <span className={styles.priceValue}>{hub.currencySymbol} {hub.clubPrice}</span>
-              <span className={styles.pricePeriod}/ano</span>
+              <span className={styles.pricePeriod}>/ano</span>
             </div>
             <a href="/registro" className="btn-primary">Aderir ao Clube</a>
           </div>
