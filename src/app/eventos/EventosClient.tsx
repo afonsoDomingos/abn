@@ -237,7 +237,7 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
       {selectedEvent && (
         <div className={styles.modalOverlay} onClick={() => setSelectedEvent(null)}>
           <div className={`${styles.modalContent} glass`} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.closeModalBtn} onClick={() => setSelectedEvent(null)}>✕</button>
+            <button className={styles.closeModalBtn} onClick={() => setSelectedEvent(null)}></button>
             
             <div className={styles.modalHeader}>
               <span className={styles.categoryBadge} style={{ position: 'static', display: 'inline-block', marginBottom: '0.5rem' }}>
@@ -299,7 +299,7 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
       {showInscriptionForm && selectedEvent && (
         <div className={styles.modalOverlay} onClick={closeInscriptionForm}>
           <div className={`${styles.modalContent} glass`} style={{ maxWidth: '600px' }} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.closeModalBtn} onClick={closeInscriptionForm}>✕</button>
+            <button className={styles.closeModalBtn} onClick={closeInscriptionForm}></button>
             
             {inscriptionSubmitted ? (
               <div style={{ textAlign: 'center', padding: '2rem' }}>

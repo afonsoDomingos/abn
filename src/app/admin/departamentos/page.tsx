@@ -113,13 +113,13 @@ export default function AdminDepartamentosPage() {
                   className={styles.editBtn}
                   onClick={() => setEditingDept(dept)}
                 >
-                  ✏️ Editar
+                   Editar
                 </button>
                 <button
                   className={styles.deleteBtn}
                   onClick={() => handleDelete(dept._id)}
                 >
-                  🗑️ Remover
+                   Remover
                 </button>
               </div>
             </div>
@@ -135,7 +135,7 @@ export default function AdminDepartamentosPage() {
               <h2 className="text-gradient-gold">
                 {editingDept._id ? 'Editar Departamento' : 'Novo Departamento'}
               </h2>
-              <button className={styles.closeBtn} onClick={() => setEditingDept(null)}>×</button>
+              <button className={styles.closeBtn} onClick={() => setEditingDept(null)}></button>
             </header>
             
             <form onSubmit={handleUpdate} className={styles.form}>

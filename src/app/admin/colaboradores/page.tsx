@@ -180,7 +180,7 @@ export default function AdminColaboradoresPage() {
         </div>
       ) : filtered.length === 0 ? (
         <div className={styles.empty}>
-          <span>📋</span>
+          <span></span>
           <p>Nenhuma atividade encontrada.</p>
         </div>
       ) : (
@@ -236,13 +236,13 @@ export default function AdminColaboradoresPage() {
                     className={styles.editBtn}
                     onClick={() => setEditingActivity(activity)}
                   >
-                    ✏️ Editar
+                     Editar
                   </button>
                   <button
                     className={styles.deleteBtn}
                     onClick={() => handleDelete(activity._id)}
                   >
-                    🗑️ Remover
+                     Remover
                   </button>
                 </div>
               </div>
@@ -259,7 +259,7 @@ export default function AdminColaboradoresPage() {
               <h2 className="text-gradient-gold">
                 {editingActivity._id ? 'Editar Atividade' : 'Nova Atividade'}
               </h2>
-              <button className={styles.closeBtn} onClick={() => setEditingActivity(null)}>×</button>
+              <button className={styles.closeBtn} onClick={() => setEditingActivity(null)}></button>
             </header>
             
             <form onSubmit={handleUpdate} className={styles.form}>

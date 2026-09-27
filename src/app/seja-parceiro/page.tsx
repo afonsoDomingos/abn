@@ -66,7 +66,7 @@ const countries = [
   { value: 'guinebissau', label: '🇬🇼 Guiné-Bissau' },
   { value: 'saotome', label: '🇸🇹 São Tomé e Príncipe' },
   { value: 'caboverde', label: '🇨🇻 Cabo Verde' },
-  { value: 'outro', label: '🌍 Outro país' },
+  { value: 'outro', label: ' Outro país' },
 ];
 
 export default function SejaParceiroPage() {
@@ -255,12 +255,12 @@ ${formData.mensagem}`;
               <div className={styles.formHeader}>
                 <h2>Candidatura a Parceiro</h2>
                 <p>Preencha o formulário abaixo para expressar o seu interesse</p>
-                <button className={styles.closeBtn} onClick={() => setShowForm(false)}>✕</button>
+                <button className={styles.closeBtn} onClick={() => setShowForm(false)}></button>
               </div>
 
               {submitted ? (
                 <div className={styles.successMessage}>
-                  <div className={styles.successIcon}>✓</div>
+                  <div className={styles.successIcon}></div>
                   <h3>Candidatura Enviada!</h3>
                   <p>Obrigado pelo seu interesse em tornar-se parceiro da ABN. A nossa equipa entrará em contacto brevemente.</p>
                   <button className={styles.ctaBtn} onClick={() => setShowForm(false)}>

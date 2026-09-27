@@ -47,7 +47,7 @@ const STORE_CATEGORIES = [
 
 // Países disponíveis para filtro
 const STORE_COUNTRIES = [
-  { id: 'Todos', name: 'Todos os Países', flag: '🌍' },
+  { id: 'Todos', name: 'Todos os Países', flag: '' },
   { id: 'Moçambique', name: 'Moçambique', flag: '🇲🇴' },
   { id: 'Angola', name: 'Angola', flag: '🇦🇴' },
   { id: 'Guiné-Bissau', name: 'Guiné-Bissau', flag: '🇬🇼' },
@@ -523,7 +523,7 @@ export default function Loja() {
                   className={styles.clearSearchBtn}
                   onClick={() => { setSearchQuery(''); setSelectedCategory(null); setSelectedCountry(null); }}
                 >
-                  ✕ Limpar filtro
+                   Limpar filtro
                 </button>
               )}
             </div>

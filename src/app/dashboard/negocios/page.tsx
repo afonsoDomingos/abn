@@ -728,15 +728,15 @@ export default function NegociosPage() {
                         {item.showInStore !== false && (
                           item.storeApproval === 'aprovado' ? (
                             <span style={{ fontSize: '0.68rem', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: '#dcfce7', color: '#15803d' }}>
-                              ✅ Aprovado na Loja
+                               Aprovado na Loja
                             </span>
                           ) : item.storeApproval === 'rejeitado' ? (
                             <span style={{ fontSize: '0.68rem', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: '#fee2e2', color: '#b91c1c' }} title={item.approvalNotes || 'Não aprovado'}>
-                              ❌ Não Aprovado
+                               Não Aprovado
                             </span>
                           ) : (
                             <span style={{ fontSize: '0.68rem', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: '#fef3c7', color: '#b45309' }}>
-                              ⏳ Em Análise pela ABN
+                               Em Análise pela ABN
                             </span>
                           )
                         )}

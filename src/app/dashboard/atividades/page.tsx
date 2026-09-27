@@ -142,7 +142,7 @@ export default function DashboardAtividadesPage() {
         </div>
       ) : filtered.length === 0 ? (
         <div className={styles.empty}>
-          <span>📋</span>
+          <span></span>
           <p>Nenhuma atividade encontrada.</p>
         </div>
       ) : (

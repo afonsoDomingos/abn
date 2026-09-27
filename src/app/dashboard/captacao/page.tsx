@@ -451,7 +451,7 @@ export default function CaptacaoPage() {
                   onChange={e => setRoundStatus(e.target.value)}
                   style={{ width: '100%', padding: '11px', borderRadius: '10px', border: '1px solid #cbd5e1', marginTop: '4px' }}
                 >
-                  <option value="Aberta">🟢 Aberta para Propostas</option>
+                  <option value="Aberta"> Aberta para Propostas</option>
                   <option value="Em Negociação">🟡 Em Negociação / Term Sheet</option>
                   <option value="Fechada">⚪ Fechada</option>
                 </select>
@@ -675,7 +675,7 @@ export default function CaptacaoPage() {
                       Ponte com: {intro.investorName}
                     </span>
                     <span style={{ fontSize: '0.74rem', fontWeight: 800, padding: '2px 8px', borderRadius: '8px', background: '#fef3c7', color: '#b45309' }}>
-                      ⏳ Status: {intro.status?.toUpperCase() || 'EM ANÁLISE PELA ABN'}
+                       Status: {intro.status?.toUpperCase() || 'EM ANÁLISE PELA ABN'}
                     </span>
                   </div>
                 ))}
@@ -764,7 +764,7 @@ export default function CaptacaoPage() {
                   Progresso na Aceleração: {business?.acceleration?.progress || 50}%
                 </h3>
               </div>
-              <div style={{ fontSize: '2rem' }}>🏆</div>
+              <div style={{ fontSize: '2rem' }}></div>
             </div>
 
             <div style={{ width: '100%', height: '10px', background: '#f1f5f9', borderRadius: '5px', overflow: 'hidden' }}>

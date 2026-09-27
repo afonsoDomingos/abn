@@ -177,7 +177,7 @@ export async function sendCourseApprovalEmail(email: string, name: string, cours
     <div style="background-color: #f8fafc; border-left: 4px solid #ff6b00; padding: 16px; margin: 22px 0; border-radius: 6px; font-size: 14px; color: #334155;">
       <strong style="color: #0f172a;">Instruções de Acesso:</strong><br/>
       1. Aceda à plataforma com o seu login;<br/>
-      2. No menu principal, vá a <strong>Formação</strong> → <strong>Minhas Formações</strong>;<br/>
+      2. No menu principal, vá a <strong>Formação</strong>  <strong>Minhas Formações</strong>;<br/>
       3. Clique em <strong>Assistir Aulas</strong> para iniciar a sua capacitação.
     </div>
 
@@ -526,12 +526,12 @@ export async function sendProductApprovedEmail(
   productName: string
 ) {
   const content = `
-    <h2 style="color: #15803d; margin-top: 0; font-size: 20px;">🎉 Parabéns! Produto Aprovado na Loja ABN</h2>
+    <h2 style="color: #15803d; margin-top: 0; font-size: 20px;"> Parabéns! Produto Aprovado na Loja ABN</h2>
     <p>Olá, <strong>${sellerName}</strong>,</p>
     <p>Temos o prazer de informar que o seu produto <strong>${productName}</strong> foi aprovado e já se encontra publicado na <strong>Loja Oficial da ABN</strong>!</p>
 
     <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 14px; color: #166534;">
-      <p style="margin: 4px 0; font-weight: 700;">✅ O seu item está visível para milhares de visitantes e empreendedores de toda a rede.</p>
+      <p style="margin: 4px 0; font-weight: 700;"> O seu item está visível para milhares de visitantes e empreendedores de toda a rede.</p>
       <p style="margin: 4px 0;">Quando um cliente realizar um pedido, você será notificado imediatamente para gerir o atendimento e a entrega.</p>
     </div>
 
@@ -544,7 +544,7 @@ export async function sendProductApprovedEmail(
 
   return sendEmail({
     to: email,
-    subject: `✅ Produto Aprovado: ${productName} está no ar na Loja ABN!`,
+    subject: ` Produto Aprovado: ${productName} está no ar na Loja ABN!`,
     html: emailLayout(content, 'Loja ABN'),
   });
 }
@@ -600,7 +600,7 @@ export async function sendNewSaleSellerEmail(
   total: number
 ) {
   const content = `
-    <h2 style="color: #15803d; margin-top: 0; font-size: 20px;">🎉 Nova Venda Realizada na Loja ABN!</h2>
+    <h2 style="color: #15803d; margin-top: 0; font-size: 20px;"> Nova Venda Realizada na Loja ABN!</h2>
     <p>Olá, <strong>${sellerName}</strong>,</p>
     <p>Excelente notícia! Um cliente acabou de efetuar um pedido para o seu produto na <strong>Loja ABN</strong>.</p>
 
@@ -627,7 +627,7 @@ export async function sendNewSaleSellerEmail(
 
   return sendEmail({
     to: sellerEmail,
-    subject: `🎉 Nova Venda na Loja ABN: ${productName} (#${orderId.toString().slice(-8)})`,
+    subject: ` Nova Venda na Loja ABN: ${productName} (#${orderId.toString().slice(-8)})`,
     html: emailLayout(content, 'Loja ABN'),
   });
 }

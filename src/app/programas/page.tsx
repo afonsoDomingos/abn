@@ -15,28 +15,28 @@ export default function ProgramasPage() {
 
         <div className={styles.programsGrid}>
           <div className={styles.programCard}>
-            <div className={styles.programIcon}>🚀</div>
+            <div className={styles.programIcon}></div>
             <h2>ABN Startup 180</h2>
             <p>Programa de incubação intensiva de 180 dias para startups em fase inicial.</p>
             <a href="/programas/startup-180" className={styles.btn}>Saber mais</a>
           </div>
 
           <div className={styles.programCard}>
-            <div className={styles.programIcon}>🤝</div>
+            <div className={styles.programIcon}></div>
             <h2>Clube dos Empreendedores</h2>
             <p>Comunidade exclusiva para networking, mentoria e oportunidades de negócios.</p>
             <a href="/clube-empreendedores" className={styles.btn}>Saber mais</a>
           </div>
 
           <div className={styles.programCard}>
-            <div className={styles.programIcon}>🏢</div>
+            <div className={styles.programIcon}></div>
             <h2>Clubes das Startups (Moçambique)</h2>
             <p>Hubs locais de apoio a startups em Maputo e outras cidades moçambicanas.</p>
             <a href="/programas/clubes-startups-mocambique" className={styles.btn}>Saber mais</a>
           </div>
 
           <div className={styles.programCard}>
-            <div className={styles.programIcon}>🏢</div>
+            <div className={styles.programIcon}></div>
             <h2>Clubes das Startups (Angola)</h2>
             <p>Hubs locais de apoio a startups em Luanda e outras cidades angolanas.</p>
             <a href="/programas/clubes-startups-angola" className={styles.btn}>Saber mais</a>

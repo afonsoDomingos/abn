@@ -223,7 +223,7 @@ export default function GaleriaClient({ initialItems }: GaleriaClientProps) {
       {activePhoto && (
         <div className={styles.lightboxOverlay} onClick={() => setActivePhoto(null)}>
           <div className={styles.lightboxContent} onClick={e => e.stopPropagation()}>
-            <button className={styles.closeBtn} onClick={() => setActivePhoto(null)}>✕</button>
+            <button className={styles.closeBtn} onClick={() => setActivePhoto(null)}></button>
             <img
               src={activePhoto.imageUrl || '/abn-logo.png'}
               alt={activePhoto.title}

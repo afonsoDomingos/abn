@@ -84,10 +84,10 @@ export default function AdminServicosPage() {
     if (data.success) {
       if (isEdit) {
         setServices(prev => prev.map(s => s._id === editingService._id ? data.service : s));
-        setMsg('✅ Serviço atualizado com sucesso!');
+        setMsg(' Serviço atualizado com sucesso!');
       } else {
         setServices(prev => [data.service, ...prev]);
-        setMsg('✅ Serviço adicionado com sucesso!');
+        setMsg(' Serviço adicionado com sucesso!');
       }
       setForm({ name: '', description: '', price: '', category: 'Marketing Digital', status: 'ativo', image: '' });
       setEditingService(null);
@@ -127,7 +127,7 @@ export default function AdminServicosPage() {
           }
           setShowForm(!showForm);
         }}>
-          {showForm ? '✕ Cancelar' : '+ Novo Serviço'}
+          {showForm ? ' Cancelar' : '+ Novo Serviço'}
         </button>
       </div>
 
@@ -168,7 +168,7 @@ export default function AdminServicosPage() {
               <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                 <input value={form.image} onChange={e => setForm({ ...form, image: e.target.value })} placeholder="URL da foto de capa" style={{ flex: 1 }} />
                 <label style={{ cursor: 'pointer', padding: '10px 14px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontSize: '0.9rem' }}>
-                  {uploadingImage ? '⏳...' : '📁 Subir'}
+                  {uploadingImage ? '...' : ' Subir'}
                   <input type="file" accept="image/*" onChange={e => { const f = e.target.files?.[0]; if (f) handleImageUpload(f); }} style={{ display: 'none' }} />
                 </label>
               </div>
@@ -191,7 +191,7 @@ export default function AdminServicosPage() {
         </div>
       ) : services.length === 0 ? (
         <div className={styles.empty}>
-          <span>🛍️</span>
+          <span></span>
           <p>Nenhum serviço criado ainda.</p>
           <button className="btn-primary" onClick={() => setShowForm(true)}>Adicionar Primeiro Serviço</button>
         </div>
@@ -215,8 +215,8 @@ export default function AdminServicosPage() {
               <div className={styles.cardFooter}>
                 <span className={styles.price}>{service.price}</span>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <button className={styles.editBtn} onClick={() => handleEditClick(service)}>✏️ Editar</button>
-                  <button className={styles.deleteBtn} onClick={() => handleDelete(service._id)}>🗑️ Remover</button>
+                  <button className={styles.editBtn} onClick={() => handleEditClick(service)}> Editar</button>
+                  <button className={styles.deleteBtn} onClick={() => handleDelete(service._id)}> Remover</button>
                 </div>
               </div>
             </div>

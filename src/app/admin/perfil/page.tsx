@@ -107,7 +107,7 @@ export default function ProfilePage() {
           
           // Trigger header update event instantly
           window.dispatchEvent(new Event('user-profile-updated'));
-          setMsg({ type: 'success', text: '✅ Foto de perfil atualizada com sucesso!' });
+          setMsg({ type: 'success', text: ' Foto de perfil atualizada com sucesso!' });
         } else {
           setMsg({ type: 'success', text: 'Foto enviada! Clique em Salvar Alterações para guardar.' });
         }
@@ -150,7 +150,7 @@ export default function ProfilePage() {
       const data = await res.json();
 
       if (data.success) {
-        setMsg({ type: 'success', text: '✅ Perfil atualizado com sucesso!' });
+        setMsg({ type: 'success', text: ' Perfil atualizado com sucesso!' });
         const updatedUser = { ...data.user, profileImage: user.profileImage || data.user.profileImage };
         localStorage.setItem('user', JSON.stringify(updatedUser));
         window.dispatchEvent(new Event('user-profile-updated'));
@@ -213,12 +213,12 @@ export default function ProfilePage() {
                   }} 
                 >
                   <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '1.4rem' }}>
-                    📷
+                    
                   </div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', flex: 1 }}>
                   <span style={{ fontSize: '0.92rem', color: 'var(--primary, #ff6b00)', fontWeight: 800 }}>
-                    {uploading ? '⏳ A carregar imagem...' : '📷 Clique aqui para Escolher Nova Foto'}
+                    {uploading ? ' A carregar imagem...' : ' Clique aqui para Escolher Nova Foto'}
                   </span>
                   <span style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4 }}>
                     Selecione qualquer imagem do seu computador ou telemóvel (PNG, JPG ou WEBP).
@@ -329,7 +329,7 @@ export default function ProfilePage() {
             </div>
 
             <button type="submit" className="btn-primary" disabled={saving} style={{ marginTop: '1rem', padding: '0.8rem 2rem', borderRadius: '10px' }}>
-              {saving ? 'A guardar...' : '💾 Salvar Alterações'}
+              {saving ? 'A guardar...' : ' Salvar Alterações'}
             </button>
           </form>
         </section>

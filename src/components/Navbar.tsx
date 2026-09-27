@@ -265,7 +265,7 @@ export default function Navbar() {
             <img src="/abn-logo.png" alt="ABN Logo" className={styles.logoImg} />
             <span className={styles.abn}>ABN</span>
           </Link>
-          <button className={styles.closeBtn} onClick={closeMenu} aria-label="Fechar menu">✕</button>
+          <button className={styles.closeBtn} onClick={closeMenu} aria-label="Fechar menu"></button>
         </div>
 
         <nav className={styles.drawerNav}>

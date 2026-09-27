@@ -96,7 +96,7 @@ export default function PresidentMessage({ showFullPageLayout = false }: Preside
                 )}
               </div>
               <div className={styles.verifiedBadge} title="Presidente & Fundador">
-                ✓
+                
               </div>
             </div>
 
@@ -112,7 +112,7 @@ export default function PresidentMessage({ showFullPageLayout = false }: Preside
 
               <div className={styles.cardActions}>
                 <Link href="/registro" className={styles.btnPrimary}>
-                  {pm.joinCta || "Junte-se à Rede"} →
+                  {pm.joinCta || "Junte-se à Rede"} 
                 </Link>
                 <Link href="/equipa" className={styles.btnOutline}>
                   {pm.exploreTeam || "Conhecer a Equipa"}

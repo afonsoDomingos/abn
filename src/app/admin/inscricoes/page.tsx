@@ -354,7 +354,7 @@ export default function AdminInscricoesPage() {
                   <td style={{ padding: '1rem' }}>
                     {i.comprovativoUrl ? (
                       <a href={i.comprovativoUrl} target="_blank" rel="noreferrer" style={{ color: '#ff6b00', fontWeight: 800, fontSize: '0.8rem', textDecoration: 'underline' }}>
-                        📄 Ver Comprovativo
+                         Ver Comprovativo
                       </a>
                     ) : (
                       <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>—</span>
@@ -412,7 +412,7 @@ export default function AdminInscricoesPage() {
                 <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{selectedDetail.itemTitle}</span>
               </div>
               <button onClick={() => setSelectedDetail(null)} style={{ background: '#f1f5f9', border: 'none', width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', fontWeight: 800, color: '#475569' }}>
-                ✕
+                
               </button>
             </div>
 
@@ -434,7 +434,7 @@ export default function AdminInscricoesPage() {
               {/* Respostas Personalizadas */}
               <div style={{ background: '#ffffff', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
                 <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#0ea5e9', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                  📝 Respostas do Inquérito Personalizado
+                   Respostas do Inquérito Personalizado
                 </div>
 
                 {selectedDetail.respostasPersonalizadas && Object.keys(selectedDetail.respostasPersonalizadas).length > 0 ? (
@@ -460,7 +460,7 @@ export default function AdminInscricoesPage() {
               {selectedDetail.comprovativoUrl && (
                 <div style={{ background: '#fff7ed', padding: '1rem', borderRadius: '12px', border: '1px solid #fed7aa', textAlign: 'center' }}>
                   <span style={{ display: 'block', fontSize: '0.82rem', fontWeight: 800, color: '#c2410c', marginBottom: '0.5rem' }}>
-                    📄 Comprovativo de Pagamento
+                     Comprovativo de Pagamento
                   </span>
                   <a
                     href={selectedDetail.comprovativoUrl}

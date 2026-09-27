@@ -541,7 +541,7 @@ export default function MentoriaPage() {
                 onClick={() => setMainTab('sessions')}
                 style={{ color: '#0f172a', borderColor: '#cbd5e1' }}
               >
-                Ver Agenda Completa →
+                Ver Agenda Completa 
               </button>
             </div>
 
@@ -587,7 +587,7 @@ export default function MentoriaPage() {
                         style={{ background: '#ecfdf5', color: '#059669', border: '1px solid #a7f3d0', padding: '0.65rem 1rem', borderRadius: '10px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}
                         onClick={() => handleUpdateStatus(sess._id, 'concluida')}
                       >
-                        ✓ Concluir Sessão
+                         Concluir Sessão
                       </button>
                     </div>
                   </div>
@@ -608,7 +608,7 @@ export default function MentoriaPage() {
                 onClick={() => setMainTab('requests')}
                 style={{ color: '#0f172a', borderColor: '#cbd5e1' }}
               >
-                Gerir Todos os Pedidos →
+                Gerir Todos os Pedidos 
               </button>
             </div>
 
@@ -803,7 +803,7 @@ export default function MentoriaPage() {
                       style={{ background: '#ecfdf5', color: '#059669', border: '1px solid #a7f3d0', padding: '0.65rem 1rem', borderRadius: '10px', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}
                       onClick={() => handleUpdateStatus(sess._id, 'concluida')}
                     >
-                      ✓ Concluir Sessão
+                       Concluir Sessão
                     </button>
                   </div>
                 </div>
@@ -1062,7 +1062,7 @@ export default function MentoriaPage() {
                     />
                     <div className={styles.mentorHeaderMeta}>
                       <span style={{ fontSize: '0.72rem', color: '#ff6b00', fontWeight: 800, textTransform: 'uppercase' }}>
-                        📍 {mentor.country}
+                         {mentor.country}
                       </span>
                       <h3 className={styles.mentorName}>{mentor.name}</h3>
                       <p className={styles.mentorHeadline}>{mentor.headline}</p>

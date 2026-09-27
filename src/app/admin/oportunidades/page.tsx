@@ -154,7 +154,7 @@ export default function AdminOportunidadesPage() {
 
       const data = await res.json();
       if (data.success) {
-        setMsg(editingId ? '✅ Oportunidade atualizada com sucesso!' : '✅ Oportunidade criada com sucesso!');
+        setMsg(editingId ? ' Oportunidade atualizada com sucesso!' : ' Oportunidade criada com sucesso!');
         fetchOpportunities();
         setShowForm(false);
         setTimeout(() => setMsg(''), 3000);
@@ -179,7 +179,7 @@ export default function AdminOportunidadesPage() {
       const data = await res.json();
       if (data.success) {
         setOpportunities(prev => prev.filter(opp => opp._id !== id));
-        setMsg('🗑️ Oportunidade removida com sucesso!');
+        setMsg(' Oportunidade removida com sucesso!');
         setTimeout(() => setMsg(''), 3000);
       } else {
         alert(data.error || 'Erro ao remover oportunidade.');
@@ -223,7 +223,7 @@ export default function AdminOportunidadesPage() {
           <p className={styles.subtitle}>{opportunities.length} oportunidades registradas</p>
         </div>
         <button className={`btn-primary ${styles.addBtn}`} onClick={() => showForm ? setShowForm(false) : handleCreateClick()}>
-          {showForm ? '✕ Cancelar' : '+ Nova Oportunidade'}
+          {showForm ? ' Cancelar' : '+ Nova Oportunidade'}
         </button>
       </div>
 
@@ -328,7 +328,7 @@ export default function AdminOportunidadesPage() {
                   style={{ flex: 1 }}
                 />
                 <label style={{ cursor: 'pointer', padding: '10px 14px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontSize: '0.9rem' }}>
-                  {uploadingImage ? '⏳...' : '📁 Subir Capa'}
+                  {uploadingImage ? '...' : ' Subir Capa'}
                   <input
                     type="file"
                     accept="image/*"
@@ -418,14 +418,14 @@ export default function AdminOportunidadesPage() {
               <div className={styles.cardHeader}>
                 <span className={styles.categoryBadge}>{opp.category}</span>
                 <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--primary)' }}>
-                  💰 {opp.amount}
+                   {opp.amount}
                 </span>
               </div>
               <h3 className={styles.cardTitle}>{opp.title}</h3>
               <p className={styles.cardDesc}>{opp.description}</p>
               <div className={styles.cardMeta}>
                 <div className={styles.metaItem}>
-                  <span>📅 Prazo:</span>
+                  <span> Prazo:</span>
                   <strong>{formatDateLong(opp.deadline)}</strong>
                 </div>
                 {opp.provider && (
@@ -436,17 +436,17 @@ export default function AdminOportunidadesPage() {
                 )}
                 {opp.location && (
                   <div className={styles.metaItem}>
-                    <span>📍 Local:</span>
+                    <span> Local:</span>
                     <span>{opp.location}</span>
                   </div>
                 )}
               </div>
               <div className={styles.cardFooter}>
                 <button className={styles.editBtn} onClick={() => handleEditClick(opp)}>
-                  ✏️ Editar
+                   Editar
                 </button>
                 <button className={styles.deleteBtn} onClick={() => handleDelete(opp._id)}>
-                  🗑️
+                  
                 </button>
               </div>
             </div>

@@ -467,7 +467,7 @@ export default function RegisterPage() {
             fontSize: '0.86rem',
             fontWeight: 600
           }}>
-            ⚠️ {error}
+             {error}
           </div>
         )}
 
@@ -529,7 +529,7 @@ export default function RegisterPage() {
                 onClick={handleNextStep}
                 style={{ marginTop: '0.75rem', padding: '14px 20px', width: '100%', fontSize: '0.92rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}
               >
-                Continuar para Escolher Perfil →
+                Continuar para Escolher Perfil 
               </button>
             </div>
           )}
@@ -633,7 +633,7 @@ export default function RegisterPage() {
                   onClick={handleNextStep}
                   style={{ padding: '12px 20px', fontSize: '0.88rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}
                 >
-                  Continuar para Perfil Profissional →
+                  Continuar para Perfil Profissional 
                 </button>
               </div>
             </div>
@@ -961,7 +961,7 @@ export default function RegisterPage() {
                   onClick={handleNextStep}
                   style={{ padding: '12px 20px', fontSize: '0.88rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}
                 >
-                  Continuar para Verificação →
+                  Continuar para Verificação 
                 </button>
               </div>
             </div>
@@ -1050,7 +1050,7 @@ export default function RegisterPage() {
               </div>
 
               <div style={{ background: 'rgba(255,107,0,0.06)', border: '1px solid rgba(255,107,0,0.2)', padding: '1rem', borderRadius: '12px', fontSize: '0.82rem', color: '#475569', lineHeight: 1.5 }}>
-                ℹ️ Ao clicar em <strong>"Ativar Conta e Entrar no Dashboard"</strong>, a sua conta multi-perfil será criada instantaneamente e terá acesso imediato às ferramentas personalizadas do ecossistema ABN.
+                 Ao clicar em <strong>"Ativar Conta e Entrar no Dashboard"</strong>, a sua conta multi-perfil será criada instantaneamente e terá acesso imediato às ferramentas personalizadas do ecossistema ABN.
               </div>
 
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '1rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px' }}>

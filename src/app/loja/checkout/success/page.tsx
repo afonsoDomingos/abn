@@ -52,10 +52,10 @@ export default function CheckoutSuccess() {
     if (!order) return;
     const phone = '258840000000'; // Número oficial de suporte/atendimento ABN
     const msg = `Olá ABN! Gostaria de confirmar meu pedido #${orderId}.\n\n` +
-      `📦 Item: ${order.productName}\n` +
-      `💰 Valor: ${order.total ? Number(order.total).toLocaleString() : order.productPrice} MT\n` +
-      `👤 Cliente: ${order.customerName}\n` +
-      `💳 Método: ${order.paymentMethod?.toUpperCase()}\n\n` +
+      ` Item: ${order.productName}\n` +
+      ` Valor: ${order.total ? Number(order.total).toLocaleString() : order.productPrice} MT\n` +
+      ` Cliente: ${order.customerName}\n` +
+      ` Método: ${order.paymentMethod?.toUpperCase()}\n\n` +
       `Podem verificar o status da entrega/acesso?`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
   };
@@ -90,7 +90,7 @@ export default function CheckoutSuccess() {
             </div>
           ) : orderStatus === 'paid' ? (
             <div className={styles.paidState}>
-              <div className={styles.successIcon}>✅</div>
+              <div className={styles.successIcon}></div>
               <h2>Pagamento Confirmado!</h2>
               <p>Obrigado pela sua compra. O seu pedido foi processado com sucesso.</p>
               <p className={styles.orderId}>Pedido #{orderId}</p>
@@ -98,9 +98,9 @@ export default function CheckoutSuccess() {
               <div className={styles.nextSteps}>
                 <h3>Próximos Passos</h3>
                 <ul>
-                  <li>📧 Você receberá um email de confirmação</li>
-                  <li>📦 Se for um produto digital, receberá o link de download</li>
-                  <li>📱 Se for um serviço, entraremos em contacto via WhatsApp</li>
+                  <li> Você receberá um email de confirmação</li>
+                  <li> Se for um produto digital, receberá o link de download</li>
+                  <li> Se for um serviço, entraremos em contacto via WhatsApp</li>
                 </ul>
               </div>
 
@@ -132,7 +132,7 @@ export default function CheckoutSuccess() {
             </div>
           ) : (
             <div className={styles.failedState}>
-              <div className={styles.errorIcon}>❌</div>
+              <div className={styles.errorIcon}></div>
               <h2>Pagamento Falhou</h2>
               <p>Ocorreu um erro ao processar o seu pagamento. Por favor, tente novamente.</p>
               <p className={styles.orderId}>Pedido #{orderId}</p>

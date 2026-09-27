@@ -596,7 +596,7 @@ export default function ServicosConsultoriaPage() {
                         <ul className={styles.deliverablesList}>
                           {srv.deliverables.map((d, i) => (
                             <li key={i} className={styles.deliverableItem}>
-                              <span className={styles.deliverableCheck}>✓</span>
+                              <span className={styles.deliverableCheck}></span>
                               <span>{d}</span>
                             </li>
                           ))}
@@ -761,7 +761,7 @@ export default function ServicosConsultoriaPage() {
                     style={{ background: '#ecfdf5', color: '#059669', border: '1px solid #a7f3d0', padding: '0.6rem 1.2rem', borderRadius: '10px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer' }}
                     onClick={() => handleUpdateOrderStatus(proj._id, 'concluido')}
                   >
-                    ✓ Marcar como Concluído
+                     Marcar como Concluído
                   </button>
                 </div>
               </div>
@@ -979,7 +979,7 @@ export default function ServicosConsultoriaPage() {
                     <ul className={styles.deliverablesList}>
                       {srv.deliverables.slice(0, 3).map((d, i) => (
                         <li key={i} className={styles.deliverableItem}>
-                          <span className={styles.deliverableCheck}>✓</span>
+                          <span className={styles.deliverableCheck}></span>
                           <span>{d}</span>
                         </li>
                       ))}

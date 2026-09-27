@@ -228,7 +228,7 @@ export default function NoticiasClient({ initialPosts }: NoticiasClientProps) {
       {selectedPost && (
         <div className={styles.modalOverlay} onClick={() => setSelectedPost(null)}>
           <div className={`${styles.modalContent} glass`} onClick={e => e.stopPropagation()}>
-            <button className={styles.closeModalBtn} onClick={() => setSelectedPost(null)}>✕</button>
+            <button className={styles.closeModalBtn} onClick={() => setSelectedPost(null)}></button>
 
             <div className={styles.modalHeader}>
               <div className={styles.modalMeta}>

@@ -81,14 +81,14 @@ export default function DashboardProgramasPage() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase' }}>Programa Ativo</span>
                   <span style={{ fontSize: '0.75rem', fontWeight: 800, background: item.status === 'aprovado' ? '#dcfce7' : '#fef3c7', color: item.status === 'aprovado' ? '#15803d' : '#b45309', padding: '3px 10px', borderRadius: '12px' }}>
-                    {item.status === 'aprovado' ? '🟢 Aprovado' : '⏳ Em Verificação'}
+                    {item.status === 'aprovado' ? ' Aprovado' : ' Em Verificação'}
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>
                   {item.programaTitulo || `Clube ABN — ${item.nivelAdesao}`}
                 </h3>
                 <div style={{ fontSize: '0.82rem', color: '#64748b' }}>
-                  📅 Inscrito em: {new Date(item.createdAt).toLocaleDateString('pt-PT')}
+                   Inscrito em: {new Date(item.createdAt).toLocaleDateString('pt-PT')}
                 </div>
                 <div style={{ fontSize: '0.82rem', color: '#475569', background: '#f8fafc', padding: '8px 12px', borderRadius: '8px', border: '1px solid #f1f5f9' }}>
                   <strong>Modalidade/Plano:</strong> {item.nivelAdesao?.toUpperCase() || 'Padrão'}
@@ -115,7 +115,7 @@ export default function DashboardProgramasPage() {
                 <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary)', background: '#fff7ed', border: '1px solid #ffedd5', padding: '4px 10px', borderRadius: '20px' }}>
                   {prog.phase || 'Aceleração'}
                 </span>
-                <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>⏱️ {prog.duration || 'Por Edição'}</span>
+                <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}> {prog.duration || 'Por Edição'}</span>
               </div>
 
               <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', margin: 0, fontFamily: 'Outfit' }}>

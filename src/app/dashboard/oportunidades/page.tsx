@@ -90,7 +90,7 @@ export default function OportunidadesPage() {
                 }}>
                   {opp.category}
                 </span>
-                <strong style={{ fontSize: '0.95rem', color: 'var(--primary)' }}>💰 {opp.amount}</strong>
+                <strong style={{ fontSize: '0.95rem', color: 'var(--primary)' }}> {opp.amount}</strong>
               </div>
 
               <div>
@@ -102,7 +102,7 @@ export default function OportunidadesPage() {
 
               <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1rem' }}>
                 <span style={{ fontSize: '0.75rem', color: '#ff4d4d', fontWeight: 600 }}>
-                  ⏳ Limite: {new Date(opp.deadline).toLocaleDateString('pt-PT', { day: '2-digit', month: 'short', year: 'numeric' })}
+                   Limite: {new Date(opp.deadline).toLocaleDateString('pt-PT', { day: '2-digit', month: 'short', year: 'numeric' })}
                 </span>
                 {opp.applyLink && (
                   <a

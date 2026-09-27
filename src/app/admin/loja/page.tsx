@@ -121,7 +121,7 @@ export default function AdminLojaPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setMsg(`✅ Produto ${action === 'aprovar' ? 'aprovado e publicado na loja' : 'rejeitado'}!`);
+        setMsg(` Produto ${action === 'aprovar' ? 'aprovado e publicado na loja' : 'rejeitado'}!`);
         setTimeout(() => setMsg(''), 4000);
         fetchSubmissions();
         fetchProducts();
@@ -222,7 +222,7 @@ export default function AdminLojaPage() {
       const data = await res.json();
 
       if (data.success) {
-        setMsg(editingId ? '✅ Produto atualizado!' : '✅ Produto criado!');
+        setMsg(editingId ? ' Produto atualizado!' : ' Produto criado!');
         setTimeout(() => setMsg(''), 3000);
         setShowForm(false);
         fetchProducts();
@@ -247,7 +247,7 @@ export default function AdminLojaPage() {
       const data = await res.json();
       if (data.success) {
         setProducts(prev => prev.filter(p => p._id !== id));
-        setMsg('🗑️ Produto removido com sucesso!');
+        setMsg(' Produto removido com sucesso!');
         setTimeout(() => setMsg(''), 3000);
       } else {
         alert(data.error || 'Erro ao remover produto.');
@@ -276,7 +276,7 @@ export default function AdminLojaPage() {
             showForm ? setShowForm(false) : handleCreateClick();
           }}
         >
-          {showForm ? '✕ Cancelar' : '+ Novo Produto Direto'}
+          {showForm ? ' Cancelar' : '+ Novo Produto Direto'}
         </button>
       </div>
 
@@ -577,7 +577,7 @@ export default function AdminLojaPage() {
                       style={{ flex: 1 }}
                     />
                     <label style={{ cursor: 'pointer', padding: '10px 14px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontSize: '0.9rem' }}>
-                      {uploadingImage ? '⏳...' : '📁 Subir Imagem'}
+                      {uploadingImage ? '...' : ' Subir Imagem'}
                       <input
                         type="file"
                         accept="image/*"
@@ -615,7 +615,7 @@ export default function AdminLojaPage() {
             </div>
           ) : products.length === 0 ? (
             <div className={styles.empty}>
-              <span style={{ fontSize: '3rem' }}>📦</span>
+              <span style={{ fontSize: '3rem' }}></span>
               <p>Nenhum produto na loja.</p>
             </div>
           ) : (
@@ -626,7 +626,7 @@ export default function AdminLojaPage() {
                     {product.image ? (
                       <img src={product.image} alt={product.name} />
                     ) : (
-                      <div className={styles.placeholder}>📦</div>
+                      <div className={styles.placeholder}></div>
                     )}
                   </div>
                   <div className={styles.cardContent}>
@@ -655,10 +655,10 @@ export default function AdminLojaPage() {
                   </div>
                   <div className={styles.cardActions}>
                     <button className={styles.editBtn} onClick={() => handleEditClick(product)}>
-                      ✏️ Editar
+                       Editar
                     </button>
                     <button className={styles.deleteBtn} onClick={() => handleDelete(product._id)}>
-                      🗑️ Remover
+                       Remover
                     </button>
                   </div>
                 </div>

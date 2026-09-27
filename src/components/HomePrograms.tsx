@@ -32,8 +32,8 @@ export default function HomePrograms() {
   const handleShareWhatsApp = (prog: Program) => {
     const url = `${window.location.origin}/programas/${prog._id}`;
     const text = language === 'pt'
-      ? `Olá! Confira este programa da ABN - AfroBiz Network:\n\n*${prog.title}*\n${prog.description.slice(0, 160)}...\n\n🔗 Saiba mais em: ${url}`
-      : `Hello! Check out this program by ABN - AfroBiz Network:\n\n*${prog.title}*\n${prog.description.slice(0, 160)}...\n\n🔗 Learn more: ${url}`;
+      ? `Olá! Confira este programa da ABN - AfroBiz Network:\n\n*${prog.title}*\n${prog.description.slice(0, 160)}...\n\n Saiba mais em: ${url}`
+      : `Hello! Check out this program by ABN - AfroBiz Network:\n\n*${prog.title}*\n${prog.description.slice(0, 160)}...\n\n Learn more: ${url}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -163,7 +163,7 @@ export default function HomePrograms() {
                           title={copiedId === prog._id ? (language === 'pt' ? 'Link Copiado!' : 'Link Copied!') : (language === 'pt' ? 'Copiar link direto' : 'Copy link')}
                         >
                           {copiedId === prog._id ? (
-                            <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#10b981' }}>✓</span>
+                            <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#10b981' }}></span>
                           ) : (
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
@@ -244,7 +244,7 @@ export default function HomePrograms() {
         {/* CTA */}
         <div className={styles.footer}>
           <Link href="/programas" className={styles.ctaBtn}>
-            {language === 'pt' ? 'Ver Todos os Programas →' : 'View All Programs →'}
+            {language === 'pt' ? 'Ver Todos os Programas ' : 'View All Programs '}
           </Link>
         </div>
       </motion.div>

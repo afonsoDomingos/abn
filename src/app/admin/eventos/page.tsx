@@ -216,7 +216,7 @@ export default function AdminEventosPage() {
 
       const data = await res.json();
       if (data.success) {
-        setMsg(editingId ? '✅ Evento atualizado com sucesso!' : '✅ Evento criado com sucesso!');
+        setMsg(editingId ? ' Evento atualizado com sucesso!' : ' Evento criado com sucesso!');
         fetchEvents();
         setShowForm(false);
         setTimeout(() => setMsg(''), 3000);
@@ -241,7 +241,7 @@ export default function AdminEventosPage() {
       const data = await res.json();
       if (data.success) {
         setEvents(prev => prev.filter(e => e._id !== id));
-        setMsg('🗑️ Evento removido com sucesso!');
+        setMsg(' Evento removido com sucesso!');
         setTimeout(() => setMsg(''), 3000);
       } else {
         alert(data.error || 'Erro ao remover evento.');
@@ -274,7 +274,7 @@ export default function AdminEventosPage() {
           <p className={styles.subtitle}>{events.length} eventos no total</p>
         </div>
         <button className={`btn-primary ${styles.addBtn}`} onClick={() => showForm ? setShowForm(false) : handleCreateClick()}>
-          {showForm ? '✕ Cancelar' : '+ Novo Evento'}
+          {showForm ? ' Cancelar' : '+ Novo Evento'}
         </button>
       </div>
 
@@ -349,7 +349,7 @@ export default function AdminEventosPage() {
                   {uploading ? (
                     <div className={styles.spinnerSmall}></div>
                   ) : (
-                    '📁'
+                    ''
                   )}
                   <input
                     type="file"
@@ -389,7 +389,7 @@ export default function AdminEventosPage() {
         </div>
       ) : events.length === 0 ? (
         <div className={styles.empty}>
-          <span>📅</span>
+          <span></span>
           <p>Nenhum evento registrado ainda.</p>
           <button className="btn-primary" onClick={handleCreateClick}>Adicionar Primeiro Evento</button>
         </div>
@@ -430,18 +430,18 @@ export default function AdminEventosPage() {
                 <p className={styles.cardDesc}>{ev.description}</p>
                 <div className={styles.cardMeta}>
                   <div className={styles.metaItem}>
-                    <span>📅</span>
+                    <span></span>
                     <strong>{formatDate(ev.date)}</strong>
                   </div>
                   <div className={styles.metaItem}>
-                    <span>📍</span>
+                    <span></span>
                     <span>{ev.location}</span>
                   </div>
                 </div>
               </div>
               <div className={styles.cardFooter}>
                 <button className={styles.editBtn} onClick={() => handleEditClick(ev)}>
-                  ✏️ Editar
+                   Editar
                 </button>
                 <button 
                   className={styles.inscriptionsBtn} 
@@ -457,10 +457,10 @@ export default function AdminEventosPage() {
                     fontSize: '0.85rem'
                   }}
                 >
-                  👥 Inscrições
+                   Inscrições
                 </button>
                 <button className={styles.deleteBtn} onClick={() => handleDelete(ev._id)}>
-                  🗑️
+                  
                 </button>
               </div>
             </div>
@@ -549,7 +549,7 @@ export default function AdminEventosPage() {
                         <div style={{ fontWeight: 800, color: '#0f172a', fontSize: '1rem' }}>
                           {insc.nomeCompleto}
                         </div>
-                        <div style={{ fontSize: '0.84rem', color: '#64748b' }}>{insc.email} | 📞 {insc.telefone || 'Sem telefone'}</div>
+                        <div style={{ fontSize: '0.84rem', color: '#64748b' }}>{insc.email} |  {insc.telefone || 'Sem telefone'}</div>
                         {insc.empresa && <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{insc.empresa} |  {insc.cargo || 'N/A'}</div>}
                       </div>
 
@@ -587,7 +587,7 @@ export default function AdminEventosPage() {
                             cursor: 'pointer'
                           }}
                         >
-                          🗑️
+                          
                         </button>
                       </div>
                     </div>

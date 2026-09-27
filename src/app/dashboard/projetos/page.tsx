@@ -185,7 +185,7 @@ export default function ProjetosPage() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
             <h2 style={{ color: '#0f172a', fontSize: '1.6rem', fontFamily: 'Outfit', fontWeight: 800 }}>{business?.name}</h2>
             <button className="btn-primary" onClick={() => setEditing(true)} style={{ borderRadius: '10px' }}>
-              ✏️ Editar Projeto
+               Editar Projeto
             </button>
           </div>
 
@@ -205,14 +205,14 @@ export default function ProjetosPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
             <div>
               <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.5rem', fontWeight: 800 }}>Localização</h4>
-              <p style={{ color: '#0f172a', fontWeight: 600 }}>📍 {business?.location || 'Não informada'}</p>
+              <p style={{ color: '#0f172a', fontWeight: 600 }}> {business?.location || 'Não informada'}</p>
             </div>
             <div>
               <h4 style={{ color: 'var(--primary)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em', marginBottom: '0.5rem', fontWeight: 800 }}>Website</h4>
               <p style={{ color: '#0f172a', fontWeight: 600 }}>
                 {business?.website ? (
                   <a href={business.website} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'underline', fontWeight: 700 }}>
-                    🔗 {business.website}
+                     {business.website}
                   </a>
                 ) : (
                   'Não informado'

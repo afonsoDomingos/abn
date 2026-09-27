@@ -65,7 +65,7 @@ const fallbackHubs: Record<string, any> = {
     ],
     partners: [
       { name: 'Startup Bissau', logo: '' },
-      { name: 'Banco da Guiné', logo: '🏦' },
+      { name: 'Banco da Guiné', logo: '' },
       { name: 'Mentores GB', logo: '' }
     ],
     localPrograms: [
@@ -377,9 +377,9 @@ export default function CountryHubClient({ params }: { params: Promise<{ slug: s
             {hub.description}
           </p>
           <div className={styles.contactInfo}>
-            <span>📍 {hub.address}</span>
-            <span>📧 {hub.email}</span>
-            {hub.phone && <span>📞 {hub.phone}</span>}
+            <span> {hub.address}</span>
+            <span> {hub.email}</span>
+            {hub.phone && <span> {hub.phone}</span>}
           </div>
         </div>
       </header>
@@ -404,8 +404,8 @@ export default function CountryHubClient({ params }: { params: Promise<{ slug: s
                   <h3>{hub.representative.name}</h3>
                   <p className={styles.representativeRole}>{hub.representative.role}</p>
                   <div className={styles.representativeContact}>
-                    {hub.representative.email && <span>📧 {hub.representative.email}</span>}
-                    {hub.representative.phone && <span>📞 {hub.representative.phone}</span>}
+                    {hub.representative.email && <span> {hub.representative.email}</span>}
+                    {hub.representative.phone && <span> {hub.representative.phone}</span>}
                   </div>
                 </div>
               </div>
@@ -425,8 +425,8 @@ export default function CountryHubClient({ params }: { params: Promise<{ slug: s
                   <h3>{hub.viceRepresentative.name}</h3>
                   <p className={styles.representativeRole}>{hub.viceRepresentative.role}</p>
                   <div className={styles.representativeContact}>
-                    {hub.viceRepresentative.email && <span>📧 {hub.viceRepresentative.email}</span>}
-                    {hub.viceRepresentative.phone && <span>📞 {hub.viceRepresentative.phone}</span>}
+                    {hub.viceRepresentative.email && <span> {hub.viceRepresentative.email}</span>}
+                    {hub.viceRepresentative.phone && <span> {hub.viceRepresentative.phone}</span>}
                   </div>
                 </div>
               </div>
@@ -543,7 +543,7 @@ export default function CountryHubClient({ params }: { params: Promise<{ slug: s
                     <p>{event.description}</p>
                     {event.link && (
                       <a href={event.link} target="_blank" rel="noopener noreferrer" className={styles.eventLink}>
-                        Saiba mais →
+                        Saiba mais 
                       </a>
                     )}
                   </div>

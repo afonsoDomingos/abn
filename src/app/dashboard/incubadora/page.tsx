@@ -179,8 +179,8 @@ export default function IncubadoraPage() {
               {inc.headline || 'Gestão integrada de coortes de aceleração, avaliação contínua de startups, mentores, investidores e scouting no ecossistema ABN.'}
             </p>
             <div style={{ marginTop: '0.75rem', fontSize: '0.82rem', color: '#a5b4fc', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <span>📍 {inc.city || 'Bissau'}, {inc.country || 'Guiné-Bissau'}</span>
-              <span>📅 Fundada em {inc.foundedYear || '2022'}</span>
+              <span> {inc.city || 'Bissau'}, {inc.country || 'Guiné-Bissau'}</span>
+              <span> Fundada em {inc.foundedYear || '2022'}</span>
               {inc.website && (
                 <a href={inc.website} target="_blank" rel="noreferrer" style={{ color: '#c7d2fe', textDecoration: 'underline', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
                   {inc.website.replace('https://', '')} <ExternalLink size={12} />
@@ -253,21 +253,21 @@ export default function IncubadoraPage() {
               </div>
             </div>
             <div className={styles.kpiCard}>
-              <div className={styles.kpiIcon} style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>💰</div>
+              <div className={styles.kpiIcon} style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}></div>
               <div>
                 <div className={styles.kpiValue}>{(metrics.totalCapitalRaisedEur || 1450000).toLocaleString('pt-PT')} €</div>
                 <div className={styles.kpiLabel}>Capital Levantado</div>
               </div>
             </div>
             <div className={styles.kpiCard}>
-              <div className={styles.kpiIcon} style={{ background: 'rgba(14, 165, 233, 0.1)', color: '#0ea5e9' }}>👥</div>
+              <div className={styles.kpiIcon} style={{ background: 'rgba(14, 165, 233, 0.1)', color: '#0ea5e9' }}></div>
               <div>
                 <div className={styles.kpiValue}>{metrics.jobsCreated || 185}</div>
                 <div className={styles.kpiLabel}>Empregos Criados</div>
               </div>
             </div>
             <div className={styles.kpiCard}>
-              <div className={styles.kpiIcon} style={{ background: 'rgba(168, 85, 247, 0.1)', color: '#a855f7' }}>📈</div>
+              <div className={styles.kpiIcon} style={{ background: 'rgba(168, 85, 247, 0.1)', color: '#a855f7' }}></div>
               <div>
                 <div className={styles.kpiValue}>{metrics.survivalRatePercent || 82}%</div>
                 <div className={styles.kpiLabel}>Taxa de Sobrevivência</div>
@@ -290,7 +290,7 @@ export default function IncubadoraPage() {
                 Apresentação ao vivo de 8 startups finalistas perante uma banca de investidores anjo e fundos de capital de risco da CPLP e Europa.
               </p>
               <button className={styles.btnPrimary} style={{ fontSize: '0.82rem', padding: '8px 16px' }} onClick={() => setActiveTab('investidores')}>
-                Gerir Investidores Convidados →
+                Gerir Investidores Convidados 
               </button>
             </div>
 
@@ -298,7 +298,7 @@ export default function IncubadoraPage() {
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.75rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 <span style={{ fontSize: '0.75rem', fontWeight: 800, background: '#fef3c7', color: '#b45309', padding: '4px 10px', borderRadius: '20px' }}>
-                  ⏳ Funil de Admissão
+                   Funil de Admissão
                 </span>
                 <span style={{ fontSize: '0.8rem', color: '#64748b' }}>{applications.filter((a: any) => a.status === 'pendente' || a.status === 'entrevista').length} pendentes</span>
               </div>
@@ -307,7 +307,7 @@ export default function IncubadoraPage() {
                 Novas startups submeteram pitch decks para a turma de Primavera. Conduza entrevistas e aprove os fundadores selecionados.
               </p>
               <button className={styles.btnPrimary} style={{ fontSize: '0.82rem', padding: '8px 16px', background: '#0284c7' }} onClick={() => setActiveTab('candidaturas')}>
-                Avaliar Candidaturas ({applications.length}) →
+                Avaliar Candidaturas ({applications.length}) 
               </button>
             </div>
           </div>
@@ -428,7 +428,7 @@ export default function IncubadoraPage() {
               <div key={idx} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.75rem', boxShadow: '0 4px 14px rgba(0,0,0,0.03)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                   <span style={{ fontSize: '0.72rem', fontWeight: 800, padding: '3px 10px', borderRadius: '20px', background: p.status === 'inscricoes_abertas' ? '#dcfce7' : '#f1f5f9', color: p.status === 'inscricoes_abertas' ? '#15803d' : '#475569' }}>
-                    {p.status === 'inscricoes_abertas' ? '🟢 Inscrições Abertas' : p.status === 'em_andamento' ? '⏳ Em Andamento' : '📅 Brevemente'}
+                    {p.status === 'inscricoes_abertas' ? ' Inscrições Abertas' : p.status === 'em_andamento' ? ' Em Andamento' : ' Brevemente'}
                   </span>
                   <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#4f46e5' }}>{p.batch}</span>
                 </div>
@@ -440,9 +440,9 @@ export default function IncubadoraPage() {
 
                 <div style={{ background: '#f8fafc', borderRadius: '14px', padding: '1rem', marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.82rem', color: '#334155' }}>
                   <div><strong>Duração:</strong> {p.duration} · <strong>Estágio:</strong> {p.stage?.toUpperCase()}</div>
-                  <div>💰 <strong>Bolsa / Grant:</strong> {(p.grantAmountEur || 0).toLocaleString('pt-PT')} € {p.equityPercent ? `(${p.equityPercent}% equity)` : '(Equity-Free)'}</div>
-                  <div>👥 <strong>Vagas:</strong> {p.slotsAvailable} startups</div>
-                  {p.applicationDeadline && <div>📅 <strong>Prazo:</strong> {p.applicationDeadline}</div>}
+                  <div> <strong>Bolsa / Grant:</strong> {(p.grantAmountEur || 0).toLocaleString('pt-PT')} € {p.equityPercent ? `(${p.equityPercent}% equity)` : '(Equity-Free)'}</div>
+                  <div> <strong>Vagas:</strong> {p.slotsAvailable} startups</div>
+                  {p.applicationDeadline && <div> <strong>Prazo:</strong> {p.applicationDeadline}</div>}
                 </div>
 
                 {p.perks && p.perks.length > 0 && (
@@ -489,12 +489,12 @@ export default function IncubadoraPage() {
                       background: app.status === 'aprovada' ? '#dcfce7' : app.status === 'entrevista' ? '#e0f2fe' : app.status === 'rejeitada' ? '#fee2e2' : '#fef3c7',
                       color: app.status === 'aprovada' ? '#15803d' : app.status === 'entrevista' ? '#0369a1' : app.status === 'rejeitada' ? '#b91c1c' : '#b45309'
                     }}>
-                      {app.status === 'aprovada' ? '🟢 Aprovada' : app.status === 'entrevista' ? '🔵 Em Entrevista' : app.status === 'rejeitada' ? '🔴 Rejeitada' : '⏳ Pendente'}
+                      {app.status === 'aprovada' ? ' Aprovada' : app.status === 'entrevista' ? ' Em Entrevista' : app.status === 'rejeitada' ? ' Rejeitada' : ' Pendente'}
                     </span>
                   </div>
 
                   <p style={{ margin: '0 0 8px', fontSize: '0.84rem', color: '#64748b' }}>
-                    👤 <strong>{app.founderName}</strong> ({app.founderEmail} · {app.founderPhone}) · 🌍 {app.country}
+                     <strong>{app.founderName}</strong> ({app.founderEmail} · {app.founderPhone}) ·  {app.country}
                   </p>
                   <p style={{ margin: '0 0 10px', fontSize: '0.88rem', color: '#334155', lineHeight: 1.5 }}>
                     "{app.pitchSummary}"
@@ -504,7 +504,7 @@ export default function IncubadoraPage() {
                   </div>
                   {app.reviewerNotes && (
                     <div style={{ marginTop: '8px', fontSize: '0.8rem', color: '#0284c7', background: '#f0f9ff', padding: '6px 12px', borderRadius: '8px' }}>
-                      📝 Nota do Comité: {app.reviewerNotes} (Nota: {app.evaluationScore}/100)
+                       Nota do Comité: {app.reviewerNotes} (Nota: {app.evaluationScore}/100)
                     </div>
                   )}
                 </div>
@@ -573,7 +573,7 @@ export default function IncubadoraPage() {
                 </div>
 
                 <div style={{ fontSize: '0.8rem', color: '#64748b', display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                  <span>⭐ Avaliação: <strong>{m.rating || 5.0}/5.0</strong></span>
+                  <span> Avaliação: <strong>{m.rating || 5.0}/5.0</strong></span>
                   <span>💬 {m.sessionsCompleted || 0} sessões concluídas</span>
                 </div>
 
@@ -618,9 +618,9 @@ export default function IncubadoraPage() {
                 <div style={{ fontSize: '0.84rem', color: '#64748b', marginBottom: '12px' }}>{inv.fundName || 'Fundo Independente'}</div>
 
                 <div style={{ background: '#f8fafc', padding: '10px 14px', borderRadius: '12px', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '12px' }}>
-                  <div>💰 <strong>Ticket Alvo:</strong> {inv.targetTicketEur}</div>
-                  <div>🏷️ <strong>Setores:</strong> {Array.isArray(inv.focusSectors) ? inv.focusSectors.join(', ') : inv.focusSectors}</div>
-                  <div>✉️ <strong>Contacto:</strong> {inv.email || 'deals@abn.network'}</div>
+                  <div> <strong>Ticket Alvo:</strong> {inv.targetTicketEur}</div>
+                  <div> <strong>Setores:</strong> {Array.isArray(inv.focusSectors) ? inv.focusSectors.join(', ') : inv.focusSectors}</div>
+                  <div> <strong>Contacto:</strong> {inv.email || 'deals@abn.network'}</div>
                 </div>
 
                 {inv.interestedStartups && inv.interestedStartups.length > 0 && (
@@ -660,7 +660,7 @@ export default function IncubadoraPage() {
                   </span>
                   <h3 style={{ margin: '6px 0 4px', fontSize: '1.15rem', color: '#0f172a', fontWeight: 800 }}>{ev.title}</h3>
                   <div style={{ fontSize: '0.84rem', color: '#64748b' }}>
-                    📅 {ev.date} às {ev.time} · 📍 {ev.location}
+                     {ev.date} às {ev.time} ·  {ev.location}
                   </div>
                   {ev.speakers && <div style={{ fontSize: '0.8rem', color: '#4f46e5', marginTop: '4px' }}>🎤 Oradores / Banca: {ev.speakers}</div>}
                 </div>
@@ -703,7 +703,7 @@ export default function IncubadoraPage() {
                   </span>
                 </div>
                 <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '1rem' }}>
-                  📅 Data: {ev.evaluationDate} · 👤 Avaliador: {ev.evaluator}
+                   Data: {ev.evaluationDate} ·  Avaliador: {ev.evaluator}
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px', marginBottom: '1.25rem' }}>
@@ -794,12 +794,12 @@ export default function IncubadoraPage() {
                         <span style={{ fontSize: '0.72rem', fontWeight: 800, background: '#fef3c7', color: '#b45309', padding: '3px 10px', borderRadius: '12px' }}>
                           {sc.stage}
                         </span>
-                        <span style={{ fontSize: '0.8rem', color: '#64748b' }}>🌍 {sc.country}</span>
+                        <span style={{ fontSize: '0.8rem', color: '#64748b' }}> {sc.country}</span>
                       </div>
 
                       <h3 style={{ margin: '0 0 4px', fontSize: '1.25rem', color: '#0f172a', fontWeight: 800 }}>{sc.name}</h3>
                       <div style={{ fontSize: '0.82rem', color: '#4f46e5', fontWeight: 700, marginBottom: '8px' }}>
-                        👤 {sc.founder} · 🏷️ {sc.sector}
+                         {sc.founder} ·  {sc.sector}
                       </div>
 
                       <p style={{ margin: '0 0 12px', fontSize: '0.86rem', color: '#334155', lineHeight: 1.5 }}>
@@ -807,8 +807,8 @@ export default function IncubadoraPage() {
                       </p>
 
                       <div style={{ background: '#f8fafc', padding: '10px', borderRadius: '12px', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px' }}>
-                        <div>💵 <strong>MRR:</strong> {sc.mrr} · 📈 <strong>Tração:</strong> {sc.traction}</div>
-                        <div>💰 <strong>Captação Procurada:</strong> {sc.seeking}</div>
+                        <div>💵 <strong>MRR:</strong> {sc.mrr} ·  <strong>Tração:</strong> {sc.traction}</div>
+                        <div> <strong>Captação Procurada:</strong> {sc.seeking}</div>
                       </div>
                     </div>
 

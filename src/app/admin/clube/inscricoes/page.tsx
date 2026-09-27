@@ -123,7 +123,7 @@ export default function AdminInscricoesClubePage() {
           <h1 className={styles.pageTitle}>Inscrições — {getClubStepTitle('Clube dos Empreendedores ABN')}</h1>
           <p className={styles.pageSubtitle}>Gestão de candidatos ao {getClubStepTitle('Clube dos Empreendedores ABN')}</p>
         </div>
-        <button className={styles.refreshBtn} onClick={fetchInscricoes}>↻ Atualizar</button>
+        <button className={styles.refreshBtn} onClick={fetchInscricoes}> Atualizar</button>
       </div>
 
       {/* Stats row */}
@@ -172,7 +172,7 @@ export default function AdminInscricoesClubePage() {
             <div className={styles.loading}><div className={styles.spinner} /><p>A carregar...</p></div>
           ) : filtered.length === 0 ? (
             <div className={styles.empty}>
-              <span>📋</span>
+              <span></span>
               <p>Nenhuma inscrição encontrada.</p>
             </div>
           ) : (
@@ -202,7 +202,7 @@ export default function AdminInscricoesClubePage() {
                         </div>
                       </td>
                       <td><span className={styles.nivelBadge}>{NIVEL_LABELS[i.nivelAdesao] || i.nivelAdesao}</span></td>
-                      <td><span className={styles.origemBadge}>{i.origem === 'home' ? '🏠 Home' : '📄 Programas'}</span></td>
+                      <td><span className={styles.origemBadge}>{i.origem === 'home' ? ' Home' : ' Programas'}</span></td>
                       <td>
                         <span className={styles.statusBadge} style={{ color: sc.color, background: sc.bg }}>
                           {sc.label}
@@ -210,7 +210,7 @@ export default function AdminInscricoesClubePage() {
                       </td>
                       <td className={styles.dateCell}>{new Date(i.createdAt).toLocaleDateString('pt-PT')}</td>
                       <td>
-                        <button className={styles.viewBtn} onClick={e => { e.stopPropagation(); openDetail(i); }}>Ver →</button>
+                        <button className={styles.viewBtn} onClick={e => { e.stopPropagation(); openDetail(i); }}>Ver </button>
                       </td>
                     </tr>
                   );
@@ -229,13 +229,13 @@ export default function AdminInscricoesClubePage() {
                 <h3 className={styles.detailName}>{selected.nomeCompleto}</h3>
                 <p className={styles.detailEmail}>{selected.email}</p>
               </div>
-              <button className={styles.closeDetail} onClick={() => setSelected(null)}>✕</button>
+              <button className={styles.closeDetail} onClick={() => setSelected(null)}></button>
             </div>
 
             <div className={styles.detailBody}>
               {/* Identification */}
               <div className={styles.detailSection}>
-                <h4 className={styles.detailSectionTitle}>📋 Identificação</h4>
+                <h4 className={styles.detailSectionTitle}> Identificação</h4>
                 <div className={styles.detailGrid}>
                   {selected.docIdentificacao && <div className={styles.detailItem}><span>BI/Passaporte</span><p>{selected.docIdentificacao}</p></div>}
                   {selected.nuit && <div className={styles.detailItem}><span>NUIT</span><p>{selected.nuit}</p></div>}
@@ -275,13 +275,13 @@ export default function AdminInscricoesClubePage() {
                       </p>
                     </div>
                   )}
-                  {selected.telefonePagamento && <div className={styles.detailItem}><span>Telemóvel Pagamento</span><p style={{ fontWeight: 700, color: '#0f172a' }}>📱 {selected.telefonePagamento}</p></div>}
+                  {selected.telefonePagamento && <div className={styles.detailItem}><span>Telemóvel Pagamento</span><p style={{ fontWeight: 700, color: '#0f172a' }}> {selected.telefonePagamento}</p></div>}
                   {selected.comprovativoUrl && (
                     <div className={styles.detailItem} style={{ gridColumn: 'span 2' }}>
                       <span>Comprovativo de Pagamento</span>
                       <p>
                         <a href={selected.comprovativoUrl} target="_blank" rel="noreferrer" style={{ color: '#ff6b00', fontWeight: 800, textDecoration: 'underline' }}>
-                          📄 Visualizar / Descarregar Comprovativo
+                           Visualizar / Descarregar Comprovativo
                         </a>
                       </p>
                     </div>
@@ -304,7 +304,7 @@ export default function AdminInscricoesClubePage() {
               {/* Declaração */}
               {(selected.assinatura || selected.localData) && (
                 <div className={styles.detailSection}>
-                  <h4 className={styles.detailSectionTitle}>✍️ Declaração</h4>
+                  <h4 className={styles.detailSectionTitle}> Declaração</h4>
                   <div className={styles.detailGrid}>
                     {selected.localData && <div className={styles.detailItem}><span>Local e Data</span><p>{selected.localData}</p></div>}
                     {selected.assinatura && <div className={styles.detailItem}><span>Assinatura</span><p style={{ fontStyle: 'italic', color: '#d4af37' }}>{selected.assinatura}</p></div>}
@@ -314,7 +314,7 @@ export default function AdminInscricoesClubePage() {
 
               {/* Admin actions */}
               <div className={styles.detailSection}>
-                <h4 className={styles.detailSectionTitle}>⚙️ Gestão</h4>
+                <h4 className={styles.detailSectionTitle}> Gestão</h4>
                 <div className={styles.adminActions}>
                   <div className={styles.formField}>
                     <label>Estado</label>
@@ -335,13 +335,13 @@ export default function AdminInscricoesClubePage() {
                       onChange={e => setEditNotas(e.target.value)}
                     />
                   </div>
-                  {msg && <p className={styles.successMsg}>✅ {msg}</p>}
+                  {msg && <p className={styles.successMsg}> {msg}</p>}
                   <div className={styles.actionBtns}>
                     <button className={styles.saveBtn} onClick={handleSave} disabled={saving}>
-                      {saving ? 'A guardar...' : '💾 Guardar'}
+                      {saving ? 'A guardar...' : ' Guardar'}
                     </button>
                     <button className={styles.deleteBtn} onClick={() => handleDelete(selected._id)}>
-                      🗑️ Eliminar
+                       Eliminar
                     </button>
                   </div>
                 </div>

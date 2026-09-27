@@ -72,7 +72,7 @@ export function middleware(request: NextRequest) {
         headers: { 'content-type': 'application/json' }
       });
     }
-    // Utilizador logado mas sem permissão de admin → redireciona para dashboard
+    // Utilizador logado mas sem permissão de admin  redireciona para dashboard
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 

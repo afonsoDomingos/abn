@@ -387,7 +387,7 @@ export default function DelegacaoPortalPage() {
     return (
       <div className={styles.page} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🏛️</div>
+          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}></div>
           <div style={{ color: '#94a3b8' }}>A carregar a sua Delegação Oficial...</div>
         </div>
       </div>
@@ -398,7 +398,7 @@ export default function DelegacaoPortalPage() {
     return (
       <div className={styles.page} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className={styles.contentCard} style={{ maxWidth: '500px', textAlign: 'center' }}>
-          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🔒</div>
+          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}></div>
           <h2 style={{ color: '#f8fafc', marginBottom: '0.5rem' }}>Acesso Restrito</h2>
           <p style={{ color: '#94a3b8', lineHeight: 1.6, marginBottom: '1.5rem' }}>
             {error || 'Não tem uma delegação associada ao seu perfil de utilizador.'}
@@ -418,7 +418,7 @@ export default function DelegacaoPortalPage() {
 
   return (
     <div className={styles.page}>
-      {toastMsg && <div className={styles.toast}>✓ {toastMsg}</div>}
+      {toastMsg && <div className={styles.toast}> {toastMsg}</div>}
 
       {/* Top Navbar */}
       <header className={styles.topBar}>
@@ -428,7 +428,7 @@ export default function DelegacaoPortalPage() {
               <img src="/abn-logo.png" alt="ABN Logo" className={styles.brandLogo} />
             </Link>
             <div className={styles.hubBadge}>
-              <span>📍</span> Delegação de {hub.name}
+              <span></span> Delegação de {hub.name}
             </div>
           </div>
 
@@ -439,7 +439,7 @@ export default function DelegacaoPortalPage() {
               className="btn-outline" 
               style={{ fontSize: '0.82rem', padding: '6px 12px' }}
             >
-              👁️ Ver Portal Público
+               Ver Portal Público
             </Link>
 
             <div className={styles.userBadge}>
@@ -510,7 +510,7 @@ export default function DelegacaoPortalPage() {
         {/* Stats Row */}
         <div className={styles.statsGrid}>
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>📅</div>
+            <div className={styles.statIcon}></div>
             <div>
               <div className={styles.statVal}>{events.length}</div>
               <div className={styles.statLabel}>Eventos Registados</div>
@@ -518,7 +518,7 @@ export default function DelegacaoPortalPage() {
           </div>
 
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>👥</div>
+            <div className={styles.statIcon}></div>
             <div>
               <div className={styles.statVal}>{team.length}</div>
               <div className={styles.statLabel}>Membros da Equipa Local</div>
@@ -526,7 +526,7 @@ export default function DelegacaoPortalPage() {
           </div>
 
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>🤝</div>
+            <div className={styles.statIcon}></div>
             <div>
               <div className={styles.statVal}>{partners.length}</div>
               <div className={styles.statLabel}>Parceiros Estratégicos</div>
@@ -534,7 +534,7 @@ export default function DelegacaoPortalPage() {
           </div>
 
           <div className={styles.statCard}>
-            <div className={styles.statIcon}>🚀</div>
+            <div className={styles.statIcon}></div>
             <div>
               <div className={styles.statVal}>{localMembers.length}</div>
               <div className={styles.statLabel}>Empreendedores Registados</div>
@@ -549,7 +549,7 @@ export default function DelegacaoPortalPage() {
             className={`${styles.tabBtn} ${activeTab === 'info' ? styles.tabBtnActive : ''}`}
             onClick={() => setActiveTab('info')}
           >
-            <span>ℹ️</span> Informações Gerais {!permissions.canEditInfo && <span className={styles.tabLock}>🔒</span>}
+            <span></span> Informações Gerais {!permissions.canEditInfo && <span className={styles.tabLock}></span>}
           </button>
 
           <button 
@@ -557,7 +557,7 @@ export default function DelegacaoPortalPage() {
             className={`${styles.tabBtn} ${activeTab === 'events' ? styles.tabBtnActive : ''}`}
             onClick={() => setActiveTab('events')}
           >
-            <span>📅</span> Eventos & Atividades ({events.length}) {!permissions.canManageEvents && <span className={styles.tabLock}>🔒</span>}
+            <span></span> Eventos & Atividades ({events.length}) {!permissions.canManageEvents && <span className={styles.tabLock}></span>}
           </button>
 
           <button 
@@ -565,7 +565,7 @@ export default function DelegacaoPortalPage() {
             className={`${styles.tabBtn} ${activeTab === 'team' ? styles.tabBtnActive : ''}`}
             onClick={() => setActiveTab('team')}
           >
-            <span>👥</span> Equipa Local ({team.length}) {!permissions.canManageTeam && <span className={styles.tabLock}>🔒</span>}
+            <span></span> Equipa Local ({team.length}) {!permissions.canManageTeam && <span className={styles.tabLock}></span>}
           </button>
 
           <button 
@@ -573,7 +573,7 @@ export default function DelegacaoPortalPage() {
             className={`${styles.tabBtn} ${activeTab === 'partners' ? styles.tabBtnActive : ''}`}
             onClick={() => setActiveTab('partners')}
           >
-            <span>🤝</span> Parceiros ({partners.length}) {!permissions.canManagePartners && <span className={styles.tabLock}>🔒</span>}
+            <span></span> Parceiros ({partners.length}) {!permissions.canManagePartners && <span className={styles.tabLock}></span>}
           </button>
 
           <button 
@@ -581,7 +581,7 @@ export default function DelegacaoPortalPage() {
             className={`${styles.tabBtn} ${activeTab === 'members' ? styles.tabBtnActive : ''}`}
             onClick={() => setActiveTab('members')}
           >
-            <span>🚀</span> Empreendedores do País ({localMembers.length}) {!permissions.canViewMembers && <span className={styles.tabLock}>🔒</span>}
+            <span></span> Empreendedores do País ({localMembers.length}) {!permissions.canViewMembers && <span className={styles.tabLock}></span>}
           </button>
         </div>
 
@@ -595,7 +595,7 @@ export default function DelegacaoPortalPage() {
 
             {!permissions.canEditInfo && (
               <div className={styles.lockBanner}>
-                <span>🔒</span> Modo de Apenas Leitura: O Administrador não atribuiu permissão para editar as informações base deste hub.
+                <span></span> Modo de Apenas Leitura: O Administrador não atribuiu permissão para editar as informações base deste hub.
               </div>
             )}
 
@@ -692,7 +692,7 @@ export default function DelegacaoPortalPage() {
 
             {!permissions.canManageEvents ? (
               <div className={styles.lockBanner}>
-                <span>🔒</span> Apenas Leitura: Não tem permissão para adicionar ou remover eventos desta delegação.
+                <span></span> Apenas Leitura: Não tem permissão para adicionar ou remover eventos desta delegação.
               </div>
             ) : (
               <div className={styles.boxItem} style={{ background: 'rgba(222, 155, 53, 0.05)', borderColor: 'rgba(222, 155, 53, 0.2)', marginBottom: '2rem' }}>
@@ -792,7 +792,7 @@ export default function DelegacaoPortalPage() {
                       color: evt.type === 'future' ? '#22c55e' : '#94a3b8',
                       textTransform: 'uppercase'
                     }}>
-                      {evt.type === 'future' ? '📅 Próximo Evento' : '⏳ Realizado'}
+                      {evt.type === 'future' ? ' Próximo Evento' : ' Realizado'}
                     </span>
                     <h4 style={{ margin: '6px 0 4px 0', fontSize: '1rem', color: '#f8fafc' }}>{evt.title}</h4>
                     <div style={{ fontSize: '0.8rem', color: '#de9b35', marginBottom: '8px' }}>{evt.date}</div>
@@ -824,7 +824,7 @@ export default function DelegacaoPortalPage() {
 
             {!permissions.canManageTeam ? (
               <div className={styles.lockBanner}>
-                <span>🔒</span> Apenas Leitura: Não tem permissão para gerir a equipa desta delegação.
+                <span></span> Apenas Leitura: Não tem permissão para gerir a equipa desta delegação.
               </div>
             ) : (
               <div className={styles.boxItem} style={{ background: 'rgba(222, 155, 53, 0.05)', borderColor: 'rgba(222, 155, 53, 0.2)', marginBottom: '2rem' }}>
@@ -867,7 +867,7 @@ export default function DelegacaoPortalPage() {
                           borderRadius: '10px', 
                           cursor: 'pointer' 
                         }}>
-                          {uploadingMemImg ? '...' : '📁'}
+                          {uploadingMemImg ? '...' : ''}
                           <input 
                             type="file" 
                             accept="image/*" 
@@ -950,7 +950,7 @@ export default function DelegacaoPortalPage() {
 
             {!permissions.canManagePartners ? (
               <div className={styles.lockBanner}>
-                <span>🔒</span> Apenas Leitura: Não tem permissão para gerir parceiros desta delegação.
+                <span></span> Apenas Leitura: Não tem permissão para gerir parceiros desta delegação.
               </div>
             ) : (
               <div className={styles.boxItem} style={{ background: 'rgba(222, 155, 53, 0.05)', borderColor: 'rgba(222, 155, 53, 0.2)', marginBottom: '2rem' }}>
@@ -972,7 +972,7 @@ export default function DelegacaoPortalPage() {
                       <input 
                         value={newPartLogo} 
                         onChange={e => setNewPartLogo(e.target.value)} 
-                        placeholder="Ex: 🏦 ou URL da imagem do logo"
+                        placeholder="Ex:  ou URL da imagem do logo"
                       />
                     </div>
                   </div>
@@ -1006,7 +1006,7 @@ export default function DelegacaoPortalPage() {
                       {partner.logo && (partner.logo.startsWith('http') || partner.logo.startsWith('/')) ? (
                         <img src={partner.logo} alt={partner.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                       ) : (
-                        <span>{partner.logo || '🤝'}</span>
+                        <span>{partner.logo || ''}</span>
                       )}
                     </div>
                     <div style={{ flex: 1, minWidth: 0, fontWeight: 700, color: '#f8fafc', fontSize: '0.9rem' }}>
@@ -1045,7 +1045,7 @@ export default function DelegacaoPortalPage() {
 
             {!permissions.canViewMembers ? (
               <div className={styles.lockBanner}>
-                <span>🔒</span> Acesso Restrito: A consulta da base de dados de membros locais requer autorização explícita do Administrador.
+                <span></span> Acesso Restrito: A consulta da base de dados de membros locais requer autorização explícita do Administrador.
               </div>
             ) : (
               <div>

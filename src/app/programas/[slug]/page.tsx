@@ -6,22 +6,22 @@ const programDetails: Record<string, { title: string; description: string; icon:
   'startup-180': {
     title: 'ABN Startup 180',
     description: 'Programa de incubação intensiva de 180 dias para startups em fase inicial. Oferecemos mentoria estratégica, acesso a investidores e ferramentas para escalar o seu negócio.',
-    icon: '🚀'
+    icon: ''
   },
   'clube-empreendedores': {
     title: 'Clube dos Empreendedores',
     description: 'Comunidade exclusiva para networking, mentoria e oportunidades de negócios. Conecte-se com outros empreendedores, especialistas e investidores do ecossistema ABN.',
-    icon: '🤝'
+    icon: ''
   },
   'clubes-startups-mocambique': {
     title: 'Clubes das Startups (Moçambique)',
     description: 'Hubs locais de apoio a startups em Maputo e outras cidades moçambicanas. Espaços físicos e virtuais para conectar empreendedores locais.',
-    icon: '🏢'
+    icon: ''
   },
   'clubes-startups-angola': {
     title: 'Clubes das Startups (Angola)',
     description: 'Hubs locais de apoio a startups em Luanda e outras cidades angolanas. Espaços físicos e virtuais para conectar empreendedores locais.',
-    icon: '🏢'
+    icon: ''
   },
   'mentalidade-empreendedora': {
     title: 'Mentalidade Empreendedora',

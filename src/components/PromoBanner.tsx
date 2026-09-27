@@ -40,7 +40,7 @@ export default function PromoBanner() {
                             title: prog.title,
                             description: prog.description ? prog.description.slice(0, 105) + '...' : '',
                             link: `/programas/${prog._id}`,
-                            ctaText: language === 'pt' ? 'Inscrever-me Agora →' : 'Apply Now →'
+                            ctaText: language === 'pt' ? 'Inscrever-me Agora ' : 'Apply Now '
                         });
                     });
                 }
@@ -57,7 +57,7 @@ export default function PromoBanner() {
                         title: opp.title,
                         description: opp.description ? opp.description.slice(0, 105) + '...' : '',
                         link: '/oportunidades',
-                        ctaText: language === 'pt' ? 'Ver Oportunidade →' : 'View Opportunity →'
+                        ctaText: language === 'pt' ? 'Ver Oportunidade ' : 'View Opportunity '
                     });
                 }
             } catch (e) { }
@@ -71,7 +71,7 @@ export default function PromoBanner() {
                     ? 'Conecte a sua startup a mentores internacionais, investidores e eventos V.I.P.'
                     : 'Connect your startup to international mentors, investors, and VIP events.',
                 link: '/programas',
-                ctaText: language === 'pt' ? 'Aderir ao Clube →' : 'Join the Club →'
+                ctaText: language === 'pt' ? 'Aderir ao Clube ' : 'Join the Club '
             });
 
             setPromos(items);
@@ -140,7 +140,7 @@ export default function PromoBanner() {
                             aria-label="Fechar notificação"
                             title={language === 'pt' ? 'Fechar' : 'Close'}
                         >
-                            ✕
+                            
                         </button>
                     </div>
                 </div>

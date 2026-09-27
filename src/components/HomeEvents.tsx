@@ -119,7 +119,7 @@ export default function HomeEvents() {
                   <div className={styles.cardFooter}>
                     <span className={styles.location}>{ev.location}</span>
                     <Link href="/eventos" className={styles.detailsBtn}>
-                      {language === 'pt' ? 'Detalhes →' : 'Details →'}
+                      {language === 'pt' ? 'Detalhes ' : 'Details '}
                     </Link>
                   </div>
                 </div>
@@ -131,7 +131,7 @@ export default function HomeEvents() {
         {/* CTA */}
         <div className={styles.footer}>
           <Link href="/eventos" className={styles.ctaBtn}>
-            {language === 'pt' ? 'Ver Todos os Eventos →' : 'View All Events →'}
+            {language === 'pt' ? 'Ver Todos os Eventos ' : 'View All Events '}
           </Link>
         </div>
       </motion.div>

@@ -391,7 +391,7 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
 
               {copied && (
                 <div className={styles.copiedToast}>
-                  ✓ Link copiado para a área de transferência!
+                   Link copiado para a área de transferência!
                 </div>
               )}
             </div>
@@ -433,12 +433,12 @@ export default function EspecialistaDetalhePage({ params }: { params: Promise<{ 
             <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
               <div className={styles.modalHeader}>
                 <h2>Reservar Mentoria</h2>
-                <button className={styles.modalClose} onClick={() => setShowBookingModal(false)}>✕</button>
+                <button className={styles.modalClose} onClick={() => setShowBookingModal(false)}></button>
               </div>
 
               {bookingSuccess ? (
                 <div className={styles.successMessage}>
-                  <div className={styles.successIcon}>✓</div>
+                  <div className={styles.successIcon}></div>
                   <h3>Reserva Enviada!</h3>
                   <p>A sua solicitação de mentoria foi enviada com sucesso. {specialist.name.split(' ')[0]} entrará em contacto brevemente.</p>
                 </div>

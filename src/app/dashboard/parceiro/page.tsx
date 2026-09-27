@@ -316,7 +316,7 @@ export default function ParceiroDashboardPage() {
         <div className={styles.candidateCard}>
           <div className={styles.candidateHeader}>
             <div className={styles.candidateIconBadge}>
-              ⏳
+              
             </div>
             <div>
               <h2 className={styles.candidateTitle}>Processo de Adesão &amp; Auditoria Institucional</h2>
@@ -329,7 +329,7 @@ export default function ParceiroDashboardPage() {
           {/* Timeline das 5 Etapas de Validação */}
           <div className={styles.timelineGrid}>
             <div className={`${styles.timelineStep} ${styles.timelineStepDone}`}>
-              <div className={`${styles.stepNumber} ${styles.stepNumberDone}`}>✓</div>
+              <div className={`${styles.stepNumber} ${styles.stepNumberDone}`}></div>
               <h4 className={styles.stepTitle}>1. Candidatura Submetida</h4>
               <p className={styles.stepDesc}>Dossiê inicial, categoria e proposta de cooperação registados na plataforma.</p>
             </div>
@@ -419,7 +419,7 @@ export default function ParceiroDashboardPage() {
 
             <div className={styles.kpiCard}>
               <div className={styles.kpiIconBox} style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>
-                💰
+                
               </div>
               <div>
                 <div className={styles.kpiValue}>{metrics.capitalMobilized || '70.000 €'}</div>
@@ -429,7 +429,7 @@ export default function ParceiroDashboardPage() {
 
             <div className={styles.kpiCard}>
               <div className={styles.kpiIconBox} style={{ background: 'rgba(14, 165, 233, 0.1)', color: '#0ea5e9' }}>
-                👥
+                
               </div>
               <div>
                 <div className={styles.kpiValue}>{Number(metrics.communityReach || 20500).toLocaleString('pt-PT')}</div>
@@ -535,7 +535,7 @@ export default function ParceiroDashboardPage() {
                     <div className={styles.projectMeta}>
                       <span>Orçamento: <strong>{p.budget}</strong></span>
                       <span style={{ color: p.status === 'em_andamento' ? '#16a34a' : '#d97706', fontWeight: 700 }}>
-                        {p.status === 'em_andamento' ? '🟢 Em Andamento' : '🟡 Planeamento'}
+                        {p.status === 'em_andamento' ? ' Em Andamento' : '🟡 Planeamento'}
                       </span>
                     </div>
                   </div>
@@ -557,7 +557,7 @@ export default function ParceiroDashboardPage() {
                   style={{ color: '#0f172a', borderColor: '#cbd5e1' }}
                   onClick={() => setShowEditProfileModal(true)}
                 >
-                  ✏️ Editar Perfil Institucional
+                   Editar Perfil Institucional
                 </button>
               </div>
 
@@ -656,7 +656,7 @@ export default function ParceiroDashboardPage() {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                           <span className={styles.projectCategory}>{p.category}</span>
                           <span style={{ fontSize: '0.75rem', fontWeight: 800, color: p.status === 'em_andamento' ? '#16a34a' : (p.status === 'concluido' ? '#3b82f6' : '#d97706') }}>
-                            {p.status === 'em_andamento' ? '● Em Andamento' : (p.status === 'concluido' ? '✓ Concluído' : '⏳ Planeamento')}
+                            {p.status === 'em_andamento' ? '● Em Andamento' : (p.status === 'concluido' ? ' Concluído' : ' Planeamento')}
                           </span>
                         </div>
                         <h4 className={styles.projectTitle}>{p.title}</h4>
@@ -679,7 +679,7 @@ export default function ParceiroDashboardPage() {
                           <span>Orçamento: <strong>{p.budget || 'Sob proposta'}</strong></span>
                         </div>
                         <div style={{ fontSize: '0.78rem' }}>
-                          {p.startDate} {p.endDate ? `→ ${p.endDate}` : ''}
+                          {p.startDate} {p.endDate ? ` ${p.endDate}` : ''}
                         </div>
                       </div>
                     </div>
@@ -713,7 +713,7 @@ export default function ParceiroDashboardPage() {
                     <div>
                       <span style={{ fontSize: '0.72rem', fontWeight: 800, background: '#eef2ff', color: '#4f46e5', padding: '3px 8px', borderRadius: '6px' }}>{ev.type}</span>
                       <h4 style={{ margin: '8px 0 4px 0', fontSize: '1.05rem', color: '#0f172a' }}>{ev.title}</h4>
-                      <p style={{ margin: 0, fontSize: '0.84rem', color: '#64748b' }}>📍 {ev.location} · 📅 {ev.date}</p>
+                      <p style={{ margin: 0, fontSize: '0.84rem', color: '#64748b' }}> {ev.location} ·  {ev.date}</p>
                     </div>
 
                     <div style={{ marginTop: '1.25rem', paddingTop: '0.85rem', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -768,7 +768,7 @@ export default function ParceiroDashboardPage() {
                   <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#0f172a' }}>Prémio / Piloto: 15.000 €</span>
                     <Link href="/dashboard/oportunidades" style={{ fontSize: '0.82rem', color: '#4f46e5', fontWeight: 700, textDecoration: 'none' }}>
-                      Gerir Candidaturas →
+                      Gerir Candidaturas 
                     </Link>
                   </div>
                 </div>
@@ -809,7 +809,7 @@ export default function ParceiroDashboardPage() {
                 {documents.map((doc: any, idx: number) => (
                   <div key={idx} className={styles.docRow}>
                     <div className={styles.docInfo}>
-                      <div className={styles.docIcon}>📄</div>
+                      <div className={styles.docIcon}></div>
                       <div>
                         <h5 style={{ margin: 0, fontSize: '0.98rem', fontWeight: 800, color: '#0f172a' }}>{doc.title}</h5>
                         <span style={{ fontSize: '0.78rem', color: '#64748b' }}>{doc.category}</span>

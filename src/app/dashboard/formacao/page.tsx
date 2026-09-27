@@ -531,16 +531,16 @@ function FormacaoPageInner() {
                         Certificado
                       </span>
                       <span style={{ fontSize: '0.72rem', fontWeight: 800, color: isCoursePaid(course) ? '#1d4ed8' : '#15803d', background: isCoursePaid(course) ? '#eff6ff' : '#f0fdf4', padding: '3px 10px', borderRadius: '6px', border: `1px solid ${isCoursePaid(course) ? '#bfdbfe' : '#bbf7d0'}` }}>
-                        {isCoursePaid(course) ? `💳 ${course.price} MT` : '✅ GRATUITO'}
+                        {isCoursePaid(course) ? ` ${course.price} MT` : ' GRATUITO'}
                       </span>
                       {status === 'aprovado' && (
-                        <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#f0fdf4', color: '#16a34a', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', border: '1px solid #bbf7d0' }}>✓ Inscrito</span>
+                        <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#f0fdf4', color: '#16a34a', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', border: '1px solid #bbf7d0' }}> Inscrito</span>
                       )}
                       {status === 'pendente' && (
-                        <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#fefce8', color: '#ca8a04', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', border: '1px solid #fef08a' }}>⏳ Em Verificação</span>
+                        <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#fefce8', color: '#ca8a04', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', border: '1px solid #fef08a' }}> Em Verificação</span>
                       )}
                       {status === 'rejeitado' && (
-                        <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#fef2f2', color: '#dc2626', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', border: '1px solid #fecaca' }}>✕ Rejeitado</span>
+                        <span style={{ fontSize: '0.68rem', fontWeight: 800, background: '#fef2f2', color: '#dc2626', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', border: '1px solid #fecaca' }}> Rejeitado</span>
                       )}
                     </div>
 
@@ -550,7 +550,7 @@ function FormacaoPageInner() {
                     {/* Meta */}
                     <div style={{ display: 'flex', gap: '1rem', fontSize: '0.82rem', color: '#64748b', fontWeight: 500, flexWrap: 'wrap' }}>
                       <span>👨‍🏫 {course.instructor}</span>
-                      <span>⏱️ {course.duration}</span>
+                      <span> {course.duration}</span>
                       <span>📚 {totalLessons} Aulas</span>
                     </div>
                   </div>
@@ -559,7 +559,7 @@ function FormacaoPageInner() {
                   <div>
                     {status === 'aprovado' && (
                       <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                        {/* 🎥 Assistir Aulas button (Always visible for enrolled students) */}
+                        {/*  Assistir Aulas button (Always visible for enrolled students) */}
                         <button
                           style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, background: '#dc2626', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(220,38,38,0.2)' }}
                           onClick={() => {
@@ -572,7 +572,7 @@ function FormacaoPageInner() {
                             setShowVideoModal(true);
                           }}
                         >
-                          🎥 Assistir Aulas
+                           Assistir Aulas
                         </button>
 
                         {!enrollment?.completed ? (
@@ -581,7 +581,7 @@ function FormacaoPageInner() {
                             disabled={processingId === enrollment?._id}
                             onClick={() => enrollment && handleUpdateProgress(enrollment._id, { completed: true })}
                           >
-                            {processingId === enrollment?._id ? 'A processar...' : '✔️ Concluir Curso'}
+                            {processingId === enrollment?._id ? 'A processar...' : ' Concluir Curso'}
                           </button>
                         ) : (
                           <>
@@ -595,7 +595,7 @@ function FormacaoPageInner() {
                               </button>
                             ) : !enrollment?.certificateApproved ? (
                               <span style={{ fontSize: '0.82rem', fontWeight: 700, background: '#fefce8', color: '#ca8a04', border: '1px solid #fef08a', padding: '9px 18px', borderRadius: '10px' }}>
-                                ⏳ Certificado em Validação pelo Admin
+                                 Certificado em Validação pelo Admin
                               </span>
                             ) : (
                               <button
@@ -627,13 +627,13 @@ function FormacaoPageInner() {
                             setShowVideoModal(true);
                           }}
                         >
-                          🎥 Aula de Introdução
+                           Aula de Introdução
                         </button>
                       )}
 
                       {status === 'pendente' && (
                         <span style={{ fontSize: '0.85rem', fontWeight: 700, background: '#fefce8', color: '#ca8a04', border: '1px solid #fef08a', padding: '8px 18px', borderRadius: '40px' }}>
-                          ⏳ Pagamento em Verificação
+                           Pagamento em Verificação
                         </span>
                       )}
                       {status === 'rejeitado' && (
@@ -644,7 +644,7 @@ function FormacaoPageInner() {
                             setShowEnrollConfirmModal(true);
                           }}
                         >
-                          ❌ Rejeitado - Reenviar
+                           Rejeitado - Reenviar
                         </button>
                       )}
                       {status === 'none' && (
@@ -735,7 +735,7 @@ function FormacaoPageInner() {
             </button>
             
             <div style={{ flexShrink: 0 }}>
-              <h3 style={{ color: '#0f172a', fontFamily: 'Outfit', margin: 0, fontSize: '1.4rem', fontWeight: 800 }}>🎥 {videoCourse.title}</h3>
+              <h3 style={{ color: '#0f172a', fontFamily: 'Outfit', margin: 0, fontSize: '1.4rem', fontWeight: 800 }}> {videoCourse.title}</h3>
               <p style={{ color: '#64748b', margin: '4px 0 0 0', fontSize: '0.88rem' }}>Aula atual: {activeVideoTitle}</p>
             </div>
             
@@ -796,7 +796,7 @@ function FormacaoPageInner() {
                         </div>
                         {modalProgressPercent === 100 && (
                           <div style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 800, marginTop: '2px', textAlign: 'center' }}>
-                            🎉 Parabéns! Formação 100% Concluída!
+                             Parabéns! Formação 100% Concluída!
                           </div>
                         )}
                       </div>
@@ -804,12 +804,12 @@ function FormacaoPageInner() {
 
                     <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', color: '#475569' }}>
                       <div>👨‍🏫 <strong>Formador:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.instructor}</span></div>
-                      <div>⏱️ <strong>Duração:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.duration}</span></div>
+                      <div> <strong>Duração:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.duration}</span></div>
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
                       <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Lista de Aulas</span>
-                      <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Marque `✓` ao concluir</span>
+                      <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Marque `` ao concluir</span>
                     </div>
                     
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', width: '100%' }}>
@@ -882,7 +882,7 @@ function FormacaoPageInner() {
                                   }}
                                   onClick={e => e.stopPropagation()}
                                 >
-                                  📄 PDF
+                                   PDF
                                 </a>
                               )}
 
@@ -895,7 +895,7 @@ function FormacaoPageInner() {
                                   style={{ width: '18px', height: '18px', accentColor: '#16a34a', cursor: 'pointer', flexShrink: 0 }}
                                 />
                               ) : isLocked && (
-                                <span style={{ fontSize: '0.8rem' }}>🔒</span>
+                                <span style={{ fontSize: '0.8rem' }}></span>
                               )}
                             </div>
                           </div>
@@ -929,7 +929,7 @@ function FormacaoPageInner() {
                         />
                       ) : (
                         <div style={{ textAlign: 'center', color: '#94a3b8', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-                          <span style={{ fontSize: '3rem' }}>📄</span>
+                          <span style={{ fontSize: '3rem' }}></span>
                           <p style={{ fontSize: '0.95rem', fontWeight: 600, color: '#cbd5e1', margin: 0 }}>Esta aula é apenas em PDF</p>
                           <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0 }}>Consulte o material de apoio na lista ao lado</p>
                         </div>
@@ -957,7 +957,7 @@ function FormacaoPageInner() {
                           transition: 'all 0.2s'
                         }}
                       >
-                        ⬅️ Aula Anterior
+                         Aula Anterior
                       </button>
 
                       {isApproved && (
@@ -987,7 +987,7 @@ function FormacaoPageInner() {
                             transition: 'all 0.2s'
                           }}
                         >
-                          ✓ {hasNext ? 'Concluir & Próxima ➡️' : 'Concluir Formação 🎉'}
+                           {hasNext ? 'Concluir & Próxima ' : 'Concluir Formação '}
                         </button>
                       )}
 
@@ -1011,7 +1011,7 @@ function FormacaoPageInner() {
                           transition: 'all 0.2s'
                         }}
                       >
-                        Próxima Aula ➡️
+                        Próxima Aula 
                       </button>
                     </div>
                   </div>
@@ -1118,20 +1118,20 @@ function FormacaoPageInner() {
             <p style={{ color: '#ff6b00', fontWeight: 700, margin: '0 0 1.5rem 0', fontSize: '0.95rem' }}>Curso: {selectedCourse.title} ({selectedCourse.price})</p>
 
             <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '0.7rem 1rem', borderRadius: '10px', fontSize: '0.78rem', color: '#334155', display: 'flex', flexDirection: 'column', gap: '0.3rem', marginBottom: '1rem', lineHeight: '1.4' }}>
-              <strong style={{ color: '#0f172a', fontSize: '0.8rem' }}>🏦 Dados de Pagamento &amp; Transferência — <span style={{ fontWeight: 400 }}>Titular: {paymentInfo.titular}</span></strong>
+              <strong style={{ color: '#0f172a', fontSize: '0.8rem' }}> Dados de Pagamento &amp; Transferência — <span style={{ fontWeight: 400 }}>Titular: {paymentInfo.titular}</span></strong>
               <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                 <div style={{ background: '#ffffff', padding: '0.35rem 0.6rem', borderRadius: '6px', border: '1px solid #e2e8f0', flex: 1, minWidth: '140px' }}>
-                  <span style={{ fontWeight: 700, color: '#0f172a' }}>1️⃣ BIM</span> · Conta: <strong>{paymentInfo.bim_conta}</strong><br/>
+                  <span style={{ fontWeight: 700, color: '#0f172a' }}> BIM</span> · Conta: <strong>{paymentInfo.bim_conta}</strong><br/>
                   <span style={{ fontSize: '0.7rem', color: '#64748b' }}>NIB: {paymentInfo.bim_nib}</span>
                 </div>
                 <div style={{ background: '#ffffff', padding: '0.35rem 0.6rem', borderRadius: '6px', border: '1px solid #e2e8f0', flex: 1, minWidth: '140px' }}>
-                  <span style={{ fontWeight: 700, color: '#0f172a' }}>2️⃣ Moza</span> · Conta: <strong>{paymentInfo.moza_conta}</strong><br/>
+                  <span style={{ fontWeight: 700, color: '#0f172a' }}> Moza</span> · Conta: <strong>{paymentInfo.moza_conta}</strong><br/>
                   <span style={{ fontSize: '0.7rem', color: '#64748b' }}>NIB: {paymentInfo.moza_nib}</span>
                 </div>
               </div>
               <div style={{ background: '#ffffff', padding: '0.35rem 0.6rem', borderRadius: '6px', border: '1px solid #e2e8f0', display: 'flex', gap: '1rem' }}>
-                <span>📱 <strong>M-Pesa:</strong> {paymentInfo.mpesa}</span>
-                <span>📱 <strong>e-Mola:</strong> {paymentInfo.emola}</span>
+                <span> <strong>M-Pesa:</strong> {paymentInfo.mpesa}</span>
+                <span> <strong>e-Mola:</strong> {paymentInfo.emola}</span>
               </div>
               <span style={{ fontSize: '0.72rem', color: '#ff6b00', fontWeight: 600 }}>* Realize o pagamento e submeta o comprovativo abaixo.</span>
             </div>
@@ -1177,7 +1177,7 @@ function FormacaoPageInner() {
                     style={{ display: 'none' }} 
                   />
                 </label>
-                {uploading && <div style={{ fontSize: '0.82rem', color: '#ff6b00', textAlign: 'center', marginTop: '0.5rem', fontWeight: 600 }}>⏳ A enviar ficheiro para o servidor...</div>}
+                {uploading && <div style={{ fontSize: '0.82rem', color: '#ff6b00', textAlign: 'center', marginTop: '0.5rem', fontWeight: 600 }}> A enviar ficheiro para o servidor...</div>}
               </div>
 
               <button 
@@ -1213,7 +1213,7 @@ function FormacaoPageInner() {
               onClick={() => window.print()}
               style={{ padding: '10px 20px', fontSize: '0.9rem', fontWeight: 700, background: '#ff6b00', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
             >
-              📄 Descarregar / Imprimir PDF
+               Descarregar / Imprimir PDF
             </button>
             <button 
               onClick={() => { setShowCert(false); setSelectedCourse(null); }}
@@ -1296,9 +1296,9 @@ function FormacaoPageInner() {
 
             <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: '1.5rem', fontSize: '0.8rem', color: '#666' }}>
               <div style={{ textAlign: 'left' }}>
-                📍 Bissau, Guiné-Bissau
+                 Bissau, Guiné-Bissau
                 <div style={{ marginTop: '0.2rem' }}>
-                  📅 {new Date().toLocaleDateString('pt-PT', { day: '2-digit', month: 'long', year: 'numeric' })}
+                   {new Date().toLocaleDateString('pt-PT', { day: '2-digit', month: 'long', year: 'numeric' })}
                 </div>
               </div>
 
@@ -1393,7 +1393,7 @@ function FormacaoPageInner() {
                 zIndex: 10
               }}
             >
-              ✕
+              
             </button>
             <img 
               src={previewImage} 

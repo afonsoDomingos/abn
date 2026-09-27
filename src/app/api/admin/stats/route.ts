@@ -127,7 +127,7 @@ export async function GET() {
     recentUsersList.forEach((u: any) => {
       activities.push({
         id: `user-${u._id}`,
-        icon: '👤',
+        icon: '',
         title: 'Novo Membro Registado',
         desc: `${u.name || u.email} registou-se na plataforma como ${u.role || 'membro'}`,
         createdAt: u.createdAt,

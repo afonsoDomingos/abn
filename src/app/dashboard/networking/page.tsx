@@ -127,7 +127,7 @@ export default function NetworkingPage() {
         setProfiles(prev =>
           prev.map(p => p.id === id ? { ...p, isFollowing: data.isFollowing } : p)
         );
-        showNotification(data.isFollowing ? '✅ Conexão solicitada com sucesso!' : 'Deixou de seguir o perfil.');
+        showNotification(data.isFollowing ? ' Conexão solicitada com sucesso!' : 'Deixou de seguir o perfil.');
       }
     } catch (e) {
       console.error(e);
@@ -156,7 +156,7 @@ export default function NetworkingPage() {
         setShowCreateGroupModal(false);
         setNewGroupName('');
         setNewGroupDesc('');
-        showNotification('🎉 Grupo criado com sucesso!');
+        showNotification(' Grupo criado com sucesso!');
         fetchGroups();
       }
     } catch {
@@ -178,7 +178,7 @@ export default function NetworkingPage() {
         setGroups(prev =>
           prev.map(g => g.id === groupId ? { ...g, isMember: data.isMember, membersCount: data.membersCount } : g)
         );
-        showNotification(data.isMember ? '👥 Entrou no grupo com sucesso!' : 'Saiu do grupo.');
+        showNotification(data.isMember ? ' Entrou no grupo com sucesso!' : 'Saiu do grupo.');
       }
     } catch (e) {
       console.error(e);
@@ -356,7 +356,7 @@ export default function NetworkingPage() {
                 { id: 'todos', label: 'Todos os Membros' },
                 { id: 'empreendedor', label: 'Empreendedores' },
                 { id: 'empresa', label: 'Empresas & Startups' },
-                { id: 'investidor', label: '💰 Investidores' },
+                { id: 'investidor', label: ' Investidores' },
                 { id: 'mentor', label: 'Mentores & Especialistas' }
               ].map(item => {
                 const active = filter === item.id;
@@ -460,7 +460,7 @@ export default function NetworkingPage() {
                           </span>
                           {(profile.city || profile.country) && (
                             <p style={{ margin: '4px 0 0 0', fontSize: '0.74rem', color: '#64748b' }}>
-                              📍 {profile.city ? `${profile.city}, ` : ''}{profile.country}
+                               {profile.city ? `${profile.city}, ` : ''}{profile.country}
                             </p>
                           )}
                         </div>
@@ -603,7 +603,7 @@ export default function NetworkingPage() {
                         {group.category}
                       </span>
                       <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>
-                        👥 {group.membersCount} membros
+                         {group.membersCount} membros
                       </span>
                     </div>
                     <h3 style={{ margin: '0 0 6px 0', fontSize: '1.15rem', color: '#0f172a', fontFamily: 'Outfit', fontWeight: 800 }}>
@@ -632,7 +632,7 @@ export default function NetworkingPage() {
                         transition: 'all 0.2s'
                       }}
                     >
-                      {group.isMember ? '✓ Membro' : '+ Aderir'}
+                      {group.isMember ? ' Membro' : '+ Aderir'}
                     </button>
                   </div>
                 </div>

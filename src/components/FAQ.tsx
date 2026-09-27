@@ -174,7 +174,7 @@ export default function FAQ() {
           <div className={`${styles.formContainer} glass`}>
             {status === 'success' ? (
               <div className={styles.successState}>
-                <div className={styles.successIcon}>✓</div>
+                <div className={styles.successIcon}></div>
                 <h4>{labels.successTitle}</h4>
                 <p>{labels.successDesc}</p>
                 <button 

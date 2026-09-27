@@ -7,12 +7,12 @@ import { useLanguage } from '@/lib/LanguageContext';
 export default function Partners() {
   const { t } = useLanguage();
   const [partners, setPartners] = useState([
-    { name: 'African Union', logo: '🌍' },
-    { name: 'AfDB', logo: '🏦' },
+    { name: 'African Union', logo: '' },
+    { name: 'AfDB', logo: '' },
     { name: 'UNDP', logo: '🇺🇳' },
-    { name: 'TechHub Luanda', logo: '💻' },
+    { name: 'TechHub Luanda', logo: '' },
     { name: 'Startup Moçambique', logo: '' },
-    { name: 'Global Invest', logo: '📈' },
+    { name: 'Global Invest', logo: '' },
   ]);
 
   useEffect(() => {

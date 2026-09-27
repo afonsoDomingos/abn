@@ -84,7 +84,7 @@ export default function ProductDetail() {
                 <img src={product.image} alt={product.name} className={styles.productImage} />
               ) : (
                 <div className={styles.placeholderImage}>
-                  <span>📦</span>
+                  <span></span>
                 </div>
               )}
             </div>
@@ -103,15 +103,15 @@ export default function ProductDetail() {
                 <div className={styles.metaItem}>
                   <span className={styles.metaLabel}>Estado:</span>
                   <span className={styles.metaValue}>
-                    {product.status === 'ativo' ? '✅ Disponível' : '❌ Indisponível'}
+                    {product.status === 'ativo' ? ' Disponível' : ' Indisponível'}
                   </span>
                 </div>
                 <div className={styles.metaItem}>
                   <span className={styles.metaLabel}>Tipo:</span>
                   <span className={styles.metaValue}>
-                    {product.productType === 'digital' ? '📦 Produto Digital' :
-                     product.productType === 'service' ? '🎯 Serviço' :
-                     '📦 Produto Físico'}
+                    {product.productType === 'digital' ? ' Produto Digital' :
+                     product.productType === 'service' ? ' Serviço' :
+                     ' Produto Físico'}
                   </span>
                 </div>
                 {product.productType === 'physical' && (
@@ -148,7 +148,7 @@ export default function ProductDetail() {
 
               <div className={styles.trustBadges}>
                 <div className={styles.trustBadge}>
-                  <span>🔒</span>
+                  <span></span>
                   <span>Compra 100% segura</span>
                 </div>
                 <div className={styles.trustBadge}>

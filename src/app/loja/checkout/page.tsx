@@ -174,9 +174,9 @@ export default function Checkout() {
                 <div className={styles.summaryRow}>
                   <span>Tipo de Produto</span>
                   <span>
-                    {product.productType === 'digital' ? '📦 Digital' :
-                     product.productType === 'service' ? '🎯 Serviço' :
-                     '📦 Físico'}
+                    {product.productType === 'digital' ? ' Digital' :
+                     product.productType === 'service' ? ' Serviço' :
+                     ' Físico'}
                   </span>
                 </div>
                 {product.productType === 'physical' && (
@@ -199,7 +199,7 @@ export default function Checkout() {
 
               <div className={styles.trustBadges}>
                 <div className={styles.trustBadge}>
-                  <span>🔒</span>
+                  <span></span>
                   <span>Compra 100% segura</span>
                 </div>
                 <div className={styles.trustBadge}>
@@ -323,7 +323,7 @@ export default function Checkout() {
 
                 <div className={styles.trustBadges}>
                   <div className={styles.trustBadge}>
-                    <span>🔒</span>
+                    <span></span>
                     <span>Compra 100% segura</span>
                   </div>
                   <div className={styles.trustBadge}>

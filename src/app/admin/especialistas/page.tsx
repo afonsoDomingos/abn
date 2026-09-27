@@ -334,7 +334,7 @@ export default function AdminEspecialistasPage() {
                       gap: '6px'
                     }}
                   >
-                    {uploadingImage ? '⏳ A carregar...' : '📁 Escolher Foto'}
+                    {uploadingImage ? ' A carregar...' : ' Escolher Foto'}
                     <input
                       type="file"
                       accept="image/*"
@@ -523,14 +523,14 @@ export default function AdminEspecialistasPage() {
                       <td>{item.department || '-'}</td>
                       <td>
                         <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8', whiteSpace: 'nowrap' }}>
-                          📍 {item.country || 'Moçambique'}
+                           {item.country || 'Moçambique'}
                         </span>
                       </td>
                       <td>
                         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                           {item.linkedin && (
                             <a href={item.linkedin} target="_blank" rel="noreferrer" title="LinkedIn" style={{ color: '#0a66c2', fontSize: '1rem', textDecoration: 'none' }}>
-                              🔗
+                              
                             </a>
                           )}
                           {item.website && (
@@ -540,12 +540,12 @@ export default function AdminEspecialistasPage() {
                           )}
                           {item.email && (
                             <a href={`mailto:${item.email}`} title="Email" style={{ color: '#10b981', fontSize: '1rem', textDecoration: 'none' }}>
-                              ✉️
+                              
                             </a>
                           )}
                           {item.phone && (
                             <a href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" title="WhatsApp" style={{ color: '#25d366', fontSize: '1rem', textDecoration: 'none' }}>
-                              📱
+                              
                             </a>
                           )}
                           {!item.linkedin && !item.website && !item.email && !item.phone && (
@@ -630,7 +630,7 @@ export default function AdminEspecialistasPage() {
 
                   <div className={styles.mobileCardBody}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', color: '#94a3b8', margin: '0.4rem 0' }}>
-                      <span>📍 {item.country || 'Moçambique'}</span>
+                      <span> {item.country || 'Moçambique'}</span>
                       <span className={`${styles.statusBadge} ${item.status === 'ativo' ? styles.active : styles.inactive}`}>
                         {item.status === 'ativo' ? 'Ativo' : 'Inativo'}
                       </span>
@@ -655,9 +655,9 @@ export default function AdminEspecialistasPage() {
 
                   <div className={styles.mobileCardFooter}>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      {item.linkedin && <a href={item.linkedin} target="_blank" rel="noreferrer" title="LinkedIn">🔗</a>}
-                      {item.email && <a href={`mailto:${item.email}`} title="Email">✉️</a>}
-                      {item.phone && <a href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" title="WhatsApp">📱</a>}
+                      {item.linkedin && <a href={item.linkedin} target="_blank" rel="noreferrer" title="LinkedIn"></a>}
+                      {item.email && <a href={`mailto:${item.email}`} title="Email"></a>}
+                      {item.phone && <a href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" title="WhatsApp"></a>}
                     </div>
                     <div className={styles.actions}>
                       <button className={styles.actionBtn} onClick={() => handleEdit(item)}>Editar</button>

@@ -132,7 +132,7 @@ export default function AdminNoticiasPage() {
 
       const data = await res.json();
       if (data.success) {
-        setMsg(editingId ? '✅ Post atualizado com sucesso!' : '✅ Post publicado com sucesso!');
+        setMsg(editingId ? ' Post atualizado com sucesso!' : ' Post publicado com sucesso!');
         fetchPosts();
         setShowForm(false);
         setTimeout(() => setMsg(''), 3000);
@@ -157,7 +157,7 @@ export default function AdminNoticiasPage() {
       const data = await res.json();
       if (data.success) {
         setPosts(prev => prev.filter(p => p._id !== id));
-        setMsg('🗑️ Publicação removida com sucesso!');
+        setMsg(' Publicação removida com sucesso!');
         setTimeout(() => setMsg(''), 3000);
       } else {
         alert(data.error || 'Erro ao remover publicação.');
@@ -192,7 +192,7 @@ export default function AdminNoticiasPage() {
           <p className={styles.subtitle}>{posts.length} publicações registradas</p>
         </div>
         <button className={`btn-primary ${styles.addBtn}`} onClick={() => showForm ? setShowForm(false) : handleCreateClick()}>
-          {showForm ? '✕ Cancelar' : '+ Nova Publicação'}
+          {showForm ? ' Cancelar' : '+ Nova Publicação'}
         </button>
       </div>
 
@@ -252,7 +252,7 @@ export default function AdminNoticiasPage() {
                   {uploading ? (
                     <div className={styles.spinnerSmall}></div>
                   ) : (
-                    '📁'
+                    ''
                   )}
                   <input
                     type="file"
@@ -328,27 +328,27 @@ export default function AdminNoticiasPage() {
                 <p className={styles.cardDesc}>{p.content}</p>
                 <div className={styles.cardMeta}>
                   <div className={styles.metaItem}>
-                    <span>📅</span>
+                    <span></span>
                     <strong>{p.date}</strong>
                   </div>
                   {p.location && (
                     <div className={styles.metaItem}>
-                      <span>📍</span>
+                      <span></span>
                       <span>{p.location}</span>
                     </div>
                   )}
                   <div className={styles.metaItem} style={{ gap: '0.8rem', marginTop: '0.4rem', color: 'rgba(255,255,255,0.3)' }}>
-                    <span>👁️ {p.views || 0} visualizações</span>
+                    <span> {p.views || 0} visualizações</span>
                     <span>💬 {p.comments?.length || 0} comentários</span>
                   </div>
                 </div>
               </div>
               <div className={styles.cardFooter}>
                 <button className={styles.editBtn} onClick={() => handleEditClick(p)}>
-                  ✏️ Editar
+                   Editar
                 </button>
                 <button className={styles.deleteBtn} onClick={() => handleDelete(p._id)}>
-                  🗑️
+                  
                 </button>
               </div>
             </div>

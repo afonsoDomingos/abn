@@ -77,7 +77,7 @@ export default function LanguageSelector() {
             >
               <span className={styles.flagIcon}>{lang.flag}</span>
               <span className={styles.fullName}>{lang.name}</span>
-              {language === lang.code && <span className={styles.check}>✓</span>}
+              {language === lang.code && <span className={styles.check}></span>}
             </button>
           ))}
         </div>

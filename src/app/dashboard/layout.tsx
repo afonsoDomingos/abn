@@ -382,7 +382,7 @@ export default function DashboardLayout({
               (e.currentTarget as HTMLElement).style.background = 'transparent';
             }}
           >
-            {collapsed ? '🏠' : '← Página Inicial'}
+            {collapsed ? '' : '← Página Inicial'}
           </Link>
           <button onClick={handleLogout} className={styles.logout} style={{ background: 'none', border: 'none', textAlign: collapsed ? 'center' : 'left', width: '100%', cursor: 'pointer' }}>
             {collapsed ? '🚪' : 'Sair'}

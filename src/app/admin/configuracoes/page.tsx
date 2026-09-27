@@ -134,7 +134,7 @@ export default function AdminConfigPage() {
       body: JSON.stringify({ key, value }),
     });
     if (res.ok) {
-      setMsg(`✅ Configuração atualizada com sucesso!`);
+      setMsg(` Configuração atualizada com sucesso!`);
       setTimeout(() => setMsg(''), 3000);
     }
     setSaving(false);
@@ -164,7 +164,7 @@ export default function AdminConfigPage() {
           <p style={{ margin: '5px 0 0 0', opacity: 0.7 }}>Edite os textos principais, funcionalidades e testemunhos da Home.</p>
         </div>
         <Link href="/" className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', borderRadius: '12px', padding: '10px 20px', fontSize: '0.95rem' }}>
-          🏠 Voltar ao Início
+           Voltar ao Início
         </Link>
       </header>
 
@@ -237,7 +237,7 @@ export default function AdminConfigPage() {
                     style={{ flex: 1 }}
                   />
                   <label className={styles.uploadLabel} title="Carregar Foto" style={{ cursor: 'pointer', fontSize: '1.2rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    📁
+                    
                     <input 
                       type="file" 
                       accept="image/*" 
@@ -246,13 +246,13 @@ export default function AdminConfigPage() {
                         if (!file) return;
                         const formData = new FormData();
                         formData.append('file', file);
-                        setMsg('⏳ A carregar foto do presidente...');
+                        setMsg(' A carregar foto do presidente...');
                         try {
                           const res = await fetch('/api/upload', { method: 'POST', body: formData });
                           const data = await res.json();
                           if (data.success && data.url) {
                             setPresidentMsg({ ...presidentMsg, authorPhoto: data.url });
-                            setMsg('✅ Foto do presidente enviada!');
+                            setMsg(' Foto do presidente enviada!');
                           } else {
                             alert(data.error || 'Erro no upload.');
                           }
@@ -277,7 +277,7 @@ export default function AdminConfigPage() {
                   style={{ flex: 1 }}
                 />
                 <label className={styles.uploadLabel} title="Carregar Banner do Cartão" style={{ cursor: 'pointer', fontSize: '1.2rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  📁
+                  
                   <input 
                     type="file" 
                     accept="image/*" 
@@ -286,13 +286,13 @@ export default function AdminConfigPage() {
                       if (!file) return;
                       const formData = new FormData();
                       formData.append('file', file);
-                      setMsg('⏳ A carregar banner do cartão...');
+                      setMsg(' A carregar banner do cartão...');
                       try {
                         const res = await fetch('/api/upload', { method: 'POST', body: formData });
                         const data = await res.json();
                         if (data.success && data.url) {
                           setPresidentMsg({ ...presidentMsg, cardBanner: data.url });
-                          setMsg('✅ Banner do cartão enviado!');
+                          setMsg(' Banner do cartão enviado!');
                         } else {
                           alert(data.error || 'Erro no upload.');
                         }
@@ -423,10 +423,10 @@ export default function AdminConfigPage() {
                           style={{ flex: 1 }}
                         />
                         <label className={styles.uploadLabel} title="Carregar Imagem" style={{ cursor: 'pointer', fontSize: '1.2rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          {banner && banner.startsWith('⏳') ? (
+                          {banner && banner.startsWith('') ? (
                             <div className={styles.spinnerSmall}></div>
                           ) : (
-                            '📁'
+                            ''
                           )}
                           <input 
                             type="file" 
@@ -439,7 +439,7 @@ export default function AdminConfigPage() {
                               formData.append('file', file);
                               
                               const newBanners = [...(hero.banners || [])];
-                              newBanners[idx] = '⏳...';
+                              newBanners[idx] = '...';
                               setHero({ ...hero, banners: newBanners });
                               
                               try {
@@ -472,7 +472,7 @@ export default function AdminConfigPage() {
                       <button className={styles.removeBtn} onClick={() => {
                         const newBanners = (hero.banners || []).filter((_, i) => i !== idx);
                         setHero({ ...hero, banners: newBanners });
-                      }}>×</button>
+                      }}></button>
                     </div>
                     {banner && (
                       <div className={styles.bannerPreview}>
@@ -500,7 +500,7 @@ export default function AdminConfigPage() {
               <div key={index} className={styles.itemEdit}>
                 <input value={stat.label} onChange={e => updateArrayField(setStats, stats, index, 'label', e.target.value)} placeholder="Rótulo" />
                 <input value={stat.value} onChange={e => updateArrayField(setStats, stats, index, 'value', e.target.value)} placeholder="Valor" />
-                <button className={styles.removeBtn} onClick={() => removeItem(setStats, stats, index)}>×</button>
+                <button className={styles.removeBtn} onClick={() => removeItem(setStats, stats, index)}></button>
               </div>
             ))}
             <button className="btn-outline" onClick={() => addItem(setStats, stats, { label: '', value: '' })}>+ Adicionar Estatística</button>
@@ -532,10 +532,10 @@ export default function AdminConfigPage() {
                       className={styles.inputSmall} 
                     />
                     <label className={styles.uploadLabel} title="Carregar Logotipo">
-                      {p.logo && p.logo.startsWith('⏳') ? (
+                      {p.logo && p.logo.startsWith('') ? (
                         <div className={styles.spinnerSmall}></div>
                       ) : (
-                        '📁'
+                        ''
                       )}
                       <input 
                         type="file" 
@@ -547,7 +547,7 @@ export default function AdminConfigPage() {
                           const formData = new FormData();
                           formData.append('file', file);
                           
-                          updateArrayField(setPartners, partners, index, 'logo', '⏳ Carregando...');
+                          updateArrayField(setPartners, partners, index, 'logo', ' Carregando...');
                           
                           try {
                             const res = await fetch('/api/upload', {
@@ -576,7 +576,7 @@ export default function AdminConfigPage() {
                     placeholder="Nome do Parceiro" 
                     style={{ flex: 1 }}
                   />
-                  <button className={styles.removeBtn} onClick={() => removeItem(setPartners, partners, index)}>×</button>
+                  <button className={styles.removeBtn} onClick={() => removeItem(setPartners, partners, index)}></button>
                 </div>
                 <input 
                   value={(p as any).url || ''} 
@@ -615,10 +615,10 @@ export default function AdminConfigPage() {
                       className={styles.inputSmall} 
                     />
                     <label className={styles.uploadLabel} title="Carregar Logotipo">
-                      {company.icon && company.icon.startsWith('⏳') ? (
+                      {company.icon && company.icon.startsWith('') ? (
                         <div className={styles.spinnerSmall}></div>
                       ) : (
-                        '📁'
+                        ''
                       )}
                       <input 
                         type="file" 
@@ -630,7 +630,7 @@ export default function AdminConfigPage() {
                           const formData = new FormData();
                           formData.append('file', file);
                           
-                          updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', '⏳...');
+                          updateArrayField(setSupportedCompanies, supportedCompanies, index, 'icon', '...');
                           
                           try {
                             const res = await fetch('/api/upload', {
@@ -659,13 +659,13 @@ export default function AdminConfigPage() {
                     placeholder="Nome da Empresa" 
                     style={{ flex: 1 }}
                   />
-                  <button className={styles.removeBtn} onClick={() => removeItem(setSupportedCompanies, supportedCompanies, index)}>×</button>
+                  <button className={styles.removeBtn} onClick={() => removeItem(setSupportedCompanies, supportedCompanies, index)}></button>
                 </div>
                 <div className={styles.row} style={{ marginTop: '0.5rem', gap: '1rem' }}>
                   <input 
                     value={company.location} 
                     onChange={e => updateArrayField(setSupportedCompanies, supportedCompanies, index, 'location', e.target.value)} 
-                    placeholder="📍 Localização (ex: Luanda, Angola)" 
+                    placeholder=" Localização (ex: Luanda, Angola)" 
                     style={{ flex: 1 }}
                   />
                   <input 
@@ -713,10 +713,10 @@ export default function AdminConfigPage() {
                       style={{ flex: 1 }}
                     />
                     <label className={styles.uploadLabel} title="Carregar Imagem" style={{ cursor: 'pointer', fontSize: '1.2rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {imgUrl && imgUrl.startsWith('⏳') ? (
+                      {imgUrl && imgUrl.startsWith('') ? (
                         <div className={styles.spinnerSmall}></div>
                       ) : (
-                        '📁'
+                        ''
                       )}
                       <input 
                         type="file" 
@@ -729,7 +729,7 @@ export default function AdminConfigPage() {
                           formData.append('file', file);
                           
                           const newImages = [...(missionImages || [])];
-                          newImages[idx] = '⏳...';
+                          newImages[idx] = '...';
                           setMissionImages(newImages);
                           
                           try {
@@ -762,9 +762,9 @@ export default function AdminConfigPage() {
                   <button className={styles.removeBtn} onClick={() => {
                     const newImages = (missionImages || []).filter((_, i) => i !== idx);
                     setMissionImages(newImages);
-                  }}>×</button>
+                  }}></button>
                 </div>
-                {imgUrl && !imgUrl.startsWith('⏳') && (
+                {imgUrl && !imgUrl.startsWith('') && (
                   <div className={styles.bannerPreview} style={{ marginTop: '5px' }}>
                     <img src={imgUrl} alt={`Quem Somos Image ${idx + 1}`} style={{ width: '100px', height: '60px', objectFit: 'cover', borderRadius: '4px' }} />
                   </div>
@@ -791,7 +791,7 @@ export default function AdminConfigPage() {
                     {(member.image && (member.image.startsWith('http') || member.image.startsWith('/'))) ? (
                       <img src={member.image} alt="Membro" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
-                      <span style={{ fontSize: '1.5rem' }}>👤</span>
+                      <span style={{ fontSize: '1.5rem' }}></span>
                     )}
                   </div>
                   <div className={styles.logoInputWrapper}>
@@ -802,10 +802,10 @@ export default function AdminConfigPage() {
                       className={styles.inputSmall} 
                     />
                     <label className={styles.uploadLabel} title="Carregar Foto">
-                      {member.image && member.image.startsWith('⏳') ? (
+                      {member.image && member.image.startsWith('') ? (
                         <div className={styles.spinnerSmall}></div>
                       ) : (
-                        '📁'
+                        ''
                       )}
                       <input 
                         type="file" 
@@ -817,7 +817,7 @@ export default function AdminConfigPage() {
                           const formData = new FormData();
                           formData.append('file', file);
                           
-                          updateArrayField(setTeam, team, index, 'image', '⏳ Carregando...');
+                          updateArrayField(setTeam, team, index, 'image', ' Carregando...');
                           
                           try {
                             const res = await fetch('/api/upload', {
@@ -846,7 +846,7 @@ export default function AdminConfigPage() {
                     placeholder="Nome" 
                     style={{ flex: 1 }}
                   />
-                  <button className={styles.removeBtn} onClick={() => removeItem(setTeam, team, index)}>×</button>
+                  <button className={styles.removeBtn} onClick={() => removeItem(setTeam, team, index)}></button>
                 </div>
                 <div className={styles.row} style={{ marginTop: '0.5rem' }}>
                   <input 
@@ -860,11 +860,11 @@ export default function AdminConfigPage() {
                     onChange={e => updateArrayField(setTeam, team, index, 'country', e.target.value)}
                     style={{ width: '200px' }}
                   >
-                    <option value="">🌍 País</option>
+                    <option value=""> País</option>
                     <option value="Angola">🇦🇴 Angola</option>
                     <option value="Cabo Verde">🇨🇻 Cabo Verde</option>
                     <option value="Guine-Bissau">🇬🇼 Guiné-Bissau</option>
-                    <option value="Mocambique">🇲🇿 Moçambique</option>
+                    <option value="Mocambique">🇲🇴 Moçambique</option>
                     <option value="Portugal">🇵🇹 Portugal</option>
                     <option value="Sao Tome e Principe">🇸🇹 São Tomé</option>
                     <option value="Brasil">🇧🇷 Brasil</option>
@@ -913,7 +913,7 @@ export default function AdminConfigPage() {
                 <div className={styles.row}>
                   <input value={f.icon} onChange={e => updateArrayField(setFeatures, features, index, 'icon', e.target.value)} placeholder="Ícone (Emoji)" style={{ width: '60px' }} />
                   <input value={f.title} onChange={e => updateArrayField(setFeatures, features, index, 'title', e.target.value)} placeholder="Título" style={{ flex: 1 }} />
-                  <button className={styles.removeBtn} onClick={() => removeItem(setFeatures, features, index)}>×</button>
+                  <button className={styles.removeBtn} onClick={() => removeItem(setFeatures, features, index)}></button>
                 </div>
                 <textarea value={f.desc} onChange={e => updateArrayField(setFeatures, features, index, 'desc', e.target.value)} placeholder="Descrição curta" rows={2} />
               </div>
@@ -934,7 +934,7 @@ export default function AdminConfigPage() {
                 <div className={styles.row}>
                   <input value={step.number} onChange={e => updateArrayField(setHowItWorks, howItWorks, index, 'number', e.target.value)} placeholder="01" style={{ width: '60px' }} />
                   <input value={step.title} onChange={e => updateArrayField(setHowItWorks, howItWorks, index, 'title', e.target.value)} placeholder="Título do Passo" style={{ flex: 1 }} />
-                  <button className={styles.removeBtn} onClick={() => removeItem(setHowItWorks, howItWorks, index)}>×</button>
+                  <button className={styles.removeBtn} onClick={() => removeItem(setHowItWorks, howItWorks, index)}></button>
                 </div>
                 <textarea value={step.description} onChange={e => updateArrayField(setHowItWorks, howItWorks, index, 'description', e.target.value)} placeholder="O que acontece neste passo?" rows={2} />
               </div>
@@ -957,7 +957,7 @@ export default function AdminConfigPage() {
                     {t.img ? (
                       <img src={t.img} alt="Avatar" />
                     ) : (
-                      <span>👤</span>
+                      <span></span>
                     )}
                   </div>
                   <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -974,7 +974,7 @@ export default function AdminConfigPage() {
                         placeholder="Cargo ou Empresa" 
                         className={styles.inputFlex}
                       />
-                      <button className={styles.removeBtn} onClick={() => removeItem(setTestimonials, testimonials, index)}>×</button>
+                      <button className={styles.removeBtn} onClick={() => removeItem(setTestimonials, testimonials, index)}></button>
                     </div>
                     <input 
                       value={t.img} 
@@ -1006,7 +1006,7 @@ export default function AdminConfigPage() {
               <div key={index} className={styles.itemEditFull}>
                 <div className={styles.row}>
                   <input value={item.question} onChange={e => updateArrayField(setFaq, faq, index, 'question', e.target.value)} placeholder="Pergunta" style={{ flex: 1 }} />
-                  <button className={styles.removeBtn} onClick={() => removeItem(setFaq, faq, index)}>×</button>
+                  <button className={styles.removeBtn} onClick={() => removeItem(setFaq, faq, index)}></button>
                 </div>
                 <textarea value={item.answer} onChange={e => updateArrayField(setFaq, faq, index, 'answer', e.target.value)} placeholder="Resposta" rows={3} />
               </div>
@@ -1052,7 +1052,7 @@ export default function AdminConfigPage() {
                       e.currentTarget.style.color = '#ff4d4d';
                     }}
                   >
-                    🗑️ Remover Artigo
+                     Remover Artigo
                   </button>
                 </div>
 
@@ -1108,10 +1108,10 @@ export default function AdminConfigPage() {
                           style={{ flex: 1 }}
                         />
                         <label className={styles.uploadLabel} title="Carregar imagem">
-                          {art.img && art.img.startsWith('⏳') ? (
+                          {art.img && art.img.startsWith('') ? (
                             <div className={styles.spinnerSmall}></div>
                           ) : (
-                            '📁'
+                            ''
                           )}
                           <input 
                             type="file" 
@@ -1123,7 +1123,7 @@ export default function AdminConfigPage() {
                               const formData = new FormData();
                               formData.append('file', file);
                               
-                              updateArrayField(setArticles, articles, index, 'img', '⏳ Carregando...');
+                              updateArrayField(setArticles, articles, index, 'img', ' Carregando...');
                               
                               try {
                                 const res = await fetch('/api/upload', {
@@ -1209,10 +1209,10 @@ export default function AdminConfigPage() {
                     style={{ flex: 1 }}
                   />
                   <label className={styles.uploadLabel} title="Carregar imagem" style={{ cursor: 'pointer', fontSize: '1.2rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    {((pageBanners as any)[page.id] && (pageBanners as any)[page.id].startsWith('⏳')) ? (
+                    {((pageBanners as any)[page.id] && (pageBanners as any)[page.id].startsWith('')) ? (
                       <div className={styles.spinnerSmall}></div>
                     ) : (
-                      '📁'
+                      ''
                     )}
                     <input
                       type="file"
@@ -1224,7 +1224,7 @@ export default function AdminConfigPage() {
                         const formData = new FormData();
                         formData.append('file', file);
 
-                        setPageBanners(prev => ({ ...prev, [page.id]: '⏳ Carregando...' }));
+                        setPageBanners(prev => ({ ...prev, [page.id]: ' Carregando...' }));
 
                         try {
                           const res = await fetch('/api/upload', {
@@ -1248,7 +1248,7 @@ export default function AdminConfigPage() {
                   </label>
                 </div>
                 {/* Visual Preview */}
-                {(pageBanners as any)[page.id] && !(pageBanners as any)[page.id].startsWith('⏳') && (
+                {(pageBanners as any)[page.id] && !(pageBanners as any)[page.id].startsWith('') && (
                   <div style={{ marginTop: '0.5rem', width: '100%', height: '80px', borderRadius: '10px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <img src={(pageBanners as any)[page.id]} alt="Preview Banner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
@@ -1279,18 +1279,18 @@ export default function AdminConfigPage() {
             </label>
             <p style={{ fontSize: '0.8rem', opacity: 0.6, marginTop: '0.5rem', marginLeft: '2.75rem' }}>
               {shopEnabled 
-                ? '✅ A loja será visível para todos os visitantes na página /loja' 
-                : '❌ A loja ficará oculta e mostrará mensagem "Em Breve"'}
+                ? ' A loja será visível para todos os visitantes na página /loja' 
+                : ' A loja ficará oculta e mostrará mensagem "Em Breve"'}
             </p>
           </div>
           <button className="btn-primary" onClick={() => saveConfig('shop_enabled', shopEnabled)} disabled={saving} style={{ marginTop: '1rem' }}>
-            {saving ? 'A guardar...' : '💾 Guardar Configuração da Loja'}
+            {saving ? 'A guardar...' : ' Guardar Configuração da Loja'}
           </button>
         </section>
 
         {/* Dados de Pagamento */}
         <section className={`glass ${styles.section}`}>
-          <h3>💳 Dados de Pagamento</h3>
+          <h3> Dados de Pagamento</h3>
           <p style={{ opacity: 0.7, fontSize: '0.85rem', marginBottom: '1.2rem' }}>Estes dados aparecem no modal de submissão de comprovativo nos cursos e formações.</p>
           <div className={styles.form}>
             <div className={styles.field}>
@@ -1299,32 +1299,32 @@ export default function AdminConfigPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
               <div className={styles.field}>
-                <label>🏦 BIM — Conta</label>
+                <label> BIM — Conta</label>
                 <input value={paymentInfo.bim_conta} onChange={e => setPaymentInfo(p => ({ ...p, bim_conta: e.target.value }))} placeholder="Ex: 5283397" />
               </div>
               <div className={styles.field}>
-                <label>🏦 BIM — NIB</label>
+                <label> BIM — NIB</label>
                 <input value={paymentInfo.bim_nib} onChange={e => setPaymentInfo(p => ({ ...p, bim_nib: e.target.value }))} placeholder="Ex: 0001 000000005283397 57" />
               </div>
               <div className={styles.field}>
-                <label>🏦 Moza Banco — Conta</label>
+                <label> Moza Banco — Conta</label>
                 <input value={paymentInfo.moza_conta} onChange={e => setPaymentInfo(p => ({ ...p, moza_conta: e.target.value }))} placeholder="Ex: 0087656640001" />
               </div>
               <div className={styles.field}>
-                <label>🏦 Moza Banco — NIB</label>
+                <label> Moza Banco — NIB</label>
                 <input value={paymentInfo.moza_nib} onChange={e => setPaymentInfo(p => ({ ...p, moza_nib: e.target.value }))} placeholder="Ex: 0034 000008765664101 25" />
               </div>
               <div className={styles.field}>
-                <label>📱 M-Pesa</label>
+                <label> M-Pesa</label>
                 <input value={paymentInfo.mpesa} onChange={e => setPaymentInfo(p => ({ ...p, mpesa: e.target.value }))} placeholder="Ex: 857670109" />
               </div>
               <div className={styles.field}>
-                <label>📱 e-Mola</label>
+                <label> e-Mola</label>
                 <input value={paymentInfo.emola} onChange={e => setPaymentInfo(p => ({ ...p, emola: e.target.value }))} placeholder="Ex: 876687082" />
               </div>
             </div>
             <button className="btn-primary" onClick={() => saveConfig('payment_info', paymentInfo)} disabled={saving}>
-              {saving ? 'A guardar...' : '💾 Guardar Dados de Pagamento'}
+              {saving ? 'A guardar...' : ' Guardar Dados de Pagamento'}
             </button>
           </div>
         </section>

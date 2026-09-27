@@ -130,7 +130,7 @@ export async function POST(request: Request) {
     const adminPhone = process.env.ADMIN_WHATSAPP || '245955000000';
     const studentName = session.name || 'Aluno';
     const waText = encodeURIComponent(
-      `🚨 *Novo Comprovativo Recebido!*\n\n📚 *Curso:* ${itemName}\n👤 *Aluno:* ${studentName}\n📱 *Contacto:* ${phone || 'N/A'}\n*Empresa:* ${company || 'N/A'}\n💰 *Valor:* ${price}\n\nPor favor, valide no painel Admin em /admin/pagamentos`
+      `🚨 *Novo Comprovativo Recebido!*\n\n📚 *Curso:* ${itemName}\n *Aluno:* ${studentName}\n *Contacto:* ${phone || 'N/A'}\n*Empresa:* ${company || 'N/A'}\n *Valor:* ${price}\n\nPor favor, valide no painel Admin em /admin/pagamentos`
     );
     const waUrl = `https://api.whatsapp.com/send?phone=${adminPhone}&text=${waText}`;
 
@@ -194,7 +194,7 @@ export async function PUT(request: Request) {
       } else if (status === 'rejeitado') {
         await Notification.create({
           user: payment.user,
-          title: 'Comprovativo Rejeitado ❌',
+          title: 'Comprovativo Rejeitado ',
           message: `O comprovativo enviado para o curso "${payment.itemName}" foi rejeitado. Por favor, verifique e reenvie.`,
           link: '/dashboard/formacao'
         });

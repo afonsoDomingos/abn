@@ -160,7 +160,7 @@ export default function ProgramsList({ initialPrograms }: ProgramsListProps) {
       {selectedProgram && (
         <div className={styles.modalOverlay} onClick={handleClose}>
           <div className={`${styles.modalContent} glass`} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.closeModalBtn} onClick={handleClose}>✕</button>
+            <button className={styles.closeModalBtn} onClick={handleClose}></button>
             
             {!showApplyForm ? (
               <div className={styles.detailsView}>
@@ -247,7 +247,7 @@ export default function ProgramsList({ initialPrograms }: ProgramsListProps) {
 
                 {success ? (
                   <div className={styles.successScreen}>
-                    <div className={styles.successIcon}>✓</div>
+                    <div className={styles.successIcon}></div>
                     <h4>Candidatura Submetida!</h4>
                     <p>Obrigado pelo seu interesse. A equipa da ABN irá analisar a sua proposta e entrar em contacto muito em breve.</p>
                     <button className="btn-primary" onClick={handleClose} style={{ marginTop: '1.5rem' }}>Fechar Janela</button>

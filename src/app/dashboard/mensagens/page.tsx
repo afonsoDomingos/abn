@@ -110,7 +110,7 @@ export default function MensagensPage() {
               style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '12px', color: '#fff', resize: 'vertical' }}
             />
             <button type="submit" className="btn-primary" disabled={sending} style={{ alignSelf: 'flex-start' }}>
-              {sending ? 'A enviar...' : '✉️ Enviar Mensagem'}
+              {sending ? 'A enviar...' : ' Enviar Mensagem'}
             </button>
           </form>
         </div>
@@ -128,7 +128,7 @@ export default function MensagensPage() {
                 <div key={m._id} className="glass" style={{ padding: '2rem', borderRadius: '20px', borderLeft: `4px solid ${m.status === 'respondido' ? '#2ecc71' : 'var(--primary)'}` }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                     <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>
-                      📅 {new Date(m.createdAt).toLocaleString('pt-PT')}
+                       {new Date(m.createdAt).toLocaleString('pt-PT')}
                     </span>
                     <span style={{
                       fontSize: '0.75rem',
@@ -146,7 +146,7 @@ export default function MensagensPage() {
                   
                   {m.status === 'respondido' && (
                     <div style={{ marginTop: '1.2rem', padding: '1rem', background: 'rgba(46,204,113,0.06)', borderRadius: '12px', border: '1px dashed rgba(46,204,113,0.2)', fontSize: '0.85rem', color: '#2ecc71' }}>
-                      ℹ️ <strong>Estado:</strong> Esta mensagem foi analisada e respondida pela administração da ABN (verifique a sua caixa de correio eletrónico).
+                       <strong>Estado:</strong> Esta mensagem foi analisada e respondida pela administração da ABN (verifique a sua caixa de correio eletrónico).
                     </div>
                   )}
                 </div>

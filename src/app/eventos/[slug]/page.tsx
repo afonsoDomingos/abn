@@ -193,7 +193,7 @@ export default async function EventPage({ params }: EventPageProps) {
                   <div className={styles.ticketsList}>
                     {tickets.map((ticket: any, idx: number) => (
                       <div key={idx} className={styles.ticketCard}>
-                        <div className={styles.ticketType}>{ticket.type === 'empresa' ? '🏢 Empresa' : '👤 Empreendedor'}</div>
+                        <div className={styles.ticketType}>{ticket.type === 'empresa' ? ' Empresa' : ' Empreendedor'}</div>
                         <h4>{ticket.name}</h4>
                         <p className={styles.ticketPrice}>
                           {ticket.price.toLocaleString()} {ticket.currency}

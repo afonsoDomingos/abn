@@ -180,13 +180,13 @@ export default function Pedidos() {
                       onClick={() => updateOrderStatus(order._id, 'paid')}
                       className={`${styles.actionBtn} ${styles.approve}`}
                     >
-                      ✅ Aprovar
+                       Aprovar
                     </button>
                     <button
                       onClick={() => updateOrderStatus(order._id, 'cancelled')}
                       className={`${styles.actionBtn} ${styles.cancel}`}
                     >
-                      ❌ Cancelar
+                       Cancelar
                     </button>
                   </>
                 )}
@@ -195,7 +195,7 @@ export default function Pedidos() {
                     onClick={() => window.open(`mailto:${order.customerEmail}`)}
                     className={`${styles.actionBtn} ${styles.email}`}
                   >
-                    📧 Enviar Email
+                     Enviar Email
                   </button>
                 )}
               </div>

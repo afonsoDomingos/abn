@@ -186,7 +186,7 @@ export default function ColaboradorPerfil() {
       const data = await res.json();
 
       if (res.ok) {
-        setMsg({ type: 'success', text: '✅ Perfil atualizado com sucesso!' });
+        setMsg({ type: 'success', text: ' Perfil atualizado com sucesso!' });
         const updatedUser = { ...data.user, profileImage: profileImage || data.user.profileImage };
         localStorage.setItem('user', JSON.stringify(updatedUser));
         setUser(updatedUser);
@@ -250,7 +250,7 @@ export default function ColaboradorPerfil() {
           <form onSubmit={handleUpdate} className={styles.form}>
             {/* Dados Pessoais & Conta */}
             <h4 style={{ margin: '1rem 0 0.5rem 0', color: 'var(--primary)', borderBottom: '1px solid rgba(0,0,0,0.08)', paddingBottom: '0.5rem' }}>
-              👤 Identificação & Acesso
+               Identificação & Acesso
             </h4>
             <div className={styles.grid}>
               <div className={styles.field}>
@@ -411,7 +411,7 @@ export default function ColaboradorPerfil() {
 
             {/* Palavra-passe */}
             <h4 style={{ margin: '1.5rem 0 0.5rem 0', color: 'var(--primary)', borderBottom: '1px solid rgba(0,0,0,0.08)', paddingBottom: '0.5rem' }}>
-              🔒 Segurança
+               Segurança
             </h4>
             <div className={styles.field}>
               <label>Nova Senha (deixe em branco para manter a atual)</label>

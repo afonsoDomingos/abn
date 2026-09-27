@@ -122,7 +122,7 @@ export default function AdminImpactoPage() {
         body: JSON.stringify({ key, value }),
       });
       if (res.ok) {
-        setMsg(`✅ Configuração de ${key} atualizada com sucesso!`);
+        setMsg(` Configuração de ${key} atualizada com sucesso!`);
         setTimeout(() => setMsg(''), 3000);
       } else {
         alert('Erro ao salvar as configurações.');
@@ -163,7 +163,7 @@ export default function AdminImpactoPage() {
     const formData = new FormData();
     formData.append('file', file);
 
-    updateArrayField(setter, array, index, field, '⏳ Carregando...');
+    updateArrayField(setter, array, index, field, ' Carregando...');
 
     try {
       const res = await fetch('/api/upload', {
@@ -197,19 +197,19 @@ export default function AdminImpactoPage() {
           className={`${styles.tabBtn} ${activeTab === 'estatisticas' ? styles.activeTabBtn : ''}`}
           onClick={() => setActiveTab('estatisticas')}
         >
-          📈 Indicadores & Estatísticas
+           Indicadores & Estatísticas
         </button>
         <button
           className={`${styles.tabBtn} ${activeTab === 'relatorios' ? styles.activeTabBtn : ''}`}
           onClick={() => setActiveTab('relatorios')}
         >
-          📁 Relatórios Anuais
+           Relatórios Anuais
         </button>
         <button
           className={`${styles.tabBtn} ${activeTab === 'casos' ? styles.activeTabBtn : ''}`}
           onClick={() => setActiveTab('casos')}
         >
-          🏆 Casos de Sucesso
+           Casos de Sucesso
         </button>
         <button
           className={`${styles.tabBtn} ${activeTab === 'empresas' ? styles.activeTabBtn : ''}`}
@@ -253,7 +253,7 @@ export default function AdminImpactoPage() {
                       />
                     </div>
                     <button type="button" className={styles.removeBtn} onClick={() => removeItem(setStats, stats, idx)}>
-                      ×
+                      
                     </button>
                   </div>
                 ))}
@@ -304,7 +304,7 @@ export default function AdminImpactoPage() {
                         />
                       </div>
                       <button type="button" className={styles.removeBtn} onClick={() => removeItem(setReports, reports, idx)}>
-                        ×
+                        
                       </button>
                     </div>
 
@@ -319,10 +319,10 @@ export default function AdminImpactoPage() {
                             style={{ flex: 1 }}
                           />
                           <label className={styles.uploadLabel} title="Carregar PDF">
-                            {report.fileUrl && report.fileUrl.startsWith('⏳') ? (
+                            {report.fileUrl && report.fileUrl.startsWith('') ? (
                               <div className={styles.spinnerSmall}></div>
                             ) : (
-                              '📁'
+                              ''
                             )}
                             <input
                               type="file"
@@ -383,7 +383,7 @@ export default function AdminImpactoPage() {
                         />
                       </div>
                       <button type="button" className={styles.removeBtn} onClick={() => removeItem(setCases, cases, idx)}>
-                        ×
+                        
                       </button>
                     </div>
 
@@ -406,10 +406,10 @@ export default function AdminImpactoPage() {
                             style={{ flex: 1 }}
                           />
                           <label className={styles.uploadLabel} title="Carregar Imagem">
-                            {cs.img && cs.img.startsWith('⏳') ? (
+                            {cs.img && cs.img.startsWith('') ? (
                               <div className={styles.spinnerSmall}></div>
                             ) : (
-                              '📁'
+                              ''
                             )}
                             <input
                               type="file"
@@ -480,10 +480,10 @@ export default function AdminImpactoPage() {
                           className={styles.inputSmall}
                         />
                         <label className={styles.uploadLabel} title="Carregar Logotipo">
-                          {company.icon && company.icon.startsWith('⏳') ? (
+                          {company.icon && company.icon.startsWith('') ? (
                             <div className={styles.spinnerSmall}></div>
                           ) : (
-                            '📁'
+                            ''
                           )}
                           <input
                             type="file"
@@ -515,13 +515,13 @@ export default function AdminImpactoPage() {
                       </div>
 
                       <button type="button" className={styles.removeBtn} onClick={() => removeItem(setCompanies, companies, idx)}>
-                        ×
+                        
                       </button>
                     </div>
 
                     <div className={styles.row} style={{ marginTop: '0.5rem' }}>
                       <div className={styles.field} style={{ flex: 1 }}>
-                        <label>📍 Localização</label>
+                        <label> Localização</label>
                         <input
                           value={company.location}
                           onChange={e => updateArrayField(setCompanies, companies, idx, 'location', e.target.value)}

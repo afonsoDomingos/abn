@@ -852,7 +852,7 @@ export default function InvestidorPage() {
                         <div>
                           <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ff6b00', textTransform: 'uppercase' }}>{deal.sector}</div>
                           <h4 style={{ margin: 0, fontSize: '1.15rem', color: '#0f172a' }}>{deal.name}</h4>
-                          <span style={{ fontSize: '0.8rem', color: '#64748b' }}>📍 {deal.location} • Rodada: {deal.fundingGoal} ({deal.equityOffered}%)</span>
+                          <span style={{ fontSize: '0.8rem', color: '#64748b' }}> {deal.location} • Rodada: {deal.fundingGoal} ({deal.equityOffered}%)</span>
                         </div>
                       </div>
 
@@ -991,7 +991,7 @@ export default function InvestidorPage() {
                         <h4 style={{ margin: 0, fontSize: '1.1rem', color: '#0f172a' }}>{meet.businessName}</h4>
                       </div>
                       <div style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '3px' }}>
-                        👤 Com: <strong style={{ color: '#334155' }}>{meet.founderName}</strong> • Pauta: <em>{meet.topic}</em>
+                         Com: <strong style={{ color: '#334155' }}>{meet.founderName}</strong> • Pauta: <em>{meet.topic}</em>
                       </div>
                     </div>
                   </div>
@@ -1047,7 +1047,7 @@ export default function InvestidorPage() {
               </div>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <li style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
-                  <span>💳 Fintech &amp; Pagamentos</span>
+                  <span> Fintech &amp; Pagamentos</span>
                   <strong style={{ color: '#ff6b00' }}>38% do volume</strong>
                 </li>
                 <li style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
@@ -1055,7 +1055,7 @@ export default function InvestidorPage() {
                   <strong style={{ color: '#059669' }}>26% do volume</strong>
                 </li>
                 <li style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
-                  <span>☀️ Energia Solar &amp; Clima</span>
+                  <span> Energia Solar &amp; Clima</span>
                   <strong style={{ color: '#0284c7' }}>18% do volume</strong>
                 </li>
                 <li style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
@@ -1082,7 +1082,7 @@ export default function InvestidorPage() {
                   <span style={{ background: '#ecfdf5', color: '#059669', padding: '2px 8px', borderRadius: '6px', fontWeight: 700, fontSize: '0.78rem' }}>Alta Escalabilidade</span>
                 </li>
                 <li style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
-                  <span>🇲🇿 Moçambique (Health &amp; Logística)</span>
+                  <span>🇲🇴 Moçambique (Health &amp; Logística)</span>
                   <span style={{ background: '#e0f2fe', color: '#0284c7', padding: '2px 8px', borderRadius: '6px', fontWeight: 700, fontSize: '0.78rem' }}>Mercado Expansivo</span>
                 </li>
                 <li style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
@@ -1131,7 +1131,7 @@ export default function InvestidorPage() {
                   </div>
                   <h2>{activeDeal.name}</h2>
                   <div className={styles.modalSubMeta}>
-                    <span>📍 {activeDeal.location}</span>
+                    <span> {activeDeal.location}</span>
                     {activeDeal.website && (
                       <a href={activeDeal.website} target="_blank" rel="noopener noreferrer" style={{ color: '#ff8c38', display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <Globe size={13} /> Website <ExternalLink size={11} />

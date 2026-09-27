@@ -127,7 +127,7 @@ export default function AdminPagamentosPage() {
     if (pay.certificateApproved) {
       message = `Olá ${userName}!\n\nParabéns! O seu certificado do curso *${courseTitle}* foi validado e aprovado pela Direção da ABN.\n\nJá pode aceder ao seu painel em https://abnafrobiznetwork.com para descarregar o documento em PDF!\n\nQualquer dúvida, estamos ao dispor.`;
     } else if (pay.status === 'pendente') {
-      message = `Olá ${userName}! 💳\n\nConfirmamos a receção da sua inscrição para o curso *${courseTitle}*.\n\nA nossa equipa está a analisar o seu comprovativo de pagamento e dará novidades em breve!\n\nObrigado pela preferência, AfroBiz Network (ABN).`;
+      message = `Olá ${userName}! \n\nConfirmamos a receção da sua inscrição para o curso *${courseTitle}*.\n\nA nossa equipa está a analisar o seu comprovativo de pagamento e dará novidades em breve!\n\nObrigado pela preferência, AfroBiz Network (ABN).`;
     } else if (pay.status === 'aprovado') {
       message = `Olá ${userName}!\n\nEntramos em contacto da AfroBiz Network (ABN) relativamente à sua inscrição no curso *${courseTitle}*.\n\nPrecisa de algum apoio ou ajuda com o acesso às videoaulas e materiais de apoio?`;
     } else {
@@ -312,12 +312,12 @@ export default function AdminPagamentosPage() {
                       {pay.status}
                     </span>
 
-                    {/* 📅 Date Badge */}
+                    {/*  Date Badge */}
                     <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600, background: '#f8fafc', padding: '3px 10px', borderRadius: '50px', border: '1px solid #e2e8f0', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                       <Calendar size={13} color="#64748b" /> {formatDate(pay.createdAt)}
                     </span>
 
-                    {/* 📊 Student Real-Time Progress Badge */}
+                    {/*  Student Real-Time Progress Badge */}
                     <span style={{
                       fontSize: '0.75rem',
                       fontWeight: 800,
@@ -358,7 +358,7 @@ export default function AdminPagamentosPage() {
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Mail size={15} color="#64748b" /> {pay.user?.email}</span>
                     {pay.phone && <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Phone size={15} color="#64748b" /> {pay.phone}</span>}
                     {pay.company && <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Building2 size={15} color="#64748b" /> {pay.company}</span>}
-                    <span style={{ fontWeight: 800, color: '#16a34a' }}>💰 {pay.price}</span>
+                    <span style={{ fontWeight: 800, color: '#16a34a' }}> {pay.price}</span>
                   </div>
                 </div>
 
@@ -476,7 +476,7 @@ export default function AdminPagamentosPage() {
 
                   {pay.certificateApproved && (
                     <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#2563eb', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '6px 14px', borderRadius: '50px' }}>
-                      ✓ Certificado Emitido
+                       Certificado Emitido
                     </span>
                   )}
                 </div>

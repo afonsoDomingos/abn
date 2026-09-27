@@ -136,7 +136,7 @@ export default function Services() {
                   <span className={styles.price}>{service.price}</span>
                 </div>
                 <button className={styles.btn} onClick={() => setSelectedService(service)}>
-                  {t.services.request} →
+                  {t.services.request} 
                 </button>
               </div>
             </motion.div>
@@ -180,7 +180,7 @@ export default function Services() {
                       Acompanhe a sua solicitação
                     </p>
                     <p style={{ margin: '6px 0 0 0', fontSize: '0.82rem', color: '#4b5563', lineHeight: 1.5 }}>
-                      Como já está autenticado, pode acompanhar o progresso deste pedido diretamente no seu <Link href="/dashboard/servicos" style={{ color: '#2a4fa6', fontWeight: 700, textDecoration: 'underline' }}>Dashboard → Serviços</Link>.
+                      Como já está autenticado, pode acompanhar o progresso deste pedido diretamente no seu <Link href="/dashboard/servicos" style={{ color: '#2a4fa6', fontWeight: 700, textDecoration: 'underline' }}>Dashboard  Serviços</Link>.
                     </p>
                   </div>
                 ) : (
@@ -196,7 +196,7 @@ export default function Services() {
                       Quer acompanhar o estado do pedido?
                     </p>
                     <p style={{ margin: '6px 0 0 0', fontSize: '0.82rem', color: '#4b5563', lineHeight: 1.5 }}>
-                      <Link href="/registro" style={{ color: '#2a4fa6', fontWeight: 700, textDecoration: 'underline' }}>Crie a sua conta gratuita aqui</Link> com o <strong style={{ color: '#111827' }}>mesmo email</strong> ({formData.email}) para acompanhar este pedido em tempo real no seu Dashboard (Pendente → Em Análise → Aprovado).
+                      <Link href="/registro" style={{ color: '#2a4fa6', fontWeight: 700, textDecoration: 'underline' }}>Crie a sua conta gratuita aqui</Link> com o <strong style={{ color: '#111827' }}>mesmo email</strong> ({formData.email}) para acompanhar este pedido em tempo real no seu Dashboard (Pendente  Em Análise  Aprovado).
                     </p>
                   </div>
                 )}

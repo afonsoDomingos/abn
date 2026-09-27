@@ -229,7 +229,7 @@ export default function OportunidadesClient({ initialOpportunities }: Oportunida
       {selectedOpp && (
         <div className={styles.modalOverlay} onClick={() => setSelectedOpp(null)}>
           <div className={`${styles.modalContent} glass`} onClick={e => e.stopPropagation()}>
-            <button className={styles.closeModalBtn} onClick={() => setSelectedOpp(null)}>✕</button>
+            <button className={styles.closeModalBtn} onClick={() => setSelectedOpp(null)}></button>
 
             <div className={styles.modalHeader}>
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
@@ -285,7 +285,7 @@ export default function OportunidadesClient({ initialOpportunities }: Oportunida
       {showPublishModal && (
         <div className={styles.modalOverlay} onClick={() => setShowPublishModal(false)}>
           <div className={`${styles.modalContent} glass`} style={{ maxWidth: '600px' }} onClick={e => e.stopPropagation()}>
-            <button className={styles.closeModalBtn} onClick={() => setShowPublishModal(false)}>✕</button>
+            <button className={styles.closeModalBtn} onClick={() => setShowPublishModal(false)}></button>
 
             <div className={styles.modalHeader}>
               <h2>Publicar Oportunidade</h2>

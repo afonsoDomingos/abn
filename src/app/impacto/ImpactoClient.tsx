@@ -202,7 +202,7 @@ export default function ImpactoClient({ stats, reports, cases, companies }: Impa
       {activeCase && (
         <div className={styles.modalOverlay} onClick={() => setActiveCase(null)}>
           <div className={`${styles.modalContent} glass`} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.closeModalBtn} onClick={() => setActiveCase(null)}>✕</button>
+            <button className={styles.closeModalBtn} onClick={() => setActiveCase(null)}></button>
             <div className={styles.modalHeader}>
               <span className={styles.caseCategory} style={{ position: 'static', display: 'inline-block', marginBottom: '0.5rem' }}>
                 {activeCase.category}

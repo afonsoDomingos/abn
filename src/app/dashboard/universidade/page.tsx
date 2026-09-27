@@ -145,7 +145,7 @@ export default function UniversidadePage() {
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.75rem' }}>
                 {profile.accreditations.map((a: string, i: number) => (
                   <span key={i} style={{ background: 'rgba(16,185,129,0.15)', color: '#6ee7b7', border: '1px solid rgba(16,185,129,0.3)', borderRadius: '20px', padding: '2px 10px', fontSize: '0.74rem', fontWeight: 700 }}>
-                    ✓ {a}
+                     {a}
                   </span>
                 ))}
               </div>
@@ -160,7 +160,7 @@ export default function UniversidadePage() {
               <Sparkles size={16} /> Lançar Desafio
             </button>
             <button className={styles.btnSecondary} onClick={() => setShowProfileModal(true)} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.25)' }}>
-              ✏️ Editar Perfil
+               Editar Perfil
             </button>
           </div>
         </div>
@@ -171,7 +171,7 @@ export default function UniversidadePage() {
         {[
           { label: 'Estudantes', value: Number(metrics.totalStudents || 8500).toLocaleString('pt-PT'), icon: '', bg: 'rgba(5,150,105,0.1)' },
           { label: 'Investigadores', value: metrics.totalResearchers || 142, icon: '🔬', bg: 'rgba(99,102,241,0.1)' },
-          { label: 'Publicações Científicas', value: metrics.totalPublications || 87, icon: '📄', bg: 'rgba(245,158,11,0.1)' },
+          { label: 'Publicações Científicas', value: metrics.totalPublications || 87, icon: '', bg: 'rgba(245,158,11,0.1)' },
           { label: 'Spin-offs & Startups', value: metrics.totalSpinOffs || startups.length || 14, icon: '', bg: 'rgba(236,72,153,0.1)' },
           { label: 'Estágios Abertos', value: internships.filter((i: any) => i.status === 'aberto').length || metrics.totalInternshipsOffered || 120, icon: '', bg: 'rgba(14,165,233,0.1)' },
         ].map(kpi => (
@@ -235,7 +235,7 @@ export default function UniversidadePage() {
               </div>
             </div>
             <button className={styles.btnPrimary} onClick={() => setShowProfileModal(true)}>
-              ✏️ Editar Perfil Institucional
+               Editar Perfil Institucional
             </button>
           </div>
 
@@ -255,7 +255,7 @@ export default function UniversidadePage() {
                 ))}
               </div>
               <button className={styles.btnLight} style={{ marginTop: '1rem', width: '100%', justifyContent: 'center' }} onClick={() => setActiveTab('programas')}>
-                Ver todos os programas →
+                Ver todos os programas 
               </button>
             </div>
 
@@ -268,12 +268,12 @@ export default function UniversidadePage() {
                 {research.slice(0, 2).map((r: any, i: number) => (
                   <div key={i} style={{ padding: '0.65rem 0', borderBottom: i === 0 && research.length > 1 ? '1px solid #f1f5f9' : 'none' }}>
                     <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>{r.title}</div>
-                    <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{r.area} · {r.status === 'em_andamento' ? '🟢 Em Andamento' : (r.status === 'publicado' ? '📄 Publicado' : '✅ Concluído')}</div>
+                    <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{r.area} · {r.status === 'em_andamento' ? ' Em Andamento' : (r.status === 'publicado' ? ' Publicado' : ' Concluído')}</div>
                   </div>
                 ))}
               </div>
               <button className={styles.btnLight} style={{ marginTop: '1rem', width: '100%', justifyContent: 'center' }} onClick={() => setActiveTab('investigacao')}>
-                Ver todos os projetos →
+                Ver todos os projetos 
               </button>
             </div>
 
@@ -286,12 +286,12 @@ export default function UniversidadePage() {
                 {challenges.filter((c: any) => c.status === 'aberto').slice(0, 2).map((c: any, i: number) => (
                   <div key={i} style={{ padding: '0.65rem 0', borderBottom: i === 0 ? '1px solid #f1f5f9' : 'none' }}>
                     <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>{c.title}</div>
-                    <div style={{ fontSize: '0.78rem', color: '#64748b' }}>🏆 {c.prize} · {c.applicantsCount || 0} candidatos</div>
+                    <div style={{ fontSize: '0.78rem', color: '#64748b' }}> {c.prize} · {c.applicantsCount || 0} candidatos</div>
                   </div>
                 ))}
               </div>
               <button className={styles.btnLight} style={{ marginTop: '1rem', width: '100%', justifyContent: 'center' }} onClick={() => setActiveTab('desafios')}>
-                Gerir desafios →
+                Gerir desafios 
               </button>
             </div>
           </div>
@@ -326,7 +326,7 @@ export default function UniversidadePage() {
               <h3 className={styles.sectionTitle}><Building2 size={20} color="#059669" /> Perfil Institucional</h3>
               <p className={styles.sectionSubtitle}>Informações públicas visíveis para startups, empresas e investidores que procuram parceiros académicos.</p>
             </div>
-            <button className={styles.btnPrimary} onClick={() => setShowProfileModal(true)}>✏️ Editar Perfil</button>
+            <button className={styles.btnPrimary} onClick={() => setShowProfileModal(true)}> Editar Perfil</button>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
@@ -407,7 +407,7 @@ export default function UniversidadePage() {
                   <p className={styles.cardDesc}>{p.description}</p>
                 </div>
                 <div className={styles.cardMeta}>
-                  <span>🗓️ {p.duration} · {p.mode}</span>
+                  <span> {p.duration} · {p.mode}</span>
                   {p.applicationLink && (
                     <a href={p.applicationLink} target="_blank" rel="noreferrer" style={{ color: '#059669', fontWeight: 700, fontSize: '0.82rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                       Candidatar <ExternalLink size={12} />
@@ -437,15 +437,15 @@ export default function UniversidadePage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                   <span style={{ fontSize: '0.72rem', fontWeight: 800, background: '#eef2ff', color: '#4f46e5', padding: '2px 8px', borderRadius: '6px' }}>{r.area}</span>
                   <span style={{ fontSize: '0.74rem', fontWeight: 700, color: r.status === 'em_andamento' ? '#16a34a' : (r.status === 'publicado' ? '#3b82f6' : '#6b7280') }}>
-                    {r.status === 'em_andamento' ? '🟢 Em Andamento' : (r.status === 'publicado' ? '📄 Publicado' : '✅ Concluído')}
+                    {r.status === 'em_andamento' ? ' Em Andamento' : (r.status === 'publicado' ? ' Publicado' : ' Concluído')}
                   </span>
                 </div>
                 <h4 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', fontWeight: 800, color: '#0f172a' }}>{r.title}</h4>
                 <p style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: '#475569', lineHeight: 1.5 }}>{r.description}</p>
                 <div style={{ fontSize: '0.82rem', color: '#64748b', display: 'flex', gap: '1.2rem', flexWrap: 'wrap' }}>
-                  {r.leadResearcher && <span>👤 {r.leadResearcher}</span>}
-                  {r.fundingSource && <span>💰 {r.fundingSource}</span>}
-                  {r.year && <span>📅 {r.year}</span>}
+                  {r.leadResearcher && <span> {r.leadResearcher}</span>}
+                  {r.fundingSource && <span> {r.fundingSource}</span>}
+                  {r.year && <span> {r.year}</span>}
                 </div>
               </div>
               {r.publicationUrl && (
@@ -482,8 +482,8 @@ export default function UniversidadePage() {
                 <p style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: '#475569' }}>{int.description}</p>
                 <div style={{ fontSize: '0.82rem', color: '#64748b', display: 'flex', gap: '1.2rem', flexWrap: 'wrap' }}>
                   {int.department && <span>{int.department}</span>}
-                  {int.duration && <span>🗓️ {int.duration}</span>}
-                  {int.slots && <span>👥 {int.slots} vagas</span>}
+                  {int.duration && <span> {int.duration}</span>}
+                  {int.slots && <span> {int.slots} vagas</span>}
                   {int.applicationDeadline && <span>⏰ Prazo: {int.applicationDeadline}</span>}
                 </div>
               </div>
@@ -522,13 +522,13 @@ export default function UniversidadePage() {
                   <p style={{ margin: '0 0 1rem 0', fontSize: '0.88rem', color: '#047857', lineHeight: 1.5 }}>{c.description}</p>
                   <div style={{ background: '#ffffff', borderRadius: '12px', padding: '0.75rem 1rem', marginBottom: '0.75rem' }}>
                     <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase' }}>Prémio &amp; Benefícios</span>
-                    <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#059669', marginTop: '2px' }}>🏆 {c.prize}</div>
+                    <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#059669', marginTop: '2px' }}> {c.prize}</div>
                   </div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.83rem', color: '#047857' }}>
-                  <span>👥 {c.applicantsCount || 0} candidatos · ⏰ {c.deadline}</span>
+                  <span> {c.applicantsCount || 0} candidatos · ⏰ {c.deadline}</span>
                   <Link href="/dashboard/oportunidades" style={{ fontWeight: 700, color: '#059669', textDecoration: 'none' }}>
-                    Gerir →
+                    Gerir 
                   </Link>
                 </div>
               </div>
@@ -556,7 +556,7 @@ export default function UniversidadePage() {
                   <h4 className={styles.cardTitle}>{ev.title}</h4>
                   <p className={styles.cardDesc}>{ev.description}</p>
                   <div style={{ fontSize: '0.84rem', color: '#64748b' }}>
-                    📅 {ev.date} &nbsp;·&nbsp; 📍 {ev.location}
+                     {ev.date} &nbsp;·&nbsp;  {ev.location}
                   </div>
                 </div>
                 <div className={styles.cardMeta}>
@@ -591,7 +591,7 @@ export default function UniversidadePage() {
               { icon: '', label: 'Startups à Procura de Parcerias Académicas', value: eco.startupsLookingForPartners || 24, color: '#ecfdf5', textColor: '#047857' },
               { icon: '', label: 'Empresas com Desafios de Inovação Aberta', value: eco.companiesOffering || 18, color: '#eff6ff', textColor: '#1d4ed8' },
               { icon: '', label: 'Pedidos de Estágio em Aberto', value: eco.openInternshipRequests || 9, color: '#fefce8', textColor: '#92400e' },
-              { icon: '🏆', label: 'Desafios de Inovação Ativos na Rede', value: eco.innovationChallengesActive || 6, color: '#fdf4ff', textColor: '#6b21a8' },
+              { icon: '', label: 'Desafios de Inovação Ativos na Rede', value: eco.innovationChallengesActive || 6, color: '#fdf4ff', textColor: '#6b21a8' },
             ].map(stat => (
               <div key={stat.label} style={{ background: stat.color, border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.25rem', textAlign: 'center' }}>
                 <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{stat.icon}</div>

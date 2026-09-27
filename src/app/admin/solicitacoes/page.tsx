@@ -85,7 +85,7 @@ export default function AdminSolicitacoesPage() {
       const data = await res.json();
       if (data.success) {
         setRequests(prev => prev.map(r => r._id === selectedReq._id ? data.request : r));
-        setMsg('✅ Solicitação atualizada com sucesso!');
+        setMsg(' Solicitação atualizada com sucesso!');
         setTimeout(() => setMsg(''), 3000);
         handleCloseModal();
         // Refresh counts

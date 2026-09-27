@@ -330,7 +330,7 @@ export default function PerfilPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setMsg({ type: 'success', text: '✅ Perfil profissional atualizado com sucesso!' });
+        setMsg({ type: 'success', text: ' Perfil profissional atualizado com sucesso!' });
         const updatedUser = { 
           ...data.user, 
           profileImage: profileImage || data.user.profileImage,
@@ -703,7 +703,7 @@ export default function PerfilPage() {
                       onClick={() => removeSkill(sk)}
                       style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '0.9rem', lineHeight: 1 }}
                     >
-                      ×
+                      
                     </button>
                   </span>
                 ))}
@@ -734,7 +734,7 @@ export default function PerfilPage() {
 
             {/* 5. Segurança */}
             <h4 style={{ margin: '1.5rem 0 0.5rem 0', color: 'var(--primary, #ff6b00)', borderBottom: '1px solid rgba(0,0,0,0.08)', paddingBottom: '0.5rem' }}>
-              🔒 Segurança &amp; Acesso
+               Segurança &amp; Acesso
             </h4>
             <div className={styles.field}>
               <label>Nova Palavra-passe (deixe em branco para manter a atual)</label>

@@ -190,7 +190,7 @@ export async function GET(request: Request) {
         ],
         innovationChallenges: [
           {
-            title: 'Hackathon UPL × ABN 2026: Soluções FinTech para Inclusão Financeira',
+            title: 'Hackathon UPL  ABN 2026: Soluções FinTech para Inclusão Financeira',
             description: 'Desafio de 48h para equipas multidisciplinares desenvolverem protótipos de soluções fintech para bancarizar populações rurais e comerciantes informais.',
             prize: '5.000 € + Pré-Aceleração ABN + Pitch para Investidores',
             theme: 'FinTech & Inclusão Financeira',

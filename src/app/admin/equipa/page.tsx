@@ -169,7 +169,7 @@ export default function AdminEquipaPage() {
 
       const data = await res.json();
       if (data.success) {
-        setMsg(editingId ? '✅ Membro atualizado com sucesso!' : '✅ Membro criado com sucesso!');
+        setMsg(editingId ? ' Membro atualizado com sucesso!' : ' Membro criado com sucesso!');
         fetchTeam();
         setShowForm(false);
         setTimeout(() => setMsg(''), 3000);
@@ -194,7 +194,7 @@ export default function AdminEquipaPage() {
       const data = await res.json();
       if (data.success) {
         setTeam(prev => prev.filter(m => m._id !== id));
-        setMsg('🗑️ Membro removido com sucesso!');
+        setMsg(' Membro removido com sucesso!');
         setTimeout(() => setMsg(''), 3000);
       } else {
         alert(data.error || 'Erro ao remover membro.');
@@ -217,7 +217,7 @@ export default function AdminEquipaPage() {
           <p className={styles.subtitle}>{team.length} membros na equipa</p>
         </div>
         <button className={`btn-primary ${styles.addBtn}`} onClick={() => showForm ? setShowForm(false) : handleCreateClick()}>
-          {showForm ? '✕ Cancelar' : '+ Novo Membro'}
+          {showForm ? ' Cancelar' : '+ Novo Membro'}
         </button>
       </div>
 
@@ -298,7 +298,7 @@ export default function AdminEquipaPage() {
                     gap: '6px'
                   }}
                 >
-                  {uploadingImage ? '⏳ A carregar...' : '📁 Escolher Foto'}
+                  {uploadingImage ? ' A carregar...' : ' Escolher Foto'}
                   <input
                     type="file"
                     accept="image/*"
@@ -383,7 +383,7 @@ export default function AdminEquipaPage() {
         </div>
       ) : team.length === 0 ? (
         <div className={styles.empty}>
-          <span>👥</span>
+          <span></span>
           <p>Nenhum membro cadastrado no momento.</p>
           <button className="btn-primary" onClick={handleCreateClick}>Adicionar Primeiro Membro</button>
         </div>
@@ -424,10 +424,10 @@ export default function AdminEquipaPage() {
 
               <div className={styles.cardFooter}>
                 <button className={styles.editBtn} onClick={() => handleEditClick(member)}>
-                  ✏️ Editar
+                   Editar
                 </button>
                 <button className={styles.deleteBtn} onClick={() => handleDelete(member._id)}>
-                  🗑️
+                  
                 </button>
               </div>
             </div>

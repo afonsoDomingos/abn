@@ -39,12 +39,12 @@ export async function seedAdmin() {
       {
         key: 'partners_content',
         value: [
-          { name: 'African Union', logo: '🌍' },
-          { name: 'AfDB', logo: '🏦' },
+          { name: 'African Union', logo: '' },
+          { name: 'AfDB', logo: '' },
           { name: 'UNDP', logo: '🇺🇳' },
-          { name: 'TechHub Luanda', logo: '💻' },
+          { name: 'TechHub Luanda', logo: '' },
           { name: 'Startup Moçambique', logo: '' },
-          { name: 'Global Invest', logo: '📈' }
+          { name: 'Global Invest', logo: '' }
         ]
       },
       {
@@ -178,7 +178,7 @@ export async function seedAdmin() {
             name: 'TechAfrica Solutions',
             location: 'Luanda, Angola',
             desc: 'Especialistas em transformar processos analógicos em experiências digitais de alta performance.',
-            icon: '💻',
+            icon: '',
             phase: 'Crescimento'
           },
           {
@@ -378,7 +378,7 @@ export async function seedAdmin() {
       ],
       partners: [
         { name: 'Startup Bissau', logo: '' },
-        { name: 'Banco da Guiné', logo: '🏦' },
+        { name: 'Banco da Guiné', logo: '' },
         { name: 'Mentores GB', logo: '' }
       ]
     };
@@ -698,9 +698,9 @@ export async function seedAdmin() {
       }
     }
 
-    console.log('✅ Seed concluído com sucesso!');
+    console.log(' Seed concluído com sucesso!');
   } catch (error) {
-    console.error('❌ Erro ao realizar seed:', error);
+    console.error(' Erro ao realizar seed:', error);
     throw error;
   }
 }

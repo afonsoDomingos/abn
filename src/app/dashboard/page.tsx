@@ -396,7 +396,7 @@ export default function DashboardPage() {
                     }}
                   >
                     <span>{info.title}</span>
-                    {isSelected && <span style={{ fontSize: '0.68rem', opacity: 0.9 }}>✓</span>}
+                    {isSelected && <span style={{ fontSize: '0.68rem', opacity: 0.9 }}></span>}
                   </button>
                 );
               })}
@@ -492,19 +492,19 @@ export default function DashboardPage() {
             <Link href="/dashboard/investimentos" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={true} readOnly />
-                <span style={{ fontWeight: 600 }}>Explorar diretório de startups em rodada de financiamento no Deal Room →</span>
+                <span style={{ fontWeight: 600 }}>Explorar diretório de startups em rodada de financiamento no Deal Room </span>
               </div>
             </Link>
             <Link href="/dashboard/investimentos" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Agendar reuniões de Due Diligence com fundadores via ABN Hub →</span>
+                <span style={{ fontWeight: 600 }}>Agendar reuniões de Due Diligence com fundadores via ABN Hub </span>
               </div>
             </Link>
             <Link href="/dashboard/investimentos" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Submeter Term Sheet ou manifestação de interesse confidencial →</span>
+                <span style={{ fontWeight: 600 }}>Submeter Term Sheet ou manifestação de interesse confidencial </span>
               </div>
             </Link>
           </div>
@@ -619,19 +619,19 @@ export default function DashboardPage() {
             <Link href="/dashboard/mentoria" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={true} readOnly />
-                <span style={{ fontWeight: 600 }}>Gerir pedidos de mentoria pendentes na caixa de entrada →</span>
+                <span style={{ fontWeight: 600 }}>Gerir pedidos de mentoria pendentes na caixa de entrada </span>
               </div>
             </Link>
             <Link href="/dashboard/mentoria" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Aceder à sala virtual da próxima sessão agendada no Google Meet →</span>
+                <span style={{ fontWeight: 600 }}>Aceder à sala virtual da próxima sessão agendada no Google Meet </span>
               </div>
             </Link>
             <Link href="/dashboard/mentoria" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Atualizar disponibilidade semanal e especialidades no perfil →</span>
+                <span style={{ fontWeight: 600 }}>Atualizar disponibilidade semanal e especialidades no perfil </span>
               </div>
             </Link>
           </div>
@@ -779,19 +779,19 @@ export default function DashboardPage() {
             <Link href="/dashboard/servicos" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={true} readOnly />
-                <span style={{ fontWeight: 600 }}>Cadastrar ou atualizar pacotes de serviços e valores no catálogo →</span>
+                <span style={{ fontWeight: 600 }}>Cadastrar ou atualizar pacotes de serviços e valores no catálogo </span>
               </div>
             </Link>
             <Link href="/dashboard/servicos" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Responder a novos pedidos e cotações de empresas na caixa de entrada →</span>
+                <span style={{ fontWeight: 600 }}>Responder a novos pedidos e cotações de empresas na caixa de entrada </span>
               </div>
             </Link>
             <Link href="/dashboard/servicos" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Atualizar portfólio de cases com métricas quantificáveis de sucesso →</span>
+                <span style={{ fontWeight: 600 }}>Atualizar portfólio de cases com métricas quantificáveis de sucesso </span>
               </div>
             </Link>
           </div>
@@ -903,19 +903,19 @@ export default function DashboardPage() {
             <Link href="/dashboard/parceiro" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={true} readOnly />
-                <span style={{ fontWeight: 600 }}>Acompanhar status e entregáveis dos projetos bilaterais ativos →</span>
+                <span style={{ fontWeight: 600 }}>Acompanhar status e entregáveis dos projetos bilaterais ativos </span>
               </div>
             </Link>
             <Link href="/dashboard/parceiro" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Propor novo projeto conjunto ou agendar evento co-organizado →</span>
+                <span style={{ fontWeight: 600 }}>Propor novo projeto conjunto ou agendar evento co-organizado </span>
               </div>
             </Link>
             <Link href="/dashboard/parceiro" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Consultar repositório de documentos oficiais e relatório trimestral →</span>
+                <span style={{ fontWeight: 600 }}>Consultar repositório de documentos oficiais e relatório trimestral </span>
               </div>
             </Link>
           </div>
@@ -934,7 +934,7 @@ export default function DashboardPage() {
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
                   <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(14,165,233,0.25)', color: '#7dd3fc', padding: '3px 10px', borderRadius: '20px', textTransform: 'uppercase', letterSpacing: '0.8px', border: '1px solid rgba(14,165,233,0.35)' }}>Empresa / PME</span>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(16,185,129,0.2)', color: '#6ee7b7', padding: '3px 10px', borderRadius: '20px', border: '1px solid rgba(16,185,129,0.3)' }}>🟢 Verificada</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(16,185,129,0.2)', color: '#6ee7b7', padding: '3px 10px', borderRadius: '20px', border: '1px solid rgba(16,185,129,0.3)' }}> Verificada</span>
                 </div>
                 <h2 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 900, color: '#ffffff', fontFamily: 'Outfit, sans-serif', lineHeight: 1.2 }}>
                   {business?.name || 'Minha Empresa'}
@@ -1004,7 +1004,7 @@ export default function DashboardPage() {
               ))}
             </div>
             <Link href="/dashboard/empresa" style={{ fontSize: '0.82rem', fontWeight: 700, color: '#0ea5e9', textDecoration: 'none' }}>
-              Ver todos os pedidos e respostas →
+              Ver todos os pedidos e respostas 
             </Link>
           </div>
 
@@ -1014,7 +1014,7 @@ export default function DashboardPage() {
               <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <ArrowRight size={20} color="#6366f1" /> Desenvolvimento Empresarial
               </h3>
-              <Link href="/dashboard/empresa" style={{ fontSize: '0.82rem', fontWeight: 700, color: '#6366f1', textDecoration: 'none' }}>Ver tudo →</Link>
+              <Link href="/dashboard/empresa" style={{ fontSize: '0.82rem', fontWeight: 700, color: '#6366f1', textDecoration: 'none' }}>Ver tudo </Link>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.85rem' }}>
               {[
@@ -1047,7 +1047,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <Link href="/dashboard/empresa" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#0ea5e9', color: '#ffffff', padding: '10px 20px', borderRadius: '12px', fontWeight: 800, fontSize: '0.85rem', textDecoration: 'none' }}>
-              <Building2 size={16} /> Gerir Empresa →
+              <Building2 size={16} /> Gerir Empresa 
             </Link>
           </div>
         </>
@@ -1093,7 +1093,7 @@ export default function DashboardPage() {
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <Link href="/dashboard/oportunidades" className="btn-primary" style={{ padding: '10px 18px', fontSize: '0.85rem' }}>
-                Explorar Oportunidades →
+                Explorar Oportunidades 
               </Link>
               <Link href="/dashboard/networking" className="btn-outline" style={{ padding: '10px 18px', fontSize: '0.85rem' }}>
                 Ver Diretório de Membros
@@ -1258,7 +1258,7 @@ export default function DashboardPage() {
                 Conecte artigos, protótipos e patentes desenvolvidos pelos seus laboratórios a indústrias e investidores que procuram inovação validada.
               </p>
               <Link href="/dashboard/universidade" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#059669', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                Divulgar Projetos de I&amp;D →
+                Divulgar Projetos de I&amp;D 
               </Link>
             </div>
 
@@ -1271,13 +1271,13 @@ export default function DashboardPage() {
                 Crie canais diretos para as empresas do ecossistema recrutarem os melhores talentos formados pela sua instituição.
               </p>
               <Link href="/dashboard/universidade" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0284c7', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                Criar Oportunidades de Estágio →
+                Criar Oportunidades de Estágio 
               </Link>
             </div>
 
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.35rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
               <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(124, 58, 237, 0.1)', color: '#7c3aed', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}>
-                🏆
+                
               </div>
               <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
                 Desafios de Inovação Aberta
@@ -1286,7 +1286,7 @@ export default function DashboardPage() {
                 Mobilize a criatividade de professores e estudantes para responder a desafios reais propostos por empresas e governos.
               </p>
               <Link href="/dashboard/universidade" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#7c3aed', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                Lançar Novo Desafio →
+                Lançar Novo Desafio 
               </Link>
             </div>
           </div>
@@ -1299,25 +1299,25 @@ export default function DashboardPage() {
             <Link href="/dashboard/universidade" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={true} readOnly />
-                <span style={{ fontWeight: 600 }}>Perfil institucional e selo de instituição de ensino superior verificado →</span>
+                <span style={{ fontWeight: 600 }}>Perfil institucional e selo de instituição de ensino superior verificado </span>
               </div>
             </Link>
             <Link href="/dashboard/universidade" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Publicar novo programa de pós-graduação ou mestrado executivo →</span>
+                <span style={{ fontWeight: 600 }}>Publicar novo programa de pós-graduação ou mestrado executivo </span>
               </div>
             </Link>
             <Link href="/dashboard/universidade" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Submeter proposta de projeto de investigação aplicada para co-financiamento →</span>
+                <span style={{ fontWeight: 600 }}>Submeter proposta de projeto de investigação aplicada para co-financiamento </span>
               </div>
             </Link>
             <Link href="/dashboard/universidade" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Publicar vagas de estágio curricular para ligação com empresas parceiras →</span>
+                <span style={{ fontWeight: 600 }}>Publicar vagas de estágio curricular para ligação com empresas parceiras </span>
               </div>
             </Link>
           </div>
@@ -1470,7 +1470,7 @@ export default function DashboardPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.35rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
               <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(79, 70, 229, 0.1)', color: '#4f46e5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', marginBottom: '0.75rem' }}>
-                🎯
+                
               </div>
               <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
                 Funil de Candidaturas (3 Pendentes)
@@ -1479,7 +1479,7 @@ export default function DashboardPage() {
                 Revise os pitch decks das startups candidatas à próxima coorte e agende entrevistas com os fundadores.
               </p>
               <Link href="/dashboard/incubadora" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#4f46e5', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                Avaliar Candidaturas →
+                Avaliar Candidaturas 
               </Link>
             </div>
 
@@ -1492,7 +1492,7 @@ export default function DashboardPage() {
                 Conecte os fundadores graduados aos fundos de Venture Capital e Business Angels parceiros da incubadora.
               </p>
               <Link href="/dashboard/incubadora" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#10b981', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                Abrir Deal Room →
+                Abrir Deal Room 
               </Link>
             </div>
 
@@ -1507,7 +1507,7 @@ export default function DashboardPage() {
                 Pesquise diretamente no diretório ABN startups qualificadas por setor e país para convidar para a próxima turma.
               </p>
               <Link href="/dashboard/incubadora" style={{ fontSize: '0.82rem', fontWeight: 800, color: '#f59e0b', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                Explorar Radar ABN →
+                Explorar Radar ABN 
               </Link>
             </div>
           </div>
@@ -1520,25 +1520,25 @@ export default function DashboardPage() {
             <Link href="/dashboard/incubadora" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={true} readOnly />
-                <span style={{ fontWeight: 600 }}>Perfil institucional e credencial de incubadora/aceleradora ativa →</span>
+                <span style={{ fontWeight: 600 }}>Perfil institucional e credencial de incubadora/aceleradora ativa </span>
               </div>
             </Link>
             <Link href="/dashboard/incubadora" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Lançar nova chamada de candidaturas para coorte 2026.2 →</span>
+                <span style={{ fontWeight: 600 }}>Lançar nova chamada de candidaturas para coorte 2026.2 </span>
               </div>
             </Link>
             <Link href="/dashboard/incubadora" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Registar relatório de avaliação diagnóstica periódica da startup →</span>
+                <span style={{ fontWeight: 600 }}>Registar relatório de avaliação diagnóstica periódica da startup </span>
               </div>
             </Link>
             <Link href="/dashboard/incubadora" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className={styles.taskItem} style={{ cursor: 'pointer' }}>
                 <input type="checkbox" checked={false} readOnly />
-                <span style={{ fontWeight: 600 }}>Agendar Demo Day ou pitch session com banca de investidores →</span>
+                <span style={{ fontWeight: 600 }}>Agendar Demo Day ou pitch session com banca de investidores </span>
               </div>
             </Link>
           </div>
@@ -1584,7 +1584,7 @@ export default function DashboardPage() {
               Divulgue bolsas de estudo, congressos científicos e programas de aceleração para toda a rede de empreendedores ABN.
             </p>
             <Link href="/dashboard/programas" className="btn-primary" style={{ padding: '10px 18px', fontSize: '0.85rem' }}>
-              Gerir Programas Institucionais →
+              Gerir Programas Institucionais 
             </Link>
           </div>
         </>
@@ -1607,7 +1607,7 @@ export default function DashboardPage() {
                       Startup
                     </span>
                     <span style={{ fontSize: '0.7rem', fontWeight: 800, background: 'rgba(16,185,129,0.2)', color: '#6ee7b7', padding: '3px 10px', borderRadius: '20px', border: '1px solid rgba(16,185,129,0.3)' }}>
-                      🟢 Ativo
+                       Ativo
                     </span>
                   </div>
                   <h2 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 900, color: '#ffffff', fontFamily: 'Outfit, sans-serif', lineHeight: 1.2 }}>
@@ -1710,7 +1710,7 @@ export default function DashboardPage() {
                 <BarChart2 size={20} color="#10b981" /> Métricas de Tração em Tempo Real
               </h3>
               <Link href="/dashboard/captacao" style={{ fontSize: '0.8rem', fontWeight: 700, color: '#6366f1', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                Atualizar KPIs →
+                Atualizar KPIs 
               </Link>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
@@ -1747,13 +1747,13 @@ export default function DashboardPage() {
                     💵 Procura: <strong>{startupData?.fundraising?.seekingAmount || '$150,000'}</strong>
                   </span>
                   <span style={{ fontSize: '0.82rem', color: '#065f46', fontWeight: 600 }}>
-                    📊 Valuation: <strong>{startupData?.fundraising?.valuation || '$1.5M Pre-Money'}</strong>
+                     Valuation: <strong>{startupData?.fundraising?.valuation || '$1.5M Pre-Money'}</strong>
                   </span>
                   <span style={{ fontSize: '0.82rem', color: '#065f46', fontWeight: 600 }}>
                     Estágio: <strong>{startupData?.fundraising?.stage || 'Seed'}</strong>
                   </span>
                   <span style={{ fontSize: '0.82rem', color: startupData?.fundraising?.pitchDeckUrl ? '#065f46' : '#b45309', fontWeight: 600 }}>
-                    {startupData?.fundraising?.pitchDeckUrl ? '✅ Pitch Deck carregado' : '⚠️ Pitch Deck em falta'}
+                    {startupData?.fundraising?.pitchDeckUrl ? ' Pitch Deck carregado' : ' Pitch Deck em falta'}
                   </span>
                 </div>
               </div>
@@ -1770,7 +1770,7 @@ export default function DashboardPage() {
                 <Zap size={20} color="#6366f1" /> Programa de Aceleração
               </h3>
               <Link href="/dashboard/captacao" style={{ fontSize: '0.8rem', fontWeight: 700, color: '#6366f1', textDecoration: 'none' }}>
-                Ver Detalhes →
+                Ver Detalhes 
               </Link>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
@@ -1863,7 +1863,7 @@ export default function DashboardPage() {
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2px' }}>
                   <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#ff6b00', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Membro Registado</span>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 800, background: '#10b981', color: '#ffffff', padding: '2px 8px', borderRadius: '12px' }}>🟢 Ativo</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 800, background: '#10b981', color: '#ffffff', padding: '2px 8px', borderRadius: '12px' }}> Ativo</span>
                 </div>
                 <div style={{ fontWeight: 800, fontSize: '0.98rem', color: '#ffffff' }}>
                   {userInscricoes && userInscricoes.length > 0
@@ -1872,7 +1872,7 @@ export default function DashboardPage() {
                 </div>
               </div>
               <Link href="/dashboard/perfil" style={{ color: '#ff8c3a', fontSize: '0.82rem', fontWeight: 700, textDecoration: 'none' }}>
-                Ver Perfil →
+                Ver Perfil 
               </Link>
             </div>
           </div>
@@ -1889,7 +1889,7 @@ export default function DashboardPage() {
                 </p>
               </div>
               <Link href="/dashboard/negocios" className="btn-outline" style={{ padding: '8px 14px', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Building2 size={15} /> Painel de Gestão do Negócio →
+                <Building2 size={15} /> Painel de Gestão do Negócio 
               </Link>
             </div>
 
@@ -1898,7 +1898,7 @@ export default function DashboardPage() {
               <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 4px 16px rgba(15,23,42,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
                   <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(255,107,0,0.1)', color: '#ff6b00', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}>
-                    💰
+                    
                   </div>
                   <h3 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
                     O seu negócio precisa de investimento?
@@ -1908,7 +1908,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <Link href="/dashboard/projetos" style={{ marginTop: '1.25rem', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', fontWeight: 800, color: '#ff6b00', textDecoration: 'none' }}>
-                  Submeter a Investidores →
+                  Submeter a Investidores 
                 </Link>
               </div>
 
@@ -1916,7 +1916,7 @@ export default function DashboardPage() {
               <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 4px 16px rgba(15,23,42,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
                   <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(16,185,129,0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', marginBottom: '1rem' }}>
-                    🎯
+                    
                   </div>
                   <h3 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>
                     Existem 5 oportunidades compatíveis
@@ -1926,7 +1926,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <Link href="/dashboard/oportunidades" style={{ marginTop: '1.25rem', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', fontWeight: 800, color: '#10b981', textDecoration: 'none' }}>
-                  Ver 5 Oportunidades →
+                  Ver 5 Oportunidades 
                 </Link>
               </div>
 
@@ -1942,7 +1942,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <Link href="/dashboard/networking" style={{ marginTop: '1.25rem', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', fontWeight: 800, color: '#7e22ce', textDecoration: 'none' }}>
-                  Consultar Mentores →
+                  Consultar Mentores 
                 </Link>
               </div>
 
@@ -1958,7 +1958,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <Link href="/dashboard/networking" style={{ marginTop: '1.25rem', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem', fontWeight: 800, color: '#3b82f6', textDecoration: 'none' }}>
-                  Conectar com Parceiros →
+                  Conectar com Parceiros 
                 </Link>
               </div>
             </div>
@@ -2041,11 +2041,11 @@ export default function DashboardPage() {
                           </div>
                           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                             <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', background: i.status === 'aprovado' ? '#dcfce7' : '#fef3c7', color: i.status === 'aprovado' ? '#15803d' : '#b45309' }}>
-                              {i.status === 'aprovado' ? '🟢 Aprovado' : '⏳ Em Verificação'}
+                              {i.status === 'aprovado' ? ' Aprovado' : ' Em Verificação'}
                             </span>
                             {i.status === 'aprovado' && i.nivelAdesao && (
                               <Link href="/dashboard/clube" style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ff6b00', textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                                Área de Membro →
+                                Área de Membro 
                               </Link>
                             )}
                           </div>
@@ -2072,7 +2072,7 @@ export default function DashboardPage() {
                             <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Matrícula: {new Date(c.createdAt).toLocaleDateString('pt-PT')} — Valor: {c.amount || 'Gratuito'}</div>
                           </div>
                           <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', background: c.status === 'aprovado' ? '#dcfce7' : '#fef3c7', color: c.status === 'aprovado' ? '#15803d' : '#b45309' }}>
-                            {c.status === 'aprovado' ? '🟢 Aprovado / Ativo' : '⏳ Em Análise'}
+                            {c.status === 'aprovado' ? ' Aprovado / Ativo' : ' Em Análise'}
                           </span>
                         </div>
                       ))}
@@ -2097,7 +2097,7 @@ export default function DashboardPage() {
                             <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Solicitado em: {new Date(s.createdAt).toLocaleDateString('pt-PT')}</div>
                           </div>
                           <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', background: s.status === 'concluido' ? '#dcfce7' : s.status === 'em_andamento' ? '#dbeafe' : '#fef3c7', color: s.status === 'concluido' ? '#15803d' : s.status === 'em_andamento' ? '#1e40af' : '#b45309' }}>
-                            {s.status === 'concluido' ? '🟢 Concluído' : s.status === 'em_andamento' ? '🔵 Em Andamento' : '⏳ Pendente'}
+                            {s.status === 'concluido' ? ' Concluído' : s.status === 'em_andamento' ? ' Em Andamento' : ' Pendente'}
                           </span>
                         </div>
                       ))}
@@ -2143,7 +2143,7 @@ export default function DashboardPage() {
                         fontSize: '0.78rem',
                         fontWeight: 800
                       }}>
-                        {status === 'done' ? '✓' : idx + 1}
+                        {status === 'done' ? '' : idx + 1}
                       </div>
                       {status === 'current' && (
                         <span style={{ fontSize: '0.68rem', color: '#ff6b00', background: '#fff7ed', border: '1px solid #ffedd5', padding: '2px 8px', borderRadius: '12px', fontWeight: 800 }}>
@@ -2179,7 +2179,7 @@ export default function DashboardPage() {
                 <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>Recurso Exclusivo ABN Hub</span>
               </div>
               <button onClick={() => setActiveResource(null)} style={{ background: '#f1f5f9', border: 'none', width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', fontWeight: 800, color: '#475569' }}>
-                ✕
+                
               </button>
             </div>
 
@@ -2199,7 +2199,7 @@ export default function DashboardPage() {
               </div>
             ) : (
               <div style={{ background: '#f8fafc', border: '1.5px dashed #cbd5e1', borderRadius: '16px', padding: '2rem', textAlign: 'center', marginBottom: '1.5rem' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>📄</div>
+                <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}></div>
                 <h4 style={{ margin: '0 0 0.3rem 0', color: '#0f172a' }}>Modelo Oficial ABN (PDF/DOC)</h4>
                 <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b' }}>Pronto para preenchimento do plano de negócios e documentação.</p>
               </div>

@@ -35,28 +35,28 @@ const planBenefits = {
 
 const paymentMethods = {
   mocambique: [
-    { name: 'M-Pesa', icon: '📱' },
-    { name: 'e-Mola', icon: '💳' },
-    { name: 'Transferência Bancária', icon: '🏦' },
+    { name: 'M-Pesa', icon: '' },
+    { name: 'e-Mola', icon: '' },
+    { name: 'Transferência Bancária', icon: '' },
     { name: 'Dinheiro (presencial)', icon: '💵' },
   ],
   angola: [
-    { name: 'Kixico', icon: '📱' },
-    { name: 'Transferência Bancária', icon: '🏦' },
-    { name: 'Multicaixa Express', icon: '💳' },
+    { name: 'Kixico', icon: '' },
+    { name: 'Transferência Bancária', icon: '' },
+    { name: 'Multicaixa Express', icon: '' },
   ],
   guinebissau: [
-    { name: 'Transferência Bancária', icon: '🏦' },
-    { name: 'Orange Money', icon: '📱' },
+    { name: 'Transferência Bancária', icon: '' },
+    { name: 'Orange Money', icon: '' },
     { name: 'Dinheiro (presencial)', icon: '💵' },
   ],
   saotome: [
-    { name: 'Transferência Bancária', icon: '🏦' },
+    { name: 'Transferência Bancária', icon: '' },
     { name: 'Dinheiro (presencial)', icon: '💵' },
   ],
   caboverde: [
-    { name: 'Transferência Bancária', icon: '🏦' },
-    { name: 'Multicaixa', icon: '💳' },
+    { name: 'Transferência Bancária', icon: '' },
+    { name: 'Multicaixa', icon: '' },
     { name: 'Dinheiro (presencial)', icon: '💵' },
   ],
 };

@@ -161,7 +161,7 @@ export default function AdminAtividadesPage() {
             createdAt: new Date().toISOString()
           })}
         >
-          ➕ Criar Nova Atividade
+           Criar Nova Atividade
         </button>
       </header>
 
@@ -169,10 +169,10 @@ export default function AdminAtividadesPage() {
       <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
         {[
           { val: 'todos', label: 'Todas as Tarefas' },
-          { val: 'pending', label: '⏳ Pendentes' },
-          { val: 'in_progress', label: '🔵 Em Progresso' },
-          { val: 'completed', label: '🟢 Concluídas' },
-          { val: 'overdue', label: '🔴 Atrasadas' }
+          { val: 'pending', label: ' Pendentes' },
+          { val: 'in_progress', label: ' Em Progresso' },
+          { val: 'completed', label: ' Concluídas' },
+          { val: 'overdue', label: ' Atrasadas' }
         ].map(f => (
           <button
             key={f.val}
@@ -223,7 +223,7 @@ export default function AdminAtividadesPage() {
                       <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '2px' }}>{act.description}</div>
                     </td>
                     <td style={{ padding: '16px 20px', fontWeight: 600, color: '#334155' }}>
-                      👤 {act.assignedTo?.name || 'Não atribuído'}
+                       {act.assignedTo?.name || 'Não atribuído'}
                     </td>
                     <td style={{ padding: '16px 20px' }}>
                       <span style={{ fontSize: '0.75rem', fontWeight: 800, background: pr.bg, color: pr.color, padding: '3px 10px', borderRadius: '12px' }}>
@@ -231,7 +231,7 @@ export default function AdminAtividadesPage() {
                       </span>
                     </td>
                     <td style={{ padding: '16px 20px', fontSize: '0.85rem', color: '#475569', fontWeight: 600 }}>
-                      📅 {act.deadline ? new Date(act.deadline).toLocaleDateString('pt-PT') : 'Sem prazo'}
+                       {act.deadline ? new Date(act.deadline).toLocaleDateString('pt-PT') : 'Sem prazo'}
                     </td>
                     <td style={{ padding: '16px 20px' }}>
                       <select
@@ -248,10 +248,10 @@ export default function AdminAtividadesPage() {
                           cursor: 'pointer'
                         }}
                       >
-                        <option value="pending">⏳ Pendente</option>
-                        <option value="in_progress">🔵 Em Progresso</option>
-                        <option value="completed">🟢 Concluída</option>
-                        <option value="overdue">🔴 Atrasada</option>
+                        <option value="pending"> Pendente</option>
+                        <option value="in_progress"> Em Progresso</option>
+                        <option value="completed"> Concluída</option>
+                        <option value="overdue"> Atrasada</option>
                       </select>
                     </td>
                     <td style={{ padding: '16px 20px', textAlign: 'right' }}>
@@ -259,7 +259,7 @@ export default function AdminAtividadesPage() {
                         onClick={() => setEditingActivity(act)}
                         style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', color: '#0f172a', padding: '6px 12px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer' }}
                       >
-                        ✏️ Editar
+                         Editar
                       </button>
                     </td>
                   </tr>
@@ -278,7 +278,7 @@ export default function AdminAtividadesPage() {
               onClick={() => setEditingActivity(null)}
               style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: '#f1f5f9', border: 'none', width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', fontWeight: 800, color: '#475569' }}
             >
-              ✕
+              
             </button>
 
             <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit' }}>
@@ -346,10 +346,10 @@ export default function AdminAtividadesPage() {
                     onChange={e => setEditingActivity({ ...editingActivity, status: e.target.value as any })}
                     style={{ padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem' }}
                   >
-                    <option value="pending">⏳ Pendente</option>
-                    <option value="in_progress">🔵 Em Progresso</option>
-                    <option value="completed">🟢 Concluída</option>
-                    <option value="overdue">🔴 Atrasada</option>
+                    <option value="pending"> Pendente</option>
+                    <option value="in_progress"> Em Progresso</option>
+                    <option value="completed"> Concluída</option>
+                    <option value="overdue"> Atrasada</option>
                   </select>
                 </div>
               </div>

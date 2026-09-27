@@ -72,7 +72,7 @@ export default function AdminCursosPage() {
   const [editingLessonIdx, setEditingLessonIdx] = useState<number | null>(null);
 
   const [paymentInstructions, setPaymentInstructions] = useState(
-    '🏦 Dados Bancários & Pagamentos Móveis:\nTitular: Lizi Cristina Mulambo\n\n1️⃣ Millennium BIM\nConta: 5283397\nNIB: 0001 000000005283397 57\n\n2️⃣ Moza Banco\nConta: 0087656640001\nNIB: 0034 000008765664101 25\n\n📱 M-Pesa: 857670109\n📱 e-Mola: 876687082\n\n* Por favor, realize a transferência e faça upload do comprovativo.'
+    ' Dados Bancários & Pagamentos Móveis:\nTitular: Lizi Cristina Mulambo\n\n Millennium BIM\nConta: 5283397\nNIB: 0001 000000005283397 57\n\n Moza Banco\nConta: 0087656640001\nNIB: 0034 000008765664101 25\n\n M-Pesa: 857670109\n e-Mola: 876687082\n\n* Por favor, realize a transferência e faça upload do comprovativo.'
   );
 
   // Participants list states
@@ -213,7 +213,7 @@ export default function AdminCursosPage() {
     setCertPartnerLogos(initialLogos);
     setCertPartnerLogoUrl(initialLogos[0] || '');
 
-    setPaymentInstructions(course.paymentInstructions || '🏦 Dados Bancários & Pagamentos Móveis:\nTitular: Lizi Cristina Mulambo\n\n1️⃣ Millennium BIM\nConta: 5283397\nNIB: 0001 000000005283397 57\n\n2️⃣ Moza Banco\nConta: 0087656640001\nNIB: 0034 000008765664101 25\n\n📱 M-Pesa: 857670109\n📱 e-Mola: 876687082\n\n* Por favor, realize a transferência e faça upload do comprovativo.');
+    setPaymentInstructions(course.paymentInstructions || ' Dados Bancários & Pagamentos Móveis:\nTitular: Lizi Cristina Mulambo\n\n Millennium BIM\nConta: 5283397\nNIB: 0001 000000005283397 57\n\n Moza Banco\nConta: 0087656640001\nNIB: 0034 000008765664101 25\n\n M-Pesa: 857670109\n e-Mola: 876687082\n\n* Por favor, realize a transferência e faça upload do comprovativo.');
     setNewLessonTitle('');
     setNewLessonUrl('');
     setNewLessonPdfUrl('');
@@ -516,12 +516,12 @@ export default function AdminCursosPage() {
                 <div style={{ fontSize: '0.82rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '0.4rem', borderTop: '1px solid #f1f5f9', paddingTop: '1rem', marginTop: 'auto' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span>👨‍🏫 <strong>Formador:</strong> {course.instructor}</span>
-                    <span>⏱️ <strong>Duração:</strong> {course.duration}</span>
+                    <span> <strong>Duração:</strong> {course.duration}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontWeight: 700, color: '#ff6b00' }}>📚 <strong>{lessonCount} Aulas</strong> {pdfCount > 0 && <span style={{ color: '#2563eb', marginLeft: '4px' }}>({pdfCount} PDFs 📄)</span>}</span>
+                    <span style={{ fontWeight: 700, color: '#ff6b00' }}>📚 <strong>{lessonCount} Aulas</strong> {pdfCount > 0 && <span style={{ color: '#2563eb', marginLeft: '4px' }}>({pdfCount} PDFs )</span>}</span>
                     <span style={{ fontSize: '0.75rem', color: course.videoVisible !== false ? '#16a34a' : '#dc2626', fontWeight: 700 }}>
-                      {course.videoVisible !== false ? ' Vídeos Visíveis' : '🔒 Vídeos Ocultos'}
+                      {course.videoVisible !== false ? ' Vídeos Visíveis' : ' Vídeos Ocultos'}
                     </span>
                   </div>
                 </div>
@@ -701,7 +701,7 @@ export default function AdminCursosPage() {
                           style={{ flex: 1, background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.92rem', outline: 'none' }}
                         />
                         <label style={{ cursor: 'pointer', padding: '12px 14px', background: '#fff7ed', border: '1px solid #ff6b00', color: '#ff6b00', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 800 }}>
-                          {uploadingImage ? '⏳...' : '📁 Subir Capa'}
+                          {uploadingImage ? '...' : ' Subir Capa'}
                           <input 
                             type="file" 
                             accept="image/*" 
@@ -828,12 +828,12 @@ export default function AdminCursosPage() {
 
                     {isPaid && (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                        <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>💳 Instruções de Pagamento Bancário & M-Pesa</label>
+                        <label style={{ fontSize: '0.78rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}> Instruções de Pagamento Bancário & M-Pesa</label>
                         <textarea
                           value={paymentInstructions}
                           onChange={e => setPaymentInstructions(e.target.value)}
                           rows={5}
-                          placeholder={'🏦 Dados Bancários & Pagamentos Móveis:\nTitular: Lizi Cristina Mulambo\nMillennium BIM: 5283397 / NIB: 0001 000000005283397 57\nMoza Banco: 0087656640001 / NIB: 0034 000008765664101 25\nM-Pesa: 857670109 | e-Mola: 876687082'}
+                          placeholder={' Dados Bancários & Pagamentos Móveis:\nTitular: Lizi Cristina Mulambo\nMillennium BIM: 5283397 / NIB: 0001 000000005283397 57\nMoza Banco: 0087656640001 / NIB: 0034 000008765664101 25\nM-Pesa: 857670109 | e-Mola: 876687082'}
                           style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', padding: '12px 14px', borderRadius: '10px', color: '#0f172a', fontWeight: 500, fontSize: '0.88rem', outline: 'none', lineHeight: '1.6' }}
                         />
                       </div>
@@ -886,17 +886,17 @@ export default function AdminCursosPage() {
                                     </span>
                                     {isBeingEdited && (
                                       <span style={{ fontSize: '0.7rem', background: '#ff6b00', color: '#ffffff', padding: '2px 8px', borderRadius: '50px', fontWeight: 800 }}>
-                                        ✏️ Em Edição
+                                         Em Edição
                                       </span>
                                     )}
                                     {lesson.pdfUrl && (
                                       <span style={{ fontSize: '0.72rem', background: '#eff6ff', color: '#2563eb', padding: '2px 8px', borderRadius: '50px', fontWeight: 800, border: '1px solid #bfdbfe' }}>
-                                        📄 PDF Anexado
+                                         PDF Anexado
                                       </span>
                                     )}
                                   </div>
                                   <span style={{ fontSize: '0.78rem', color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                    🎥 {lesson.videoUrl}
+                                     {lesson.videoUrl}
                                   </span>
                                 </div>
                                 
@@ -944,7 +944,7 @@ export default function AdminCursosPage() {
                       <div style={{ borderTop: '1.5px solid #e2e8f0', paddingTop: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <span style={{ fontSize: '0.85rem', fontWeight: 800, color: editingLessonIdx !== null ? '#ff6b00' : '#475569' }}>
-                            {editingLessonIdx !== null ? `✏️ Editar Dados da Aula #${editingLessonIdx + 1}` : '➕ Adicionar Nova Aula ao Curso'}
+                            {editingLessonIdx !== null ? ` Editar Dados da Aula #${editingLessonIdx + 1}` : ' Adicionar Nova Aula ao Curso'}
                           </span>
                           {editingLessonIdx !== null && (
                             <button
@@ -982,13 +982,13 @@ export default function AdminCursosPage() {
                             placeholder="Ex: https://youtu.be/VIDEO_ID  ou  https://www.youtube.com/watch?v=VIDEO_ID"
                             style={{ background: '#ffffff', border: '1.5px solid #cbd5e1', padding: '10px 12px', borderRadius: '8px', color: '#0f172a', fontSize: '0.88rem', outline: 'none' }}
                           />
-                          <span style={{ fontSize: '0.7rem', color: '#64748b' }}>✅ Aceita qualquer formato: youtu.be, watch?v=, /embed/ ou /shorts/</span>
+                          <span style={{ fontSize: '0.7rem', color: '#64748b' }}> Aceita qualquer formato: youtu.be, watch?v=, /embed/ ou /shorts/</span>
                         </div>
 
                         {/* PDF Attachment Field */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', background: '#ffffff', border: '1.5px dashed #cbd5e1', borderRadius: '10px', padding: '10px 14px' }}>
                           <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#2563eb', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            📄 Anexar Ficheiro PDF de Apoio / Manual (Opcional)
+                             Anexar Ficheiro PDF de Apoio / Manual (Opcional)
                           </label>
                           
                           <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -1028,7 +1028,7 @@ export default function AdminCursosPage() {
 
                           {newLessonPdfUrl && (
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '8px', padding: '6px 10px', fontSize: '0.78rem', color: '#2563eb', fontWeight: 700 }}>
-                              <span>📄 Ficheiro PDF Anexado!</span>
+                              <span> Ficheiro PDF Anexado!</span>
                               <button
                                 type="button"
                                 onClick={() => setNewLessonPdfUrl('')}
@@ -1231,7 +1231,7 @@ export default function AdminCursosPage() {
                                   }}
                                   style={{ background: '#fee2e2', border: 'none', color: '#dc2626', fontSize: '0.72rem', cursor: 'pointer', marginTop: '6px', fontWeight: 800, padding: '3px 8px', borderRadius: '4px' }}
                                 >
-                                  🗑️ Remover
+                                   Remover
                                 </button>
                               </div>
                             ))}
@@ -1268,12 +1268,12 @@ export default function AdminCursosPage() {
 
                     {loadingInlineParticipants ? (
                       <div style={{ textAlign: 'center', padding: '2.5rem 0', color: '#64748b' }}>
-                        <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '0.5rem' }}>⏳</span>
+                        <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '0.5rem' }}></span>
                         A carregar alunos...
                       </div>
                     ) : inlineParticipants.length === 0 ? (
                       <div style={{ textAlign: 'center', padding: '2.5rem 1rem', background: '#f8fafc', borderRadius: '14px', border: '1px dashed #e2e8f0', color: '#64748b' }}>
-                        <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.5rem' }}>👥</span>
+                        <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.5rem' }}></span>
                         Nenhum aluno inscrito neste curso ainda.
                       </div>
                     ) : (
@@ -1315,7 +1315,7 @@ export default function AdminCursosPage() {
                                     {!isApproved && <span style={{ fontSize: '0.7rem', background: '#fef2f2', color: '#dc2626', padding: '1px 7px', borderRadius: '20px', fontWeight: 800, border: '1px solid #fecaca', marginLeft: '6px' }}>🚫 Bloqueado</span>}
                                   </div>
                                   <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '1px' }}>
-                                    {p.user?.email} {p.phone && `| 📞 ${p.phone}`}
+                                    {p.user?.email} {p.phone && `|  ${p.phone}`}
                                   </div>
                                 </div>
                               </div>
@@ -1330,7 +1330,7 @@ export default function AdminCursosPage() {
                                   color: p.completed ? '#16a34a' : '#ff6b00',
                                   border: `1px solid ${p.completed ? '#bbf7d0' : '#ffedd5'}`
                                 }}>
-                                  📊 {p.completed ? '100% Concluído' : `${completedCount} Aulas`}
+                                   {p.completed ? '100% Concluído' : `${completedCount} Aulas`}
                                 </span>
                                 <span style={{
                                   fontSize: '0.72rem',
@@ -1341,7 +1341,7 @@ export default function AdminCursosPage() {
                                   color: '#475569',
                                   border: '1px solid #e2e8f0'
                                 }}>
-                                  💳 {p.price || 'Gratuito'}
+                                   {p.price || 'Gratuito'}
                                 </span>
                                 <button
                                   type="button"
@@ -1575,7 +1575,7 @@ export default function AdminCursosPage() {
                             {p.user?.name || 'Aluno'}
                             {!isApproved && <span style={{ fontSize: '0.72rem', background: '#fef2f2', color: '#dc2626', padding: '2px 8px', borderRadius: '50px', fontWeight: 800, border: '1px solid #fecaca' }}>🚫 Acesso Bloqueado</span>}
                           </div>
-                          <div style={{ fontSize: '0.84rem', color: '#64748b' }}>{p.user?.email} | 📞 {p.phone || 'Sem telefone'}</div>
+                          <div style={{ fontSize: '0.84rem', color: '#64748b' }}>{p.user?.email} |  {p.phone || 'Sem telefone'}</div>
                         </div>
 
                         <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -1588,7 +1588,7 @@ export default function AdminCursosPage() {
                             color: p.completed ? '#16a34a' : '#ff6b00',
                             border: `1px solid ${p.completed ? '#bbf7d0' : '#ffedd5'}`
                           }}>
-                            📊 {p.completed ? '100% Concluído' : `${completedCount} Aulas Vistas`}
+                             {p.completed ? '100% Concluído' : `${completedCount} Aulas Vistas`}
                           </span>
 
                           {/* 1-Click Access Toggle Button for Admin */}
@@ -1670,7 +1670,7 @@ export default function AdminCursosPage() {
                 zIndex: 10
               }}
             >
-              ✕
+              
             </button>
             <img 
               src={previewImage} 

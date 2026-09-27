@@ -101,22 +101,22 @@ export default function CallToActionBanner() {
 
             <div className={styles.highlights}>
               <div className={styles.highlightItem}>
-                <span className={styles.highlightIcon}>→</span>
+                <span className={styles.highlightIcon}></span>
                 <span>{language === 'pt' ? 'Incubação & Aceleração' : 'Incubation & Acceleration'}</span>
               </div>
               <div className={styles.highlightItem}>
-                <span className={styles.highlightIcon}>→</span>
+                <span className={styles.highlightIcon}></span>
                 <span>{language === 'pt' ? 'Mentoria com Especialistas' : 'Expert Mentorship'}</span>
               </div>
               <div className={styles.highlightItem}>
-                <span className={styles.highlightIcon}>→</span>
+                <span className={styles.highlightIcon}></span>
                 <span>{language === 'pt' ? 'Acesso a Oportunidades & Capital' : 'Access to Funding & Capital'}</span>
               </div>
             </div>
 
             <div className={styles.actions}>
               <Link href="/incubacao" className={styles.btnPrimary}>
-                {language === 'pt' ? 'Candidatar a Minha Startup →' : 'Apply My Startup →'}
+                {language === 'pt' ? 'Candidatar a Minha Startup ' : 'Apply My Startup '}
               </Link>
               <Link href="/contacto" className={styles.btnSecondary}>
                 {language === 'pt' ? 'Falar com a Equipa' : 'Talk to Our Team'}

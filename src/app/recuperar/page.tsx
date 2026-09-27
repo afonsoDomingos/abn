@@ -46,7 +46,7 @@ export default function RecuperarPage() {
 
         {status === 'success' ? (
           <div style={{ textAlign: 'center', padding: '1rem 0' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📧</div>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}></div>
             <h3 style={{ marginBottom: '0.75rem', color: 'var(--primary)' }}>Email Enviado!</h3>
             <p style={{ opacity: 0.7, fontSize: '0.9rem', marginBottom: '1.5rem' }}>
               {message}

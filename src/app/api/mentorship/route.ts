@@ -31,7 +31,7 @@ const CURATED_MENTORS = [
       { title: 'Lean Startup & Agile Coach', issuer: 'Scrum Alliance', year: '2021' }
     ],
     supportedCompanies: [
-      { name: 'Bissau Pay', logo: '💳', year: '2024' },
+      { name: 'Bissau Pay', logo: '', year: '2024' },
       { name: 'AgriMoçambique', logo: '🌱', year: '2023' },
       { name: 'KuraMoz Health', logo: '🏥', year: '2025' }
     ],
@@ -98,7 +98,7 @@ const CURATED_MENTORS = [
     ],
     supportedCompanies: [
       { name: 'MulherEmpreende MZ', logo: '✨', year: '2024' },
-      { name: 'Artesanato Vivo', logo: '🎨', year: '2023' }
+      { name: 'Artesanato Vivo', logo: '', year: '2023' }
     ],
     availability: {
       days: ['Quarta-feira', 'Sexta-feira'],
@@ -160,7 +160,7 @@ const CURATED_MENTORS = [
       { title: 'Renewable Energy Specialist', issuer: 'AEE', year: '2017' }
     ],
     supportedCompanies: [
-      { name: 'KabuSolar', logo: '☀️', year: '2023' }
+      { name: 'KabuSolar', logo: '', year: '2023' }
     ],
     availability: {
       days: ['Terça-feira', 'Sexta-feira'],

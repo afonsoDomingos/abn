@@ -200,13 +200,13 @@ export default function HomeTeam() {
                   aria-label="Próximo"
                   title="Próximo"
                 >
-                  →
+                  
                 </button>
               </div>
             )}
 
             <Link href="/equipa" className={styles.viewAllBtn}>
-              Ver equipa completa <span className={styles.viewAllArrow}>→</span>
+              Ver equipa completa <span className={styles.viewAllArrow}></span>
             </Link>
           </div>
         </div>
@@ -290,7 +290,7 @@ export default function HomeTeam() {
         <div className={styles.ctaStrip}>
           <p>Quer conhecer <span>toda a equipa</span> e os seus perfis detalhados?</p>
           <Link href="/equipa" className={styles.ctaLink}>
-            Ver equipa completa →
+            Ver equipa completa 
           </Link>
         </div>
       </div>

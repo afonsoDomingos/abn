@@ -96,7 +96,7 @@ export default function AdminPage() {
         <header style={{ marginBottom: '2rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.4rem' }}>
             <span style={{ background: '#eff6ff', color: '#1d4ed8', fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', border: '1px solid #bfdbfe' }}>
-              👤 Colaborador ABN
+               Colaborador ABN
             </span>
           </div>
           <h1 style={{ fontSize: '2rem', fontFamily: 'Outfit', fontWeight: 800, color: '#0f172a', marginBottom: '0.3rem' }}>
@@ -213,14 +213,14 @@ export default function AdminPage() {
       {!loading && recentActivities.length > 0 && showActivityCard && (() => {
         const top = recentActivities[0];
         let actionLink = '/admin/usuarios';
-        let actionLabel = 'Ver Usuários 👤';
+        let actionLabel = 'Ver Usuários ';
         
         if (top.type === 'certificate') {
           actionLink = '/admin/pagamentos?filter=certificados';
           actionLabel = 'Ver Certificados 📜';
         } else if (top.type === 'enrollment') {
           actionLink = '/admin/pagamentos';
-          actionLabel = 'Ver Inscrições Cursos 💳';
+          actionLabel = 'Ver Inscrições Cursos ';
         } else if (top.type === 'club_inscription') {
           actionLink = '/admin/clube/inscricoes';
           actionLabel = 'Ver Inscrições Clube ';
@@ -256,7 +256,7 @@ export default function AdminPage() {
                 flexShrink: 0,
                 boxShadow: '0 4px 12px rgba(255, 107, 0, 0.25)'
               }}>
-                {top.icon || '🔔'}
+                {top.icon || ''}
               </div>
 
               <div>
@@ -278,7 +278,7 @@ export default function AdminPage() {
                     ÚLTIMA AÇÃO RECENTE
                   </span>
                   <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>
-                    ⏱️ {formatDate(top.createdAt)}
+                     {formatDate(top.createdAt)}
                   </span>
                 </div>
                 
@@ -329,7 +329,7 @@ export default function AdminPage() {
                   transition: 'all 0.2s'
                 }}
               >
-                ✕
+                
               </button>
             </div>
           </div>
@@ -480,7 +480,7 @@ export default function AdminPage() {
                 </div>
               )}
               <div style={{ fontSize: '0.82rem', color: stats.pendingCertificates > 0 ? '#2563eb' : '#64748b', marginTop: '4px', fontWeight: 700 }}>
-                {stats.pendingCertificates > 0 ? '⚠️ Pedidos pendentes de aprovação' : 'Todos os certificados aprovados'}
+                {stats.pendingCertificates > 0 ? ' Pedidos pendentes de aprovação' : 'Todos os certificados aprovados'}
               </div>
             </div>
           </Link>
@@ -560,7 +560,7 @@ export default function AdminPage() {
             </div>
           ) : recentActivities.length === 0 ? (
             <div style={{ padding: '1.5rem', textAlign: 'center', color: '#64748b', fontSize: '0.9rem', fontWeight: 500 }}>
-              🟢 Sistema a operar com 100% de integridade. Nenhuma atividade recente registada.
+               Sistema a operar com 100% de integridade. Nenhuma atividade recente registada.
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>

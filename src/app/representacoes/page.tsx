@@ -67,7 +67,7 @@ export default function RepresentacoesPage() {
                 <div className={styles.badge}>Sede</div>
               )}
               <div className={styles.countryDescription}>{country.description}</div>
-              <div className={styles.cta}>Ver Representação →</div>
+              <div className={styles.cta}>Ver Representação </div>
             </Link>
           ))}
         </div>

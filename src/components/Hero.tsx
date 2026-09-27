@@ -189,7 +189,7 @@ export default function Hero() {
                     className={styles.clearBtn}
                     title={language === 'pt' ? 'Limpar' : 'Clear'}
                   >
-                    ✕
+                    
                   </button>
                 )}
                 <button
@@ -265,7 +265,7 @@ export default function Hero() {
                             <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#0f172a' }}>{item.title}</span>
                             <span style={{ fontSize: '0.7rem', color: '#ff6b00', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{item.type}</span>
                           </div>
-                          <span style={{ fontSize: '0.85rem', color: '#ff6b00', fontWeight: 700 }}>→</span>
+                          <span style={{ fontSize: '0.85rem', color: '#ff6b00', fontWeight: 700 }}></span>
                         </Link>
                       ))}
                     </div>

@@ -175,7 +175,7 @@ export default function HomeSpecialists() {
           </div>
 
           <Link href="/parceiros" className={styles.joinBtn}>
-            {language === 'pt' ? 'Tornar-se Especialista Parceiro' : 'Become Partner Specialist'} →
+            {language === 'pt' ? 'Tornar-se Especialista Parceiro' : 'Become Partner Specialist'} 
           </Link>
         </div>
 
@@ -304,7 +304,7 @@ export default function HomeSpecialists() {
                       Ver Perfil
                     </Link>
                     <Link href={`/contacto?assunto=Mentoria+com+${encodeURIComponent(item.name)}`} className={styles.contactBtn}>
-                      {language === 'pt' ? 'Mentoria →' : 'Mentorship →'}
+                      {language === 'pt' ? 'Mentoria ' : 'Mentorship '}
                     </Link>
                   </div>
                 </div>

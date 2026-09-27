@@ -160,7 +160,7 @@ export default function ShopNavbar({ onSearch, onSelectCategory }: ShopNavbarPro
                 title="Limpar pesquisa"
                 aria-label="Limpar pesquisa"
               >
-                ✕
+                
               </button>
             )}
             <button type="submit" className={styles.searchSubmitBtn} title="Pesquisar">
@@ -224,7 +224,7 @@ export default function ShopNavbar({ onSearch, onSelectCategory }: ShopNavbarPro
                   onClick={() => executeSearch(searchTerm)}
                 >
                   <span>Ver todos os resultados na loja</span>
-                  <span>→</span>
+                  <span></span>
                 </div>
               </div>
             </>
@@ -290,7 +290,7 @@ export default function ShopNavbar({ onSearch, onSelectCategory }: ShopNavbarPro
               onClick={handleClear} 
               className={styles.clearBtn}
             >
-              ✕
+              
             </button>
           )}
         </form>

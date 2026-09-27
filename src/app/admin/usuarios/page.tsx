@@ -129,7 +129,7 @@ export default function AdminUsuariosPage() {
         </div>
       ) : filtered.length === 0 ? (
         <div className={styles.empty}>
-          <span>👥</span>
+          <span></span>
           <p>Nenhum utilizador encontrado.</p>
         </div>
       ) : (
@@ -173,14 +173,14 @@ export default function AdminUsuariosPage() {
                           onClick={() => setEditingUser(user)}
                           title="Editar utilizador"
                         >
-                          ✏️
+                          
                         </button>
                         <button
                           className={styles.deleteBtn}
                           onClick={() => handleDelete(user._id)}
                           title="Remover utilizador"
                         >
-                          🗑️
+                          
                         </button>
                       </div>
                     </td>
@@ -198,7 +198,7 @@ export default function AdminUsuariosPage() {
           <div className={`glass ${styles.modal}`}>
             <header className={styles.modalHeader}>
               <h2 className="text-gradient-gold">Editar Utilizador</h2>
-              <button className={styles.closeBtn} onClick={() => setEditingUser(null)}>×</button>
+              <button className={styles.closeBtn} onClick={() => setEditingUser(null)}></button>
             </header>
             
             <form onSubmit={handleUpdate} className={styles.form}>

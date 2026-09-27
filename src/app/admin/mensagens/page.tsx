@@ -172,20 +172,20 @@ export default function AdminMensagensPage() {
                   href={`mailto:${selected.email}?subject=Re: Mensagem ABN`}
                   className="btn-primary"
                 >
-                  ✉️ Responder por Email
+                   Responder por Email
                 </a>
                 <button
                   className="btn-secondary"
                   onClick={() => updateStatus(selected._id, 'respondido')}
                   disabled={selected.status === 'respondido'}
                 >
-                  ✓ Marcar como Respondido
+                   Marcar como Respondido
                 </button>
                 <button
                   className={styles.deleteBtn}
                   onClick={() => deleteMessage(selected._id)}
                 >
-                  🗑️ Eliminar
+                   Eliminar
                 </button>
               </div>
             </>

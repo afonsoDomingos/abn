@@ -182,7 +182,7 @@ export default function EspecialistasPage() {
                         <h1>Aconselhamento de <span className={styles.heroAccent}>Alto Nível</span></h1>
                         <p>Conecte-se com especialistas e mentores de topo em tecnologia, finanças, desenvolvimento e estratégia para acelerar o crescimento do seu negócio.</p>
                         <Link href="/contacto?assunto=Solicitar+Mentoria" className={styles.heroCta}>
-                            Solicitar Mentoria →
+                            Solicitar Mentoria 
                         </Link>
                     </div>
                 </div>
@@ -349,7 +349,7 @@ export default function EspecialistasPage() {
                                                     className={styles.mentorBtn}
                                                     style={{ flex: 1, minWidth: '130px', marginTop: 0 }}
                                                 >
-                                                    Mentoria →
+                                                    Mentoria 
                                                 </Link>
                                             </div>
                                         </div>
@@ -367,7 +367,7 @@ export default function EspecialistasPage() {
                         <h2>É um especialista numa área estratégica?</h2>
                         <p>Junte-se à Rede Oficial de Especialistas da ABN para oferecer mentoria, consultoria e soluções a startups e PMEs em África.</p>
                         <Link href="/parceiros" className={styles.joinBtn}>
-                            Inscrever-me como Especialista →
+                            Inscrever-me como Especialista 
                         </Link>
                     </div>
                 </section>

@@ -525,7 +525,7 @@ export default function AdminHubsPage() {
                       </div>
                     ) : (
                       <div className={styles.repEmptyBox}>
-                        <span>⚠️ Sem Representante atribuído</span>
+                        <span> Sem Representante atribuído</span>
                       </div>
                     )}
 
@@ -534,7 +534,7 @@ export default function AdminHubsPage() {
                       className={styles.manageRepBtn} 
                       onClick={() => openRepModal(hub)}
                     >
-                      <span>👤</span> Gerir Representante
+                      <span></span> Gerir Representante
                     </button>
                     
                     <div className={styles.hubCardActions}>
@@ -590,7 +590,7 @@ export default function AdminHubsPage() {
                 <div className={styles.uploadRow}>
                   <input value={image} onChange={e => setImage(e.target.value)} placeholder="Ex: /guine_bissau_banner.png" style={{ flex: 1 }} required />
                   <label className={styles.uploadLabel} title="Carregar Imagem" style={{ cursor: 'pointer' }}>
-                    {uploadingImage ? <div className={styles.spinnerSmall}></div> : '📁'}
+                    {uploadingImage ? <div className={styles.spinnerSmall}></div> : ''}
                     <input 
                       type="file" 
                       accept="image/*" 
@@ -678,7 +678,7 @@ export default function AdminHubsPage() {
                 <div className={styles.uploadRow}>
                   <input value={repImage} onChange={e => setRepImage(e.target.value)} placeholder="Ex: /default-avatar.png" style={{ flex: 1 }} />
                   <label className={styles.uploadLabel} title="Carregar Foto" style={{ cursor: 'pointer' }}>
-                    {uploadingRepImage ? <div className={styles.spinnerSmall}></div> : '📁'}
+                    {uploadingRepImage ? <div className={styles.spinnerSmall}></div> : ''}
                     <input 
                       type="file" 
                       accept="image/*" 
@@ -809,7 +809,7 @@ export default function AdminHubsPage() {
                 <div className={styles.uploadRow}>
                   <input value={newEvtImage} onChange={e => setNewEvtImage(e.target.value)} placeholder="Ex: /event-photo.png" style={{ flex: 1 }} />
                   <label className={styles.uploadLabel} title="Carregar Foto" style={{ cursor: 'pointer' }}>
-                    {uploadingEvtImage ? <div className={styles.spinnerSmall}></div> : '📁'}
+                    {uploadingEvtImage ? <div className={styles.spinnerSmall}></div> : ''}
                     <input 
                       type="file" 
                       accept="image/*" 
@@ -854,7 +854,7 @@ export default function AdminHubsPage() {
                     <div key={idx} className={styles.subItemBox} style={{ marginBottom: 0 }}>
                       <div className={styles.subItemRow}>
                         <span style={{ fontWeight: 700, color: evt.type === 'future' ? 'var(--primary)' : 'rgba(255,255,255,0.5)', fontSize: '0.85rem', textTransform: 'uppercase' }}>
-                          {evt.type === 'future' ? 'Futuro' : '⏳ Passado'}
+                          {evt.type === 'future' ? 'Futuro' : ' Passado'}
                         </span>
                         <button 
                           type="button" 
@@ -866,7 +866,7 @@ export default function AdminHubsPage() {
                         </button>
                       </div>
                       <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>{evt.title}</div>
-                      <div style={{ fontSize: '0.85rem', opacity: 0.6 }}>📅 {evt.date}</div>
+                      <div style={{ fontSize: '0.85rem', opacity: 0.6 }}> {evt.date}</div>
                       <p style={{ fontSize: '0.85rem', opacity: 0.8, margin: 0, lineHeight: 1.5 }}>{evt.description}</p>
                     </div>
                   ))}
@@ -896,7 +896,7 @@ export default function AdminHubsPage() {
                   <div className={styles.uploadRow}>
                     <input value={newMemberImage} onChange={e => setNewMemberImage(e.target.value)} placeholder="Ex: /default-avatar.png" style={{ flex: 1 }} />
                     <label className={styles.uploadLabel} title="Carregar Foto" style={{ cursor: 'pointer' }}>
-                      {uploadingMemberImage ? <div className={styles.spinnerSmall}></div> : '📁'}
+                      {uploadingMemberImage ? <div className={styles.spinnerSmall}></div> : ''}
                       <input 
                         type="file" 
                         accept="image/*" 
@@ -980,7 +980,7 @@ export default function AdminHubsPage() {
                   <div className={styles.uploadRow}>
                     <input value={newPartnerLogo} onChange={e => setNewPartnerLogo(e.target.value)} placeholder="Link ou URL do logótipo" style={{ flex: 1 }} />
                     <label className={styles.uploadLabel} title="Carregar Logótipo" style={{ cursor: 'pointer' }}>
-                      {uploadingPartnerLogo ? <div className={styles.spinnerSmall}></div> : '📁'}
+                      {uploadingPartnerLogo ? <div className={styles.spinnerSmall}></div> : ''}
                       <input 
                         type="file" 
                         accept="image/*" 
@@ -1184,7 +1184,7 @@ export default function AdminHubsPage() {
                     </div>
                   ) : (
                     <div style={{ background: '#fffbeb', border: '1px solid #fef3c7', borderRadius: '12px', padding: '0.85rem 1rem', fontSize: '0.85rem', color: '#92400e' }}>
-                      ℹ️ Esta delegação ainda não possui um representante oficial com acesso dedicado atribuído.
+                       Esta delegação ainda não possui um representante oficial com acesso dedicado atribuído.
                     </div>
                   )}
 

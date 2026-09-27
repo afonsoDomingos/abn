@@ -140,7 +140,7 @@ export default function AdminGaleriaPage() {
 
       const data = await res.json();
       if (data.success) {
-        setMsg(editingId ? '✅ Mídia atualizada com sucesso!' : '✅ Mídia publicada com sucesso!');
+        setMsg(editingId ? ' Mídia atualizada com sucesso!' : ' Mídia publicada com sucesso!');
         fetchItems();
         setShowForm(false);
         setTimeout(() => setMsg(''), 3000);
@@ -165,7 +165,7 @@ export default function AdminGaleriaPage() {
       const data = await res.json();
       if (data.success) {
         setItems(prev => prev.filter(i => i._id !== id));
-        setMsg('🗑️ Mídia removida com sucesso!');
+        setMsg(' Mídia removida com sucesso!');
         setTimeout(() => setMsg(''), 3000);
       } else {
         alert(data.error || 'Erro ao remover mídia.');
@@ -198,7 +198,7 @@ export default function AdminGaleriaPage() {
           <p className={styles.subtitle}>{items.length} itens registrados na Galeria</p>
         </div>
         <button className={`btn-primary ${styles.addBtn}`} onClick={() => showForm ? setShowForm(false) : handleCreateClick()}>
-          {showForm ? '✕ Cancelar' : '+ Adicionar Mídia'}
+          {showForm ? ' Cancelar' : '+ Adicionar Mídia'}
         </button>
       </div>
 
@@ -258,7 +258,7 @@ export default function AdminGaleriaPage() {
                   {uploadingImage ? (
                     <div className={styles.spinnerSmall}></div>
                   ) : (
-                    '📁'
+                    ''
                   )}
                   <input
                     type="file"
@@ -294,7 +294,7 @@ export default function AdminGaleriaPage() {
                       {uploadingFile ? (
                         <div className={styles.spinnerSmall}></div>
                       ) : (
-                        '📁'
+                        ''
                       )}
                       <input
                         type="file"
@@ -345,7 +345,7 @@ export default function AdminGaleriaPage() {
         </div>
       ) : filteredItems.length === 0 ? (
         <div className={styles.empty}>
-          <span>🖼️</span>
+          <span></span>
           <p>Nenhum item nesta categoria no momento.</p>
         </div>
       ) : (
@@ -375,28 +375,28 @@ export default function AdminGaleriaPage() {
                 <p className={styles.cardDesc}>{item.content}</p>
                 <div className={styles.cardMeta}>
                   <div className={styles.metaItem}>
-                    <span>📅</span>
+                    <span></span>
                     <strong>{item.date}</strong>
                   </div>
                   {item.location && (
                     <div className={styles.metaItem}>
-                      <span>📍</span>
+                      <span></span>
                       <span>{item.location}</span>
                     </div>
                   )}
                   {item.mediaUrl && (
                     <div className={styles.metaItem} style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', display: 'block' }}>
-                      <span>🔗</span> <a href={item.mediaUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>{item.mediaUrl}</a>
+                      <span></span> <a href={item.mediaUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>{item.mediaUrl}</a>
                     </div>
                   )}
                 </div>
               </div>
               <div className={styles.cardFooter}>
                 <button className={styles.editBtn} onClick={() => handleEditClick(item)}>
-                  ✏️ Editar
+                   Editar
                 </button>
                 <button className={styles.deleteBtn} onClick={() => handleDelete(item._id)}>
-                  🗑️
+                  
                 </button>
               </div>
             </div>

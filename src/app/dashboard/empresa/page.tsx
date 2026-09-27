@@ -10,11 +10,11 @@ import {
 
 const CONNECT_TYPES = [
   { key: "distribuidor", label: "Procuro Distribuidor", icon: "🏪", color: "#6366f1", desc: "Distribuidores em mercados-alvo" },
-  { key: "fornecedor", label: "Procuro Fornecedor", icon: "📦", color: "#10b981", desc: "Fornecedores de matéria-prima ou serviços" },
-  { key: "investidor", label: "Procuro Investidor", icon: "💰", color: "#f59e0b", desc: "Capital para expansão ou projetos" },
-  { key: "parceiro_tecnologico", label: "Procuro Parceiro Tecnológico", icon: "💻", color: "#8b5cf6", desc: "Parceiros de transformação digital" },
-  { key: "comprador_internacional", label: "Procuro Comprador Internacional", icon: "🌍", color: "#0ea5e9", desc: "Compradores em mercados internacionais" },
-  { key: "outro", label: "Outro Pedido", icon: "🔗", color: "#64748b", desc: "Descreva o seu pedido à rede ABN" },
+  { key: "fornecedor", label: "Procuro Fornecedor", icon: "", color: "#10b981", desc: "Fornecedores de matéria-prima ou serviços" },
+  { key: "investidor", label: "Procuro Investidor", icon: "", color: "#f59e0b", desc: "Capital para expansão ou projetos" },
+  { key: "parceiro_tecnologico", label: "Procuro Parceiro Tecnológico", icon: "", color: "#8b5cf6", desc: "Parceiros de transformação digital" },
+  { key: "comprador_internacional", label: "Procuro Comprador Internacional", icon: "", color: "#0ea5e9", desc: "Compradores em mercados internacionais" },
+  { key: "outro", label: "Outro Pedido", icon: "", color: "#64748b", desc: "Descreva o seu pedido à rede ABN" },
 ];
 
 const DESENVOLVIMENTO_CATS = [
@@ -23,9 +23,9 @@ const DESENVOLVIMENTO_CATS = [
   { key: "mentoria", label: "Mentoria", icon: "" },
   { key: "aceleracao", label: "Aceleração", icon: "" },
   { key: "internacionalizacao", label: "Internacionalização", icon: "" },
-  { key: "marketing", label: "Marketing", icon: "📢" },
-  { key: "recursos_humanos", label: "Recursos Humanos", icon: "👥" },
-  { key: "estrategia", label: "Estratégia", icon: "♟️" },
+  { key: "marketing", label: "Marketing", icon: "" },
+  { key: "recursos_humanos", label: "Recursos Humanos", icon: "" },
+  { key: "estrategia", label: "Estratégia", icon: "" },
 ];
 
 const STATUS_STYLES: Record<string, { bg: string; color: string; label: string }> = {
@@ -148,9 +148,9 @@ export default function EmpresaPage() {
 
   const TABS = [
     { key: "empresa", label: "Empresa" },
-    { key: "connect", label: "🔗 Business Connect" },
-    { key: "desenvolvimento", label: "📈 Desenvolvimento" },
-    { key: "oportunidades", label: "🎯 Oportunidades" },
+    { key: "connect", label: " Business Connect" },
+    { key: "desenvolvimento", label: " Desenvolvimento" },
+    { key: "oportunidades", label: " Oportunidades" },
     { key: "networking", label: "Networking B2B" },
   ];
 
@@ -167,7 +167,7 @@ export default function EmpresaPage() {
 
       {feedback && (
         <div style={{ position: "fixed", top: "1.5rem", right: "1.5rem", zIndex: 9999, background: feedback.type === "success" ? "#10b981" : "#ef4444", color: "#fff", padding: "0.85rem 1.4rem", borderRadius: "14px", fontWeight: 700, fontSize: "0.9rem", boxShadow: "0 8px 25px rgba(0,0,0,0.18)", display: "flex", alignItems: "center", gap: "8px" }}>
-          {feedback.type === "success" ? "✅" : "❌"} {feedback.message}
+          {feedback.type === "success" ? "" : ""} {feedback.message}
         </div>
       )}
 
@@ -178,8 +178,8 @@ export default function EmpresaPage() {
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.5rem" }}>
               <span style={{ fontSize: "0.7rem", fontWeight: 800, background: "rgba(14,165,233,0.25)", color: "#7dd3fc", padding: "3px 10px", borderRadius: "20px", textTransform: "uppercase", letterSpacing: "0.8px", border: "1px solid rgba(14,165,233,0.35)" }}> Empresa / PME</span>
-              <span style={{ fontSize: "0.7rem", fontWeight: 800, background: "rgba(16,185,129,0.2)", color: "#6ee7b7", padding: "3px 10px", borderRadius: "20px", border: "1px solid rgba(16,185,129,0.3)" }}>🟢 Verificada</span>
-              {business?.empresaProfile?.exportReady && <span style={{ fontSize: "0.7rem", fontWeight: 800, background: "rgba(251,191,36,0.2)", color: "#fbbf24", padding: "3px 10px", borderRadius: "20px", border: "1px solid rgba(251,191,36,0.3)" }}>🌍 Export Ready</span>}
+              <span style={{ fontSize: "0.7rem", fontWeight: 800, background: "rgba(16,185,129,0.2)", color: "#6ee7b7", padding: "3px 10px", borderRadius: "20px", border: "1px solid rgba(16,185,129,0.3)" }}> Verificada</span>
+              {business?.empresaProfile?.exportReady && <span style={{ fontSize: "0.7rem", fontWeight: 800, background: "rgba(251,191,36,0.2)", color: "#fbbf24", padding: "3px 10px", borderRadius: "20px", border: "1px solid rgba(251,191,36,0.3)" }}> Export Ready</span>}
             </div>
             <h1 style={{ margin: 0, fontSize: "1.7rem", fontWeight: 900, color: "#ffffff", fontFamily: "Outfit, sans-serif", lineHeight: 1.2 }}>{business?.name || "Minha Empresa"}</h1>
             <p style={{ margin: "0.4rem 0 0 0", color: "#94a3b8", fontSize: "0.9rem" }}>
@@ -200,11 +200,11 @@ export default function EmpresaPage() {
       {/* KPI TILES */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
         {[
-          { label: "Clientes Ativos", value: business?.clients?.length || 12, icon: "👤", bg: "rgba(14,165,233,0.08)" },
-          { label: "Projetos", value: business?.stats?.projects || 8, icon: "📂", bg: "rgba(99,102,241,0.08)" },
-          { label: "Fornecedores", value: business?.suppliers?.length || 5, icon: "📦", bg: "rgba(16,185,129,0.08)" },
-          { label: "Pedidos Connect", value: connectRequests.filter((c: any) => c.status === "ativo").length || 2, icon: "🔗", bg: "rgba(245,158,11,0.08)" },
-          { label: "Mercados", value: String((business?.empresaProfile?.markets?.length || 3)) + " países", icon: "🌍", bg: "rgba(139,92,246,0.08)" },
+          { label: "Clientes Ativos", value: business?.clients?.length || 12, icon: "", bg: "rgba(14,165,233,0.08)" },
+          { label: "Projetos", value: business?.stats?.projects || 8, icon: "", bg: "rgba(99,102,241,0.08)" },
+          { label: "Fornecedores", value: business?.suppliers?.length || 5, icon: "", bg: "rgba(16,185,129,0.08)" },
+          { label: "Pedidos Connect", value: connectRequests.filter((c: any) => c.status === "ativo").length || 2, icon: "", bg: "rgba(245,158,11,0.08)" },
+          { label: "Mercados", value: String((business?.empresaProfile?.markets?.length || 3)) + " países", icon: "", bg: "rgba(139,92,246,0.08)" },
         ].map(kpi => (
           <div key={kpi.label} style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "18px", padding: "1.25rem", boxShadow: "0 2px 8px rgba(15,23,42,0.04)" }}>
             <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: kpi.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", marginBottom: "0.5rem" }}>{kpi.icon}</div>
@@ -235,7 +235,7 @@ export default function EmpresaPage() {
                   <p style={{ margin: "4px 0 0 0", fontSize: "0.82rem", color: "#64748b" }}>Informações institucionais e operacionais.</p>
                 </div>
                 <button onClick={saveEmpresaProfile} disabled={saving} style={{ background: "#0ea5e9", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "12px", fontWeight: 800, fontSize: "0.85rem", cursor: saving ? "not-allowed" : "pointer", opacity: saving ? 0.7 : 1, fontFamily: "Outfit, sans-serif" }}>
-                  {saving ? "A guardar..." : "💾 Guardar"}
+                  {saving ? "A guardar..." : " Guardar"}
                 </button>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem", marginBottom: "1.25rem" }}>
@@ -272,7 +272,7 @@ export default function EmpresaPage() {
               </div>
               <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
                 <input type="checkbox" checked={empExport} onChange={e => setEmpExport(e.target.checked)} style={{ width: "18px", height: "18px", accentColor: "#0ea5e9" }} />
-                <span style={{ fontSize: "0.88rem", fontWeight: 700, color: "#334155" }}>🌍 Empresa Export Ready — Capacidade de exportação verificada</span>
+                <span style={{ fontSize: "0.88rem", fontWeight: 700, color: "#334155" }}> Empresa Export Ready — Capacidade de exportação verificada</span>
               </label>
             </div>
           )}
@@ -316,8 +316,8 @@ export default function EmpresaPage() {
                           <span style={{ fontSize: "0.68rem", fontWeight: 800, background: s.bg, color: s.color, padding: "2px 8px", borderRadius: "12px" }}>{s.label}</span>
                         </div>
                         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                          {c.targetCountry && <span style={{ fontSize: "0.78rem", color: "#64748b" }}>🌍 {c.targetCountry}</span>}
-                          {c.targetSector && <span style={{ fontSize: "0.78rem", color: "#64748b" }}>📂 {c.targetSector}</span>}
+                          {c.targetCountry && <span style={{ fontSize: "0.78rem", color: "#64748b" }}> {c.targetCountry}</span>}
+                          {c.targetSector && <span style={{ fontSize: "0.78rem", color: "#64748b" }}> {c.targetSector}</span>}
                           <span style={{ fontSize: "0.78rem", color: "#0ea5e9", fontWeight: 700 }}>💬 {c.responses || 0} respostas ABN</span>
                         </div>
                         {c.description && <p style={{ margin: "6px 0 0 0", fontSize: "0.8rem", color: "#64748b" }}>{c.description}</p>}
@@ -340,7 +340,7 @@ export default function EmpresaPage() {
                   <div key={cat.key} style={{ background: "#ffffff", border: "1.5px solid #e2e8f0", borderRadius: "16px", padding: "1.25rem", cursor: "pointer", transition: "all 0.2s" }}>
                     <div style={{ fontSize: "1.8rem", marginBottom: "8px" }}>{cat.icon}</div>
                     <div style={{ fontSize: "0.92rem", fontWeight: 800, color: "#0f172a", marginBottom: "4px" }}>{cat.label}</div>
-                    <Link href="/dashboard/servicos" style={{ fontSize: "0.78rem", color: "#6366f1", fontWeight: 700, textDecoration: "none" }}>Ver serviços →</Link>
+                    <Link href="/dashboard/servicos" style={{ fontSize: "0.78rem", color: "#6366f1", fontWeight: 700, textDecoration: "none" }}>Ver serviços </Link>
                   </div>
                 ))}
               </div>
@@ -378,9 +378,9 @@ export default function EmpresaPage() {
               </h2>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem", marginBottom: "1.5rem" }}>
                 {[
-                  { icon: "📢", title: "Edital ADEI — PMEs Inovadoras 2026", deadline: "30 Set 2026", value: "$50,000", tag: "Fomento" },
+                  { icon: "", title: "Edital ADEI — PMEs Inovadoras 2026", deadline: "30 Set 2026", value: "$50,000", tag: "Fomento" },
                   { icon: "", title: "Parceria B2B com Distribuidoras Luandenses", deadline: "15 Out 2026", value: "Variável", tag: "Parceria" },
-                  { icon: "💰", title: "Linha de Crédito BCSTP — Exportação", deadline: "31 Out 2026", value: "até $200,000", tag: "Financiamento" },
+                  { icon: "", title: "Linha de Crédito BCSTP — Exportação", deadline: "31 Out 2026", value: "até $200,000", tag: "Financiamento" },
                   { icon: "", title: "Missão Empresarial Portugal 2026", deadline: "20 Out 2026", value: "Apoiado ABN", tag: "Evento" },
                 ].map((op, i) => (
                   <div key={i} style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "18px", padding: "1.25rem", boxShadow: "0 2px 8px rgba(15,23,42,0.04)" }}>
@@ -393,7 +393,7 @@ export default function EmpresaPage() {
                       <span style={{ fontSize: "0.75rem", color: "#64748b" }}>⏰ {op.deadline}</span>
                       <span style={{ fontSize: "0.75rem", color: "#10b981", fontWeight: 700 }}>💵 {op.value}</span>
                     </div>
-                    <Link href="/dashboard/oportunidades" style={{ fontSize: "0.8rem", fontWeight: 800, color: "#f59e0b", textDecoration: "none" }}>Ver detalhes →</Link>
+                    <Link href="/dashboard/oportunidades" style={{ fontSize: "0.8rem", fontWeight: 800, color: "#f59e0b", textDecoration: "none" }}>Ver detalhes </Link>
                   </div>
                 ))}
               </div>
@@ -424,7 +424,7 @@ export default function EmpresaPage() {
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                         <span style={{ fontSize: "0.88rem", fontWeight: 800, color: "#0f172a" }}>{m.name}</span>
-                        {m.verified && <span>✅</span>}
+                        {m.verified && <span></span>}
                       </div>
                       <span style={{ fontSize: "0.75rem", color: "#64748b" }}>{m.sector} · {m.country}</span>
                       <div style={{ marginTop: "4px" }}>
@@ -449,10 +449,10 @@ export default function EmpresaPage() {
           <div style={{ background: "#ffffff", borderRadius: "24px", maxWidth: "560px", width: "100%", padding: "2rem", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.35)", maxHeight: "90vh", overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", borderBottom: "1px solid #f1f5f9", paddingBottom: "1rem" }}>
               <div>
-                <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800, color: "#0f172a", fontFamily: "Outfit" }}>🔗 Publicar Pedido Business Connect</h3>
+                <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800, color: "#0f172a", fontFamily: "Outfit" }}> Publicar Pedido Business Connect</h3>
                 <p style={{ margin: "4px 0 0 0", fontSize: "0.82rem", color: "#64748b" }}>A ABN procurará correspondências na sua rede.</p>
               </div>
-              <button onClick={() => setShowConnectModal(false)} style={{ background: "#f1f5f9", border: "none", width: "36px", height: "36px", borderRadius: "50%", cursor: "pointer", fontWeight: 900, color: "#475569", fontSize: "1rem" }}>✕</button>
+              <button onClick={() => setShowConnectModal(false)} style={{ background: "#f1f5f9", border: "none", width: "36px", height: "36px", borderRadius: "50%", cursor: "pointer", fontWeight: 900, color: "#475569", fontSize: "1rem" }}></button>
             </div>
             <div style={{ marginBottom: "1.25rem" }}>
               <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 700, color: "#334155", marginBottom: "8px" }}>Tipo de Pedido</label>

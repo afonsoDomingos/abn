@@ -337,7 +337,7 @@ export async function GET(request: Request) {
             company: 'TechÁfrica Labs',
             specialty: 'Arquitetura de Software & IA',
             email: 'paula.tavares@techafrica.org',
-            avatar: '👩‍💻',
+            avatar: '👩‍',
             assignedStartups: ['AgroLusofonia Tech', 'BioNutri Guiné'],
             sessionsCompleted: 22,
             rating: 5.0
@@ -349,7 +349,7 @@ export async function GET(request: Request) {
             company: 'Gomes & Associados',
             specialty: 'Direito Empresarial & Estruturação Societária',
             email: 'fernando.gomes@lexluso.com',
-            avatar: '⚖️',
+            avatar: '',
             assignedStartups: ['SolarBissau Clean'],
             sessionsCompleted: 9,
             rating: 4.8

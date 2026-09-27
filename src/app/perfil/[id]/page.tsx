@@ -49,8 +49,8 @@ export default function BusinessProfile({ params }: { params: Promise<{ id: stri
               <h1>{business.name}</h1>
               <p className={styles.category}>{business.category}</p>
               <div className={styles.badges}>
-                <span>📍 {business.location}</span>
-                <span>⭐ {business.stats.rating}</span>
+                <span> {business.location}</span>
+                <span> {business.stats.rating}</span>
               </div>
             </div>
           </div>

@@ -63,7 +63,7 @@ export default function HomeClubeEmpreendedores() {
               Inscrever-me Agora
             </Link>
             <Link href="/clube-empreendedores" className={styles.btnSecondary}>
-              Saber Mais →
+              Saber Mais 
             </Link>
           </div>
         </div>

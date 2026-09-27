@@ -785,7 +785,7 @@ export default function AdminProgramasPage() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
                   <div>
                     <h4 style={{ margin: 0, color: '#0f172a', fontSize: '1.15rem', fontWeight: 800 }}>
-                      ⚙️ Visibilidade das Etapas do Inquérito
+                       Visibilidade das Etapas do Inquérito
                     </h4>
                     <p style={{ margin: '0.3rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>
                       Ative ou oculte as etapas do formulário de inscrição. Desative a etapa de <strong>Checkout</strong> e <strong>Adesão</strong> para programas gratuitos.
@@ -908,7 +908,7 @@ export default function AdminProgramasPage() {
 
               {customFields.length === 0 ? (
                 <div style={{ background: '#f8fafc', border: '2px dashed #cbd5e1', borderRadius: '14px', padding: '3rem 1.5rem', textAlign: 'center', color: '#64748b' }}>
-                  <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>📋</div>
+                  <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}></div>
                   <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: '#334155' }}>Nenhuma pergunta personalizada configurada para este programa.</p>
                   <p style={{ margin: '0.3rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>Clique no botão "+ Adicionar Pergunta / Campo" acima para personalizar o inquérito.</p>
                 </div>
@@ -924,7 +924,7 @@ export default function AdminProgramasPage() {
                         style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', padding: '0.4rem 0.85rem', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}
                         onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))}
                       >
-                        🗑️ Remover Pergunta
+                         Remover Pergunta
                       </button>
                     </div>
 
@@ -1032,7 +1032,7 @@ export default function AdminProgramasPage() {
 
               {adhesionLevels.length === 0 ? (
                 <div style={{ background: '#f8fafc', border: '2px dashed #cbd5e1', borderRadius: '14px', padding: '3rem 1.5rem', textAlign: 'center', color: '#64748b' }}>
-                  <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>💳</div>
+                  <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}></div>
                   <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: '#334155' }}>Nenhum nível personalizado configurado.</p>
                   <p style={{ margin: '0.3rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>Serão usados os níveis padrão do Clube ou taxas padrão do programa.</p>
                 </div>
@@ -1048,7 +1048,7 @@ export default function AdminProgramasPage() {
                         style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', padding: '0.4rem 0.85rem', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}
                         onClick={() => setAdhesionLevels(adhesionLevels.filter((_, i) => i !== idx))}
                       >
-                        🗑️ Remover Plano
+                         Remover Plano
                       </button>
                     </div>
 
@@ -1231,7 +1231,7 @@ export default function AdminProgramasPage() {
                 {prog.whatsappGroupUrl && (
                   <div className={styles.detailItem} style={{ color: '#16a34a' }}>
                     <span>WhatsApp:</span>
-                    <strong style={{ color: '#16a34a' }}>Grupo Ativo ✓</strong>
+                    <strong style={{ color: '#16a34a' }}>Grupo Ativo </strong>
                   </div>
                 )}
               </div>

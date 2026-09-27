@@ -227,7 +227,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className={styles.adminContent}>
           {isRestrictedRouteForCollaborator ? (
             <div style={{ background: '#ffffff', borderRadius: '24px', padding: '3rem 2rem', textAlign: 'center', border: '1px solid #e2e8f0', boxShadow: '0 10px 25px rgba(15,23,42,0.04)', maxWidth: '600px', margin: '3rem auto' }}>
-              <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🔒</div>
+              <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}></div>
               <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.5rem 0' }}>Acesso Restrito ao Administrador</h2>
               <p style={{ color: '#64748b', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
                 Esta seção requer privilégios de Administrador. O seu perfil de <strong>Colaborador</strong> tem acesso liberado para gestão de inscrições, cursos, programas, eventos, mensagens e conteúdos.

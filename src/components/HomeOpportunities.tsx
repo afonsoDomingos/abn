@@ -81,7 +81,7 @@ export default function HomeOpportunities() {
                     </span>
                     {opp.location && (
                       <span className={styles.location}>
-                        📍 {opp.location}
+                         {opp.location}
                       </span>
                     )}
                   </div>
@@ -107,11 +107,11 @@ export default function HomeOpportunities() {
                         color: '#ffffff'
                       }}
                     >
-                      {language === 'pt' ? 'Candidatar →' : 'Apply →'}
+                      {language === 'pt' ? 'Candidatar ' : 'Apply '}
                     </a>
                   ) : (
                     <Link href="/oportunidades" className={styles.moreLinkBtn}>
-                      {language === 'pt' ? 'Ver Mais →' : 'See More →'}
+                      {language === 'pt' ? 'Ver Mais ' : 'See More '}
                     </Link>
                   )}
                 </div>
@@ -123,7 +123,7 @@ export default function HomeOpportunities() {
         {/* CTA */}
         <div className={styles.footer}>
           <Link href="/oportunidades" className={styles.ctaBtn}>
-            {language === 'pt' ? 'Ver Todas as Oportunidades →' : 'View All Opportunities →'}
+            {language === 'pt' ? 'Ver Todas as Oportunidades ' : 'View All Opportunities '}
           </Link>
         </div>
       </div>

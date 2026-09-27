@@ -132,7 +132,7 @@ export default function CookieConsent() {
               whiteSpace: "nowrap",
             }}
           >
-            Aceitar todos ✓
+            Aceitar todos 
           </button>
         </div>
       </div>

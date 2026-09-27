@@ -149,7 +149,7 @@ export default function UserMenu() {
               className={styles.menuItem}
               style={{ color: '#de9b35', fontWeight: 600 }}
             >
-              🏛️ {user.role === 'representative' ? 'Portal da Delegação' : 'Portal da Delegação'}
+               {user.role === 'representative' ? 'Portal da Delegação' : 'Portal da Delegação'}
             </Link>
           )}
           <Link
