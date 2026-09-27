@@ -432,7 +432,7 @@ export default function AdminLojaPage() {
               onClick={() => setActiveTab(tab.id)}
               style={{
                 background: activeTab === tab.id ? '#de9b35' : 'rgba(255,255,255,0.06)',
-                color: activeTab === tab.id ? '#111418' : '#ffffff',
+                color: '#ffffff',
                 border: 'none',
                 padding: '10px 16px',
                 borderRadius: '10px',
@@ -448,12 +448,12 @@ export default function AdminLojaPage() {
               <Icon size={16} />
               {tab.label}
               {tab.count > 0 && (
-                <span style={{ 
-                  background: activeTab === tab.id ? 'rgba(0,0,0,0.2)' : '#de9b35', 
-                  color: activeTab === tab.id ? '#ffffff' : '#111418',
-                  fontSize: '0.72rem', 
-                  padding: '2px 7px', 
-                  borderRadius: '999px', 
+                <span style={{
+                  background: activeTab === tab.id ? 'rgba(0,0,0,0.2)' : '#de9b35',
+                  color: '#ffffff',
+                  fontSize: '0.72rem',
+                  padding: '2px 7px',
+                  borderRadius: '999px',
                   fontWeight: 900 
                 }}>
                   {tab.count}
@@ -521,7 +521,7 @@ export default function AdminLojaPage() {
                           fontWeight: 800,
                           textTransform: 'uppercase',
                           background: isApproved ? '#16a34a' : isRejected ? '#dc2626' : '#de9b35',
-                          color: isPending ? '#111418' : '#ffffff'
+                          color: '#ffffff'
                         }}
                       >
                         {sub.storeApproval}
