@@ -188,11 +188,15 @@ Este documento lista todos os dados oficiais da ABN que precisam de ser fornecid
 
 ## 9. Contactos Oficiais
 
-**Estado Actual:** Email genérico `info@afrobiznetwork.com`
-**Localização:** Vários ficheiros
+**Estado Actual:** Email oficial `info@afrobiznetwork.com`
+**Localização:** 
+- `src/lib/seed.ts` (super admin)
+- `src/app/contacto/page.tsx` (página de contacto)
+
+**Confirmado:**
+- [x] Email oficial: `info@afrobiznetwork.com`
 
 **Necessário:**
-- [ ] Confirmar email oficial: `info@afrobiznetwork.com`
 - [ ] Telefone oficial (se existir)
 - [ ] Endereço físico da sede
 - [ ] Outros emails departamentais (se aplicável)
@@ -243,8 +247,8 @@ Este documento lista todos os dados oficiais da ABN que precisam de ser fornecid
 ## Prioridade de Actualização
 
 ### Alta Prioridade (Para funcionamento básico)
-1. Google Analytics ID
-2. Email oficial confirmado
+1. ~~Google Analytics ID~~
+2. ~~Email oficial confirmado~~ ✅
 3. Representantes nacionais (pelo menos nome e email)
 4. Twitter handle confirmado
 
