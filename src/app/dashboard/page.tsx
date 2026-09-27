@@ -2039,9 +2039,16 @@ export default function DashboardPage() {
                             <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>{i.programaTitulo || `Clube ABN — ${i.nivelAdesao?.toUpperCase() || 'Membro'}`}</div>
                             <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>Data de Envio: {new Date(i.createdAt).toLocaleDateString('pt-PT')}</div>
                           </div>
-                          <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', background: i.status === 'aprovado' ? '#dcfce7' : '#fef3c7', color: i.status === 'aprovado' ? '#15803d' : '#b45309' }}>
-                            {i.status === 'aprovado' ? '🟢 Aprovado' : '⏳ Em Verificação'}
-                          </span>
+                          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '4px 12px', borderRadius: '20px', background: i.status === 'aprovado' ? '#dcfce7' : '#fef3c7', color: i.status === 'aprovado' ? '#15803d' : '#b45309' }}>
+                              {i.status === 'aprovado' ? '🟢 Aprovado' : '⏳ Em Verificação'}
+                            </span>
+                            {i.status === 'aprovado' && i.nivelAdesao && (
+                              <Link href="/dashboard/clube" style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ff6b00', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                                Área de Membro →
+                              </Link>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>
