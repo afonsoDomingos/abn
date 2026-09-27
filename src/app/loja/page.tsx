@@ -534,7 +534,9 @@ export default function Loja() {
                             <TopIcon size={44} />
                           </div>
                         ) : (
-                          <span>[FOTO DO PRODUTO]</span>
+                          <div className={styles.cardTopPlaceholder} style={{ color: '#476a52' }}>
+                            <Package size={40} />
+                          </div>
                         )}
                       </div>
 
