@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import styles from './Incubacao.module.css';
 
 interface Program {
@@ -141,9 +142,9 @@ export default function ProgramsList({ initialPrograms }: ProgramsListProps) {
                 <div className={styles.meta}>
                   <span>{p.duration || 'Contínuo'}</span>
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.85rem' }} onClick={() => handleOpenDetails(p)}>
-                      Saber Mais
-                    </button>
+                    <Link href={`/incubacao/${encodeURIComponent(p.title)}`} className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
+                      Ver Detalhes
+                    </Link>
                     <button className="btn-primary" style={{ padding: '8px 16px', fontSize: '0.85rem' }} onClick={() => { handleOpenDetails(p); setShowApplyForm(true); }}>
                       Candidatar-se
                     </button>

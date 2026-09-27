@@ -142,12 +142,6 @@ const criteriaItems = [
   }
 ];
 
-const mentors = [
-  { name: 'Dr. Amadou Diallo', role: 'Especialista em Finanças', img: '/Perfil01.jpg' },
-  { name: 'Sarah Mensah', role: 'Estrategia de Marketing', img: '/Perfil02.jpg' },
-  { name: 'Kofi Annan Jr.', role: 'Desenvolvimento de Negócios', img: '/Perfil04.jpg' }
-];
-
 export default async function Incubacao() {
   await dbConnect();
   
@@ -211,25 +205,6 @@ export default async function Incubacao() {
               <div key={idx} className={styles.criteriaCard}>
                 <h4>{item.title}</h4>
                 <p>{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.mentors}>
-        <div className={styles.container}>
-          <h2 className={styles.sectionTitle}>Mentores em Destaque</h2>
-          <div className={styles.mentorGrid}>
-            {mentors.map((m, i) => (
-              <div key={i} className={`${styles.mentorCard} glass`}>
-                <div 
-                  className={styles.mentorAvatar} 
-                  style={{ backgroundImage: `url(${m.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-                ></div>
-                <h4>{m.name}</h4>
-                <p>{m.role}</p>
-                <button className="btn-outline" style={{ padding: '8px 16px', fontSize: '0.8rem' }}>Ver Perfil</button>
               </div>
             ))}
           </div>

@@ -29,6 +29,28 @@ const ProgramSchema = new Schema({
   lema: { type: String, default: '' },
   isClub: { type: Boolean, default: false },
   province: { type: String, default: '' },
+  // Incubadora specific fields
+  countries: [{ type: String }], // Países abrangidos (Moçambique, Angola, Guiné-Bissau, São Tomé e Príncipe, Cabo Verde)
+  criteriaByCountry: {
+    type: Map,
+    of: {
+      residency: { type: String, default: '' },
+      ageRange: { type: String, default: '' },
+      academicProfile: { type: String, default: '' },
+      businessStage: { type: String, default: '' },
+      innovationPotential: { type: String, default: '' },
+      candidateProfile: { type: String, default: '' }
+    },
+    default: {}
+  },
+  sponsorLogo: { type: String, default: '' }, // Logótipo do patrocinador da turma
+  sponsorName: { type: String, default: '' }, // Nome do patrocinador
+  calendar: [{ // Calendário do programa
+    date: { type: String },
+    event: { type: String },
+    location: { type: String, default: '' }
+  }],
+  mentors: [{ type: Schema.Types.ObjectId, ref: 'Team' }], // Mentores reais associados
   // Custom declaration text for this program
   declaracao: { type: String, default: '' },
   // Link to official WhatsApp group (manually set by admin)
