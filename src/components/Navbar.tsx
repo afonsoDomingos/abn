@@ -11,22 +11,12 @@ import UserMenu from './UserMenu';
 export default function Navbar() {
   const { t, language } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [hubs, setHubs] = useState<Array<{ name: string; slug: string }>>([]);
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [shopEnabled, setShopEnabled] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('Moçambique');
 
-  // Fetch Hubs & check user session on mount
+  // Check user session on mount
   useEffect(() => {
-    fetch('/api/hubs')
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && data.hubs) {
-          setHubs(data.hubs);
-        }
-      })
-      .catch(() => { });
-
     // Fetch shop enabled status
     fetch('/api/config')
       .then(res => res.json())
@@ -133,20 +123,13 @@ export default function Navbar() {
                 Representações <span className={styles.arrow}>▼</span>
               </span>
               <div className={styles.dropdownMenu}>
-                {hubs.length === 0 ? (
-                  <>
-                    <Link href="/country/quinebissau" onClick={closeMenu}>Guiné-Bissau</Link>
-                    <Link href="/country/angola" onClick={closeMenu}>Angola</Link>
-                    <Link href="/country/saotome" onClick={closeMenu}>São Tomé e Príncipe</Link>
-                    <Link href="/country/caboverde" onClick={closeMenu}>Cabo Verde</Link>
-                  </>
-                ) : (
-                  hubs.map(hub => (
-                    <Link key={hub.slug} href={`/country/${hub.slug}`} onClick={closeMenu}>
-                      {hub.name}
-                    </Link>
-                  ))
-                )}
+                <Link href="/representacoes" onClick={closeMenu}>Ver Todas as Representações</Link>
+                <div className={styles.divider}></div>
+                <Link href="/country/mocambique" onClick={closeMenu}>Moçambique (Sede)</Link>
+                <Link href="/country/angola" onClick={closeMenu}>Angola</Link>
+                <Link href="/country/guinebissau" onClick={closeMenu}>Guiné-Bissau</Link>
+                <Link href="/country/saotome" onClick={closeMenu}>São Tomé e Príncipe</Link>
+                <Link href="/country/caboverde" onClick={closeMenu}>Cabo Verde</Link>
               </div>
             </div>
 
@@ -282,20 +265,12 @@ export default function Navbar() {
           <Link href="/parceiros" onClick={closeMenu}>Parceiros</Link>
 
           <div className={styles.drawerSectionTitle}>Representações</div>
-          {hubs.length === 0 ? (
-            <>
-              <Link href="/country/quinebissau" onClick={closeMenu} className={styles.drawerHubLink}>Guiné-Bissau</Link>
-              <Link href="/country/angola" onClick={closeMenu} className={styles.drawerHubLink}>Angola</Link>
-              <Link href="/country/saotome" onClick={closeMenu} className={styles.drawerHubLink}>São Tomé e Príncipe</Link>
-              <Link href="/country/caboverde" onClick={closeMenu} className={styles.drawerHubLink}>Cabo Verde</Link>
-            </>
-          ) : (
-            hubs.map(hub => (
-              <Link key={hub.slug} href={`/country/${hub.slug}`} onClick={closeMenu} className={styles.drawerHubLink}>
-                {hub.name}
-              </Link>
-            ))
-          )}
+          <Link href="/representacoes" onClick={closeMenu}>Ver Todas as Representações</Link>
+          <Link href="/country/mocambique" onClick={closeMenu} className={styles.drawerHubLink}>Moçambique (Sede)</Link>
+          <Link href="/country/angola" onClick={closeMenu} className={styles.drawerHubLink}>Angola</Link>
+          <Link href="/country/guinebissau" onClick={closeMenu} className={styles.drawerHubLink}>Guiné-Bissau</Link>
+          <Link href="/country/saotome" onClick={closeMenu} className={styles.drawerHubLink}>São Tomé e Príncipe</Link>
+          <Link href="/country/caboverde" onClick={closeMenu} className={styles.drawerHubLink}>Cabo Verde</Link>
 
           <Link href="/impacto" onClick={closeMenu}>Impacto</Link>
 

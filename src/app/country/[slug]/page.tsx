@@ -5,7 +5,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   
   const countryNames: Record<string, string> = {
-    quinebissau: 'Guiné-Bissau',
+    guinebissau: 'Guiné-Bissau',
     angola: 'Angola',
     caboverde: 'Cabo Verde',
     saotome: 'São Tomé e Príncipe',

@@ -187,6 +187,25 @@
   gap: 0.8rem;
 }
 
+.divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 0.5rem 0;
+}
+
+.drawerSectionTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 1.5rem 0 0.75rem 0;
+}
+
+.drawerHubLink {
+  padding-left: 1.5rem;
+}
+
 .userGreeting {
   font-size: 0.82rem;
   font-weight: 700;
@@ -368,6 +387,43 @@
   padding: 0.9rem 1rem;
   border-radius: 10px;
   font-size: 1rem;
+  color: var(--foreground);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.drawerNav a:hover {
+  background: var(--alpha-bg-5);
+  color: var(--primary);
+}
+
+.drawerActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--card-border);
+  margin-top: 1.5rem;
+}
+
+.divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 0.5rem 0;
+}
+
+.drawerSectionTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 1.5rem 0 0.75rem 0;
+}
+
+.drawerHubLink {
+  padding-left: 1.5rem;
+}
   font-weight: 500;
   color: var(--foreground);
   transition: all 0.2s;
