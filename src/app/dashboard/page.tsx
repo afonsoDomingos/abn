@@ -35,7 +35,9 @@ import {
   Landmark,
   Settings,
   User,
-  Edit3
+  Edit3,
+  Info,
+  Crown
 } from 'lucide-react';
 import { getClubStepTitle } from '@/lib/clubUtils';
 import styles from './Dashboard.module.css';
@@ -74,6 +76,7 @@ export default function DashboardPage() {
   const [clientTab, setClientTab] = useState<'programas' | 'cursos' | 'servicos'>('programas');
   const [startupData, setStartupData] = useState<any>(null);
   const [loadingStartup, setLoadingStartup] = useState(false);
+  const [switchingRole, setSwitchingRole] = useState(false);
 
   // Modal para Recursos Recomendados
   const [activeResource, setActiveResource] = useState<{
@@ -99,9 +102,15 @@ export default function DashboardPage() {
   }, []);
 
   const switchActiveRole = (newRole: string) => {
+    setSwitchingRole(true);
     setActiveRole(newRole);
     localStorage.setItem('abn_active_role', newRole);
     window.dispatchEvent(new Event('abn_role_changed'));
+    
+    // Feedback visual
+    setTimeout(() => {
+      setSwitchingRole(false);
+    }, 500);
   };
 
   const fetchDashboardData = async () => {
@@ -427,7 +436,17 @@ export default function DashboardPage() {
               <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Visão Ativa</div>
               <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#ff6b00', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end', marginTop: '2px' }}>
                 {currentRoleInfo.title}
+                {activeRole !== userRoles[0] && (
+                  <span style={{ fontSize: '0.65rem', color: '#94a3b8', fontWeight: 600, background: 'rgba(255,255,255,0.08)', padding: '2px 6px', borderRadius: '4px' }}>
+                  Visual
+                  </span>
+                )}
               </div>
+              {activeRole !== userRoles[0] && (
+                <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>
+                  Principal: {ROLE_LABELS[userRoles[0]]?.title || userRoles[0]}
+                </div>
+              )}
             </div>
             <Link
               href="/dashboard/perfil"
@@ -456,38 +475,52 @@ export default function DashboardPage() {
 
         {/* Multi-Perfis Selector Pills */}
         {userRoles.length > 1 && (
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '0.78rem', color: '#cbd5e1', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <Layers size={14} /> Alternar Visão:
-            </span>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              {userRoles.map(roleKey => {
-                const info = ROLE_LABELS[roleKey] || { title: roleKey };
-                const isSelected = activeRole === roleKey;
-                return (
-                  <button
-                    key={roleKey}
-                    onClick={() => switchActiveRole(roleKey)}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '6px 14px',
-                      borderRadius: '50px',
-                      fontSize: '0.8rem',
-                      fontWeight: 700,
-                      border: isSelected ? '1px solid #ff6b00' : '1px solid rgba(255,255,255,0.15)',
-                      background: isSelected ? '#ff6b00' : 'rgba(255,255,255,0.08)',
-                      color: isSelected ? '#ffffff' : '#e2e8f0',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    <span>{info.title}</span>
-                    {isSelected && <span style={{ fontSize: '0.68rem', opacity: 0.9 }}></span>}
-                  </button>
-                );
-              })}
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '0.78rem', color: '#cbd5e1', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Layers size={14} /> Alternar Visão:
+              </span>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                {userRoles.map(roleKey => {
+                  const info = ROLE_LABELS[roleKey] || { title: roleKey };
+                  const isSelected = activeRole === roleKey;
+                  const isPrimary = userRoles[0] === roleKey;
+                  return (
+                    <button
+                      key={roleKey}
+                      onClick={() => switchActiveRole(roleKey)}
+                      disabled={switchingRole}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '6px 14px',
+                        borderRadius: '50px',
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        border: isSelected ? '1px solid #ff6b00' : '1px solid rgba(255,255,255,0.15)',
+                        background: isSelected ? '#ff6b00' : 'rgba(255,255,255,0.08)',
+                        color: isSelected ? '#ffffff' : '#e2e8f0',
+                        cursor: switchingRole ? 'not-allowed' : 'pointer',
+                        transition: 'all 0.2s ease',
+                        position: 'relative',
+                        opacity: switchingRole && !isSelected ? 0.6 : 1
+                      }}
+                      title={`${isPrimary ? '★ Perfil Principal' : 'Perfil adicional'} - ${info.desc}`}
+                    >
+                      <span>{info.title}</span>
+                      {isPrimary && (
+                        <Crown size={12} style={{ color: isSelected ? '#ffffff' : '#fbbf24' }} />
+                      )}
+                      {isSelected && <span style={{ fontSize: '0.68rem', opacity: 0.9 }}></span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Info size={12} />
+              <span>A visão actual é apenas visual. Para adicionar/remover perfis permanentemente, edite o seu perfil.</span>
             </div>
           </div>
         )}
