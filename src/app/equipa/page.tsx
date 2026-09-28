@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -339,8 +340,14 @@ export default function TeamPage() {
               {filtered.map((member, idx) => {
                 const { color, bg } = getRoleMeta(member.role);
                 const isExpanded = expandedBio === idx;
+                const memberSlug = member.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
                 return (
-                  <div key={member._id} className={styles.card} style={{ animationDelay: `${idx * 60}ms` }}>
+                  <Link 
+                    key={member._id} 
+                    href={`/equipa/${memberSlug}`}
+                    className={styles.cardLink}
+                  >
+                    <div className={styles.card} style={{ animationDelay: `${idx * 60}ms` }}>
                     {/* Image */}
                     <div className={styles.imageWrapper}>
                       <img
@@ -465,10 +472,18 @@ export default function TeamPage() {
                       </div>
                     </div>
                   </div>
+                  </Link>
                 );
               })}
             </div>
           )}
+        </div>
+      </main>
+      <FloatingWhatsApp />
+      <ScrollToTop />
+    </>
+  );
+}
         </div>
       </main>
       <FloatingWhatsApp />
