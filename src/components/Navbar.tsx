@@ -147,9 +147,9 @@ export default function Navbar() {
 
             {/* Programas Dropdown */}
             <div className={styles.dropdown}>
-              <span className={styles.dropdownTrigger}>
+              <Link href="/programas" className={styles.dropdownTrigger} onClick={closeMenu}>
                 Programas <span className={styles.arrow}>▼</span>
-              </span>
+              </Link>
               <div className={styles.dropdownMenu}>
                 <Link href="/programas/startup-180" onClick={closeMenu}>ABN Startup 180</Link>
                 <Link href="/clube-empreendedores" onClick={closeMenu}>Clube dos Empreendedores</Link>
@@ -165,9 +165,9 @@ export default function Navbar() {
 
             {/* Parceiros Dropdown */}
             <div className={styles.dropdown}>
-              <span className={styles.dropdownTrigger}>
+              <Link href="/parceiros" className={styles.dropdownTrigger} onClick={closeMenu}>
                 Parceiros <span className={styles.arrow}>▼</span>
-              </span>
+              </Link>
               <div className={styles.dropdownMenu}>
                 <Link href="/parceiros" onClick={closeMenu}>Ver Parceiros</Link>
                 <Link href="/seja-parceiro" onClick={closeMenu}>Seja Parceiro</Link>
@@ -176,9 +176,9 @@ export default function Navbar() {
 
             {/* Representações Dropdown */}
             <div className={styles.dropdown}>
-              <span className={styles.dropdownTrigger}>
+              <Link href="/representacoes" className={styles.dropdownTrigger} onClick={closeMenu}>
                 Representações <span className={styles.arrow}>▼</span>
-              </span>
+              </Link>
               <div className={styles.dropdownMenu}>
                 <Link href="/representacoes" onClick={closeMenu}>Ver Todas as Representações</Link>
                 <div className={styles.divider}></div>
@@ -194,9 +194,9 @@ export default function Navbar() {
 
             {/* Sobre Dropdown */}
             <div className={styles.dropdown}>
-              <span className={styles.dropdownTrigger}>
+              <Link href="/#missao" className={styles.dropdownTrigger} onClick={closeMenu}>
                 Sobre <span className={styles.arrow}>▼</span>
-              </span>
+              </Link>
               <div className={styles.dropdownMenu}>
                 <Link href="/#missao" onClick={closeMenu}>Quem Somos</Link>
                 <Link href="/mensagem-do-presidente" onClick={closeMenu}>Mensagem do Presidente</Link>
@@ -310,6 +310,7 @@ export default function Navbar() {
           <Link href="/" onClick={closeMenu}>Início</Link>
 
           <div className={styles.drawerSectionTitle}>Programas</div>
+          <Link href="/programas" onClick={closeMenu}>Ver Todos os Programas</Link>
           <Link href="/programas/startup-180" onClick={closeMenu}>ABN Startup 180</Link>
           <Link href="/clube-empreendedores" onClick={closeMenu}>Clube dos Empreendedores</Link>
           <Link href="/programas/clubes-startups-mocambique" onClick={closeMenu}>Clubes das Startups (Moçambique)</Link>

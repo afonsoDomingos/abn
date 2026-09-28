@@ -14,6 +14,7 @@ import Articles from "@/components/Articles";
 import HomeTeam from "@/components/HomeTeam";
 import Courses from "@/components/Courses";
 import HomeSpecialists from "@/components/HomeSpecialists";
+import Partners from "@/components/Partners";
 import Stats from "@/components/Stats";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -55,6 +56,7 @@ export default function Home() {
         <HomeSpecialists />
         <Articles />
         <HomeTeam />
+        <Partners />
         <Stats />
         
         <Footer shopEnabled={shopEnabled} />

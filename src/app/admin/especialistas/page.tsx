@@ -202,7 +202,11 @@ export default function AdminEspecialistasPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Tem certeza de que deseja eliminar este especialista/mentor?')) return;
     try {
-      const res = await fetch(`/api/team?id=${id}`, { method: 'DELETE' });
+      const res = await fetch('/api/team', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
       const data = await res.json();
       if (data.success) {
         setMsg('Registo eliminado com sucesso!');

@@ -49,9 +49,6 @@ export default function Footer({ shopEnabled = false }: FooterProps) {
             <p style={{ margin: 0 }}>
               Data de constituição: 02 de Junho de 2026
             </p>
-            <p style={{ margin: 0 }}>
-              Administrador: Culpa Francisco Xavier Lissamo
-            </p>
             <p style={{ margin: 0, marginTop: '0.75rem' }}>
               Av. Maria de Lurdes Mutola, Q.60, casa n.º 01,<br />
               Magoanine A, KaMubukwana, Maputo, Moçambique

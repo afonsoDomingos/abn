@@ -374,7 +374,11 @@ export default function AdminProgramasPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Tem a certeza que deseja eliminar este programa?')) return;
     try {
-      const res = await fetch(`/api/programs?id=${id}`, { method: 'DELETE' });
+      const res = await fetch('/api/programs', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
       const data = await res.json();
       if (data.success) {
         setMsg('Programa eliminado com sucesso.');

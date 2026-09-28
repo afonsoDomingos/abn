@@ -40,7 +40,12 @@ export const translations = {
       s4: "Países em África"
     },
     partners: {
-      title: "Parceiros Estratégicos & Apoio"
+      title: "Parceiros Estratégicos & Apoio",
+      badge: "NOSSOS PARCEIROS",
+      heading: "Construindo o Futuro Juntos",
+      subtitle: "Colaboramos com organizações de excelência que partilham a nossa visão de fortalecer o empreendedorismo africano através de inovação, parcerias estratégicas e impacto socioeconómico.",
+      viewAll: "Ver Todos os Parceiros",
+      becomePartner: "Torne-se Parceiro"
     },
     services: {
       badge: "Marketplace ABN",
@@ -239,7 +244,12 @@ export const translations = {
       s4: "Countries in Africa"
     },
     partners: {
-      title: "Strategic Partners & Support"
+      title: "Strategic Partners & Support",
+      badge: "OUR PARTNERS",
+      heading: "Building the Future Together",
+      subtitle: "We collaborate with excellence organizations that share our vision of strengthening African entrepreneurship through innovation, strategic partnerships and socio-economic impact.",
+      viewAll: "View All Partners",
+      becomePartner: "Become a Partner"
     },
     services: {
       badge: "ABN Marketplace",
@@ -438,7 +448,12 @@ export const translations = {
       s4: "Pays en Afrique"
     },
     partners: {
-      title: "Partenaires Stratégiques & Soutien"
+      title: "Partenaires Stratégiques & Soutien",
+      badge: "NOS PARTENAIRES",
+      heading: "Construire l'Avenir Ensemble",
+      subtitle: "Nous collaborons avec des organisations d'excellence qui partagent notre vision de renforcer l'entrepreneuriat africain par l'innovation, les partenariats stratégiques et l'impact socio-économique.",
+      viewAll: "Voir Tous les Partenaires",
+      becomePartner: "Devenir Partenaire"
     },
     services: {
       badge: "Marché ABN",
