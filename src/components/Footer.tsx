@@ -130,7 +130,7 @@ export default function Footer({ shopEnabled = false }: FooterProps) {
         <p style={{ margin: 0, color: '#64748b', fontSize: '0.65rem' }}>
           Copyright © ABN {currentYear}
         </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', color: '#64748b', fontSize: '0.6rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#64748b', fontSize: '0.75rem' }}>
           <span>Powered By</span>
           <a
             href="https://www.wehosthere.com/"
@@ -142,18 +142,19 @@ export default function Footer({ shopEnabled = false }: FooterProps) {
               fontWeight: 700,
               display: 'flex',
               alignItems: 'center',
-              gap: '0.2rem'
+              gap: '0.3rem'
             }}
           >
             <img 
               src="/wehosthere.png" 
               alt="Wehosthere" 
               style={{ 
-                height: '14px',
+                height: '24px',
                 width: 'auto',
                 objectFit: 'contain'
               }}
             />
+            <span>Wehosthere</span>
           </a>
         </div>
       </div>
