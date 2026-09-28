@@ -97,7 +97,7 @@ const CURATED_MENTORS = [
       { title: 'Gestão de Projetos de Desenvolvimento', issuer: 'ONU Mulheres', year: '2019' }
     ],
     supportedCompanies: [
-      { name: 'MulherEmpreende MZ', logo: '✨', year: '2024' },
+      { name: 'MulherEmpreende MZ', logo: '', year: '2024' },
       { name: 'Artesanato Vivo', logo: '', year: '2023' }
     ],
     availability: {

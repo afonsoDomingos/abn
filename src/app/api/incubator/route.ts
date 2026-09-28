@@ -337,7 +337,7 @@ export async function GET(request: Request) {
             company: 'TechÁfrica Labs',
             specialty: 'Arquitetura de Software & IA',
             email: 'paula.tavares@techafrica.org',
-            avatar: '👩‍',
+            avatar: '',
             assignedStartups: ['AgroLusofonia Tech', 'BioNutri Guiné'],
             sessionsCompleted: 22,
             rating: 5.0
@@ -587,7 +587,7 @@ export async function POST(request: Request) {
           company: company || '',
           specialty: specialty || 'Estratégia & Crescimento',
           email: email || '',
-          avatar: '🧑‍🏫',
+          avatar: '',
           assignedStartups: Array.isArray(assignedStartups) ? assignedStartups : (assignedStartups ? [assignedStartups] : []),
           sessionsCompleted: 0,
           rating: 5.0
