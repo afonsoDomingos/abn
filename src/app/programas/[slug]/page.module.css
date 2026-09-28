@@ -67,6 +67,25 @@
   backdrop-filter: blur(10px);
 }
 
+.phaseBadge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  margin-left: 0.5rem;
+}
+
+.descriptionText {
+  color: #475569;
+  line-height: 1.8;
+  font-size: 1rem;
+  white-space: pre-line;
+}
+
 .content {
   background: #ffffff;
   border-radius: 20px;

@@ -1,9 +1,60 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Rocket, Users, Building2, Brain } from 'lucide-react';
+import { Rocket, Users, Building2, Brain, Megaphone, MapPin } from 'lucide-react';
 import styles from './page.module.css';
 
-export default function ProgramasPage() {
+interface Program {
+  _id: string;
+  title: string;
+  description: string;
+  duration: string;
+  phase: string;
+  status: string;
+}
+
+async function getPrograms(): Promise<Program[]> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/programs`, {
+      cache: 'no-store'
+    });
+    const data = await res.json();
+    
+    if (data.success && data.programs) {
+      return data.programs.filter((p: Program) => p.status === 'ativo');
+    }
+    return [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function getProgramIcon(title: string): React.ReactNode {
+  const t = title.toLowerCase();
+  if (t.includes('startup') || t.includes('incubação')) return <Rocket size={48} />;
+  if (t.includes('clube')) return <Users size={48} />;
+  if (t.includes('mentalidade')) return <Brain size={48} />;
+  if (t.includes('voz')) return <Megaphone size={48} />;
+  if (t.includes('rota')) return <MapPin size={48} />;
+  return <Rocket size={48} />;
+}
+
+function getProgramColor(title: string): string {
+  const t = title.toLowerCase();
+  if (t.includes('startup') || t.includes('incubação')) return '#ff6b00';
+  if (t.includes('clube')) return '#3b82f6';
+  if (t.includes('mentalidade')) return '#8b5cf6';
+  if (t.includes('voz')) return '#10b981';
+  if (t.includes('rota')) return '#f59e0b';
+  return '#ff6b00';
+}
+
+function getProgramSlug(title: string): string {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+}
+
+export default async function ProgramasPage() {
+  const programs = await getPrograms();
+
   return (
     <div className={styles.page}>
       <Navbar />
@@ -15,40 +66,23 @@ export default function ProgramasPage() {
         </div>
 
         <div className={styles.programsGrid}>
-          <div className={styles.programCard}>
-            <div className={styles.programIcon}><Rocket size={48} /></div>
-            <h2>ABN Startup 180</h2>
-            <p>Programa de incubação intensiva de 180 dias para startups em fase inicial.</p>
-            <a href="/programas/startup-180" className={styles.btn}>Saber mais</a>
-          </div>
-
-          <div className={styles.programCard}>
-            <div className={styles.programIcon}><Users size={48} /></div>
-            <h2>Clube dos Empreendedores</h2>
-            <p>Comunidade exclusiva para networking, mentoria e oportunidades de negócios.</p>
-            <a href="/clube-empreendedores" className={styles.btn}>Saber mais</a>
-          </div>
-
-          <div className={styles.programCard}>
-            <div className={styles.programIcon}><Building2 size={48} /></div>
-            <h2>Clubes das Startups (Moçambique)</h2>
-            <p>Hubs locais de apoio a startups em Maputo e outras cidades moçambicanas.</p>
-            <a href="/programas/clubes-startups-mocambique" className={styles.btn}>Saber mais</a>
-          </div>
-
-          <div className={styles.programCard}>
-            <div className={styles.programIcon}><Building2 size={48} /></div>
-            <h2>Clubes das Startups (Angola)</h2>
-            <p>Hubs locais de apoio a startups em Luanda e outras cidades angolanas.</p>
-            <a href="/programas/clubes-startups-angola" className={styles.btn}>Saber mais</a>
-          </div>
-
-          <div className={styles.programCard}>
-            <div className={styles.programIcon}><Brain size={48} /></div>
-            <h2>Mentalidade Empreendedora</h2>
-            <p>Formação em mindset e soft skills para empreendedores em crescimento.</p>
-            <a href="/programas/mentalidade-empreendedora" className={styles.btn}>Saber mais</a>
-          </div>
+          {programs.map((program) => {
+            const icon = getProgramIcon(program.title);
+            const color = getProgramColor(program.title);
+            const slug = getProgramSlug(program.title);
+            const shortDescription = program.description.split('\n')[0] || program.description;
+            
+            return (
+              <div key={program._id} className={styles.programCard}>
+                <div className={styles.programIcon} style={{ color }}>{icon}</div>
+                <h2>{program.title}</h2>
+                <p>{shortDescription}</p>
+                <a href={`/programas/${slug}`} className={styles.btn} style={{ background: color }}>
+                  Saber mais
+                </a>
+              </div>
+            );
+          })}
         </div>
       </main>
 
