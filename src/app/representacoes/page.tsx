@@ -2,12 +2,13 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import styles from './page.module.css';
+import 'flag-icons/css/flag-icons.min.css';
 
 const countries = [
   {
     name: 'Moçambique',
     slug: 'mocambique',
-    flag: '🇲🇴',
+    flagCode: 'mz',
     currency: 'MZN',
     isHeadquarters: true,
     description: 'Sede da ABN – AfroBiz Network'
@@ -15,28 +16,28 @@ const countries = [
   {
     name: 'Angola',
     slug: 'angola',
-    flag: '🇦🇴',
+    flagCode: 'ao',
     currency: 'AOA',
     description: 'Representação Nacional em Angola'
   },
   {
     name: 'Guiné-Bissau',
     slug: 'guinebissau',
-    flag: '🇬🇼',
+    flagCode: 'gw',
     currency: 'XOF',
     description: 'Representação Nacional na Guiné-Bissau'
   },
   {
     name: 'São Tomé e Príncipe',
     slug: 'saotome',
-    flag: '🇸🇹',
+    flagCode: 'st',
     currency: 'STN',
     description: 'Representação Nacional em São Tomé e Príncipe'
   },
   {
     name: 'Cabo Verde',
     slug: 'caboverde',
-    flag: '🇨🇻',
+    flagCode: 'cv',
     currency: 'CVE',
     description: 'Representação Nacional em Cabo Verde'
   }
@@ -60,7 +61,9 @@ export default function RepresentacoesPage() {
               href={`/country/${country.slug}`} 
               className={styles.countryCard}
             >
-              <div className={styles.countryFlag}>{country.flag}</div>
+              <div className={styles.countryFlag}>
+                <span className={`fi fi-${country.flagCode}`}></span>
+              </div>
               <div className={styles.countryName}>{country.name}</div>
               <div className={styles.countryCurrency}>{country.currency}</div>
               {country.isHeadquarters && (

@@ -13,6 +13,7 @@
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^3.0.3",
     "cloudinary": "latest",
+    "flag-icons": "^7.5.0",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.11.0",
     "mongoose": "latest",

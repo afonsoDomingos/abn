@@ -61,8 +61,15 @@
 }
 
 .countryFlag {
-  font-size: 4rem;
   margin-bottom: 1rem;
+}
+
+.countryFlag span {
+  display: inline-block;
+  width: 80px;
+  height: 60px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .countryName {

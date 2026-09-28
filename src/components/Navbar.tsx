@@ -7,12 +7,14 @@ import styles from './Navbar.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 import LanguageSelector from './LanguageSelector';
 import UserMenu from './UserMenu';
+import 'flag-icons/css/flag-icons.min.css';
 
 export default function Navbar() {
   const { t, language } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [shopEnabled, setShopEnabled] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState('Moçambique');
   
   // Scroll functionality
   const linksRef = useRef<HTMLDivElement>(null);
@@ -117,6 +119,14 @@ export default function Navbar() {
   const dashboardPath = currentUser?.role === 'admin' ? '/admin' : '/dashboard';
   const dashboardLabel = currentUser?.role === 'admin' ? 'Painel Admin' : 'Ir para o Meu Painel';
 
+  const countries = [
+    { name: 'Moçambique', currency: 'MZN', flagCode: 'mz' },
+    { name: 'Angola', currency: 'AOA', flagCode: 'ao' },
+    { name: 'Guiné-Bissau', currency: 'XOF', flagCode: 'gw' },
+    { name: 'São Tomé e Príncipe', currency: 'STN', flagCode: 'st' },
+    { name: 'Cabo Verde', currency: 'CVE', flagCode: 'cv' }
+  ];
+
   return (
     <>
       <nav className={styles.navbar}>
@@ -201,6 +211,22 @@ export default function Navbar() {
           </div>
 
           <div className={styles.actions}>
+            {/* Country Selector */}
+            <div className={styles.countrySelector}>
+              <select 
+                value={selectedCountry} 
+                onChange={(e) => setSelectedCountry(e.target.value)}
+                className={styles.countrySelect}
+              >
+                {countries.map(country => (
+                  <option key={country.name} value={country.name}>
+                    {country.currency}
+                  </option>
+                ))}
+              </select>
+              <span className={`fi fi-${countries.find(c => c.name === selectedCountry)?.flagCode || 'mz'} ${styles.countryFlag}`}></span>
+            </div>
+
             <LanguageSelector />
 
             {/* Botões fixos */}
