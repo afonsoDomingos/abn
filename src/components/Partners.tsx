@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Building2 } from 'lucide-react';
 import styles from './Partners.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
@@ -46,7 +47,7 @@ export default function Partners() {
                   {isImage ? (
                     <img src={partner.logo} alt={partner.name} className={styles.logoImg} />
                   ) : (
-                    <span className={styles.icon}>{partner.logo || '🏢'}</span>
+                    <span className={styles.icon}>{partner.logo ? partner.logo : <Building2 size={32} />}</span>
                   )}
                 </div>
                 <div className={styles.partnerInfo}>

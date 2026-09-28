@@ -10,7 +10,16 @@ import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
-  Sparkles
+  Sparkles,
+  Rocket,
+  Lightbulb,
+  Building2,
+  DollarSign,
+  GraduationCap,
+  Target,
+  Handshake,
+  Users,
+  Building
 } from 'lucide-react';
 import styles from '../login/Auth.module.css';
 
@@ -20,6 +29,7 @@ interface ProfileCategory {
   title: string;
   badge: string;
   description: string;
+  icon: React.ReactNode;
 }
 
 const PROFILE_CATEGORIES: ProfileCategory[] = [
@@ -27,61 +37,71 @@ const PROFILE_CATEGORIES: ProfileCategory[] = [
     id: 'empreendedor',
     title: 'Empreendedor',
     badge: 'Inovação',
-    description: 'Fundador de projetos, novos negócios e ideias inovadoras no ecossistema.'
+    description: 'Fundador de projetos, novos negócios e ideias inovadoras no ecossistema.',
+    icon: <Rocket size={28} />
   },
   {
     id: 'startup',
     title: 'Startup',
     badge: 'Escalabilidade',
-    description: 'Negócio escalável em fase inicial, MVP, validação ou crescimento acelerado.'
+    description: 'Negócio escalável em fase inicial, MVP, validação ou crescimento acelerado.',
+    icon: <Lightbulb size={28} />
   },
   {
     id: 'empresa',
     title: 'Empresa / PME',
     badge: 'Corporativo',
-    description: 'Empresa consolidada ou PME à procura de expansão, inovação e fornecedores.'
+    description: 'Empresa consolidada ou PME à procura de expansão, inovação e fornecedores.',
+    icon: <Building2 size={28} />
   },
   {
     id: 'investidor',
     title: 'Investidor',
     badge: 'Capital',
-    description: 'Business Angel, Fundo VC, investidor anjo ou corporativo em busca de deals.'
+    description: 'Business Angel, Fundo VC, investidor anjo ou corporativo em busca de deals.',
+    icon: <DollarSign size={28} />
   },
   {
     id: 'mentor',
     title: 'Mentor',
     badge: 'Orientação',
-    description: 'Especialista e líder de mercado que orienta fundadores e partilha know-how.'
+    description: 'Especialista e líder de mercado que orienta fundadores e partilha know-how.',
+    icon: <GraduationCap size={28} />
   },
   {
     id: 'consultor',
     title: 'Consultor / Especialista',
     badge: 'Expertise',
-    description: 'Profissional qualificado em assessoria técnica, jurídica, financeira ou estratégica.'
+    description: 'Profissional qualificado em assessoria técnica, jurídica, financeira ou estratégica.',
+    icon: <Target size={28} />
   },
   {
     id: 'parceiro',
     title: 'Parceiro',
     badge: 'Alianças',
-    description: 'Parceiro estratégico corporativo, tecnológico, de média ou serviços de apoio.'
+    description: 'Parceiro estratégico corporativo, tecnológico, de média ou serviços de apoio.',
+    icon: <Handshake size={28} />
   },
   {
     id: 'universidade',
     title: 'Universidade / Academia',
     badge: 'I&D & Ensino',
-    description: 'Instituição de ensino superior, centros de investigação e polos científicos.'
+    description: 'Instituição de ensino superior, centros de investigação e polos científicos.',
+    icon: <GraduationCap size={28} />
   },
   {
     id: 'incubadora',
     title: 'Incubadora / Aceleradora',
     badge: 'Ecossistema',
-    description: 'Hub de apoio à incubação, capacitação e aceleração de novos negócios.'
+    description: 'Hub de apoio à incubação, capacitação e aceleração de novos negócios.',
+    icon: <Building size={28} />
   },
   {
     id: 'organizacao',
     title: 'Organização / Instituição',
     badge: 'Institucional',
-    description: 'ONGs, associações empresariais, câmaras de comércio ou entidades públicas.'
+    description: 'ONGs, associações empresariais, câmaras de comércio ou entidades públicas.',
+    icon: <Users size={28} />
   }
 ];
 
@@ -319,18 +339,9 @@ export default function RegisterPage() {
                   >
                     <div className={styles.profileCardHeader}>
                       <div className={styles.profileCardIconBox}>
-                        <span className={styles.profileCardIcon}>
-                          {category.id === 'empreendedor' && '🚀'}
-                          {category.id === 'startup' && '💡'}
-                          {category.id === 'empresa' && '🏢'}
-                          {category.id === 'investidor' && '💰'}
-                          {category.id === 'mentor' && '👨‍🏫'}
-                          {category.id === 'consultor' && '🎯'}
-                          {category.id === 'parceiro' && '🤝'}
-                          {category.id === 'universidade' && '🎓'}
-                          {category.id === 'incubadora' && '🏛️'}
-                          {category.id === 'organizacao' && '🏛️'}
-                        </span>
+                        <div className={styles.profileCardIcon}>
+                          {category.icon}
+                        </div>
                       </div>
                       <div className={styles.profileCardCheck}>
                         {selectedRole === category.id && <CheckCircle2 size={12} />}

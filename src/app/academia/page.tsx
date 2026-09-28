@@ -1,5 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Courses from '@/components/Courses';
+import { GraduationCap, User, Briefcase } from 'lucide-react';
 import styles from './page.module.css';
 
 export default function AcademiaPage() {
@@ -14,29 +16,37 @@ export default function AcademiaPage() {
         </div>
 
         <div className={styles.content}>
-          <div className={styles.notice}>
-            <p><strong>Nota:</strong> Os cursos e formações da Academia ABN serão disponibilizados brevemente pela direção.</p>
+          <div className={styles.hero}>
+            <h2>Desenvolva as suas competências com cursos certificados</h2>
+            <p>Na Academia ABN, oferecemos formação prática e especializada ministrada por mentores e especialistas com vasta experiência no mercado africano.</p>
           </div>
 
-          <div className={styles.section}>
-            <h2>Cursos Disponíveis</h2>
-            <p>Em breve, teremos uma gama completa de cursos presenciais e online cobrindo:</p>
-            <ul>
-              <li>Gestão Financeira para PMEs</li>
-              <li>Marketing Digital para Empreendedores</li>
-              <li>Liderança e Gestão de Equipas</li>
-              <li>Planeamento Estratégico</li>
-              <li>Vendas e Negociação</li>
-            </ul>
+          <div className={styles.benefits}>
+            <div className={styles.benefitCard}>
+              <div className={styles.benefitIcon}><GraduationCap size={48} /></div>
+              <h3>Certificação Oficial</h3>
+              <p>Certificados reconhecidos que atestam as competências adquiridas nos nossos cursos.</p>
+            </div>
+            <div className={styles.benefitCard}>
+              <div className={styles.benefitIcon}><User size={48} /></div>
+              <h3>Mentores Especialistas</h3>
+              <p>Aprenda com profissionais experientes que lideram projetos reais no ecossistema.</p>
+            </div>
+            <div className={styles.benefitCard}>
+              <div className={styles.benefitIcon}><Briefcase size={48} /></div>
+              <h3>Conteúdo Prático</h3>
+              <p>Formação focada em casos reais e aplicação imediada no seu negócio.</p>
+            </div>
           </div>
 
-          <div className={styles.section}>
-            <h2>Certificações</h2>
-            <p>Ao completar os cursos da Academia ABN, os participantes recebem certificados oficiais que atestam as competências adquiridas.</p>
+          <div className={styles.coursesSection}>
+            <Courses />
           </div>
 
           <div className={styles.cta}>
-            <a href="/contacto" className={styles.btn}>Saber mais sobre cursos</a>
+            <h2>Pronto para começar a sua formação?</h2>
+            <p>Inscreva-se nos nossos cursos e acelere o desenvolvimento do seu negócio.</p>
+            <a href="/dashboard/formacao" className={styles.btn}>Aceder à Formação</a>
           </div>
         </div>
       </main>
