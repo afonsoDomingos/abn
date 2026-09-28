@@ -47,7 +47,7 @@ export default function Partners() {
                   {isImage ? (
                     <img src={partner.logo} alt={partner.name} className={styles.logoImg} />
                   ) : (
-                    <span className={styles.icon}>{partner.logo ? partner.logo : <Building2 size={32} />}</span>
+                    <span className={styles.icon}>{typeof partner.logo === 'string' && partner.logo.length > 0 ? partner.logo : <Building2 size={32} />}</span>
                   )}
                 </div>
                 <div className={styles.partnerInfo}>

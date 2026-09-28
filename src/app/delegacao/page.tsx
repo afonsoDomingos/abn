@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Globe, ChevronDown } from 'lucide-react';
+import { Globe, ChevronDown, Crown } from 'lucide-react';
 import styles from './Delegacao.module.css';
 
 interface HubEvent {
@@ -637,7 +637,7 @@ export default function DelegacaoPortalPage() {
                 fontSize: '0.85rem',
                 fontWeight: 700
               }}>
-                👑 {representative?.title || 'Representante Oficial'}
+                <Crown size={16} style={{ marginRight: '4px', verticalAlign: 'middle' }} /> {representative?.title || 'Representante Oficial'}
               </span>
             </div>
           </div>

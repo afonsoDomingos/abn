@@ -520,7 +520,7 @@ export default function MentoriaPage() {
           style={{ marginLeft: 'auto', color: '#ff6b00' }}
         >
           <Sparkles size={17} />
-          <span>Diretório de Mentores ABN 🌟</span>
+          <span>Diretório de Mentores ABN</span>
         </button>
       </nav>
 
