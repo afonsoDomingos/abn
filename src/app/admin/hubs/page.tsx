@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Crown } from 'lucide-react';
 import styles from './HubsAdmin.module.css';
 
 interface HubEvent {
@@ -519,7 +520,7 @@ export default function AdminHubsPage() {
                             {hub.representativeUser?.name || hub.representative?.name}
                           </div>
                           <div className={styles.repRole}>
-                            👑 {hub.representative?.role || hub.representativeUser?.representativeProfile?.title || 'Representante Oficial'}
+                            <Crown size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} /> {hub.representative?.role || hub.representativeUser?.representativeProfile?.title || 'Representante Oficial'}
                           </div>
                         </div>
                       </div>

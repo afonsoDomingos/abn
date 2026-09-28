@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { BookOpen, Plus, Edit, Trash2, Users, Eye, EyeOff, Video, Award, CheckCircle, FileText, X, FileUp, Check, ShieldAlert, Lock, Unlock, Search } from 'lucide-react';
+import { BookOpen, Plus, Edit, Trash2, Users, Eye, EyeOff, Video, Award, CheckCircle, FileText, X, FileUp, Check, ShieldAlert, Lock, Unlock, Search, User } from 'lucide-react';
 
 interface Lesson {
   title: string;
@@ -515,11 +515,11 @@ export default function AdminCursosPage() {
 
                 <div style={{ fontSize: '0.82rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '0.4rem', borderTop: '1px solid #f1f5f9', paddingTop: '1rem', marginTop: 'auto' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span>👨‍🏫 <strong>Formador:</strong> {course.instructor}</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><User size={14} /> <strong>Formador:</strong> {course.instructor}</span>
                     <span> <strong>Duração:</strong> {course.duration}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontWeight: 700, color: '#ff6b00' }}>📚 <strong>{lessonCount} Aulas</strong> {pdfCount > 0 && <span style={{ color: '#2563eb', marginLeft: '4px' }}>({pdfCount} PDFs )</span>}</span>
+                    <span style={{ fontWeight: 700, color: '#ff6b00', display: 'flex', alignItems: 'center', gap: '4px' }}><BookOpen size={14} /> <strong>{lessonCount} Aulas</strong> {pdfCount > 0 && <span style={{ color: '#2563eb', marginLeft: '4px' }}>({pdfCount} PDFs )</span>}</span>
                     <span style={{ fontSize: '0.75rem', color: course.videoVisible !== false ? '#16a34a' : '#dc2626', fontWeight: 700 }}>
                       {course.videoVisible !== false ? ' Vídeos Visíveis' : ' Vídeos Ocultos'}
                     </span>

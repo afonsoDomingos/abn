@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
-import { Search } from 'lucide-react';
+import { Search, User, BookOpen } from 'lucide-react';
 
 function FormacaoPageInner() {
   const isCoursePaid = (course: any) => {
@@ -548,10 +548,10 @@ function FormacaoPageInner() {
                     <h3 style={{ color: '#0f172a', margin: '0 0 0.5rem 0', fontSize: '1.15rem', fontFamily: 'Outfit', fontWeight: 800, lineHeight: 1.3 }}>{course.title}</h3>
 
                     {/* Meta */}
-                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.82rem', color: '#64748b', fontWeight: 500, flexWrap: 'wrap' }}>
-                      <span>👨‍🏫 {course.instructor}</span>
-                      <span> {course.duration}</span>
-                      <span>📚 {totalLessons} Aulas</span>
+                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.82rem', color: '#64748b', fontWeight: 500, flexWrap: 'wrap', alignItems: 'center' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><User size={14} /> {course.instructor}</span>
+                      <span>{course.duration}</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><BookOpen size={14} /> {totalLessons} Aulas</span>
                     </div>
                   </div>
 
@@ -803,7 +803,7 @@ function FormacaoPageInner() {
                     )}
 
                     <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', color: '#475569' }}>
-                      <div>👨‍🏫 <strong>Formador:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.instructor}</span></div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><User size={14} /> <strong>Formador:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.instructor}</span></div>
                       <div> <strong>Duração:</strong> <span style={{ color: '#0f172a', fontWeight: 600 }}>{videoCourse.duration}</span></div>
                     </div>
 

@@ -25,7 +25,8 @@ import {
   Star,
   Check,
   Zap,
-  Filter
+  Filter,
+  User
 } from 'lucide-react';
 import styles from './Incubadora.module.css';
 
@@ -560,7 +561,7 @@ export default function IncubadoraPage() {
               <div key={idx} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 4px 14px rgba(0,0,0,0.03)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
                   <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(79, 70, 229, 0.1)', color: '#4f46e5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>
-                    {m.avatar || '🧑‍🏫'}
+                    {m.avatar ? m.avatar : <User size={24} />}
                   </div>
                   <div>
                     <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#0f172a', fontWeight: 800 }}>{m.name}</h3>
