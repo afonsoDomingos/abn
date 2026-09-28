@@ -1,11 +1,11 @@
-# ABN – AfroBiz Network 🚀
+# ABN – AfroBiz Network
 
 **ABN – AfroBiz Network** é uma plataforma digital moderna focada na incubação de startups e desenvolvimento de pequenas e médias empresas (PMEs) em África.
 
-## 🎯 Objetivo
+## Objetivo
 Ajudar empreendedores africanos a criar presença digital profissional, conectar-se com investidores e mentores, e aceder a recursos estratégicos para o crescimento dos seus negócios.
 
-## ✨ Funcionalidades Principais
+## Funcionalidades Principais
 - **Landing Page Moderna**: Design inspirado no Afro-Futurismo.
 - **Incubadora Digital**: Programas de aceleração (Spark & Scale).
 - **Marketplace de Serviços**: Contratação de Web Design, Marketing e Consultoria.
@@ -13,13 +13,13 @@ Ajudar empreendedores africanos a criar presença digital profissional, conectar
 - **Perfis de Negócio**: Portfólios dinâmicos para empresas.
 - **Admin Dashboard**: Gestão centralizada da plataforma.
 
-## 🛠️ Tecnologias
+## Tecnologias
 - **Frontend**: Next.js 14+ (App Router), TypeScript, Vanilla CSS.
 - **Backend**: Node.js (API Routes).
 - **Base de Dados**: MongoDB (Mongoose).
 - **Media**: Cloudinary.
 
-## 🚀 Como Começar
+## Como Começar
 
 ### Pré-requisitos
 - Node.js instalado.
@@ -44,7 +44,7 @@ Ajudar empreendedores africanos a criar presença digital profissional, conectar
    npm run dev
    ```
 
-## 🎨 Identidade Visual
+## Identidade Visual
 As cores principais são **Preto**, **Ouro** e **Verde**, simbolizando sofisticação, prosperidade e o potencial de África.
 
 ---
