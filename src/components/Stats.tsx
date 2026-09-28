@@ -32,12 +32,13 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   default:   <TrendingUp size={28} strokeWidth={1.8} />,
 };
 
-const COLORS = ['#d4af37', '#3b82f6', '#10b981', '#f59e0b'];
+const COLORS = ['#d4af37', '#3b82f6', '#10b981', '#f59e0b', '#ff6b00'];
 
 const DEFAULT_STATS: StatItem[] = [
-  { value: '...', label: 'Membros Registados',    iconKey: 'users'    },
+  { value: '...', label: 'Membros Registados',     iconKey: 'users'    },
   { value: '...', label: 'Negócios na Plataforma', iconKey: 'business' },
-  { value: '...', label: 'Serviços Publicados',   iconKey: 'growth'   },
+  { value: '...', label: 'Beneficiários Diretos', iconKey: 'growth'   },
+  { value: '...', label: 'Países de Abrangência', iconKey: 'globe'    },
   { value: '...', label: 'Programas & Eventos',   iconKey: 'courses'  },
 ];
 
@@ -65,9 +66,14 @@ export default function Stats() {
               iconKey: 'business',
             },
             {
-              value: String(data.stats.activeServices ?? '—'),
-              label: language === 'pt' ? 'Serviços Publicados'    : 'Published Services',
+              value: String(data.stats.directBeneficiaries ?? '—'),
+              label: language === 'pt' ? 'Beneficiários Diretos' : 'Direct Beneficiaries',
               iconKey: 'growth',
+            },
+            {
+              value: String(data.stats.countriesCovered ?? '—'),
+              label: language === 'pt' ? 'Países de Abrangência' : 'Countries Covered',
+              iconKey: 'globe',
             },
             {
               value: String(totalProgramsEvents),

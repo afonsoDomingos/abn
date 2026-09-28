@@ -150,7 +150,9 @@ export async function GET() {
         totalNews,
         totalEnrollments,
         pendingCertificates,
-        revenue: formattedRevenue
+        revenue: formattedRevenue,
+        directBeneficiaries: totalUsers + totalStartups,
+        countriesCovered: 5
       },
       distribution: {
         empreendedores,
