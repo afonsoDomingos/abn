@@ -109,10 +109,13 @@ export default function TermsModal({ isOpen, onClose, onAccept }: TermsModalProp
         <style jsx>{`
           .terms-modal-overlay {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(4px);
-            z-index: 2000;
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
