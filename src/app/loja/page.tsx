@@ -47,12 +47,12 @@ const STORE_CATEGORIES = [
 
 // Países disponíveis para filtro
 const STORE_COUNTRIES = [
-  { id: 'Todos', name: 'Todos os Países', flag: '' },
-  { id: 'Moçambique', name: 'Moçambique', flag: '🇲🇴' },
-  { id: 'Angola', name: 'Angola', flag: '🇦🇴' },
-  { id: 'Guiné-Bissau', name: 'Guiné-Bissau', flag: '🇬🇼' },
-  { id: 'São Tomé e Príncipe', name: 'São Tomé e Príncipe', flag: '🇸🇹' },
-  { id: 'Cabo Verde', name: 'Cabo Verde', flag: '🇨🇻' },
+  { id: 'Todos', name: 'Todos os Países' },
+  { id: 'Moçambique', name: 'Moçambique' },
+  { id: 'Angola', name: 'Angola' },
+  { id: 'Guiné-Bissau', name: 'Guiné-Bissau' },
+  { id: 'São Tomé e Príncipe', name: 'São Tomé e Príncipe' },
+  { id: 'Cabo Verde', name: 'Cabo Verde' },
 ];
 
 // Destaques oficiais de referência exibidos quando nenhuma categoria estiver selecionada
@@ -496,7 +496,6 @@ export default function Loja() {
                   onClick={() => handleCountryClick(country.id)}
                   title={`Filtrar por ${country.name}`}
                 >
-                  <span className={styles.countryFlag}>{country.flag}</span>
                   <span className={styles.countryName}>{country.name}</span>
                 </button>
               );
