@@ -104,7 +104,7 @@ export default function LoginPage() {
             <Link href="/recuperar" className={styles.forgot}>Esqueceu a senha?</Link>
           </div>
           
-          <button type="submit" className="btn-primary" disabled={loading} style={{ padding: '14px', width: '100%', fontSize: '0.95rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+          <button type="submit" className="btn-primary" disabled={loading} style={{ padding: '12px', width: '100%', fontSize: '0.9rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', height: '48px' }}>
             {loading ? 'A entrar...' : 'Entrar'}
           </button>
         </form>

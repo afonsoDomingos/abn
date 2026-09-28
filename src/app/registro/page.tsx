@@ -7,7 +7,6 @@ import {
   User,
   Mail,
   Lock,
-  Layers,
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
@@ -284,36 +283,76 @@ export default function RegisterPage() {
                 type="button"
                 className="btn-primary"
                 onClick={handleNextStep}
-                style={{ marginTop: '0.75rem', padding: '14px 20px', width: '100%', fontSize: '0.92rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}
+                style={{ marginTop: '0.75rem', padding: '12px', width: '100%', fontSize: '0.9rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', height: '48px' }}
               >
-                Continuar para Escolher Perfil 
+                Continuar para Escolher Perfil
               </button>
             </div>
           )}
 
           {/* ──────────────────────────────────────────────────────────
-             PASSO 2: ESCOLHER PERFIL (SELECÇÃO ÚNICA)
+             PASSO 2: ESCOLHER PERFIL (SELECÇÃO VISUAL)
           ────────────────────────────────────────────────────────── */}
           {currentStep === 2 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div className={styles.inputGroup}>
-                <label>Perfil Principal *</label>
-                <div className={styles.inputWrapper}>
-                  <select
-                    value={selectedRole}
-                    onChange={e => setSelectedRole(e.target.value)}
-                  >
-                    {PROFILE_CATEGORIES.map(category => (
-                      <option key={category.id} value={category.id}>
-                        {category.title} - {category.badge}
-                      </option>
-                    ))}
-                  </select>
-                  <Layers className={styles.inputIcon} size={18} />
-                </div>
-                <p style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px' }}>
-                  Poderá adicionar mais perfis e completar os dados profissionais no Dashboard após o registo.
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div style={{ textAlign: 'center', marginBottom: '0.5rem' }}>
+                <label style={{ 
+                  fontSize: '1.1rem', 
+                  fontWeight: 700, 
+                  color: '#0f172a',
+                  marginBottom: '0.5rem',
+                  display: 'block'
+                }}>
+                  Escolha o seu Perfil Principal *
+                </label>
+                <p style={{ fontSize: '0.85rem', color: '#64748b', maxWidth: '500px', margin: '0 auto' }}>
+                  Selecione a categoria que melhor define a sua atuação no ecossistema ABN. Poderá adicionar mais perfis no Dashboard após o registo.
                 </p>
+              </div>
+
+              <div className={styles.profileCardGrid}>
+                {PROFILE_CATEGORIES.map(category => (
+                  <div
+                    key={category.id}
+                    onClick={() => setSelectedRole(category.id)}
+                    className={`${styles.profileCard} ${selectedRole === category.id ? styles.profileCardSelected : ''}`}
+                  >
+                    <div className={styles.profileCardHeader}>
+                      <div className={styles.profileCardIconBox}>
+                        <span className={styles.profileCardIcon}>
+                          {category.id === 'empreendedor' && '🚀'}
+                          {category.id === 'startup' && '💡'}
+                          {category.id === 'empresa' && '🏢'}
+                          {category.id === 'investidor' && '💰'}
+                          {category.id === 'mentor' && '👨‍🏫'}
+                          {category.id === 'consultor' && '🎯'}
+                          {category.id === 'parceiro' && '🤝'}
+                          {category.id === 'universidade' && '🎓'}
+                          {category.id === 'incubadora' && '🏛️'}
+                          {category.id === 'organizacao' && '🏛️'}
+                        </span>
+                      </div>
+                      <div className={styles.profileCardCheck}>
+                        {selectedRole === category.id && <CheckCircle2 size={12} />}
+                      </div>
+                    </div>
+                    <h3 className={styles.profileCardTitle}>{category.title}</h3>
+                    <span style={{ 
+                      display: 'inline-block',
+                      background: selectedRole === category.id ? '#ff6b00' : '#f1f5f9',
+                      color: selectedRole === category.id ? '#ffffff' : '#64748b',
+                      padding: '3px 8px',
+                      borderRadius: '50px',
+                      fontSize: '0.65rem',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em'
+                    }}>
+                      {category.badge}
+                    </span>
+                    <p className={styles.profileCardDesc}>{category.description}</p>
+                  </div>
+                ))}
               </div>
 
               <div className={styles.stepActions}>
@@ -321,7 +360,6 @@ export default function RegisterPage() {
                   type="button"
                   className="btn-outline"
                   onClick={handlePrevStep}
-                  style={{ padding: '12px 18px', fontSize: '0.88rem' }}
                 >
                   ← Anterior
                 </button>
@@ -329,9 +367,8 @@ export default function RegisterPage() {
                   type="submit"
                   className="btn-primary"
                   disabled={loading}
-                  style={{ padding: '14px 20px', fontSize: '0.92rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}
                 >
-                  {loading ? 'A criar a sua conta...' : 'Criar Conta e Entrar no Dashboard'}
+                  {loading ? 'A criar...' : 'Criar Conta'}
                 </button>
               </div>
             </div>
