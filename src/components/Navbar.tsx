@@ -13,7 +13,6 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [shopEnabled, setShopEnabled] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState('Moçambique');
   
   // Scroll functionality
   const linksRef = useRef<HTMLDivElement>(null);
@@ -118,14 +117,6 @@ export default function Navbar() {
   const dashboardPath = currentUser?.role === 'admin' ? '/admin' : '/dashboard';
   const dashboardLabel = currentUser?.role === 'admin' ? 'Painel Admin' : 'Ir para o Meu Painel';
 
-  const countries = [
-    { name: 'Moçambique', currency: 'MZN', flag: '🇲🇴' },
-    { name: 'Angola', currency: 'AOA', flag: '🇦🇴' },
-    { name: 'Guiné-Bissau', currency: 'XOF', flag: '🇬🇼' },
-    { name: 'São Tomé e Príncipe', currency: 'STN', flag: '🇸🇹' },
-    { name: 'Cabo Verde', currency: 'CVE', flag: '🇨🇻' }
-  ];
-
   return (
     <>
       <nav className={styles.navbar}>
@@ -210,21 +201,6 @@ export default function Navbar() {
           </div>
 
           <div className={styles.actions}>
-            {/* Currency Selector */}
-            <div className={styles.currencySelector}>
-              <select 
-                value={selectedCountry} 
-                onChange={(e) => setSelectedCountry(e.target.value)}
-                className={styles.currencySelect}
-              >
-                {countries.map(country => (
-                  <option key={country.name} value={country.name}>
-                    {country.flag} {country.currency}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             <LanguageSelector />
 
             {/* Botões fixos */}

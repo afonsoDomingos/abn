@@ -166,29 +166,6 @@
   gap: 0.75rem;
 }
 
-.currencySelector {
-  display: flex;
-  align-items: center;
-}
-
-.currencySelect {
-  padding: 6px 10px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: #475569;
-  background: #ffffff;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.currencySelect:hover {
-  border-color: #ff6b00;
-  color: #0f172a;
-}
-
 .btnClub {
   background: linear-gradient(135deg, #ff6b00 0%, #ff8c3a 100%);
   color: #ffffff;
