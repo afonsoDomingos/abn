@@ -251,6 +251,24 @@
   gap: 0.75rem;
 }
 
+@media (max-width: 1080px) {
+  .countryGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .countryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .countryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .countryCard {
   background: #f9fafb;
   border: 2px solid #e5e7eb;
@@ -277,7 +295,7 @@
 }
 
 .countryFlag {
-  font-size: 1.5rem;
+  font-size: 2rem;
   line-height: 1;
 }
 
