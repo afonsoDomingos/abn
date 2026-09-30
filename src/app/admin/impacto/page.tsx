@@ -55,7 +55,8 @@ export default function AdminImpactoPage() {
               { value: '968', label: 'Alumni' },
               { value: '14+', label: 'Parceiros Privados' },
               { value: '13%', label: 'Mulheres Empreendedoras' },
-              { value: '5K+', label: 'Empregos Apoiados' }
+              { value: '5', label: 'Países' },
+              { value: '370', label: 'Beneficiários Diretos' }
             ]);
           }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './ImpactoPublic.module.css';
 
 interface StatItem {
@@ -38,9 +38,58 @@ interface ImpactoClientProps {
   companies: CompanyItem[];
 }
 
-export default function ImpactoClient({ stats, reports, cases, companies }: ImpactoClientProps) {
+export default function ImpactoClient({ stats: initialStats, reports: initialReports, cases: initialCases, companies: initialCompanies }: ImpactoClientProps) {
   const [selectedFilter, setSelectedFilter] = useState<'todas' | 'incubadas' | 'apoiadas'>('todas');
   const [activeCase, setActiveCase] = useState<CaseItem | null>(null);
+
+  // Estados locais para dados com atualização automática
+  const [stats, setStats] = useState<StatItem[]>(initialStats);
+  const [reports, setReports] = useState<ReportItem[]>(initialReports);
+  const [cases, setCases] = useState<CaseItem[]>(initialCases);
+  const [companies, setCompanies] = useState<CompanyItem[]>(initialCompanies);
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
+
+  // Polling para atualização automática (a cada 30 segundos)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/api/config');
+        const data = await res.json();
+
+        if (data.configs) {
+          // Atualizar apenas se houver dados novos
+          if (data.configs.stats_content) {
+            setStats(data.configs.stats_content);
+          }
+          if (data.configs.reports_content) {
+            setReports(data.configs.reports_content);
+          }
+          if (data.configs.cases_content) {
+            setCases(data.configs.cases_content);
+          }
+          if (data.configs.supported_companies) {
+            const parsedCompanies = data.configs.supported_companies.map((c: any) => ({
+              ...c,
+              type: c.type || 'incubada'
+            }));
+            setCompanies(parsedCompanies);
+          }
+          setLastUpdate(new Date());
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados atualizados:', error);
+      }
+    };
+
+    // Buscar dados imediatamente ao montar
+    fetchData();
+
+    // Configurar polling a cada 30 segundos
+    const interval = setInterval(fetchData, 30000);
+
+    // Limpar interval ao desmontar
+    return () => clearInterval(interval);
+  }, []);
 
   // Filter companies
   const filteredCompanies = companies.filter(c => {
@@ -52,6 +101,27 @@ export default function ImpactoClient({ stats, reports, cases, companies }: Impa
 
   return (
     <>
+      {/* Indicador de atualização automática */}
+      {lastUpdate && (
+        <div style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          background: 'rgba(0, 0, 0, 0.8)',
+          color: '#ffffff',
+          padding: '8px 16px',
+          borderRadius: '8px',
+          fontSize: '0.75rem',
+          zIndex: 1000,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}>
+          <span style={{ width: '8px', height: '8px', background: '#22c55e', borderRadius: '50%', animation: 'pulse 2s infinite' }}></span>
+          Atualizado: {lastUpdate.toLocaleTimeString('pt-PT')}
+        </div>
+      )}
+
       {/* 1. Indicadores de Impacto */}
       <section className={styles.section}>
         <div className={styles.container}>

@@ -403,7 +403,7 @@ export default function AdminLojaPage() {
       {/* Cabeçalho */}
       <div className={styles.pageHeader}>
         <div>
-          <h1 className="text-gradient-gold">Gestão da Loja ABN</h1>
+          <h1 className="text-gradient-gold" style={{ color: '#000000' }}>Gestão da Loja ABN</h1>
           <p className={styles.subtitle}>
             {products.length} produtos · {sellers.length} vendedores · {orders.length} pedidos · {pendingSubmissions.length} submissões pendentes
           </p>
@@ -431,8 +431,8 @@ export default function AdminLojaPage() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               style={{
-                background: activeTab === tab.id ? '#de9b35' : 'rgba(255,255,255,0.06)',
-                color: '#ffffff',
+                background: activeTab === tab.id ? '#de9b35' : '#f3f4f6',
+                color: activeTab === tab.id ? '#ffffff' : '#000000',
                 border: 'none',
                 padding: '10px 16px',
                 borderRadius: '10px',
@@ -454,7 +454,7 @@ export default function AdminLojaPage() {
                   fontSize: '0.72rem',
                   padding: '2px 7px',
                   borderRadius: '999px',
-                  fontWeight: 900 
+                  fontWeight: 900
                 }}>
                   {tab.count}
                 </span>
@@ -468,19 +468,19 @@ export default function AdminLojaPage() {
       {activeTab === 'moderacao' && (
         <div>
           <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'Outfit', margin: '0 0 6px' }}>
+            <h2 style={{ fontSize: '1.35rem', color: '#000000', fontFamily: 'Outfit', margin: '0 0 6px' }}>
               Fila de Aprovação de Produtos e Serviços
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+            <p style={{ color: '#333333', fontSize: '0.88rem', margin: 0 }}>
               Avalie as ofertas cadastradas por empreendedores no Dashboard antes de irem para a Loja Oficial ABN.
             </p>
           </div>
 
           {submissions.length === 0 ? (
-            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.15)', borderRadius: '20px', padding: '4rem 2rem', textAlign: 'center' }}>
+            <div style={{ background: '#f9fafb', border: '1px dashed #d1d5db', borderRadius: '20px', padding: '4rem 2rem', textAlign: 'center' }}>
               <CheckCircle2 size={44} style={{ color: '#22c55e', margin: '0 auto 1rem' }} />
-              <h3 style={{ color: '#ffffff', marginBottom: '0.5rem' }}>Tudo em dia!</h3>
-              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>Nenhum produto submetido por empreendedores aguardando análise no momento.</p>
+              <h3 style={{ color: '#000000', marginBottom: '0.5rem' }}>Tudo em dia!</h3>
+              <p style={{ color: '#333333', fontSize: '0.9rem' }}>Nenhum produto submetido por empreendedores aguardando análise no momento.</p>
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: '1.5rem' }}>
@@ -490,12 +490,12 @@ export default function AdminLojaPage() {
                 const isRejected = sub.storeApproval === 'rejeitado';
 
                 return (
-                  <div 
-                    key={idx} 
-                    style={{ 
-                      background: 'rgba(255,255,255,0.05)', 
-                      border: isPending ? '1.5px solid #de9b35' : '1px solid rgba(255,255,255,0.1)', 
-                      borderRadius: '18px', 
+                  <div
+                    key={idx}
+                    style={{
+                      background: '#ffffff',
+                      border: isPending ? '1.5px solid #de9b35' : '1px solid #e5e7eb',
+                      borderRadius: '18px',
                       overflow: 'hidden',
                       display: 'flex',
                       flexDirection: 'column'
@@ -531,7 +531,7 @@ export default function AdminLojaPage() {
                     {/* Conteúdo */}
                     <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
                       {/* Dados do Vendedor */}
-                      <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: '10px', padding: '10px 12px', marginBottom: '12px', fontSize: '0.8rem', color: 'rgba(255,255,255,0.8)' }}>
+                      <div style={{ background: '#f3f4f6', borderRadius: '10px', padding: '10px 12px', marginBottom: '12px', fontSize: '0.8rem', color: '#333333' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#de9b35', marginBottom: '4px' }}>
                           <Store size={14} />
                           <span>{sub.businessName}</span> ({sub.businessCategory})
@@ -546,13 +546,13 @@ export default function AdminLojaPage() {
                         )}
                       </div>
 
-                      <h3 style={{ fontSize: '1.15rem', color: '#ffffff', margin: '0 0 6px', fontFamily: 'Outfit' }}>{sub.name}</h3>
-                      <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.65)', lineHeight: 1.45, marginBottom: '1rem', flex: 1 }}>
+                      <h3 style={{ fontSize: '1.15rem', color: '#000000', margin: '0 0 6px', fontFamily: 'Outfit' }}>{sub.name}</h3>
+                      <p style={{ fontSize: '0.85rem', color: '#333333', lineHeight: 1.45, marginBottom: '1rem', flex: 1 }}>
                         {sub.description}
                       </p>
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '10px', marginBottom: '12px' }}>
-                        <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)' }}>Preço Proposto:</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #e5e7eb', paddingTop: '10px', marginBottom: '12px' }}>
+                        <span style={{ fontSize: '0.78rem', color: '#333333' }}>Preço Proposto:</span>
                         <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#de9b35' }}>{sub.price}</span>
                       </div>
 
@@ -806,36 +806,36 @@ export default function AdminLojaPage() {
       {activeTab === 'vendedores' && (
         <div>
           <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'Outfit', margin: '0 0 6px' }}>
+            <h2 style={{ fontSize: '1.35rem', color: '#000000', fontFamily: 'Outfit', margin: '0 0 6px' }}>
               Gestão de Vendedores
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+            <p style={{ color: '#333333', fontSize: '0.88rem', margin: 0 }}>
               Liste, crie, edite, verifique, suspenda, active e encerre contas de vendedores.
             </p>
           </div>
 
-          <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', overflow: 'hidden' }}>
+          <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '16px', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ background: 'rgba(255,255,255,0.08)' }}>
-                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Vendedor</th>
-                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Categoria</th>
-                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>País</th>
-                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Estado</th>
-                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Verificado</th>
-                  <th style={{ padding: '14px', textAlign: 'right', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Ações</th>
+                <tr style={{ background: '#f3f4f6' }}>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Vendedor</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Categoria</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>País</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Estado</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Verificado</th>
+                  <th style={{ padding: '14px', textAlign: 'right', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {sellers.map(seller => (
-                  <tr key={seller._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                  <tr key={seller._id} style={{ borderBottom: '1px solid #e5e7eb' }}>
                     <td style={{ padding: '14px' }}>
-                      <div style={{ fontWeight: 700, color: '#ffffff' }}>{seller.businessName}</div>
-                      <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>{seller.ownerName}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>{seller.ownerEmail}</div>
+                      <div style={{ fontWeight: 700, color: '#000000' }}>{seller.businessName}</div>
+                      <div style={{ fontSize: '0.8rem', color: '#333333' }}>{seller.ownerName}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#666666' }}>{seller.ownerEmail}</div>
                     </td>
-                    <td style={{ padding: '14px', color: 'rgba(255,255,255,0.8)' }}>{seller.category}</td>
-                    <td style={{ padding: '14px', color: 'rgba(255,255,255,0.8)' }}>{seller.country}</td>
+                    <td style={{ padding: '14px', color: '#333333' }}>{seller.category}</td>
+                    <td style={{ padding: '14px', color: '#333333' }}>{seller.country}</td>
                     <td style={{ padding: '14px' }}>
                       <span style={{
                         padding: '4px 10px',
@@ -856,10 +856,10 @@ export default function AdminLojaPage() {
                       )}
                     </td>
                     <td style={{ padding: '14px', textAlign: 'right' }}>
-                      <button style={{ padding: '6px 12px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '6px', color: '#ffffff', fontSize: '0.8rem', cursor: 'pointer', marginRight: '4px' }}>
+                      <button style={{ padding: '6px 12px', background: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: '6px', color: '#000000', fontSize: '0.8rem', cursor: 'pointer', marginRight: '4px' }}>
                         Editar
                       </button>
-                      <button style={{ padding: '6px 12px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '6px', color: '#ffffff', fontSize: '0.8rem', cursor: 'pointer' }}>
+                      <button style={{ padding: '6px 12px', background: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: '6px', color: '#000000', fontSize: '0.8rem', cursor: 'pointer' }}>
                         Detalhes
                       </button>
                     </td>
@@ -875,31 +875,31 @@ export default function AdminLojaPage() {
       {activeTab === 'categorias' && (
         <div>
           <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'Outfit', margin: '0 0 6px' }}>
+            <h2 style={{ fontSize: '1.35rem', color: '#000000', fontFamily: 'Outfit', margin: '0 0 6px' }}>
               Gestão de Categorias
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+            <p style={{ color: '#333333', fontSize: '0.88rem', margin: 0 }}>
               Crie, edite, remova, active/desactive e ordene categorias de produtos.
             </p>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
             {categories.map(category => (
-              <div key={category._id} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem' }}>
+              <div key={category._id} style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                   <Tag size={24} style={{ color: '#de9b35' }} />
                   <div style={{ display: 'flex', gap: '8px' }}>
-                    <button style={{ padding: '6px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '6px', color: '#ffffff', cursor: 'pointer' }}>
+                    <button style={{ padding: '6px', background: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: '6px', color: '#000000', cursor: 'pointer' }}>
                       <Edit3 size={14} />
                     </button>
-                    <button style={{ padding: '6px', background: 'rgba(239, 68, 68, 0.2)', border: 'none', borderRadius: '6px', color: '#ef4444', cursor: 'pointer' }}>
+                    <button style={{ padding: '6px', background: '#fef2f2', border: '1px solid #ef4444', borderRadius: '6px', color: '#ef4444', cursor: 'pointer' }}>
                       <Trash2 size={14} />
                     </button>
                   </div>
                 </div>
-                <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>{category.name}</h3>
-                <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>{category.description}</p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>
+                <h3 style={{ fontSize: '1.1rem', color: '#000000', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>{category.name}</h3>
+                <p style={{ fontSize: '0.85rem', color: '#333333', marginBottom: '1rem' }}>{category.description}</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: '#666666' }}>
                   <span>Slug: {category.slug}</span>
                   <span style={{ color: category.active ? '#22c55e' : '#ef4444' }}>
                     {category.active ? 'Activo' : 'Inactivo'}
@@ -907,7 +907,7 @@ export default function AdminLojaPage() {
                 </div>
               </div>
             ))}
-            <button style={{ background: 'rgba(222, 155, 53, 0.2)', border: '2px dashed #de9b35', borderRadius: '16px', padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#de9b35', cursor: 'pointer', minHeight: '200px' }}>
+            <button style={{ background: '#fff7ed', border: '2px dashed #de9b35', borderRadius: '16px', padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#de9b35', cursor: 'pointer', minHeight: '200px' }}>
               <Plus size={32} style={{ marginBottom: '0.5rem' }} />
               <span style={{ fontWeight: 700 }}>Nova Categoria</span>
             </button>
@@ -919,42 +919,42 @@ export default function AdminLojaPage() {
       {activeTab === 'pedidos' && (
         <div>
           <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'Outfit', margin: '0 0 6px' }}>
+            <h2 style={{ fontSize: '1.35rem', color: '#000000', fontFamily: 'Outfit', margin: '0 0 6px' }}>
               Gestão de Pedidos
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+            <p style={{ color: '#333333', fontSize: '0.88rem', margin: 0 }}>
               Consulte, filtre, veja o estado, verifique vendedor/comprador, valor, comissão e repasse.
             </p>
           </div>
 
-          <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', overflow: 'hidden' }}>
+          <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '16px', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ background: 'rgba(255,255,255,0.08)' }}>
-                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Pedido</th>
-                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Comprador</th>
-                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Vendedor</th>
-                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Produto</th>
-                  <th style={{ padding: '14px', textAlign: 'right', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Total</th>
-                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Estado</th>
-                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Pagamento</th>
-                  <th style={{ padding: '14px', textAlign: 'right', fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Ações</th>
+                <tr style={{ background: '#f3f4f6' }}>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Pedido</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Comprador</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Vendedor</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Produto</th>
+                  <th style={{ padding: '14px', textAlign: 'right', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Total</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Estado</th>
+                  <th style={{ padding: '14px', textAlign: 'left', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Pagamento</th>
+                  <th style={{ padding: '14px', textAlign: 'right', fontSize: '0.85rem', fontWeight: 700, color: '#000000' }}>Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {orders.map(order => (
-                  <tr key={order._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                  <tr key={order._id} style={{ borderBottom: '1px solid #e5e7eb' }}>
                     <td style={{ padding: '14px' }}>
                       <div style={{ fontWeight: 700, color: '#de9b35' }}>{order.orderNumber}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>{order.createdAt}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#666666' }}>{order.createdAt}</div>
                     </td>
                     <td style={{ padding: '14px' }}>
-                      <div style={{ color: '#ffffff' }}>{order.buyerName}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>{order.buyerEmail}</div>
+                      <div style={{ color: '#000000' }}>{order.buyerName}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#666666' }}>{order.buyerEmail}</div>
                     </td>
-                    <td style={{ padding: '14px', color: 'rgba(255,255,255,0.8)' }}>{order.sellerName}</td>
-                    <td style={{ padding: '14px', color: 'rgba(255,255,255,0.8)' }}>{order.productName}</td>
-                    <td style={{ padding: '14px', textAlign: 'right', fontWeight: 700, color: '#ffffff' }}>{order.total.toLocaleString()} MT</td>
+                    <td style={{ padding: '14px', color: '#333333' }}>{order.sellerName}</td>
+                    <td style={{ padding: '14px', color: '#333333' }}>{order.productName}</td>
+                    <td style={{ padding: '14px', textAlign: 'right', fontWeight: 700, color: '#000000' }}>{order.total.toLocaleString()} MT</td>
                     <td style={{ padding: '14px' }}>
                       <span style={{
                         padding: '4px 10px',
@@ -968,7 +968,7 @@ export default function AdminLojaPage() {
                       </span>
                     </td>
                     <td style={{ padding: '14px' }}>
-                      <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.8)' }}>{order.paymentMethod}</div>
+                      <div style={{ fontSize: '0.8rem', color: '#333333' }}>{order.paymentMethod}</div>
                       <span style={{
                         padding: '2px 8px',
                         borderRadius: '6px',
@@ -981,7 +981,7 @@ export default function AdminLojaPage() {
                       </span>
                     </td>
                     <td style={{ padding: '14px', textAlign: 'right' }}>
-                      <button style={{ padding: '6px 12px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '6px', color: '#ffffff', fontSize: '0.8rem', cursor: 'pointer' }}>
+                      <button style={{ padding: '6px 12px', background: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: '6px', color: '#000000', fontSize: '0.8rem', cursor: 'pointer' }}>
                         Detalhes
                       </button>
                     </td>
@@ -997,18 +997,18 @@ export default function AdminLojaPage() {
       {activeTab === 'destaques' && (
         <div>
           <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'Outfit', margin: '0 0 6px' }}>
+            <h2 style={{ fontSize: '1.35rem', color: '#000000', fontFamily: 'Outfit', margin: '0 0 6px' }}>
               Gestão de Destaques Pagos
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+            <p style={{ color: '#333333', fontSize: '0.88rem', margin: 0 }}>
               Gerir planos de destaque e ver destaques activos e expirados.
             </p>
           </div>
 
-          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.15)', borderRadius: '20px', padding: '4rem 2rem', textAlign: 'center' }}>
+          <div style={{ background: '#f9fafb', border: '1px dashed #d1d5db', borderRadius: '20px', padding: '4rem 2rem', textAlign: 'center' }}>
             <Star size={44} style={{ color: '#de9b35', margin: '0 auto 1rem' }} />
-            <h3 style={{ color: '#ffffff', marginBottom: '0.5rem' }}>Gestão de Destaques</h3>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>Esta funcionalidade permite configurar planos de destaque pago para aumentar a visibilidade dos produtos na Loja.</p>
+            <h3 style={{ color: '#000000', marginBottom: '0.5rem' }}>Gestão de Destaques</h3>
+            <p style={{ color: '#333333', fontSize: '0.9rem' }}>Esta funcionalidade permite configurar planos de destaque pago para aumentar a visibilidade dos produtos na Loja.</p>
             <button style={{ marginTop: '1.5rem', padding: '12px 24px', background: '#de9b35', border: 'none', borderRadius: '10px', color: '#111418', fontWeight: 700, cursor: 'pointer' }}>
               Configurar Planos de Destaque
             </button>
@@ -1020,77 +1020,77 @@ export default function AdminLojaPage() {
       {activeTab === 'configuracoes' && (
         <div>
           <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'Outfit', margin: '0 0 6px' }}>
+            <h2 style={{ fontSize: '1.35rem', color: '#000000', fontFamily: 'Outfit', margin: '0 0 6px' }}>
               Configurações da Loja
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+            <p style={{ color: '#333333', fontSize: '0.88rem', margin: 0 }}>
               Gestão de comissões, tabela de preços, Termos e Condições, FAQ e estado das lojas.
             </p>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
-            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
               <DollarSign size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
-              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Comissões</h3>
-              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+              <h3 style={{ fontSize: '1.1rem', color: '#000000', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Comissões</h3>
+              <p style={{ fontSize: '0.85rem', color: '#333333', marginBottom: '1rem' }}>
                 Defina regras de comissão por categoria e plano.
               </p>
-              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+              <button style={{ padding: '8px 16px', background: '#fff7ed', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
                 Configurar
               </button>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
               <TrendingUp size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
-              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Tabela de Preços</h3>
-              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+              <h3 style={{ fontSize: '1.1rem', color: '#000000', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Tabela de Preços</h3>
+              <p style={{ fontSize: '0.85rem', color: '#333333', marginBottom: '1rem' }}>
                 Configure preços usados na Loja.
               </p>
-              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+              <button style={{ padding: '8px 16px', background: '#fff7ed', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
                 Configurar
               </button>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
               <FileText size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
-              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Termos e Condições</h3>
-              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+              <h3 style={{ fontSize: '1.1rem', color: '#000000', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Termos e Condições</h3>
+              <p style={{ fontSize: '0.85rem', color: '#333333', marginBottom: '1rem' }}>
                 Edite/actualize os Termos da Loja e mantenha histórico.
               </p>
-              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+              <button style={{ padding: '8px 16px', background: '#fff7ed', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
                 Editar
               </button>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
               <AlertCircle size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
-              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>FAQ da Loja</h3>
-              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+              <h3 style={{ fontSize: '1.1rem', color: '#000000', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>FAQ da Loja</h3>
+              <p style={{ fontSize: '0.85rem', color: '#333333', marginBottom: '1rem' }}>
                 Crie perguntas, edite respostas, active/desactive e ordene.
               </p>
-              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+              <button style={{ padding: '8px 16px', background: '#fff7ed', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
                 Gerir FAQ
               </button>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
               <Store size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
-              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Estado das Lojas</h3>
-              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+              <h3 style={{ fontSize: '1.1rem', color: '#000000', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Estado das Lojas</h3>
+              <p style={{ fontSize: '0.85rem', color: '#333333', marginBottom: '1rem' }}>
                 Active, suspenda, bloqueie ou encerre lojas.
               </p>
-              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+              <button style={{ padding: '8px 16px', background: '#fff7ed', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
                 Gerir Estados
               </button>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '1.5rem', cursor: 'pointer' }}>
               <Layers size={32} style={{ color: '#de9b35', marginBottom: '1rem' }} />
-              <h3 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Planos</h3>
-              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+              <h3 style={{ fontSize: '1.1rem', color: '#000000', margin: '0 0 0.5rem', fontFamily: 'Outfit' }}>Planos</h3>
+              <p style={{ fontSize: '0.85rem', color: '#333333', marginBottom: '1rem' }}>
                 Crie, edite, defina preço, duração e benefícios.
               </p>
-              <button style={{ padding: '8px 16px', background: 'rgba(222, 155, 53, 0.2)', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
+              <button style={{ padding: '8px 16px', background: '#fff7ed', border: '1px solid #de9b35', borderRadius: '8px', color: '#de9b35', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer' }}>
                 Gerir Planos
               </button>
             </div>
