@@ -484,10 +484,3 @@ export default function TeamPage() {
     </>
   );
 }
-        </div>
-      </main>
-      <FloatingWhatsApp />
-      <ScrollToTop />
-    </>
-  );
-}
