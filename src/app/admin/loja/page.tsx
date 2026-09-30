@@ -506,7 +506,7 @@ export default function AdminLojaPage() {
                       {sub.image ? (
                         <img src={sub.image} alt={sub.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
-                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.3)' }}>
+                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af' }}>
                           <ShoppingBag size={48} />
                         </div>
                       )}
@@ -531,16 +531,16 @@ export default function AdminLojaPage() {
                     {/* Conteúdo */}
                     <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
                       {/* Dados do Vendedor */}
-                      <div style={{ background: '#f3f4f6', borderRadius: '10px', padding: '10px 12px', marginBottom: '12px', fontSize: '0.8rem', color: '#333333' }}>
+                      <div style={{ background: '#f3f4f6', borderRadius: '10px', padding: '10px 12px', marginBottom: '12px', fontSize: '0.8rem', color: '#000000' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#de9b35', marginBottom: '4px' }}>
                           <Store size={14} />
-                          <span>{sub.businessName}</span> ({sub.businessCategory})
+                          <span style={{ color: '#000000' }}>{sub.businessName}</span> <span style={{ color: '#333333' }}>({sub.businessCategory})</span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#000000' }}>
                           <User size={13} /> {sub.ownerName}
                         </div>
                         {sub.ownerPhone && (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px', color: '#000000' }}>
                             <Phone size={13} /> {sub.ownerPhone}
                           </div>
                         )}
@@ -710,7 +710,7 @@ export default function AdminLojaPage() {
                       placeholder="URL da imagem do produto"
                       style={{ flex: 1 }}
                     />
-                    <label style={{ cursor: 'pointer', padding: '10px 14px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontSize: '0.9rem' }}>
+                    <label style={{ cursor: 'pointer', padding: '10px 14px', background: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: '8px', fontSize: '0.9rem', color: '#000000' }}>
                       {uploadingImage ? '...' : 'Subir Imagem'}
                       <input
                         type="file"
@@ -852,7 +852,7 @@ export default function AdminLojaPage() {
                       {seller.verified ? (
                         <Shield size={18} style={{ color: '#22c55e' }} />
                       ) : (
-                        <Shield size={18} style={{ color: 'rgba(255,255,255,0.3)' }} />
+                        <Shield size={18} style={{ color: '#9ca3af' }} />
                       )}
                     </td>
                     <td style={{ padding: '14px', textAlign: 'right' }}>
