@@ -247,6 +247,7 @@ export default function ProgramInscricaoPage() {
   }
 
   if (success) {
+    const adminWhatsApp = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '+258 84 000 0000';
     return (
       <div className={styles.page}>
         <Navbar />
@@ -256,11 +257,28 @@ export default function ProgramInscricaoPage() {
             <h1>Inscrição Submetida com Sucesso!</h1>
             <p>A sua candidatura ao programa "{program.title}" foi registada com sucesso.</p>
             <p>A equipa da ABN entrará em contacto brevemente.</p>
+
             {program.whatsappGroupUrl && (
               <a href={program.whatsappGroupUrl} target="_blank" rel="noopener noreferrer" className={styles.btn}>
                 Entrar no Grupo WhatsApp
               </a>
             )}
+
+            <div className={styles.whatsappNotice}>
+              <p className={styles.whatsappNoticeTitle}>💬 Envie o comprovativo de pagamento:</p>
+              <p className={styles.whatsappNoticeText}>
+                Após efetuar o pagamento, envie o comprovativo para o admin via WhatsApp:
+              </p>
+              <a
+                href={`https://wa.me/${adminWhatsApp.replace(/[^0-9]/g, '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.whatsappBtn}
+              >
+                {adminWhatsApp}
+              </a>
+            </div>
+
             <button onClick={() => router.push('/programas')} className={styles.btnSecondary}>
               Voltar para Programas
             </button>

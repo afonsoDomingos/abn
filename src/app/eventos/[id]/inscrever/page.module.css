@@ -123,6 +123,45 @@
   margin: 0 0 1rem 0;
 }
 
+.whatsappNotice {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.whatsappNoticeTitle {
+  color: #15803d;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.whatsappNoticeText {
+  color: #475569;
+  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+}
+
+.whatsappBtn {
+  display: inline-block;
+  background: #25d366;
+  color: #ffffff;
+  padding: 10px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.whatsappBtn:hover {
+  background: #20bd5a;
+  transform: translateY(-2px);
+}
+
 .errorMsg {
   background: #fef2f2;
   color: #dc2626;
