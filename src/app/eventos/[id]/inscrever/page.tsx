@@ -96,7 +96,7 @@ export default function EventInscricaoPage() {
   const steps = event?.enabledSteps || {};
   const customFields = event?.customFields || [];
   const tickets = event?.tickets || [];
-  const isFree = isFreeEvent(event);
+  const isFree = event ? isFreeEvent(event) : false;
   const activeSteps = getActiveSteps(steps, tickets, customFields, isFree);
   const totalSteps = activeSteps.length;
 
@@ -285,7 +285,7 @@ export default function EventInscricaoPage() {
 
   if (success) {
     const adminWhatsApp = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '+258 84 577 3974';
-    const isFree = isFreeEvent(event);
+    const isFree = event ? isFreeEvent(event) : false;
     return (
       <div className={styles.page}>
         <Navbar />

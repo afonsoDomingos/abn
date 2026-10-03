@@ -99,7 +99,7 @@ export default function ProgramInscricaoPage() {
   const steps = program?.enabledSteps || {};
   const customFields = program?.customFields || [];
   const adhesionLevels = program?.adhesionLevels || [];
-  const isFree = isFreeProgram(program);
+  const isFree = program ? isFreeProgram(program) : false;
   const activeSteps = getActiveSteps(steps, adhesionLevels, customFields, isFree);
   const totalSteps = activeSteps.length;
 
@@ -287,7 +287,7 @@ export default function ProgramInscricaoPage() {
 
   if (success) {
     const adminWhatsApp = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '+258 84 577 3974';
-    const isFree = isFreeProgram(program);
+    const isFree = program ? isFreeProgram(program) : false;
     return (
       <div className={styles.page}>
         <Navbar />
