@@ -21,6 +21,7 @@ interface Program {
   phase: string;
   status: string;
   image?: string;
+  price?: string;
 }
 
 function getProgramColor(title: string): string {
@@ -36,6 +37,12 @@ function getProgramColor(title: string): string {
 function formatText(text: string): string[] {
   if (!text) return [];
   return text.split('\n').filter(line => line.trim());
+}
+
+function isFreeProgram(program: Program): boolean {
+  const investment = program.investimento?.toLowerCase() || '';
+  const price = program.price?.toLowerCase() || '';
+  return investment.includes('gratuito') || investment.includes('grátis') || price === '' || price === '0' || price === '0 mt';
 }
 
 export default function ProgramDetailPage() {
@@ -108,6 +115,7 @@ export default function ProgramDetailPage() {
   const beneficiosList = formatText(program.beneficios);
   const requisitosList = formatText(program.requisitos);
   const publicoAlvoList = formatText(program.publicoAlvo);
+  const isFree = isFreeProgram(program);
 
   return (
     <div className={styles.page}>
@@ -128,6 +136,9 @@ export default function ProgramDetailPage() {
                 {program.duration}
               </span>
               <span className={styles.phaseBadge}>{program.phase}</span>
+              <span className={`${styles.priceBadge} ${isFree ? styles.freeBadge : styles.paidBadge}`}>
+                {isFree ? 'Gratuito' : 'Pago'}
+              </span>
             </div>
           </div>
         </div>

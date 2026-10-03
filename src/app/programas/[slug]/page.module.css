@@ -79,6 +79,24 @@
   margin-left: 0.5rem;
 }
 
+.priceBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+.freeBadge {
+  background: #10b981;
+}
+
+.paidBadge {
+  background: #f59e0b;
+}
+
 .descriptionText {
   color: #475569;
   line-height: 1.8;

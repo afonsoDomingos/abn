@@ -14,6 +14,8 @@ interface Program {
   phase: string;
   status: string;
   image?: string;
+  investimento?: string;
+  price?: string;
 }
 
 function getProgramIcon(title: string): React.ReactNode {
@@ -38,6 +40,12 @@ function getProgramColor(title: string): string {
 
 function getProgramSlug(title: string): string {
   return title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+}
+
+function isFreeProgram(program: Program): boolean {
+  const investment = program.investimento?.toLowerCase() || '';
+  const price = program.price?.toLowerCase() || '';
+  return investment.includes('gratuito') || investment.includes('grátis') || price === '' || price === '0' || price === '0 mt';
 }
 
 export default function ProgramasPage() {
@@ -106,6 +114,7 @@ export default function ProgramasPage() {
               const color = getProgramColor(program.title);
               const slug = getProgramSlug(program.title);
               const shortDescription = program.description.split('\n')[0] || program.description;
+              const isFree = isFreeProgram(program);
 
               return (
                 <div key={program._id} className={styles.programCard}>
@@ -116,6 +125,9 @@ export default function ProgramasPage() {
                         alt={program.title}
                         className={styles.programImg}
                       />
+                      <div className={`${styles.priceBadge} ${isFree ? styles.freeBadge : styles.paidBadge}`}>
+                        {isFree ? 'Gratuito' : 'Pago'}
+                      </div>
                     </div>
                   )}
                   <div className={styles.programContent}>

@@ -61,6 +61,29 @@
   object-fit: cover;
 }
 
+.priceBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+.freeBadge {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.paidBadge {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
 .programContent {
   padding: 2rem;
   display: flex;
