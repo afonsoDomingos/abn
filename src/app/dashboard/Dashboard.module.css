@@ -381,6 +381,29 @@
   height: 20px;
   accent-color: var(--primary);
   cursor: pointer;
+  border-radius: 50%;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid #cbd5e1;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.taskItem input[type="checkbox"]:checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.taskItem input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
 }
 
 .resources {
