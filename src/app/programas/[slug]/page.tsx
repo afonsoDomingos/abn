@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ArrowRight } from 'lucide-react';
@@ -16,27 +20,7 @@ interface Program {
   criteriosSelecao: string;
   phase: string;
   status: string;
-}
-
-async function getProgram(slug: string): Promise<Program | null> {
-  try {
-    const res = await fetch('/api/programs', {
-      cache: 'no-store'
-    });
-    const data = await res.json();
-
-    if (data.success && data.programs) {
-      const program = data.programs.find((p: Program) => {
-        const titleSlug = p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        return titleSlug === slug || p._id === slug;
-      });
-
-      return program || null;
-    }
-    return null;
-  } catch (error) {
-    return null;
-  }
+  image?: string;
 }
 
 function getProgramColor(title: string): string {
@@ -54,9 +38,42 @@ function formatText(text: string): string[] {
   return text.split('\n').filter(line => line.trim());
 }
 
-export default async function ProgramDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const program = await getProgram(slug);
+export default function ProgramDetailPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const [program, setProgram] = useState<Program | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/programs')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.programs) {
+          const foundProgram = data.programs.find((p: Program) => {
+            const titleSlug = p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            return titleSlug === slug || p._id === slug;
+          });
+          setProgram(foundProgram || null);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <Navbar />
+        <main className={styles.container}>
+          <p style={{ textAlign: 'center', color: '#64748b' }}>Carregando...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!program) {
     return (
@@ -82,7 +99,7 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
   return (
     <div className={styles.page}>
       <Navbar />
-      
+
       <main className={styles.container}>
         {/* Hero Section */}
         <div className={styles.hero} style={{ background: `linear-gradient(135deg, ${color} 0%, ${color}dd 100%)` }}>

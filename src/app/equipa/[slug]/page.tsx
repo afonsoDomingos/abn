@@ -1,4 +1,7 @@
-import { notFound } from 'next/navigation';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
@@ -23,27 +26,6 @@ interface TeamMember {
   status: string;
 }
 
-async function getTeamMember(slug: string): Promise<TeamMember | null> {
-  try {
-    const res = await fetch('/api/team', {
-      cache: 'no-store'
-    });
-    const data = await res.json();
-
-    if (data.team && data.team.length > 0) {
-      const member = data.team.find((m: TeamMember) => {
-        const nameSlug = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        return nameSlug === slug || m._id === slug;
-      });
-
-      return member || null;
-    }
-    return null;
-  } catch (error) {
-    return null;
-  }
-}
-
 function getRoleMeta(role: string): { color: string; bg: string } {
   const r = role.toLowerCase();
   if (r.includes('ceo') || r.includes('director') || r.includes('directora') || r.includes('presidente') || r.includes('fundador') || r.includes('co-fundador'))
@@ -63,12 +45,57 @@ function getRoleMeta(role: string): { color: string; bg: string } {
   return { color: '#ff6b00', bg: 'rgba(255,107,0,0.08)' };
 }
 
-export default async function TeamMemberPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const member = await getTeamMember(slug);
+export default function TeamMemberPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const [member, setMember] = useState<TeamMember | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/team')
+      .then(res => res.json())
+      .then(data => {
+        if (data.team && data.team.length > 0) {
+          const foundMember = data.team.find((m: TeamMember) => {
+            const nameSlug = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            return nameSlug === slug || m._id === slug;
+          });
+          setMember(foundMember || null);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <main className={styles.main}>
+          <p style={{ textAlign: 'center', color: '#64748b' }}>Carregando...</p>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   if (!member) {
-    notFound();
+    return (
+      <>
+        <Navbar />
+        <main className={styles.main}>
+          <div style={{ textAlign: 'center', padding: '4rem' }}>
+            <h1>Membro não encontrado</h1>
+            <p>O membro que procura não existe ou foi movido.</p>
+            <a href="/equipa" style={{ color: '#ff6b00' }}>Voltar à Equipa</a>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
   }
 
   const { color, bg } = getRoleMeta(member.role);
@@ -84,7 +111,7 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
             <a href="/equipa" className={styles.backLink}>
               ← Voltar à Equipa
             </a>
-            
+
             <div className={styles.memberHeader}>
               <div className={styles.memberImageContainer}>
                 <img
@@ -106,7 +133,7 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
                   }}
                 />
               </div>
-              
+
               <div className={styles.memberInfo}>
                 <span
                   className={styles.roleBadge}
