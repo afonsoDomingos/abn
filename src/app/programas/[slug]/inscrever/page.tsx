@@ -65,9 +65,7 @@ export default function ProgramInscricaoPage() {
   const [currentStep, setCurrentStep] = useState(0);
 
   // Calculate active steps based on enabledSteps
-  const getActiveSteps = () => {
-    if (!program) return [];
-    const steps = program.enabledSteps || {};
+  const getActiveSteps = (steps: EnabledStepsConfig, adhesionLevels: AdhesionLevel[], customFields: CustomField[]) => {
     const activeSteps: string[] = [];
 
     if (steps.identificacao) activeSteps.push('identificacao');
@@ -81,7 +79,10 @@ export default function ProgramInscricaoPage() {
     return activeSteps;
   };
 
-  const activeSteps = getActiveSteps();
+  const steps = program.enabledSteps || {};
+  const customFields = program.customFields || [];
+  const adhesionLevels = program.adhesionLevels || [];
+  const activeSteps = getActiveSteps(steps, adhesionLevels, customFields);
   const totalSteps = activeSteps.length;
 
   useEffect(() => {
@@ -269,10 +270,6 @@ export default function ProgramInscricaoPage() {
       </div>
     );
   }
-
-  const steps = program.enabledSteps || {};
-  const customFields = program.customFields || [];
-  const adhesionLevels = program.adhesionLevels || [];
 
   return (
     <div className={styles.page}>
