@@ -39,7 +39,11 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
 
       if (program) {
         const shortDescription = program.description.split('\n')[0] || program.description;
-        const imageUrl = program.image || 'https://www.abnafrobiznetwork.com/abn-logo.png';
+        // Ensure image URL is absolute
+        let imageUrl = program.image || 'https://www.abnafrobiznetwork.com/abn-logo.png';
+        if (imageUrl && !imageUrl.startsWith('http')) {
+          imageUrl = `${baseUrl}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+        }
 
         return {
           title: `${program.title} - ABN AfroBiz Network`,
@@ -54,6 +58,7 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
                 url: imageUrl,
                 width: 1200,
                 height: 630,
+                alt: program.title,
               },
             ],
             locale: 'pt_PT',
@@ -64,6 +69,11 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
             title: program.title,
             description: shortDescription,
             images: [imageUrl],
+          },
+          other: {
+            'og:image:alt': program.title,
+            'og:image:width': '1200',
+            'og:image:height': '630',
           },
         };
       }
