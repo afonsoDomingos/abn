@@ -52,9 +52,16 @@ export default function TeamMemberPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/team')
-      .then(res => res.json())
-      .then(data => {
+    const fetchTeamMember = async () => {
+      try {
+        const baseUrl = window.location.origin;
+        const res = await fetch(`${baseUrl}/api/team`);
+        if (!res.ok) {
+          console.error('API response not OK:', res.status, res.statusText);
+          setLoading(false);
+          return;
+        }
+        const data = await res.json();
         if (data.team && data.team.length > 0) {
           const foundMember = data.team.find((m: TeamMember) => {
             const nameSlug = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -63,11 +70,13 @@ export default function TeamMemberPage() {
           setMember(foundMember || null);
         }
         setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
+      } catch (err) {
+        console.error('Error fetching team member:', err);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchTeamMember();
   }, [slug]);
 
   if (loading) {

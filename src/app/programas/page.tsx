@@ -45,18 +45,27 @@ export default function ProgramasPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/programs')
-      .then(res => res.json())
-      .then(data => {
+    const fetchPrograms = async () => {
+      try {
+        const baseUrl = window.location.origin;
+        const res = await fetch(`${baseUrl}/api/programs`);
+        if (!res.ok) {
+          console.error('API response not OK:', res.status, res.statusText);
+          setLoading(false);
+          return;
+        }
+        const data = await res.json();
         if (data.success && data.programs) {
           setPrograms(data.programs.filter((p: Program) => !p.status || p.status === 'ativo'));
         }
         setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
+      } catch (err) {
+        console.error('Error fetching programs:', err);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchPrograms();
   }, []);
 
   if (loading) {

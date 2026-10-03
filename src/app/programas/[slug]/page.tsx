@@ -45,9 +45,16 @@ export default function ProgramDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/programs')
-      .then(res => res.json())
-      .then(data => {
+    const fetchProgram = async () => {
+      try {
+        const baseUrl = window.location.origin;
+        const res = await fetch(`${baseUrl}/api/programs`);
+        if (!res.ok) {
+          console.error('API response not OK:', res.status, res.statusText);
+          setLoading(false);
+          return;
+        }
+        const data = await res.json();
         if (data.success && data.programs) {
           const foundProgram = data.programs.find((p: Program) => {
             const titleSlug = p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -56,11 +63,13 @@ export default function ProgramDetailPage() {
           setProgram(foundProgram || null);
         }
         setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
+      } catch (err) {
+        console.error('Error fetching program:', err);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProgram();
   }, [slug]);
 
   if (loading) {
