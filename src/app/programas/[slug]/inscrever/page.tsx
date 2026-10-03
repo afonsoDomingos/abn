@@ -105,13 +105,31 @@ export default function ProgramInscricaoPage() {
 
     try {
       const baseUrl = window.location.origin;
+
+      // Prepare respostasPersonalizadas for custom fields
+      const respostasPersonalizadas: Record<string, any> = {};
+      customFields.forEach(field => {
+        if (formData[field.id]) {
+          respostasPersonalizadas[field.id] = formData[field.id];
+        }
+      });
+
       const res = await fetch(`${baseUrl}/api/programs/${program._id}/inscricao`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          programId: program._id,
-          programTitle: program.title,
-          ...formData
+          nome: formData.nome,
+          email: formData.email,
+          telefone: formData.telefone,
+          nomeNegocio: formData.nomeNegocio,
+          setor: formData.setor,
+          estagio: formData.estagio,
+          nivelAdesao: formData.nivelAdesao,
+          origem: formData.origem,
+          metodoPagamento: formData.metodoPagamento,
+          comprovativo: formData.comprovativo,
+          declaracaoAceita: formData.declaracaoAceita,
+          respostasPersonalizadas
         })
       });
 

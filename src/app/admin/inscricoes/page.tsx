@@ -19,6 +19,7 @@ interface UnifiedInscription {
   comprovativoUrl?: string;
   formaPagamento?: string;
   respostasPersonalizadas?: Record<string, any>;
+  programId?: string;
   // Cursos specific
   progresso?: string;
   // Eventos specific
@@ -68,13 +69,14 @@ export default function AdminInscricoesPage() {
             telefone: i.telefone,
             empresa: i.nomeNegocio,
             status: i.status,
-            itemTitle: `Clube - ${i.nivelAdesao}`,
+            itemTitle: i.programTitle || `Clube - ${i.nivelAdesao}`,
             createdAt: i.createdAt,
             nivelAdesao: i.nivelAdesao,
             origem: i.origem,
             comprovativoUrl: i.comprovativoUrl,
             formaPagamento: i.formaPagamento,
-            respostasPersonalizadas: i.respostasPersonalizadas || {}
+            respostasPersonalizadas: i.respostasPersonalizadas || {},
+            programId: i.programId
           });
         });
       }
