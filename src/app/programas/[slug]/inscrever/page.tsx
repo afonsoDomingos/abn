@@ -286,8 +286,6 @@ export default function ProgramInscricaoPage() {
   }
 
   if (success) {
-    const adminWhatsApp = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '+258 84 577 3974';
-    const isFree = program ? isFreeProgram(program) : false;
     return (
       <div className={styles.page}>
         <Navbar />
@@ -302,20 +300,6 @@ export default function ProgramInscricaoPage() {
               <a href={program.whatsappGroupUrl} target="_blank" rel="noopener noreferrer" className={styles.btn}>
                 Entrar no Grupo WhatsApp
               </a>
-            )}
-
-            {!isFree && (
-              <div className={styles.whatsappNotice}>
-                <p className={styles.whatsappNoticeTitle}>💬 Envie o comprovativo</p>
-                <a
-                  href={`https://wa.me/${adminWhatsApp.replace(/[^0-9]/g, '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.whatsappBtn}
-                >
-                  {adminWhatsApp}
-                </a>
-              </div>
             )}
 
             <button onClick={() => router.push('/programas')} className={styles.btnSecondary}>
