@@ -249,7 +249,7 @@ export default function EventInscricaoPage() {
   }
 
   if (success) {
-    const adminWhatsApp = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '+258 84 000 0000';
+    const adminWhatsApp = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '+258 84 577 3974';
     return (
       <div className={styles.page}>
         <Navbar />

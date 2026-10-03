@@ -127,7 +127,7 @@ export async function POST(request: Request) {
     }
 
     // Format WhatsApp Alert link for Admin
-    const adminPhone = process.env.ADMIN_WHATSAPP || '245955000000';
+    const adminPhone = process.env.ADMIN_WHATSAPP || '258845773974';
     const studentName = session.name || 'Aluno';
     const waText = encodeURIComponent(
       `🚨 *Novo Comprovativo Recebido!*\n\n📚 *Curso:* ${itemName}\n *Aluno:* ${studentName}\n *Contacto:* ${phone || 'N/A'}\n*Empresa:* ${company || 'N/A'}\n *Valor:* ${price}\n\nPor favor, valide no painel Admin em /admin/pagamentos`
