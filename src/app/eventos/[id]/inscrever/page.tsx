@@ -269,6 +269,7 @@ export default function EventInscricaoPage() {
 
   if (success) {
     const adminWhatsApp = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '+258 84 577 3974';
+    const isFree = isFreeEvent(event);
     return (
       <div className={styles.page}>
         <Navbar />
@@ -285,20 +286,22 @@ export default function EventInscricaoPage() {
               </a>
             )}
 
-            <div className={styles.whatsappNotice}>
-              <p className={styles.whatsappNoticeTitle}>💬 Envie o comprovativo de pagamento:</p>
-              <p className={styles.whatsappNoticeText}>
-                Após efetuar o pagamento, envie o comprovativo para o admin via WhatsApp:
-              </p>
-              <a
-                href={`https://wa.me/${adminWhatsApp.replace(/[^0-9]/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.whatsappBtn}
-              >
-                {adminWhatsApp}
-              </a>
-            </div>
+            {!isFree && (
+              <div className={styles.whatsappNotice}>
+                <p className={styles.whatsappNoticeTitle}>💬 Envie o comprovativo de pagamento:</p>
+                <p className={styles.whatsappNoticeText}>
+                  Após efetuar o pagamento, envie o comprovativo para o admin via WhatsApp:
+                </p>
+                <a
+                  href={`https://wa.me/${adminWhatsApp.replace(/[^0-9]/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.whatsappBtn}
+                >
+                  {adminWhatsApp}
+                </a>
+              </div>
+            )}
 
             <button onClick={() => router.push('/eventos')} className={styles.btnSecondary}>
               Voltar para Eventos

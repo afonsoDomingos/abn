@@ -31,6 +31,8 @@ function isFreeProgram(program: Program): boolean {
   return investment.includes('gratuito') || investment.includes('grátis') || price === '' || price === '0' || price === '0 mt';
 }
 
+
+
 interface AdhesionLevel {
   id: string;
   label: string;
@@ -269,6 +271,7 @@ export default function ProgramInscricaoPage() {
 
   if (success) {
     const adminWhatsApp = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '+258 84 577 3974';
+    const isFree = isFreeProgram(program);
     return (
       <div className={styles.page}>
         <Navbar />
@@ -285,20 +288,22 @@ export default function ProgramInscricaoPage() {
               </a>
             )}
 
-            <div className={styles.whatsappNotice}>
-              <p className={styles.whatsappNoticeTitle}>💬 Envie o comprovativo de pagamento:</p>
-              <p className={styles.whatsappNoticeText}>
-                Após efetuar o pagamento, envie o comprovativo para o admin via WhatsApp:
-              </p>
-              <a
-                href={`https://wa.me/${adminWhatsApp.replace(/[^0-9]/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.whatsappBtn}
-              >
-                {adminWhatsApp}
-              </a>
-            </div>
+            {!isFree && (
+              <div className={styles.whatsappNotice}>
+                <p className={styles.whatsappNoticeTitle}>💬 Envie o comprovativo de pagamento:</p>
+                <p className={styles.whatsappNoticeText}>
+                  Após efetuar o pagamento, envie o comprovativo para o admin via WhatsApp:
+                </p>
+                <a
+                  href={`https://wa.me/${adminWhatsApp.replace(/[^0-9]/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.whatsappBtn}
+                >
+                  {adminWhatsApp}
+                </a>
+              </div>
+            )}
 
             <button onClick={() => router.push('/programas')} className={styles.btnSecondary}>
               Voltar para Programas
