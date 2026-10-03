@@ -146,6 +146,8 @@ export default function ProgramInscricaoPage() {
       if (!formData.nomeNegocio || !formData.setor || !formData.estagio) isValid = false;
     } else if (currentStepName === 'adesao') {
       if (!formData.nivelAdesao) isValid = false;
+    } else if (currentStepName === 'origem') {
+      if (!formData.origem) isValid = false;
     } else if (currentStepName === 'declaracao') {
       if (!formData.declaracaoAceita) isValid = false;
     }
@@ -187,6 +189,20 @@ export default function ProgramInscricaoPage() {
 
     setSubmitting(true);
     setError('');
+
+    // Validate all required fields
+    if (!formData.nome || !formData.email || !formData.telefone) {
+      setError('Por favor, preencha todos os campos obrigatórios.');
+      setSubmitting(false);
+      return;
+    }
+
+    // Validate declaration if enabled
+    if (steps.declaracao && !formData.declaracaoAceita) {
+      setError('Por favor, aceite a declaração para continuar.');
+      setSubmitting(false);
+      return;
+    }
 
     try {
       const baseUrl = window.location.origin;
