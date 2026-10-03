@@ -14,11 +14,11 @@ interface Program {
 
 async function getPrograms(): Promise<Program[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/programs`, {
+    const res = await fetch('/api/programs', {
       cache: 'no-store'
     });
     const data = await res.json();
-    
+
     if (data.success && data.programs) {
       return data.programs.filter((p: Program) => p.status === 'ativo');
     }

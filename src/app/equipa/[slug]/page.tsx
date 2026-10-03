@@ -25,17 +25,17 @@ interface TeamMember {
 
 async function getTeamMember(slug: string): Promise<TeamMember | null> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/team`, {
+    const res = await fetch('/api/team', {
       cache: 'no-store'
     });
     const data = await res.json();
-    
+
     if (data.team && data.team.length > 0) {
       const member = data.team.find((m: TeamMember) => {
         const nameSlug = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         return nameSlug === slug || m._id === slug;
       });
-      
+
       return member || null;
     }
     return null;

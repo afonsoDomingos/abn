@@ -20,17 +20,17 @@ interface Program {
 
 async function getProgram(slug: string): Promise<Program | null> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/programs`, {
+    const res = await fetch('/api/programs', {
       cache: 'no-store'
     });
     const data = await res.json();
-    
+
     if (data.success && data.programs) {
       const program = data.programs.find((p: Program) => {
         const titleSlug = p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         return titleSlug === slug || p._id === slug;
       });
-      
+
       return program || null;
     }
     return null;
