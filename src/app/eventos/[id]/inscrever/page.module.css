@@ -167,39 +167,7 @@
   }
 }
 
-.whatsappNotice {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 12px;
-  padding: 1.25rem;
-  margin: 1.5rem 0;
-  text-align: center;
-  animation: fadeIn 0.6s ease-out 0.7s both;
-}
 
-.whatsappNoticeTitle {
-  color: #15803d;
-  font-weight: 700;
-  margin: 0 0 0.75rem 0;
-  font-size: 0.95rem;
-}
-
-.whatsappBtn {
-  display: inline-block;
-  background: #25d366;
-  color: #ffffff;
-  padding: 10px 24px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.2s;
-}
-
-.whatsappBtn:hover {
-  background: #20bd5a;
-  transform: translateY(-2px);
-}
 
 .parceriaInfo {
   background: #f0fdf4;
@@ -357,10 +325,11 @@
 }
 
 .checkboxLabel input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   accent-color: #ff6b00;
   flex-shrink: 0;
+  border-radius: 50%;
 }
 
 .declarationBox {

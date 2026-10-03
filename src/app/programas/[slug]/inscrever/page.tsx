@@ -228,7 +228,6 @@ export default function ProgramInscricaoPage() {
           nivelAdesao: formData.nivelAdesao,
           origem: formData.origem,
           metodoPagamento: formData.metodoPagamento,
-          comprovativo: formData.comprovativo,
           declaracaoAceita: formData.declaracaoAceita,
           respostasPersonalizadas,
           tipoParceria: formData.tipoParceria,
@@ -564,13 +563,6 @@ export default function ProgramInscricaoPage() {
                     <option value="emola">eMola</option>
                     <option value="transferencia">Transferência Bancária</option>
                   </select>
-                </div>
-                <div className={styles.field}>
-                  <label>Comprovativo de Pagamento</label>
-                  <input
-                    type="file"
-                    onChange={e => handleInputChange('comprovativo', e.target.files?.[0])}
-                  />
                 </div>
               </div>
             )}

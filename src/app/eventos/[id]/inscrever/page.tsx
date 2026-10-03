@@ -227,7 +227,6 @@ export default function EventInscricaoPage() {
           respostasPersonalizadas,
           declaracaoAceita: formData.declaracaoAceita,
           metodoPagamento: formData.metodoPagamento,
-          comprovativo: formData.comprovativo,
           tipoParceria: formData.tipoParceria,
           descricaoParceria: formData.descricaoParceria,
           valorContribuicao: formData.valorContribuicao,
@@ -559,13 +558,6 @@ export default function EventInscricaoPage() {
                     <option value="emola">eMola</option>
                     <option value="transferencia">Transferência Bancária</option>
                   </select>
-                </div>
-                <div className={styles.field}>
-                  <label>Comprovativo de Pagamento</label>
-                  <input
-                    type="file"
-                    onChange={e => handleInputChange('comprovativo', e.target.files?.[0])}
-                  />
                 </div>
               </div>
             )}
