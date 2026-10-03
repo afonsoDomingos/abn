@@ -79,9 +79,9 @@ export default function ProgramInscricaoPage() {
     return activeSteps;
   };
 
-  const steps = program.enabledSteps || {};
-  const customFields = program.customFields || [];
-  const adhesionLevels = program.adhesionLevels || [];
+  const steps = program?.enabledSteps || {};
+  const customFields = program?.customFields || [];
+  const adhesionLevels = program?.adhesionLevels || [];
   const activeSteps = getActiveSteps(steps, adhesionLevels, customFields);
   const totalSteps = activeSteps.length;
 
