@@ -132,6 +132,51 @@
   border: 1px solid #fecaca;
 }
 
+.progressBar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 2rem;
+}
+
+.progressStep {
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.progressStep.activeStep {
+  background: #ff6b00;
+}
+
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.stepNumber {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+
+.stepTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.stepContent {
+  min-height: 300px;
+}
+
 .form {
   background: #ffffff;
   border-radius: 20px;
@@ -234,8 +279,10 @@
 
 .actions {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 2rem;
+  gap: 1rem;
 }
 
 .btn {
