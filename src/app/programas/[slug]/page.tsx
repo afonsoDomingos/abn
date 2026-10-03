@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ArrowRight } from 'lucide-react';
@@ -40,6 +40,7 @@ function formatText(text: string): string[] {
 
 export default function ProgramDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const slug = params.slug as string;
   const [program, setProgram] = useState<Program | null>(null);
   const [loading, setLoading] = useState(true);
@@ -195,7 +196,14 @@ export default function ProgramDetailPage() {
 
           {/* CTA Section */}
           <div className={styles.cta}>
-            <a href="/contacto" className={styles.btn} style={{ background: color }}>
+            <button
+              onClick={() => router.push(`/programas/${slug}/inscrever`)}
+              className={styles.btn}
+              style={{ background: color }}
+            >
+              Inscrever-se Agora
+            </button>
+            <a href="/contacto" className={styles.btnSecondary}>
               Entrar em Contacto
             </a>
             <a href="/programas" className={styles.btnSecondary}>
