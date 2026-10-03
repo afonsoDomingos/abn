@@ -25,6 +25,12 @@ interface EnabledStepsConfig {
   checkout?: boolean;
 }
 
+function isFreeProgram(program: Program): boolean {
+  const investment = program.investimento?.toLowerCase() || '';
+  const price = program.price?.toLowerCase() || '';
+  return investment.includes('gratuito') || investment.includes('grátis') || price === '' || price === '0' || price === '0 mt';
+}
+
 interface AdhesionLevel {
   id: string;
   label: string;
@@ -48,6 +54,8 @@ interface Program {
   declaracao?: string;
   whatsappGroupUrl?: string;
   adhesionLevels?: AdhesionLevel[];
+  investimento?: string;
+  price?: string;
 }
 
 export default function ProgramInscricaoPage() {
@@ -65,7 +73,7 @@ export default function ProgramInscricaoPage() {
   const [currentStep, setCurrentStep] = useState(0);
 
   // Calculate active steps based on enabledSteps
-  const getActiveSteps = (steps: EnabledStepsConfig, adhesionLevels: AdhesionLevel[], customFields: CustomField[]) => {
+  const getActiveSteps = (steps: EnabledStepsConfig, adhesionLevels: AdhesionLevel[], customFields: CustomField[], isFree: boolean) => {
     const activeSteps: string[] = [];
 
     if (steps.identificacao) activeSteps.push('identificacao');
@@ -74,7 +82,14 @@ export default function ProgramInscricaoPage() {
     if (steps.interesses && customFields.length > 0) activeSteps.push('interesses');
     if (steps.origem) activeSteps.push('origem');
     if (steps.declaracao) activeSteps.push('declaracao');
-    if (steps.checkout) activeSteps.push('checkout');
+    // Se for gratuito e checkout estiver ativado, substituir por parceria
+    if (steps.checkout) {
+      if (isFree) {
+        activeSteps.push('parceria');
+      } else {
+        activeSteps.push('checkout');
+      }
+    }
 
     return activeSteps;
   };
@@ -82,7 +97,8 @@ export default function ProgramInscricaoPage() {
   const steps = program?.enabledSteps || {};
   const customFields = program?.customFields || [];
   const adhesionLevels = program?.adhesionLevels || [];
-  const activeSteps = getActiveSteps(steps, adhesionLevels, customFields);
+  const isFree = isFreeProgram(program);
+  const activeSteps = getActiveSteps(steps, adhesionLevels, customFields, isFree);
   const totalSteps = activeSteps.length;
 
   useEffect(() => {
@@ -157,7 +173,8 @@ export default function ProgramInscricaoPage() {
       interesses: 'Informações Adicionais',
       origem: 'Como conheceu a ABN',
       declaracao: 'Declaração',
-      checkout: 'Pagamento'
+      checkout: 'Pagamento',
+      parceria: 'Parceria / Patrocínio'
     };
     return titles[stepName] || stepName;
   };
@@ -195,7 +212,11 @@ export default function ProgramInscricaoPage() {
           metodoPagamento: formData.metodoPagamento,
           comprovativo: formData.comprovativo,
           declaracaoAceita: formData.declaracaoAceita,
-          respostasPersonalizadas
+          respostasPersonalizadas,
+          tipoParceria: formData.tipoParceria,
+          descricaoParceria: formData.descricaoParceria,
+          valorContribuicao: formData.valorContribuicao,
+          isFree
         })
       });
 
@@ -549,6 +570,53 @@ export default function ProgramInscricaoPage() {
                     onChange={e => handleInputChange('comprovativo', e.target.files?.[0])}
                   />
                 </div>
+              </div>
+            )}
+
+            {/* Etapa 7: Parceria/Patrocínio (para programas gratuitos) */}
+            {activeSteps[currentStep] === 'parceria' && (
+              <div className={styles.section}>
+                <div className={styles.parceriaInfo}>
+                  <p className={styles.parceriaText}>
+                    Este programa é gratuito! Você pode se inscrever diretamente ou contribuir como parceiro/patrocinador para apoiar o desenvolvimento de mais empreendedores.
+                  </p>
+                </div>
+                <div className={styles.field}>
+                  <label>Tipo de Parceria</label>
+                  <select
+                    value={formData.tipoParceria || ''}
+                    onChange={e => handleInputChange('tipoParceria', e.target.value)}
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="inscricao">Apenas Inscrição (sem parceria)</option>
+                    <option value="parceiro">Parceiro Institucional</option>
+                    <option value="patrocinador">Patrocinador</option>
+                    <option value="mentor">Mentor Voluntário</option>
+                    <option value="outro">Outro</option>
+                  </select>
+                </div>
+                {formData.tipoParceria && formData.tipoParceria !== 'inscricao' && (
+                  <>
+                    <div className={styles.field}>
+                      <label>Descrição da Parceria</label>
+                      <textarea
+                        value={formData.descricaoParceria || ''}
+                        onChange={e => handleInputChange('descricaoParceria', e.target.value)}
+                        placeholder="Descreva como gostaria de contribuir..."
+                        rows={4}
+                      />
+                    </div>
+                    <div className={styles.field}>
+                      <label>Valor de Contribuição (opcional)</label>
+                      <input
+                        type="text"
+                        value={formData.valorContribuicao || ''}
+                        onChange={e => handleInputChange('valorContribuicao', e.target.value)}
+                        placeholder="Ex: 50.000 MT"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>

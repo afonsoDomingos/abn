@@ -162,6 +162,21 @@
   transform: translateY(-2px);
 }
 
+.parceriaInfo {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.parceriaText {
+  color: #166534;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
 .errorMsg {
   background: #fef2f2;
   color: #dc2626;

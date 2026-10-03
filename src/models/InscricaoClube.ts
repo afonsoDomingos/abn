@@ -28,6 +28,10 @@ export interface IInscricaoClube extends Document {
   programId?: string; // ID do programa se inscrição via formulário de programa
   programTitle?: string; // Título do programa
   estagio?: string; // Estágio do negócio (apenas para inscrições de programas)
+  tipoParceria?: string; // Tipo de parceria (parceiro, patrocinador, mentor, etc.)
+  descricaoParceria?: string; // Descrição da parceria
+  valorContribuicao?: string; // Valor de contribuição (opcional)
+  isFree?: boolean; // Se o programa é gratuito
   status: string; // 'pendente' | 'aprovado' | 'rejeitado' | 'contactado'
   notasAdmin?: string;
   createdAt: Date;
@@ -61,6 +65,10 @@ const InscricaoClubeSchema = new Schema<IInscricaoClube>({
   programId: String,
   programTitle: String,
   estagio: String,
+  tipoParceria: String,
+  descricaoParceria: String,
+  valorContribuicao: String,
+  isFree: Boolean,
   status: { type: String, default: 'pendente' },
   notasAdmin: String,
 }, { timestamps: true });

@@ -16,6 +16,10 @@ export interface IEventInscription extends Document {
   declaracaoAceita?: boolean;
   metodoPagamento?: string;
   comprovativo?: string;
+  tipoParceria?: string;
+  descricaoParceria?: string;
+  valorContribuicao?: string;
+  isFree?: boolean;
   status: string; // 'pendente' | 'confirmado' | 'cancelado' | 'compareceu' | 'nao_compareceu'
   notasAdmin?: string;
   origem?: string; // 'home' | 'eventos'
@@ -38,6 +42,10 @@ const EventInscriptionSchema = new Schema<IEventInscription>({
   declaracaoAceita: Boolean,
   metodoPagamento: String,
   comprovativo: String,
+  tipoParceria: String,
+  descricaoParceria: String,
+  valorContribuicao: String,
+  isFree: Boolean,
   status: { type: String, default: 'pendente' },
   notasAdmin: String,
   origem: String,

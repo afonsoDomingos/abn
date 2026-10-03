@@ -25,6 +25,11 @@ interface EnabledStepsConfig {
   checkout?: boolean;
 }
 
+function isFreeEvent(event: Event): boolean {
+  const price = event.price?.toLowerCase() || '';
+  return price === '' || price === '0' || price === '0 mt' || price === 'gratuito' || price === 'grátis';
+}
+
 interface Ticket {
   type: string;
   name: string;
@@ -49,6 +54,7 @@ interface Event {
   declaracao?: string;
   whatsappGroupUrl?: string;
   tickets?: Ticket[];
+  price?: string;
 }
 
 export default function EventInscricaoPage() {
@@ -66,7 +72,7 @@ export default function EventInscricaoPage() {
   const [currentStep, setCurrentStep] = useState(0);
 
   // Calculate active steps based on enabledSteps
-  const getActiveSteps = (steps: EnabledStepsConfig, tickets: Ticket[], customFields: CustomField[]) => {
+  const getActiveSteps = (steps: EnabledStepsConfig, tickets: Ticket[], customFields: CustomField[], isFree: boolean) => {
     const activeSteps: string[] = [];
 
     if (steps.identificacao) activeSteps.push('identificacao');
@@ -75,7 +81,14 @@ export default function EventInscricaoPage() {
     if (steps.interesses && customFields.length > 0) activeSteps.push('interesses');
     if (steps.necessidades) activeSteps.push('necessidades');
     if (steps.declaracao) activeSteps.push('declaracao');
-    if (steps.checkout) activeSteps.push('checkout');
+    // Se for gratuito e checkout estiver ativado, substituir por parceria
+    if (steps.checkout) {
+      if (isFree) {
+        activeSteps.push('parceria');
+      } else {
+        activeSteps.push('checkout');
+      }
+    }
 
     return activeSteps;
   };
@@ -83,7 +96,8 @@ export default function EventInscricaoPage() {
   const steps = event?.enabledSteps || {};
   const customFields = event?.customFields || [];
   const tickets = event?.tickets || [];
-  const activeSteps = getActiveSteps(steps, tickets, customFields);
+  const isFree = isFreeEvent(event);
+  const activeSteps = getActiveSteps(steps, tickets, customFields, isFree);
   const totalSteps = activeSteps.length;
 
   useEffect(() => {
@@ -155,7 +169,8 @@ export default function EventInscricaoPage() {
       interesses: 'Informações Adicionais',
       necessidades: 'Necessidades Especiais',
       declaracao: 'Declaração',
-      checkout: 'Pagamento'
+      checkout: 'Pagamento',
+      parceria: 'Parceria / Patrocínio'
     };
     return titles[stepName] || stepName;
   };
@@ -197,6 +212,10 @@ export default function EventInscricaoPage() {
           declaracaoAceita: formData.declaracaoAceita,
           metodoPagamento: formData.metodoPagamento,
           comprovativo: formData.comprovativo,
+          tipoParceria: formData.tipoParceria,
+          descricaoParceria: formData.descricaoParceria,
+          valorContribuicao: formData.valorContribuicao,
+          isFree,
           origem: 'eventos'
         })
       });
@@ -548,6 +567,53 @@ export default function EventInscricaoPage() {
                     onChange={e => handleInputChange('comprovativo', e.target.files?.[0])}
                   />
                 </div>
+              </div>
+            )}
+
+            {/* Etapa 7: Parceria/Patrocínio (para eventos gratuitos) */}
+            {activeSteps[currentStep] === 'parceria' && (
+              <div className={styles.section}>
+                <div className={styles.parceriaInfo}>
+                  <p className={styles.parceriaText}>
+                    Este evento é gratuito! Você pode se inscrever diretamente ou contribuir como parceiro/patrocinador para apoiar a realização de mais eventos.
+                  </p>
+                </div>
+                <div className={styles.field}>
+                  <label>Tipo de Parceria</label>
+                  <select
+                    value={formData.tipoParceria || ''}
+                    onChange={e => handleInputChange('tipoParceria', e.target.value)}
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="inscricao">Apenas Inscrição (sem parceria)</option>
+                    <option value="parceiro">Parceiro Institucional</option>
+                    <option value="patrocinador">Patrocinador</option>
+                    <option value="apoiador">Apoiador</option>
+                    <option value="outro">Outro</option>
+                  </select>
+                </div>
+                {formData.tipoParceria && formData.tipoParceria !== 'inscricao' && (
+                  <>
+                    <div className={styles.field}>
+                      <label>Descrição da Parceria</label>
+                      <textarea
+                        value={formData.descricaoParceria || ''}
+                        onChange={e => handleInputChange('descricaoParceria', e.target.value)}
+                        placeholder="Descreva como gostaria de contribuir..."
+                        rows={4}
+                      />
+                    </div>
+                    <div className={styles.field}>
+                      <label>Valor de Contribuição (opcional)</label>
+                      <input
+                        type="text"
+                        value={formData.valorContribuicao || ''}
+                        onChange={e => handleInputChange('valorContribuicao', e.target.value)}
+                        placeholder="Ex: 50.000 MT"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
