@@ -11,6 +11,11 @@ export interface IEventInscription extends Document {
   sector?: string;
   motivoParticipacao?: string;
   necessidadesEspeciais?: string;
+  bilheteSelecionado?: string;
+  respostasPersonalizadas?: Record<string, any>;
+  declaracaoAceita?: boolean;
+  metodoPagamento?: string;
+  comprovativo?: string;
   status: string; // 'pendente' | 'confirmado' | 'cancelado' | 'compareceu' | 'nao_compareceu'
   notasAdmin?: string;
   origem?: string; // 'home' | 'eventos'
@@ -28,6 +33,11 @@ const EventInscriptionSchema = new Schema<IEventInscription>({
   sector: String,
   motivoParticipacao: String,
   necessidadesEspeciais: String,
+  bilheteSelecionado: String,
+  respostasPersonalizadas: { type: Schema.Types.Mixed, default: {} },
+  declaracaoAceita: Boolean,
+  metodoPagamento: String,
+  comprovativo: String,
   status: { type: String, default: 'pendente' },
   notasAdmin: String,
   origem: String,

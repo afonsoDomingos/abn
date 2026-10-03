@@ -31,19 +31,6 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
-  const [showInscriptionForm, setShowInscriptionForm] = useState(false);
-  const [inscriptionSubmitted, setInscriptionSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  
-  // Form state
-  const [nomeCompleto, setNomeCompleto] = useState('');
-  const [email, setEmail] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [empresa, setEmpresa] = useState('');
-  const [cargo, setCargo] = useState('');
-  const [sector, setSector] = useState('');
-  const [motivoParticipacao, setMotivoParticipacao] = useState('');
-  const [necessidadesEspeciais, setNecessidadesEspeciais] = useState('');
 
   // Helper date elements for date badge
   const getDateParts = (dateStr: string) => {
@@ -76,62 +63,7 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
     return matchesTab && matchesCategory;
   });
 
-  const categories = ['Todos', 'Summit ABN', 'Conferência', 'Feira', 'Missão Empresarial', 'Outro'];
-
-  const handleInscriptionSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedEvent) return;
-    
-    setLoading(true);
-    try {
-      const response = await fetch('/api/events/inscricoes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          eventId: selectedEvent._id,
-          eventTitle: selectedEvent.title,
-          nomeCompleto,
-          email,
-          telefone,
-          empresa,
-          cargo,
-          sector,
-          motivoParticipacao,
-          necessidadesEspeciais,
-          origem: 'eventos'
-        }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        setInscriptionSubmitted(true);
-      } else {
-        alert('Erro ao submeter inscrição: ' + (data.error || 'Tente novamente'));
-      }
-    } catch (error) {
-      alert('Erro ao submeter inscrição. Tente novamente.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const openInscriptionForm = (event: EventItem) => {
-    setSelectedEvent(event);
-    setShowInscriptionForm(true);
-    setInscriptionSubmitted(false);
-    setNomeCompleto('');
-    setEmail('');
-    setTelefone('');
-    setEmpresa('');
-    setCargo('');
-    setSector('');
-    setMotivoParticipacao('');
-    setNecessidadesEspeciais('');
-  };
-
-  const closeInscriptionForm = () => {
-    setShowInscriptionForm(false);
-    setSelectedEvent(null);
-  };
+  const categories = ['Todos', 'Summit ABN', 'Conferência', 'Feira', 'Missão Empresarial', 'Workshop', 'Outro'];
 
   return (
     <>
@@ -217,13 +149,13 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
                       Ver Detalhes
                     </Link>
                     {ev.type === 'upcoming' && (
-                      <button 
-                        className="btn-primary" 
-                        style={{ padding: '8px 16px', fontSize: '0.85rem' }}
-                        onClick={() => openInscriptionForm(ev)}
+                      <Link
+                        href={`/eventos/${ev._id}/inscrever`}
+                        className="btn-primary"
+                        style={{ padding: '8px 16px', fontSize: '0.85rem', textDecoration: 'none' }}
                       >
                         Inscrever-se
-                      </button>
+                      </Link>
                     )}
                   </div>
                 </div>
@@ -279,227 +211,15 @@ export default function EventosClient({ initialEvents }: EventosClientProps) {
             <div className={styles.modalFooter}>
               <button className="btn-outline" onClick={() => setSelectedEvent(null)}>Fechar</button>
               {selectedEvent.type === 'upcoming' && (
-                <button 
-                  className="btn-primary" 
+                <Link
+                  href={`/eventos/${selectedEvent._id}/inscrever`}
+                  className="btn-primary"
                   style={{ textDecoration: 'none' }}
-                  onClick={() => {
-                    setSelectedEvent(null);
-                    openInscriptionForm(selectedEvent);
-                  }}
                 >
                   Inscrever-se
-                </button>
+                </Link>
               )}
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* Inscription Form Modal */}
-      {showInscriptionForm && selectedEvent && (
-        <div className={styles.modalOverlay} onClick={closeInscriptionForm}>
-          <div className={`${styles.modalContent} glass`} style={{ maxWidth: '600px' }} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.closeModalBtn} onClick={closeInscriptionForm}></button>
-            
-            {inscriptionSubmitted ? (
-              <div style={{ textAlign: 'center', padding: '2rem' }}>
-                <h2 style={{ marginBottom: '1rem' }}>Inscrição Recebida!</h2>
-                <p style={{ color: 'rgba(255,255,255,0.8)', marginBottom: '2rem' }}>
-                  Obrigado, <strong>{nomeCompleto}</strong>! A sua inscrição para <strong>{selectedEvent.title}</strong> foi recebida com sucesso.
-                </p>
-                <button className="btn-primary" onClick={closeInscriptionForm}>Fechar</button>
-              </div>
-            ) : (
-              <>
-                <div className={styles.modalHeader}>
-                  <h2>Inscrever-se no Evento</h2>
-                  <p style={{ color: 'rgba(255,255,255,0.7)', margin: '0.5rem 0 0' }}>{selectedEvent.title}</p>
-                </div>
-
-                <form onSubmit={handleInscriptionSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '600' }}>
-                      Nome Completo *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={nomeCompleto}
-                      onChange={e => setNomeCompleto(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        background: 'rgba(255,255,255,0.1)',
-                        color: '#fff',
-                        outline: 'none'
-                      }}
-                      placeholder="Seu nome completo"
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '600' }}>
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={e => setEmail(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        background: 'rgba(255,255,255,0.1)',
-                        color: '#fff',
-                        outline: 'none'
-                      }}
-                      placeholder="seu@email.com"
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '600' }}>
-                      Telefone
-                    </label>
-                    <input
-                      type="tel"
-                      value={telefone}
-                      onChange={e => setTelefone(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        background: 'rgba(255,255,255,0.1)',
-                        color: '#fff',
-                        outline: 'none'
-                      }}
-                      placeholder="+258 ..."
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '600' }}>
-                      Empresa
-                    </label>
-                    <input
-                      type="text"
-                      value={empresa}
-                      onChange={e => setEmpresa(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        background: 'rgba(255,255,255,0.1)',
-                        color: '#fff',
-                        outline: 'none'
-                      }}
-                      placeholder="Nome da sua empresa"
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '600' }}>
-                      Cargo
-                    </label>
-                    <input
-                      type="text"
-                      value={cargo}
-                      onChange={e => setCargo(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        background: 'rgba(255,255,255,0.1)',
-                        color: '#fff',
-                        outline: 'none'
-                      }}
-                      placeholder="Seu cargo"
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '600' }}>
-                      Sector
-                    </label>
-                    <input
-                      type="text"
-                      value={sector}
-                      onChange={e => setSector(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        background: 'rgba(255,255,255,0.1)',
-                        color: '#fff',
-                        outline: 'none'
-                      }}
-                      placeholder="Sector de atividade"
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '600' }}>
-                      Motivo de Participação
-                    </label>
-                    <textarea
-                      value={motivoParticipacao}
-                      onChange={e => setMotivoParticipacao(e.target.value)}
-                      rows={3}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        background: 'rgba(255,255,255,0.1)',
-                        color: '#fff',
-                        outline: 'none',
-                        resize: 'vertical'
-                      }}
-                      placeholder="Por que quer participar neste evento?"
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '600' }}>
-                      Necessidades Especiais
-                    </label>
-                    <textarea
-                      value={necessidadesEspeciais}
-                      onChange={e => setNecessidadesEspeciais(e.target.value)}
-                      rows={2}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        background: 'rgba(255,255,255,0.1)',
-                        color: '#fff',
-                        outline: 'none',
-                        resize: 'vertical'
-                      }}
-                      placeholder="Alguma necessidade especial (acessibilidade, alimentação, etc.)?"
-                    />
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                    <button type="button" className="btn-outline" onClick={closeInscriptionForm}>
-                      Cancelar
-                    </button>
-                    <button type="submit" className="btn-primary" disabled={loading} style={{ flex: 1 }}>
-                      {loading ? 'A enviar...' : 'Confirmar Inscrição'}
-                    </button>
-                  </div>
-                </form>
-              </>
-            )}
           </div>
         </div>
       )}
