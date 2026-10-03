@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Rocket, Users, Building2, Brain, Megaphone, MapPin } from 'lucide-react';
@@ -10,32 +13,6 @@ interface Program {
   duration: string;
   phase: string;
   status: string;
-}
-
-async function getPrograms(): Promise<Program[]> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://www.abnafrobiznetwork.com';
-    const res = await fetch(`${baseUrl}/api/programs`, {
-      cache: 'no-store'
-    });
-
-    if (!res.ok) {
-      console.error('API response not OK:', res.status, res.statusText);
-      return [];
-    }
-
-    const data = await res.json();
-
-    if (data.success && data.programs) {
-      return data.programs.filter((p: Program) => !p.status || p.status === 'ativo');
-    }
-
-    console.error('Invalid API response:', data);
-    return [];
-  } catch (error) {
-    console.error('Error fetching programs:', error);
-    return [];
-  }
 }
 
 function getProgramIcon(title: string): React.ReactNode {
@@ -62,13 +39,45 @@ function getProgramSlug(title: string): string {
   return title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 }
 
-export default async function ProgramasPage() {
-  const programs = await getPrograms();
+export default function ProgramasPage() {
+  const [programs, setPrograms] = useState<Program[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/programs')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.programs) {
+          setPrograms(data.programs.filter((p: Program) => !p.status || p.status === 'ativo'));
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <Navbar />
+        <main className={styles.container}>
+          <div className={styles.header}>
+            <h1>Programas ABN</h1>
+            <p>Programas de incubação, aceleração e capacitação para empreendedores africanos.</p>
+          </div>
+          <p style={{ textAlign: 'center', color: '#64748b' }}>Carregando...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
       <Navbar />
-      
+
       <main className={styles.container}>
         <div className={styles.header}>
           <h1>Programas ABN</h1>

@@ -20,8 +20,7 @@ interface Program {
 
 async function getProgram(slug: string): Promise<Program | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://www.abnafrobiznetwork.com';
-    const res = await fetch(`${baseUrl}/api/programs`, {
+    const res = await fetch('/api/programs', {
       cache: 'no-store'
     });
     const data = await res.json();

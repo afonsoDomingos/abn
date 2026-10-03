@@ -25,8 +25,7 @@ interface TeamMember {
 
 async function getTeamMember(slug: string): Promise<TeamMember | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://www.abnafrobiznetwork.com';
-    const res = await fetch(`${baseUrl}/api/team`, {
+    const res = await fetch('/api/team', {
       cache: 'no-store'
     });
     const data = await res.json();
