@@ -20,7 +20,7 @@ async function getPrograms(): Promise<Program[]> {
     const data = await res.json();
 
     if (data.success && data.programs) {
-      return data.programs.filter((p: Program) => p.status === 'ativo');
+      return data.programs.filter((p: Program) => !p.status || p.status === 'ativo');
     }
     return [];
   } catch (error) {
