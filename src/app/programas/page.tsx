@@ -13,6 +13,7 @@ interface Program {
   duration: string;
   phase: string;
   status: string;
+  image?: string;
 }
 
 function getProgramIcon(title: string): React.ReactNode {
@@ -96,12 +97,23 @@ export default function ProgramasPage() {
 
               return (
                 <div key={program._id} className={styles.programCard}>
-                  <div className={styles.programIcon} style={{ color }}>{icon}</div>
-                  <h2>{program.title}</h2>
-                  <p>{shortDescription}</p>
-                  <a href={`/programas/${slug}`} className={styles.btn} style={{ background: color }}>
-                    Saber mais
-                  </a>
+                  {program.image && (
+                    <div className={styles.programImage}>
+                      <img
+                        src={program.image}
+                        alt={program.title}
+                        className={styles.programImg}
+                      />
+                    </div>
+                  )}
+                  <div className={styles.programContent}>
+                    <div className={styles.programIcon} style={{ color }}>{icon}</div>
+                    <h2>{program.title}</h2>
+                    <p>{shortDescription}</p>
+                    <a href={`/programas/${slug}`} className={styles.btn} style={{ background: color }}>
+                      Saber mais
+                    </a>
+                  </div>
                 </div>
               );
             })
