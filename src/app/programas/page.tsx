@@ -14,16 +14,26 @@ interface Program {
 
 async function getPrograms(): Promise<Program[]> {
   try {
-    const res = await fetch('/api/programs', {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://www.abnafrobiznetwork.com';
+    const res = await fetch(`${baseUrl}/api/programs`, {
       cache: 'no-store'
     });
+
+    if (!res.ok) {
+      console.error('API response not OK:', res.status, res.statusText);
+      return [];
+    }
+
     const data = await res.json();
 
     if (data.success && data.programs) {
       return data.programs.filter((p: Program) => !p.status || p.status === 'ativo');
     }
+
+    console.error('Invalid API response:', data);
     return [];
   } catch (error) {
+    console.error('Error fetching programs:', error);
     return [];
   }
 }
@@ -66,23 +76,27 @@ export default async function ProgramasPage() {
         </div>
 
         <div className={styles.programsGrid}>
-          {programs.map((program) => {
-            const icon = getProgramIcon(program.title);
-            const color = getProgramColor(program.title);
-            const slug = getProgramSlug(program.title);
-            const shortDescription = program.description.split('\n')[0] || program.description;
-            
-            return (
-              <div key={program._id} className={styles.programCard}>
-                <div className={styles.programIcon} style={{ color }}>{icon}</div>
-                <h2>{program.title}</h2>
-                <p>{shortDescription}</p>
-                <a href={`/programas/${slug}`} className={styles.btn} style={{ background: color }}>
-                  Saber mais
-                </a>
-              </div>
-            );
-          })}
+          {programs.length === 0 ? (
+            <p className={styles.noPrograms}>Nenhum programa disponível no momento.</p>
+          ) : (
+            programs.map((program) => {
+              const icon = getProgramIcon(program.title);
+              const color = getProgramColor(program.title);
+              const slug = getProgramSlug(program.title);
+              const shortDescription = program.description.split('\n')[0] || program.description;
+
+              return (
+                <div key={program._id} className={styles.programCard}>
+                  <div className={styles.programIcon} style={{ color }}>{icon}</div>
+                  <h2>{program.title}</h2>
+                  <p>{shortDescription}</p>
+                  <a href={`/programas/${slug}`} className={styles.btn} style={{ background: color }}>
+                    Saber mais
+                  </a>
+                </div>
+              );
+            })
+          )}
         </div>
       </main>
 

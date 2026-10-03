@@ -90,3 +90,11 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
 }
+
+.noPrograms {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #64748b;
+  font-size: 1.1rem;
+  padding: 3rem;
+}
