@@ -330,6 +330,27 @@
   accent-color: #ff6b00;
   flex-shrink: 0;
   border-radius: 50%;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid #cbd5e1;
+  cursor: pointer;
+  position: relative;
+}
+
+.checkboxLabel input[type="checkbox"]:checked {
+  background-color: #ff6b00;
+  border-color: #ff6b00;
+}
+
+.checkboxLabel input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .declarationBox {
