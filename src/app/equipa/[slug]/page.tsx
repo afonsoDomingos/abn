@@ -84,7 +84,10 @@ export default function TeamMemberPage() {
       <>
         <Navbar />
         <main className={styles.main}>
-          <p style={{ textAlign: 'center', color: '#64748b' }}>Carregando...</p>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 0' }}>
+            <div style={{ width: '50px', height: '50px', border: '4px solid #e2e8f0', borderTop: '4px solid #ff6b00', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+            <p style={{ marginTop: '1rem', color: '#64748b', fontSize: '1rem' }}>Carregando...</p>
+          </div>
         </main>
         <Footer />
       </>

@@ -77,7 +77,10 @@ export default function ProgramDetailPage() {
       <div className={styles.page}>
         <Navbar />
         <main className={styles.container}>
-          <p style={{ textAlign: 'center', color: '#64748b' }}>Carregando...</p>
+          <div className={styles.loadingContainer}>
+            <div className={styles.spinner}></div>
+            <p className={styles.loadingText}>Carregando programa...</p>
+          </div>
         </main>
         <Footer />
       </div>

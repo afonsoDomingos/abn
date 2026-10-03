@@ -77,7 +77,10 @@ export default function ProgramasPage() {
             <h1>Programas ABN</h1>
             <p>Programas de incubação, aceleração e capacitação para empreendedores africanos.</p>
           </div>
-          <p style={{ textAlign: 'center', color: '#64748b' }}>Carregando...</p>
+          <div className={styles.loadingContainer}>
+            <div className={styles.spinner}></div>
+            <p className={styles.loadingText}>Carregando programas...</p>
+          </div>
         </main>
         <Footer />
       </div>
