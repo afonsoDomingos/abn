@@ -292,9 +292,9 @@ export default function EventInscricaoPage() {
         <main className={styles.container}>
           <div className={styles.successCard}>
             <div className={styles.successIcon}>✓</div>
-            <h1>Inscrição Submetida com Sucesso!</h1>
-            <p>A sua inscrição no evento "{event.title}" foi registada com sucesso.</p>
-            <p>A equipa da ABN entrará em contacto brevemente.</p>
+            <h1>Inscrição Enviada!</h1>
+            <p>{event.title}</p>
+            <p>Entraremos em contacto em breve</p>
 
             {event.whatsappGroupUrl && (
               <a href={event.whatsappGroupUrl} target="_blank" rel="noopener noreferrer" className={styles.btn}>
@@ -304,10 +304,7 @@ export default function EventInscricaoPage() {
 
             {!isFree && (
               <div className={styles.whatsappNotice}>
-                <p className={styles.whatsappNoticeTitle}>💬 Envie o comprovativo de pagamento:</p>
-                <p className={styles.whatsappNoticeText}>
-                  Após efetuar o pagamento, envie o comprovativo para o admin via WhatsApp:
-                </p>
+                <p className={styles.whatsappNoticeTitle}>💬 Envie o comprovativo</p>
                 <a
                   href={`https://wa.me/${adminWhatsApp.replace(/[^0-9]/g, '')}`}
                   target="_blank"
